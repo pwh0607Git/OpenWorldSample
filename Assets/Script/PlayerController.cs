@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     Transform CamDir;           //카메라가 바라보는 방향으로 캐릭터의 움직임을 표현.
-    public float moveSpeed = 5f;
+    public float moveSpeed = 50f;
     private Rigidbody rb;
 
     void Start()

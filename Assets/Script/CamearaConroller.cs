@@ -29,6 +29,7 @@ public class CamearaConroller : MonoBehaviour
     {
         CameraMove();
         CameraZoom();
+        SetCamera();
     }
 
     void CameraMove()
@@ -54,11 +55,13 @@ public class CamearaConroller : MonoBehaviour
     {
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
         currentZoom = Mathf.Clamp(currentZoom + scrollInput * zoomSpeed, -maxZoom, -minZoom);
+    }
 
+    void SetCamera()
+    {
         Vector3 direction = new Vector3(0, 0, currentZoom);
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
         transform.position = target.position + new Vector3(0, defaultPos.y, 0) + rotation * direction;
-
         transform.LookAt(target.position + Vector3.up * 10f);
     }
 }
