@@ -5,12 +5,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     Transform CamDir;           //카메라가 바라보는 방향으로 캐릭터의 움직임을 표현.
-    public float moveSpeed = 2000f;
+    public Transform SpawnPos;
+    
+    public float moveSpeed = 5f;
     private Rigidbody rb;
+
+    private CharacterController controller;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
+        transform.position = SpawnPos.position;
     }
 
     void Update()
@@ -29,9 +35,10 @@ public class PlayerController : MonoBehaviour
         cameraForward.y = 0;
         cameraRight.y = 0;
 
-        Vector3 movement = cameraRight * moveHorizontal + cameraForward * moveVertical ;
+        Vector3 movement = cameraRight * moveHorizontal + cameraForward * moveVertical;
 
-        rb.velocity = movement * moveSpeed;
+        controller.Move(movement * moveSpeed * Time.deltaTime);
+
 
         if (movement != Vector3.zero)
         {

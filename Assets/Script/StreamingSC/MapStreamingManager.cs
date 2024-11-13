@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,12 +23,11 @@ public class MapStreamingManager : MonoBehaviour
         }
     }
 
-    //섹터별 스트리밍 상태.
     public static Dictionary<Vector2Int, bool> LoadedSectorState = new Dictionary<Vector2Int, bool>();
 
     public Transform player;
-    public int sectorSize = 100;
-    public int loadDistance = 1;
+    public int sectorSize = 200;
+    public int loadDistance = 2;
 
     private void Update()
     {
@@ -36,6 +37,15 @@ public class MapStreamingManager : MonoBehaviour
         UnloadSectorFunc(currentSector);
     }
 
+    Vector2Int maxSector = new Vector2Int(2, 2);
+    Vector2Int minSector = new Vector2Int(-2, -2);
+
+    //유효성 검사 메서드
+    bool CheckValidSector(Vector2Int sector)
+    {
+        return (sector.x >= minSector.x && sector.x <= maxSector.x && sector.y >= minSector.y && sector.y <= maxSector.y);
+    }
+
     void LoadSectorFunc(Vector2Int currentSector)
     {
         for (int x = -loadDistance; x <= loadDistance; x++)
@@ -43,21 +53,25 @@ public class MapStreamingManager : MonoBehaviour
             for (int y = -loadDistance; y <= loadDistance; y++)
             {
                 Vector2Int sectorToLoad = currentSector + new Vector2Int(x, y);
-
-                if (!LoadedSectorState.ContainsKey(sectorToLoad))
+                if (CheckValidSector(sectorToLoad))
                 {
-                    LoadedSectorState.Add(sectorToLoad, false);
-                }
+                    if (!LoadedSectorState.ContainsKey(sectorToLoad))
+                    {
+                        Debug.Log($"Sector {sectorToLoad} is Valid Sector");
+                        LoadedSectorState.Add(sectorToLoad, false);
+                    }
 
-                if (!LoadedSectorState[sectorToLoad])
-                {
-                    LoadedSectorState[sectorToLoad] = true;
-                    Debug.Log($"Sector_{sectorToLoad.x}_{sectorToLoad.y} Load...");
-                    StartCoroutine(LoadSector(sectorToLoad));
+                    if (!LoadedSectorState[sectorToLoad])
+                    {
+                        LoadedSectorState[sectorToLoad] = true;
+                        StartCoroutine(LoadSector(sectorToLoad));
+                    }
                 }
             }
         }
     }
+
+    HashSet<Vector2Int> UnLoadSceneTask = new HashSet<Vector2Int>();
 
     void UnloadSectorFunc(Vector2Int currentSector)
     {
@@ -65,10 +79,18 @@ public class MapStreamingManager : MonoBehaviour
 
         foreach (var sector in LoadedSectorState.Keys)
         {
-            if (Vector2Int.Distance(sector, currentSector) > loadDistance)
+            if (CheckValidSector(sector) && LoadedSectorState[sector])
             {
-                sectorsToUnload.Add(sector);
+                if (Mathf.FloorToInt(Vector2Int.Distance(sector, currentSector)) > loadDistance)
+                {
+                    if (!UnLoadSceneTask.Contains(sector))
+                    {
+                        UnLoadSceneTask.Add(sector);
+                        sectorsToUnload.Add(sector);
+                    }
+                }
             }
+
         }
 
         foreach (var sector in sectorsToUnload)
@@ -86,7 +108,7 @@ public class MapStreamingManager : MonoBehaviour
 
     IEnumerator LoadSector(Vector2Int sectorToLoad)
     {
-        string sceneName = $"Sector_{sectorToLoad.x}_{sectorToLoad.y}";
+        string sceneName = $"MapSector_{sectorToLoad.x}_{sectorToLoad.y}";
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         while (!asyncLoad.isDone)
@@ -98,13 +120,13 @@ public class MapStreamingManager : MonoBehaviour
 
     IEnumerator UnloadSector(Vector2Int sectorToUnLoad)
     {
-        string sceneName = $"Sector_{sectorToUnLoad.x}_{sectorToUnLoad.y}";
+        string sceneName = $"MapSector_{sectorToUnLoad.x}_{sectorToUnLoad.y}";
         AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(sceneName);
         while (!asyncUnload.isDone)
         {
             yield return null;
         }
-
+        UnLoadSceneTask.Remove(sectorToUnLoad);
         LoadedSectorState[sectorToUnLoad] = false;
     }
 }
