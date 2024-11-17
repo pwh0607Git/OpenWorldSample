@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,7 +28,7 @@ public class MapStreamingManager : MonoBehaviour
 
     public Transform player;
     public int sectorSize = 200;
-    public int loadDistance = 2;
+    public int loadDistance = 1;
 
     private void Update()
     {
@@ -57,7 +58,6 @@ public class MapStreamingManager : MonoBehaviour
                 {
                     if (!LoadedSectorState.ContainsKey(sectorToLoad))
                     {
-                        Debug.Log($"Sector {sectorToLoad} is Valid Sector");
                         LoadedSectorState.Add(sectorToLoad, false);
                     }
 
@@ -99,7 +99,7 @@ public class MapStreamingManager : MonoBehaviour
         }
     }
 
-    Vector2Int GetSector(Vector3 position)
+    public Vector2Int GetSector(Vector3 position)
     {
         int x = Mathf.FloorToInt(position.x / sectorSize);
         int y = Mathf.FloorToInt(position.z / sectorSize);
@@ -108,24 +108,37 @@ public class MapStreamingManager : MonoBehaviour
 
     IEnumerator LoadSector(Vector2Int sectorToLoad)
     {
-        string sceneName = $"MapSector_{sectorToLoad.x}_{sectorToLoad.y}";
+        //string sceneName = $"MapSector_{sectorToLoad.x}_{sectorToLoad.y}";
+        string sceneName = $"Sector_{sectorToLoad.x}_{sectorToLoad.y}";
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         while (!asyncLoad.isDone)
         {
             yield return null;
         }
+
+        asyncLoad.completed += (AsyncOperation op) =>
+        {
+            Debug.Log($"Scene '{sceneName}' has been loaded Event");
+        };
         LoadedSectorState[sectorToLoad] = true;
     }
 
     IEnumerator UnloadSector(Vector2Int sectorToUnLoad)
     {
-        string sceneName = $"MapSector_{sectorToUnLoad.x}_{sectorToUnLoad.y}";
+        //string sceneName = $"MapSector_{sectorToUnLoad.x}_{sectorToUnLoad.y}";
+        string sceneName = $"Sector_{sectorToUnLoad.x}_{sectorToUnLoad.y}";
         AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(sceneName);
         while (!asyncUnload.isDone)
         {
             yield return null;
         }
+
+        asyncUnload.completed += (AsyncOperation op) =>
+        {
+            Debug.Log($"Scene '{sceneName}' has been Unloaded Event");
+        };
+
         UnLoadSceneTask.Remove(sectorToUnLoad);
         LoadedSectorState[sectorToUnLoad] = false;
     }
