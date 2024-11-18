@@ -81,7 +81,7 @@ public class MapStreamingManager : MonoBehaviour
         {
             if (CheckValidSector(sector) && LoadedSectorState[sector])
             {
-                if (Mathf.FloorToInt(Vector2Int.Distance(sector, currentSector)) > loadDistance)
+                if (Mathf.Abs(sector.x - currentSector.x) > loadDistance || Mathf.Abs(sector.y - currentSector.y) > loadDistance)
                 {
                     if (!UnLoadSceneTask.Contains(sector))
                     {
