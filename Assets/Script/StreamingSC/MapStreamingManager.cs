@@ -33,7 +33,7 @@ public class MapStreamingManager : MonoBehaviour
     private void Update()
     {
         Vector2Int currentSector = GetSector(player.position);
-
+        Debug.Log($"사용자의 현재 Sector : ({currentSector.x}, {currentSector.y})");
         LoadSectorFunc(currentSector);
         UnloadSectorFunc(currentSector);
     }
@@ -75,34 +75,28 @@ public class MapStreamingManager : MonoBehaviour
 
     void UnloadSectorFunc(Vector2Int currentSector)
     {
-        List<Vector2Int> sectorsToUnload = new List<Vector2Int>();
-
         foreach (var sector in LoadedSectorState.Keys)
         {
-            if (CheckValidSector(sector) && LoadedSectorState[sector])
+            if (CheckValidSector(sector))
             {
                 if (Mathf.Abs(sector.x - currentSector.x) > loadDistance || Mathf.Abs(sector.y - currentSector.y) > loadDistance)
                 {
-                    if (!UnLoadSceneTask.Contains(sector))
+                    if (LoadedSectorState[sector])
                     {
-                        UnLoadSceneTask.Add(sector);
-                        sectorsToUnload.Add(sector);
+                        LoadedSectorState[sector] = false;
+                        StartCoroutine(UnloadSector(sector));
                     }
                 }
             }
 
         }
-
-        foreach (var sector in sectorsToUnload)
-        {
-            StartCoroutine(UnloadSector(sector));
-        }
     }
 
     public Vector2Int GetSector(Vector3 position)
     {
-        int x = Mathf.FloorToInt(position.x / sectorSize);
-        int y = Mathf.FloorToInt(position.z / sectorSize);
+        int x = Mathf.FloorToInt((position.x + sectorSize / 2) / sectorSize);
+        int y = Mathf.FloorToInt((position.z + sectorSize / 2) / sectorSize);
+
         return new Vector2Int(x, y);
     }
 
@@ -119,7 +113,8 @@ public class MapStreamingManager : MonoBehaviour
 
         asyncLoad.completed += (AsyncOperation op) =>
         {
-            Debug.Log($"Scene '{sceneName}' has been loaded Event");
+            //호출 이벤트.
+            //Debug.Log($"Scene '{sceneName}' has been loaded Event");
         };
         LoadedSectorState[sectorToLoad] = true;
     }
@@ -136,7 +131,7 @@ public class MapStreamingManager : MonoBehaviour
 
         asyncUnload.completed += (AsyncOperation op) =>
         {
-            Debug.Log($"Scene '{sceneName}' has been Unloaded Event");
+            //Debug.Log($"Scene '{sceneName}' has been Unloaded Event");
         };
 
         UnLoadSceneTask.Remove(sectorToUnLoad);
