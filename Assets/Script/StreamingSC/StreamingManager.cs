@@ -77,8 +77,7 @@ public class StreamingManager : MonoBehaviour
             yield break; // 이미 로드 중이거나 로드 완료된 섹터라면 종료
         }
 
-        loadingSectors.Add(sector); // 로드 중인 섹터로 추가
-        Debug.Log(loadedSectors.Count + " 현재 로딩된 씬 개수...");
+        loadingSectors.Add(sector); // 로드 중인 섹터로 추가\
 
         string sceneName = $"Sector_{sector.x}_{sector.y}";
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
