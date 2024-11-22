@@ -6,8 +6,9 @@ using UnityEngine.UIElements;
 
 public class SectorMonsterSpawner : MonoBehaviour
 {
-    private ObjectPooling ObjectPooling;
-    private List<GameObject> spawnedMonsters = new List<GameObject>();
+    private ObjectPooling ObjectPooling;                                    // ObjectPooling을 구현한 SC
+    private List<GameObject> spawnedMonsters = new List<GameObject>();      // 소환된 몬스터의 List
+    public List<Transform> spawnPosition;                                   //sector 마다 몬스터 소환 위치를 Inspector를 통해 따로 설정하기!
     
     private bool isSpawning;
     public Vector2Int sectorVec;
@@ -16,8 +17,9 @@ public class SectorMonsterSpawner : MonoBehaviour
     {
         ObjectPooling = GetComponent<ObjectPooling>();
         isSpawning = false;
+        SpawnMonster();
     }
-
+    
     public void OnPlayerEnter()
     {
         if (!isSpawning)
@@ -50,12 +52,9 @@ public class SectorMonsterSpawner : MonoBehaviour
 
     public void SpawnMonster()
     {
-        Vector3 spawnPosition = gameObject.transform.position;
-        GameObject monster = ObjectPooling.GetObject(spawnPosition, Quaternion.identity);
-        if (monster != null)
-        {
-            spawnedMonsters.Add(monster);
-        }
+        GameObject monster1 = ObjectPooling.GetObject("Monster-BlackBall", spawnPosition[0].position, Quaternion.identity);
+        GameObject monster2 = ObjectPooling.GetObject("Monster-Mushroom", spawnPosition[1].position, Quaternion.identity);
+        GameObject monster3 = ObjectPooling.GetObject("Monster-Golem", spawnPosition[2].position, Quaternion.identity);
     }
 
     public void DespawnMonsterTotal()
