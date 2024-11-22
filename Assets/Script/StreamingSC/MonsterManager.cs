@@ -21,14 +21,10 @@ public class MonsterManager : MonoBehaviour
         }
     }
 
-    private GameObject player;
-    private bool changingSector;
-
-    int monsterSpawnCallRange = 1;
+    public int monsterSpawnCallRange = 1;
 
     private void Start()
     {
-        player = GameObject.Find("Player");
         MonsterSpawnCall();
     }
 
@@ -74,7 +70,6 @@ public class MonsterManager : MonoBehaviour
                 unActiveSpawners.Add(sector.Key);
             }
         }
-
 
         foreach (var sector in unActiveSpawners)
         {
