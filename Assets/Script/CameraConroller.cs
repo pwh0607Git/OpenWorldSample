@@ -14,10 +14,15 @@ public class CameraConroller : MonoBehaviour
     private const float Y_ANGLE_MAX = 50.0f;      
 
     public float zoomSpeed = 5f;                
-    public float minZoom = 3f;                
-    public float maxZoom = 10f;                
-    private float currentZoom;                  
+    public float minZoom;                
+    public float maxZoom;               
+    private float currentZoom;
 
+    /*
+     *  currentZoom = 5
+     *  minZoom = 3
+     *  maxZoom = 10
+    */
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked; 
@@ -58,10 +63,9 @@ public class CameraConroller : MonoBehaviour
 
     void SetCamera()
     {
-        Debug.Log("Current Zoom State : " + currentZoom);
         Vector3 direction = new Vector3(0, -currentZoom * 0.3f, currentZoom);
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
         transform.position = target.position + new Vector3(0, defaultPos.y, 0) + rotation * direction;
-        transform.LookAt(target.position + Vector3.up);
+        transform.LookAt(target.position + (Vector3.up * 2.5f));
     }
 }

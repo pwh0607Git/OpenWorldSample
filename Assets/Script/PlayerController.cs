@@ -4,9 +4,17 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public enum PlayerAnimState
+{
+    Idle, Walk, Jump, Attack1, Attack2, Damaged, Down
+}
+
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    private Animator animator;
+    private PlayerAnimState currentAnimState;
+
     Transform CamDir;
     public Transform SpawnPos;
 
@@ -15,10 +23,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rigidbody;
     
     private RaycastHit hit;
-
     public float maxSlopeAngle = 45f;
     public float gravity = 30f;
-    //public float slopeGravity = 50f;
     private Vector3 moveDirection;
 
     void Start()
@@ -26,11 +32,17 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         rigidbody = GetComponent<Rigidbody>();
         transform.position = SpawnPos.position;
+        animator = transform.GetChild(0).GetComponent<Animator>();
+        currentAnimState = PlayerAnimState.Idle;
     }
 
     void Update()
     {
         Move();
+        //Player_Attack();
+
+        UpdateAnim();
+        Debug.Log($"Current AnimState : {currentAnimState}");
     }
 
     void Move()
@@ -68,14 +80,17 @@ public class PlayerController : MonoBehaviour
         moveDirection.x = adjustedMovement.x;
         moveDirection.z = adjustedMovement.z;
 
-        Debug.Log("Direction Adjust Result : " + moveDirection + "...");
-
         // 캐릭터 이동
         controller.Move(moveDirection * moveSpeed * Time.deltaTime);
         if (movement != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movement);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+            currentAnimState = PlayerAnimState.Walk;
+        }
+        else
+        {
+            currentAnimState = PlayerAnimState.Idle;
         }
     }
 
@@ -96,5 +111,24 @@ public class PlayerController : MonoBehaviour
     Vector3 AdjustDirectionToSlope(Vector3 direction)
     {
         return Vector3.ProjectOnPlane(direction, hit.normal).normalized;
+    }
+
+    void UpdateAnim()
+    {
+        animator.SetBool("Idle", currentAnimState == PlayerAnimState.Idle);
+        animator.SetBool("Walk", currentAnimState == PlayerAnimState.Walk);
+        //animator.SetBool("Attack1", currentAnimState == PlayerAnimState.Attack1);
+    }
+
+    void Player_Attack()
+    {
+        //Debug.Log("Player Attack!!");
+        currentAnimState = PlayerAnimState.Attack1;
+    }
+
+    void Player_Damaged()
+    {
+        //Debug.Log("Player Damaged!!");
+        currentAnimState = PlayerAnimState.Damaged;
     }
 }
