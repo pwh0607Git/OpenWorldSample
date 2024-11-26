@@ -28,11 +28,6 @@ public class ObjectPooling : MonoBehaviour
         }
     }
 
-    public bool CheckExistedMonsterDic(string tag)
-    {
-        return monsterPoolDictionary.ContainsKey(tag);
-    }
-
     public GameObject GetObject(string tag, Vector3 position, Quaternion rotation)
     {
         if (monsterPoolDictionary.ContainsKey(tag) && monsterPoolDictionary[tag].Count > 0)
