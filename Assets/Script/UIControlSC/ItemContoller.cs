@@ -49,54 +49,106 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = true;
-        Debug.Log($"{eventData.pointerEnter.tag}");
         if (eventData.pointerEnter != null)
         {
-            if (eventData.pointerEnter.tag == "KeyBoardPreSet_DragAndDropArea")
+            //복잡한 조건 분리..
+            if(originalParent.tag == "KeyBoardPreSet_DragAndDropArea")
             {
-                DuplicateItemIcon(eventData.pointerEnter.transform);
-            }else if (eventData.pointerEnter.tag == "Bag_DragAndDropArea")
-            {
-                transform.SetParent(eventData.pointerEnter.transform);
+                if (eventData.pointerEnter.tag == "KeyBoardPreSet_DragAndDropArea")     //프리셋 -> 빈 프리셋(이동)
+                {
+                    Debug.Log("Type01");
+                    TransformItemIcon(eventData.pointerEnter.transform);
+                }
+                else if(eventData.pointerEnter.tag == "Bag_DragAndDropArea")                    //프리셋 -> 가방(가방에 해당 아이템이 존재하면 해당 아이콘 삭제.
+                {
+                    Debug.Log("Type02");
+                    Destroy(gameObject);
+                }
+                else if(eventData.pointerEnter.tag == "Item")                                   //프리셋 item1 -> 프리셋 item2 (교체)
+                {
+                    if(eventData.pointerEnter.transform.parent.tag == "KeyBoardPreSet_DragAndDropArea")
+                    {
+                        Debug.Log("Type03");
+                        //위치 변환
+                        SwapItemIcon(transform, eventData.pointerEnter.transform);
+                    }
+                    else
+                    {   //다른 조건들의 경우는 모두 삭제!
+                        Debug.Log("Type04");
+                        Destroy(gameObject);
+                    }
+                }
+                else
+                {
+                    //삭제
+                    Debug.Log("Type05");
+                    Destroy(gameObject);
+                }
+
             }
-            else if (eventData.pointerEnter.tag == "Item")
+            else if(originalParent.tag == "Bag_DragAndDropArea")
             {
-                //swap
-                Transform item1 = transform;
-                Transform item2 = eventData.pointerEnter.transform;
-                Debug.Log($"{eventData.pointerEnter.name} Swap!");
-                SwapItemInBag(item1, item2);
-            }
-            else
-            {
-                transform.SetParent(originalParent);
+                if (eventData.pointerEnter.tag == "KeyBoardPreSet_DragAndDropArea")     //가방 -> 프리셋 (복제)
+                {
+                    Debug.Log("Type06");
+                    DuplicateItemIcon(eventData.pointerEnter.transform);
+                }
+                else if (eventData.pointerEnter.tag == "Bag_DragAndDropArea")                    //가방 -> 빈 가방 공간(이동)
+                {
+                    Debug.Log("Type07");
+                    TransformItemIcon(eventData.pointerEnter.transform);
+                }
+                else if (eventData.pointerEnter.tag == "Item")                                   //가방 속 item1 -> 가방 속 item2 (교체)
+                {
+                    if(eventData.pointerEnter.transform.parent.tag == "Bag_DragAndDropArea")
+                    {
+                        //가방 안의 Item라면..
+                        Debug.Log("Type08");
+                        SwapItemIcon(transform, eventData.pointerEnter.transform);
+                    }
+                    else if(eventData.pointerEnter.transform.parent.tag == "KeyBoardPreSet_DragAndDropArea")
+                    {
+                        //프리셋 안의 아이템이라면 프리셋 안의 오브젝트를 삭제하고 가져온 오브젝트를 복제한다.
+                        Debug.Log("Type09");
+                        Destroy(eventData.pointerEnter);
+                        DuplicateItemIcon(transform);
+                    }
+                }
+                else
+                {
+                    //버리기라고 가정...
+                    Debug.Log("Type10");
+                    //Destroy(gameObject);
+                }
             }
         }
         else
         {
-            transform.SetParent(originalParent);
+            if(originalParent.tag == "KeyBoardPreSet_DragAndDropArea")          //프리셋 -> 완전히 다른 공간
+            {
+                Destroy(gameObject);
+            }else if (originalParent.tag == "Bag_DragAndDropArea")
+            {
+                transform.SetParent(originalParent);
+            }
         }
         rectTransform.anchoredPosition = Vector2.zero;
     }
-    
-    void SwapItemInBag(Transform item1, Transform item2)
+
+    private void TransformItemIcon(Transform item)
     {
-        Transform newParent = item2.parent;
-        if (item1.parent.tag == "Bag_DragAndDropArea" && item2.parent.tag == "KeyBoardPreSet_DragAndDropArea")
-        {
-            //삭제.
-            Destroy(item2.gameObject);      //기존의 항목을 삭제.
-            DuplicateItemIcon(newParent);
-        }
-        else if(item1.parent.tag == "KeyBoardPreSet_DragAndDropArea" && item2.parent.tag == "KeyBoardPreSet_DragAndDropArea")
-        {
-            item1.SetParent(newParent);
-            item2.SetParent(originalParent);
-            item2.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        }
+        transform.SetParent(item.transform);
     }
 
-    void DuplicateItemIcon(Transform newTransform)
+    private void SwapItemIcon(Transform item1, Transform item2)
+    {
+        Transform newParent = item2.parent;
+        item1.SetParent(newParent);
+        item2.SetParent(originalParent);
+        item2.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+    }
+
+    private void DuplicateItemIcon(Transform newTransform)
     {
         GameObject iconInstance = Instantiate(transform.gameObject);
         iconInstance.transform.SetParent(newTransform);
