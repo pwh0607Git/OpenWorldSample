@@ -3,20 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConsumableItemSC : MonoBehaviour
+public class ConsumableItemSC : ItemDataSC
 {
     [SerializeField]
-    private Consumable consumableItem;  // 연결된 Consumable 아이템
+    private Consumable consumableItem;
 
-    public Consumable GetItem
-    {
-        get => consumableItem;
-        set
-        {
-            consumableItem = value;
-            MapImage();                 //아이템이 설정될 때 이미지를 매핑
-        }
-    }
+    public override ItemData GetItem => consumableItem;
 
     private Image iconImg;
 
@@ -24,8 +16,13 @@ public class ConsumableItemSC : MonoBehaviour
     {
         iconImg = GetComponent<Image>();
     }
+    
+    public void SetItem(Consumable itemData)
+    {
+        consumableItem = itemData;      // 데이터 설정
+        MapImage();                     // 데이터 설정 후 아이콘 매핑
+    }
 
-    // 아이템의 아이콘을 이미지에 매핑하는 함수
     public void MapImage()
     {
         if (iconImg == null)

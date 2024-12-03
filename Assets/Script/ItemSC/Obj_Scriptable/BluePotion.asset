@@ -16,4 +16,4 @@ MonoBehaviour:
   description: Plus MP
   icon: {fileID: 21300000, guid: e6d1bfa7568106c4c823a4701cbe3180, type: 3}
   itemType: 1
-  potionType: 1
+  subType: 1

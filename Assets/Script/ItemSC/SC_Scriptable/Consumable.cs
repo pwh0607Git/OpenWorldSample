@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ConsumeType
+public enum ConsumableType
 {
     HP,
     MP,
@@ -12,24 +12,29 @@ public enum ConsumeType
 [CreateAssetMenu(fileName = "Consumable", menuName = "Items/Consumable")]
 public class Consumable : ItemData
 {
-    public ConsumeType potionType; // 포션 타입          inspector로 세팅
+    public ConsumableType subType;
 
     private void OnEnable()
     {
         itemType = ItemType.Consumable;
     }
 
+    public ConsumableType GetItemSubType()
+    {
+        return subType;
+    }
+
     public override void Use(/*GameObject player*/)
     {
-        switch (potionType)
+        switch (subType)
         {
-            case ConsumeType.HP:
+            case ConsumableType.HP:
                 Debug.Log("HP 포션 사용!");
                 break;
-            case ConsumeType.MP:
+            case ConsumableType.MP:
                 Debug.Log("MP 포션 사용!");
                 break;
-            case ConsumeType.SpeedUp:
+            case ConsumableType.SpeedUp:
                 Debug.Log("SpeedUp 포션 사용!");
                 break;
         }

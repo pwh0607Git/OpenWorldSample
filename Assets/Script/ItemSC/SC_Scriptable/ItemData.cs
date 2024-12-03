@@ -17,6 +17,5 @@ public abstract class ItemData : ScriptableObject
     public string description;      //설명
     public Sprite icon;             //아이콘
     public ItemType itemType;       //아이템 type
-
     public abstract void Use(/*GameObject player*/);
 }

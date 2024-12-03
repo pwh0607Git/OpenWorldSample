@@ -16,4 +16,4 @@ MonoBehaviour:
   description: SpeedUp
   icon: {fileID: 21300000, guid: ab070fe17266e9d4fbe897af68624f88, type: 3}
   itemType: 1
-  potionType: 2
+  subType: 2
