@@ -1,20 +1,12 @@
-using Gentleland.Utils.SteampunkUI;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InventorySlot : MonoBehaviour, IDropHandler
+public class EquipmentSlot : MonoBehaviour, IDropHandler
 {
-    private GameObject currentItem; 
-
-    void Update()
-    {
-        if (transform.childCount == 0)
-        {
-            currentItem = null;
-        }
-    }
+    private GameObject currentItem;
 
     public void AssignItem(GameObject item)
     {
@@ -23,7 +15,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        GameObject droppedItem = eventData.pointerDrag;                                 //드래그 상태인 item 참조.
+        GameObject droppedItem = eventData.pointerDrag.gameObject;
 
         if (droppedItem != null && droppedItem.GetComponent<ItemContoller>() != null)
         {

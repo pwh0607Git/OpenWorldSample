@@ -7,6 +7,7 @@ public class ItemMaker : MonoBehaviour
 {
     [SerializeField]
     private List<Consumable> consumableItemList;
+
     [SerializeField]
     public GameObject iconBasePrefab;
 
@@ -30,6 +31,8 @@ public class ItemMaker : MonoBehaviour
             var consumableItem = MakeItem(item);
             consumableItem.gameObject.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         }
+
+        Inventory.myInventory.UpdateInventorySlots();
         yield return null;
     }
 
@@ -40,7 +43,9 @@ public class ItemMaker : MonoBehaviour
 
         //인벤토리에서 빈 공간을 가져와 부모로 세팅하기.
         item.transform.SetParent(Inventory.myInventory.GetEmptyInventorySlot().gameObject.transform);
-            
+
+        item.GetComponent<RectTransform>().localScale = Vector2.one;        //칸 중앙 정렬.
+
         ItemDataSC itemDataSC = item.GetComponent<ItemDataSC>();
 
         if(itemDataSC != null)
@@ -48,12 +53,15 @@ public class ItemMaker : MonoBehaviour
             if (itemData.itemType == ItemType.Consumable && itemData is Consumable consumable)
             {
                 ((ConsumableItemSC)itemDataSC).SetItem(consumable);         // Consumable 초기화
-            }else
+            }else if(itemData.itemType == ItemType.Equipment && itemData is Equipment equipment)
+            {
+                //((EquipmentItemSC)itemDataSC).SetItem(equipment);         // Consumable 초기화
+            }
+            else
             {
                 Debug.LogError("알 수 없는 아이템 타입입니다.");
             }
         }
-
         return itemDataSC;
     }
 }

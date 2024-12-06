@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -22,15 +24,13 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         CreateInventorySlot();
+        inventoryItemIconManager = GetComponent<InventoryItemIconManager>();
     }
 
     public GameObject slotPrefab;
     public Transform scrollContent;                 //inventorySlot의 부모객체
     public List<InventorySlot> slots;               //Dictionary<InventorySlot, int>... 로 변경 예정.
     public int maxSlotSize;
-
-    //슬롯에 있는 아이템 개수...
-    private Dictionary<InventorySlot, int> slotItemCount = new Dictionary<InventorySlot, int>();
 
     void CreateInventorySlot()
     {
@@ -53,6 +53,7 @@ public class Inventory : MonoBehaviour
 
             RectTransform rectTransform = slotInstance.GetComponent<RectTransform>();
             rectTransform.sizeDelta = componentSize;
+            rectTransform.localScale = Vector2.one;
             rectTransform.anchoredPosition = new Vector2(startPosition.x + column * (componentSize.x + spacingX), startPosition.y - row * (componentSize.y + spacingY));
         }
     }
@@ -62,10 +63,8 @@ public class Inventory : MonoBehaviour
         slots.Add(slotRef);
     }
 
-    //초기화 완료 체크용 
     public bool CheckSlotSize()
     {
-        //이후 코루틴을 통해.. 체크할 예정.
         return maxSlotSize == slots.Count;
     }
 
@@ -78,43 +77,105 @@ public class Inventory : MonoBehaviour
                 return slots[i];
             }
         }
-        //빈 곳을 찾지 못한 경우...
         return null;
     }
 
-    //ConsumeType? consumeType = null [Nullable 매개변수!!] 함수 호출시 해당 메서드는 강제 되지 않는다...
-    //해당 아이템이 inventory에 존재하는지...
-    public bool SearchItemByType(ItemType itemType, ConsumeType? consumeType = null)
+    private InventoryItemIconManager inventoryItemIconManager; 
+
+    //미완성..
+    public bool SearchItemByType<T>(ItemType itemType, T? subType = null) where T : struct
     {
         foreach (InventorySlot slot in slots)
         {
-            //비어있으면 넘어가기.
-            if (slot.GetCurrentItem() == null)
-                continue;
+            if (slot.GetCurrentItem() == null) continue;
 
-            ItemData itemData = slot.GetCurrentItem().GetComponent<ItemData>();
+            ItemData slotItemData = slot.GetCurrentItem().GetComponent<ItemDataSC>().GetItem;
 
-            if (itemData != null && itemData.itemType == itemType)
+            if (slot.GetCurrentItem() != null && slotItemData.itemType == itemType)
             {
-                // Consumable 타입일 경우 potionType 확인
-                if (itemType == ItemType.Consumable && consumeType.HasValue)
+                if (subType == null) return true;
+                if (itemType == ItemType.Consumable && slotItemData is Consumable consumable)
                 {
-                    Consumable consumable = itemData as Consumable;
-                    if (consumable != null && consumable.potionType == consumeType.Value)
-                    {
-                        return true; // 해당 Consumable 찾음
-                    }
+                    if (EqualityComparer<T>.Default.Equals((T)(object)consumable.subType, subType.Value))
+                        return true;
                 }
-                else if (itemType == ItemType.Equipment)
+                else if (itemType == ItemType.Equipment && slotItemData is Equipment equipment)
                 {
-                    return true; // Equipment 찾음
-                }
-                else if (itemType == ItemType.ETC)
-                {
-
+                    if (EqualityComparer<T>.Default.Equals((T)(object)equipment.subType, subType.Value))
+                        return true;
                 }
             }
         }
-        return false; // 해당 아이템을 찾지 못함
+        return false;
+    }
+    
+    public void GetItem(GameObject item)
+    {
+        ItemDataSC itemDataSC = item.GetComponent<ItemDataSC>();            //DroppedItemSC를 참조한다...
+        ItemData itemData = itemDataSC.GetItem;         
+
+        //아이템이 존재하지 않으면 아이템 아이콘 생성.
+        //먹은 아이템 구분하기
+        if (itemData != null) 
+        {
+            if (itemData is Consumable consumable)
+            {
+               if (SearchItemByType<ConsumableType>(itemData.itemType, consumable.subType)){
+                    Debug.Log($"{consumable.subType}은 인벤토리에 존재...");
+                    consumable.GetThisItem();
+                    return;
+               }
+               else
+               {
+                    //새로운 아이콘 생성하고 빈 슬롯에 넣고 할당하기.
+                    GetNewItem(itemData);
+                }
+            }
+            else if (itemData is Equipment equipment)
+            {
+                if (SearchItemByType<EquipmentType>(itemData.itemType, equipment.subType))
+                {
+                    Debug.Log($"{equipment.subType}은 인벤토리에 존재...");
+                    //아이콘 추가!.
+                    //장비아이템은 소지 개수를 구분하지 않도록한다.
+                    //그냥 무조건 아이템 아이콘을 빈 슬롯에 추가한다.
+                    return;
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("ItemData is Null...");
+        }
+    }
+
+    //inventory에 존재하지 않은 아이템 GET
+    public void GetNewItem(ItemData newItem)
+    {
+        InventorySlot emptySlot = GetEmptyInventorySlot();
+        inventoryItemIconManager.CreateItemIcon(newItem, emptySlot);
+    }
+
+    private void HandleConsumableItem(ConsumableItemSC consumableItemSC)
+    {
+ 
+    }
+
+    private void HandleEquipmentItem()
+    {
+
+    }
+
+    public void UpdateInventorySlots()
+    {
+        Debug.Log("아이템 리스트 업데이트");
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.transform.childCount == 0) continue;
+            else
+            {
+                slot.AssignItem(slot.transform.GetChild(0).gameObject);
+            }
+        }
     }
 }

@@ -1,16 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+//ItemIconController로 변경 요망.
 public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
     private Transform originalParent;
+    private ItemData currentItemData;
 
     void Awake()
     {
@@ -25,22 +28,20 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        //preset에서의 우클릭시 삭제하기.
         if (transform.parent.tag == "KeyBoardPreSet_DragAndDropArea" && eventData.button == PointerEventData.InputButton.Right)
         {
             Destroy(transform.gameObject);
         }
     }
 
-    // 드래그 시작 시 호출
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalParent = transform.parent;
-        rectTransform.SetParent(transform.root);  // 아이템을 최상위로 이동 (canvas)
-        canvasGroup.blocksRaycasts = false;       // 드래그 중 드롭이 가능한지 설정
+        rectTransform.SetParent(transform.root);        // 아이템을 최상위로 이동 (canvas)
+        canvasGroup.blocksRaycasts = false;             // 드래그 중 드롭이 가능한지 설정
+        currentItemData = GetComponent<ItemDataSC>().GetItem;
     }
 
-    // 드래그 중 호출
     public void OnDrag(PointerEventData eventData)
     {
         rectTransform.anchoredPosition += eventData.delta / transform.root.GetComponent<Canvas>().scaleFactor;
@@ -48,10 +49,18 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        ItemData itemData = GetComponent<ItemDataSC>().GetItem;
+        bool isPresetting = false;
+
+        if (itemData != null && itemData is Consumable consumable)
+        {
+            isPresetting = consumable.isPresetting;
+        }
+
         canvasGroup.blocksRaycasts = true;
+        
         if (eventData.pointerEnter != null)
         {
-            //복잡한 조건 분리..
             if(originalParent.tag == "KeyBoardPreSet_DragAndDropArea")
             {
                 if (eventData.pointerEnter.tag == "KeyBoardPreSet_DragAndDropArea")     //프리셋 -> 빈 프리셋(이동)
@@ -69,11 +78,10 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
                     if(eventData.pointerEnter.transform.parent.tag == "KeyBoardPreSet_DragAndDropArea")
                     {
                         Debug.Log("Type03");
-                        //위치 변환
                         SwapItemIcon(transform, eventData.pointerEnter.transform);
                     }
                     else
-                    {   //다른 조건들의 경우는 모두 삭제!
+                    {   
                         Debug.Log("Type04");
                         Destroy(gameObject);
                     }
@@ -91,7 +99,15 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
                 if (eventData.pointerEnter.tag == "KeyBoardPreSet_DragAndDropArea")     //가방 -> 프리셋 (복제)
                 {
                     Debug.Log("Type06");
-                    DuplicateItemIcon(eventData.pointerEnter.transform);
+                    if (isPresetting)
+                    {
+                        transform.SetParent(originalParent);
+                    }
+                    else
+                    {
+                        isPresetting = true;
+                        DuplicateItemIcon(eventData.pointerEnter.transform);
+                    }
                 }
                 else if (eventData.pointerEnter.tag == "Bag_DragAndDropArea")                    //가방 -> 빈 가방 공간(이동)
                 {
@@ -116,9 +132,8 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
                 }
                 else
                 {
-                    //버리기라고 가정...
                     Debug.Log("Type10");
-                    //Destroy(gameObject);
+                    Destroy(gameObject);
                 }
             }
         }
@@ -132,6 +147,7 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
                 transform.SetParent(originalParent);
             }
         }
+
         rectTransform.anchoredPosition = Vector2.zero;
     }
 
@@ -152,6 +168,24 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     {
         GameObject iconInstance = Instantiate(transform.gameObject);
         iconInstance.transform.SetParent(newTransform);
+        iconInstance.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         transform.transform.SetParent(originalParent);
+
+        ItemData itemData = GetComponent<ItemDataSC>().GetItem;
+ 
+        if (itemData != null && itemData is Consumable consumable)
+        {
+            consumable.isPresetting = true;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        ItemData itemData = GetComponent<ItemDataSC>().GetItem;
+
+        if (itemData != null && itemData is Consumable consumable)
+        {
+            consumable.isPresetting = false;
+        }
     }
 }
