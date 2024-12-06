@@ -23,7 +23,7 @@ public class MonsterAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         monsterController = GetComponent<MonsterController>();
-
+        
         if (patrolPoints.Length > 0)
         {
             MoveToNextPatrolPoint();
@@ -32,12 +32,13 @@ public class MonsterAI : MonoBehaviour
         {
             MoveToRandomPoint();
         }
+        
     }
 
     private void Update()
     {
         DetectPlayer();
-
+        
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             if (!waiting)
@@ -146,7 +147,7 @@ public class MonsterAI : MonoBehaviour
         Vector3 leftRay = leftRayRotation * forward;
         Vector3 rightRay = rightRayRotation * forward;
 
-        Gizmos.color = new Color(0, 1, 0, 0.5f);
+        Gizmos.color = new Color(0, 1, 0, 0.1f);
         Gizmos.DrawRay(transform.position, leftRay);
         Gizmos.DrawRay(transform.position, rightRay);
     }

@@ -20,29 +20,36 @@ public class PlayerController : MonoBehaviour
 
     public float moveSpeed = 5f;
     private CharacterController controller;
-    private Rigidbody rigidbody;
     
     private RaycastHit hit;
     public float maxSlopeAngle = 45f;
     public float gravity = 30f;
     private Vector3 moveDirection;
 
+    //Ground Checking 
+    /*
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
+    bool isGrounded;
+    */
+
     void Start()
     {
+       // isGrounded = false;
         controller = GetComponent<CharacterController>();
-        rigidbody = GetComponent<Rigidbody>();
-        transform.position = SpawnPos.position;
         animator = transform.GetChild(0).GetComponent<Animator>();
+        //transform.position = SpawnPos.position;
         currentAnimState = PlayerAnimState.Idle;
     }
 
     void Update()
     {
         Move();
-        //Player_Attack();
 
+       // isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) Player_Attack();
         UpdateAnim();
-        Debug.Log($"Current AnimState : {currentAnimState}");
     }
 
     void Move()
@@ -57,12 +64,11 @@ public class PlayerController : MonoBehaviour
         cameraRight.y = 0;
 
         Vector3 movement = cameraRight * moveHorizontal + cameraForward * moveVertical;
-        movement = Vector3.ClampMagnitude(movement, 1);
+        movement = Vector3.ClampMagnitude(movement, 1);         //대각선 이동시 값 보정.
 
         bool isOnSlope = checkSlope();
         Vector3 adjustedMovement = isOnSlope ? AdjustDirectionToSlope(movement) : movement;
 
-        // 중력 처리
         if (controller.isGrounded)
         {
             moveDirection.y = -1;
@@ -76,11 +82,9 @@ public class PlayerController : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
-        // 이동 방향 합성
         moveDirection.x = adjustedMovement.x;
         moveDirection.z = adjustedMovement.z;
 
-        // 캐릭터 이동
         controller.Move(moveDirection * moveSpeed * Time.deltaTime);
         if (movement != Vector3.zero)
         {
@@ -115,20 +119,34 @@ public class PlayerController : MonoBehaviour
 
     void UpdateAnim()
     {
+        if (animator == null)
+        {
+            Debug.Log("animator is NULL");
+            return;
+        }
+
         animator.SetBool("Idle", currentAnimState == PlayerAnimState.Idle);
         animator.SetBool("Walk", currentAnimState == PlayerAnimState.Walk);
-        //animator.SetBool("Attack1", currentAnimState == PlayerAnimState.Attack1);
+        animator.SetBool("Attack1", currentAnimState == PlayerAnimState.Attack1);
     }
 
     void Player_Attack()
     {
-        //Debug.Log("Player Attack!!");
+        Debug.Log("Player Attack!!");
         currentAnimState = PlayerAnimState.Attack1;
     }
 
     void Player_Damaged()
     {
-        //Debug.Log("Player Damaged!!");
         currentAnimState = PlayerAnimState.Damaged;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Item")
+        {
+            Destroy(other.gameObject);
+            Inventory.myInventory.GetItem(other.gameObject);
+        }
     }
 }

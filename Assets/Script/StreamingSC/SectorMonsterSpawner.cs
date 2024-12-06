@@ -7,16 +7,9 @@ using UnityEngine.UIElements;
 
 public class SectorMonsterSpawner : MonoBehaviour
 {
-    //해당 지역에 있는 몬스터 List
     public List<Monster> monsterObjects = new List<Monster>();
-    
-    //sector 마다 몬스터 소환 위치를 Inspector를 통해 따로 설정하기!
     public List<GameObject> spawnPositionGroup;
-    //Object -> child[,,,] -> 해당 위치에 소환.
-    
-    //해당 스폰지역의 몬스터 소환 상태.
     private Dictionary<Transform, GameObject> monsterInPosition= new Dictionary<Transform, GameObject>();    
-
     private ObjectPooling objectPooling;
 
     private bool isSpawning;
@@ -25,16 +18,19 @@ public class SectorMonsterSpawner : MonoBehaviour
     private void Awake()
     {
         objectPooling = GetComponent<ObjectPooling>();
-        
+
         foreach (GameObject posGroup in spawnPositionGroup)
         {
             int ran = Random.Range(0, 360);
             posGroup.transform.Rotate(0, ran, 0);
 
-            GameObject[] group= posGroup.GetComponentsInChildren<GameObject>();
-            foreach(GameObject spawnPos in group)
+            Transform[] group = posGroup.GetComponentsInChildren<Transform>();
+            foreach (Transform spawnPos in group)
             {
-                monsterInPosition[spawnPos.transform] = null;
+                if (spawnPos != posGroup.transform)
+                {
+                    monsterInPosition[spawnPos] = null;
+                }
             }
         }
 
@@ -58,20 +54,22 @@ public class SectorMonsterSpawner : MonoBehaviour
     {
         foreach (GameObject posGroup in spawnPositionGroup)
         {
-            GameObject[] group = posGroup.GetComponentsInChildren<GameObject>();
-            foreach (GameObject spawnPos in group)
+            Transform[] group = posGroup.GetComponentsInChildren<Transform>().Where(t => t != posGroup.transform).ToArray();
+
+            foreach (Transform spawnPos in group)
             {
-                if (monsterInPosition[spawnPos.transform] == null)
+                if (monsterInPosition[spawnPos] == null)
                 {
-                    GameObject monster = objectPooling.GetObject(monsterType.prefab.tag, spawnPos.transform.position, Quaternion.identity);
+                    GameObject monster = objectPooling.GetObject(monsterType.prefab.tag, spawnPos.position, Quaternion.identity);
                     if (monster != null)
                     {
-                        monsterInPosition[spawnPos.transform] = monster;
+                        monsterInPosition[spawnPos] = monster;
                         monsterType.PlusCurCount();
-
                         // 인스턴스화 된 몬스터에 사망 이벤트 등록
+                        /*
                         MonsterController controller = monster.GetComponent<MonsterController>();
-                        controller.OnMonsterDeath += () => HandleMonsterDeath(spawnPos.transform, monsterType);
+                        controller.OnMonsterDeath += () => HandleMonsterDeath(spawnPos, monsterType);
+                        */
                     }
                     return;
                 }

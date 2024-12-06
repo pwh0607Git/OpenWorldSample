@@ -33,6 +33,8 @@ public class ObjectPooling : MonoBehaviour
         if (monsterPoolDictionary.ContainsKey(tag) && monsterPoolDictionary[tag].Count > 0)
         {
             GameObject instance = monsterPoolDictionary[tag].Dequeue();
+
+            //raycast- GroundLayer에 한해서만 ray캐스트가 적용.
             instance.transform.position = position;
             instance.transform.rotation = rotation;
             instance.SetActive(true);

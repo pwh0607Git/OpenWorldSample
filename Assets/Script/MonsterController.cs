@@ -46,7 +46,6 @@ public class MonsterController : MonoBehaviour
     {
         //CheckState();
         UpdateAnim();
-        Debug.Log($"CurrentAnimState : {currentAnimState}");
     }
 
     void CheckState()
@@ -66,7 +65,6 @@ public class MonsterController : MonoBehaviour
 
     void UpdateAnim()
     {
-        //currentAnimState에 따라...
         animator.SetBool("Idle", currentAnimState == MonsterAnimState.Idle);
         animator.SetBool("Walk", currentAnimState == MonsterAnimState.Walk);
         //animator.SetBool("Attack", currentAnimState == MonsterAnimState.Attack);
