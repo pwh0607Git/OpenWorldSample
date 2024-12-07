@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -24,19 +25,26 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         CreateInventorySlot();
+        itemQueue = new Queue<ItemData>();
         inventoryItemIconManager = GetComponent<InventoryItemIconManager>();
     }
 
     public GameObject slotPrefab;
     public Transform scrollContent;                 //inventorySlot의 부모객체
-    public List<InventorySlot> slots;               //Dictionary<InventorySlot, int>... 로 변경 예정.
+
+    private Queue<ItemData> itemQueue;              //먹은 아이템에 대한 순서가 보장되어야하기 때문...
+
+    public List<InventorySlot> slots;
     public int maxSlotSize;
+
+    private void OnEnable()
+    {
+        SyncUIData();
+    }
 
     void CreateInventorySlot()
     {
         int columns = 4;
-        float spacingX = 0f;
-        float spacingY = 0f;
 
         Vector2 startPosition = new Vector2(-120f, -50f);
         Vector2 componentSize = new Vector2(80f, 80f);
@@ -54,7 +62,7 @@ public class Inventory : MonoBehaviour
             RectTransform rectTransform = slotInstance.GetComponent<RectTransform>();
             rectTransform.sizeDelta = componentSize;
             rectTransform.localScale = Vector2.one;
-            rectTransform.anchoredPosition = new Vector2(startPosition.x + column * (componentSize.x + spacingX), startPosition.y - row * (componentSize.y + spacingY));
+            rectTransform.anchoredPosition = new Vector2(startPosition.x + column * (componentSize.x), startPosition.y - row * (componentSize.y));
         }
     }
 
@@ -82,7 +90,6 @@ public class Inventory : MonoBehaviour
 
     private InventoryItemIconManager inventoryItemIconManager; 
 
-    //미완성..
     public bool SearchItemByType<T>(ItemType itemType, T? subType = null) where T : struct
     {
         foreach (InventorySlot slot in slots)
@@ -112,40 +119,56 @@ public class Inventory : MonoBehaviour
     public void GetItem(GameObject item)
     {
         ItemDataSC itemDataSC = item.GetComponent<ItemDataSC>();            //DroppedItemSC를 참조한다...
-        ItemData itemData = itemDataSC.GetItem;         
+        ItemData itemData = itemDataSC.GetItem;
 
-        //아이템이 존재하지 않으면 아이템 아이콘 생성.
-        //먹은 아이템 구분하기
-        if (itemData != null) 
+        if (gameObject.activeSelf)
         {
-            if (itemData is Consumable consumable)
-            {
-               if (SearchItemByType<ConsumableType>(itemData.itemType, consumable.subType)){
-                    Debug.Log($"{consumable.subType}은 인벤토리에 존재...");
-                    consumable.GetThisItem();
-                    return;
-               }
-               else
-               {
-                    //새로운 아이콘 생성하고 빈 슬롯에 넣고 할당하기.
-                    GetNewItem(itemData);
-                }
-            }
-            else if (itemData is Equipment equipment)
-            {
-                if (SearchItemByType<EquipmentType>(itemData.itemType, equipment.subType))
-                {
-                    Debug.Log($"{equipment.subType}은 인벤토리에 존재...");
-                    //아이콘 추가!.
-                    //장비아이템은 소지 개수를 구분하지 않도록한다.
-                    //그냥 무조건 아이템 아이콘을 빈 슬롯에 추가한다.
-                    return;
-                }
-            }
+            itemQueue.Enqueue(itemData);
+            SyncUIData();
         }
         else
         {
-            Debug.Log("ItemData is Null...");
+            //Queue에 넣기..
+            itemQueue.Enqueue(itemData);
+        }
+    }
+
+    //장비창이 활성화 되었을 때, 동기화하기.
+    public void SyncUIData()
+    {
+        while (itemQueue.Count >= 0)
+        {
+            ItemData newitemData = itemQueue.Dequeue();
+
+            if (newitemData != null)
+            {
+                //아이템이 존재하지 않으면 아이템 아이콘 생성.
+                //먹은 아이템 구분하기
+                if (newitemData != null)
+                {
+                    if (newitemData is Consumable consumable)
+                    {
+                        if (SearchItemByType<ConsumableType>(newitemData.itemType, consumable.subType))
+                        {
+                            Debug.Log($"{consumable.subType}은 인벤토리에 존재...");
+                            consumable.GetThisItem();
+                            //return;
+                        }
+                        else
+                        {
+                            GetNewItem(newitemData);
+                        }
+                    }
+                    else if (newitemData is Equipment equipment)
+                    {
+                        GetNewItem(newitemData);
+                    }
+                }
+                else
+                {
+                    Debug.Log("ItemData is Null...");
+                }
+            }
         }
     }
 
@@ -156,26 +179,8 @@ public class Inventory : MonoBehaviour
         inventoryItemIconManager.CreateItemIcon(newItem, emptySlot);
     }
 
-    private void HandleConsumableItem(ConsumableItemSC consumableItemSC)
-    {
- 
-    }
-
-    private void HandleEquipmentItem()
-    {
-
-    }
-
     public void UpdateInventorySlots()
     {
-        Debug.Log("아이템 리스트 업데이트");
-        foreach (InventorySlot slot in slots)
-        {
-            if (slot.transform.childCount == 0) continue;
-            else
-            {
-                slot.AssignItem(slot.transform.GetChild(0).gameObject);
-            }
-        }
+        SyncUIData();
     }
 }
