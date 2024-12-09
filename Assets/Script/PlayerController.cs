@@ -1,17 +1,157 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEditor.Progress;
 
 public enum PlayerAnimState
 {
     Idle, Walk, Jump, Attack1, Attack2, Damaged, Down
 }
 
+public class State
+{
+    private int maxHP;
+    private int curHP;
+    private int maxMP;
+    private int curMP;
+
+    public float speed;
+    private float defend;
+    private float attack;
+    private List<string> buffList;
+
+    public State()
+    {
+        maxHP = 100;
+        curHP = 100;
+
+        maxMP = 100;
+        curMP = 100;
+        speed = 10f;
+        defend = 50f;
+        attack = 100;
+    }
+
+    public void EquipItem(Equipment item)
+    {
+        switch (item.subType)
+        {
+            case EquipmentType.Head:
+                {
+                    defend += item.value;
+                    Debug.Log("Head ÀåÂø");
+                    break;
+                }
+            case EquipmentType.Weapon:
+                {
+                    attack += item.value;
+                    Debug.Log("Weapon ÀåÂø");
+                    break;
+                }
+            case EquipmentType.Cloth:
+                {
+                    maxHP += (int)item.value;
+                    Debug.Log("Cloth ÀåÂø");
+                    break;
+                }
+            case EquipmentType.Foot:
+                {
+                    speed += item.value;
+                    Debug.Log("Foot ÀåÂø");
+                    break;
+                }
+        }
+        PrintCurrentState();
+    }
+
+    public void DetachItem(Equipment item)
+    {
+        switch (item.subType)
+        {
+            case EquipmentType.Head:
+            {
+                defend -= item.value;
+                Debug.Log("Head Å»Âø");
+                break;
+            }
+            case EquipmentType.Weapon:
+            {
+                attack -= item.value;
+                Debug.Log("Weapon Å»Âø");
+                break;
+            }
+            case EquipmentType.Cloth:
+            {
+                maxHP -= (int)item.value;
+                Debug.Log("Cloth Å»Âø");
+                break;
+            }
+            case EquipmentType.Foot:
+            {
+                speed -= item.value;
+                Debug.Log("Foot Å»Âø");
+                break;
+            }
+        }
+        PrintCurrentState();
+    }
+
+    public void UesConsumable(Consumable itemData)
+    {
+        switch (itemData.subType)
+        {
+            case ConsumableType.HP:
+                {
+                    curHP += (int)itemData.value;
+                    if (curHP > maxHP) curHP = maxHP;
+                    break;
+                }
+            case ConsumableType.MP:
+                {
+                    curMP += (int)itemData.value;
+                    if (curMP > maxMP) curMP = maxMP;
+                    break;
+                }
+            case ConsumableType.SpeedUp:
+                {
+                    buffList.Add("SpeedUP");
+                    Debug.Log("SpeedUP ¹öÇÁ Àû¿ë");
+                    //ÄÚ·çÆ¾ È¤Àº 3ºÐ ¹öÇÁ Àû¿ë ÆÄÆ®[ÀÌÈÄ]
+                    //------------------------------------
+                    break;
+                }
+        }
+        PrintCurrentState();
+    }
+
+    public void PrintCurrentState()
+    {
+        Debug.Log($"Current State Print_ MAX HP : {maxHP}, MAX MP : {maxMP}, Speed : {speed}, Defend : {defend}, Attack : {attack}");
+    }
+}
+
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController player { get; private set; }
+
+    private void Awake()
+    {
+        if (player == null)
+        {
+            player = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private Animator animator;
     private PlayerAnimState currentAnimState;
 
@@ -26,6 +166,8 @@ public class PlayerController : MonoBehaviour
     public float gravity = 30f;
     private Vector3 moveDirection;
 
+    private State myState;
+
     //Ground Checking 
     /*
     public Transform groundCheck;
@@ -36,7 +178,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-       // isGrounded = false;
+        // isGrounded = false;
+        myState = new State();
         controller = GetComponent<CharacterController>();
         animator = transform.GetChild(0).GetComponent<Animator>();
         //transform.position = SpawnPos.position;
@@ -46,7 +189,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
-
        // isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) Player_Attack();
         UpdateAnim();
@@ -148,5 +290,10 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             Inventory.myInventory.GetItem(other.gameObject);
         }
+    }
+
+    public State GetMyState()
+    {
+        return myState;
     }
 }
