@@ -13,9 +13,10 @@ public enum ItemType
 [CreateAssetMenu(fileName = "Item Data", menuName = "Scriptable Object/Item Data")]
 public abstract class ItemData : ScriptableObject
 {
-    public string itemName;         //이름
-    public string description;      //설명
-    public Sprite icon;             //아이콘
-    public ItemType itemType;       //아이템 type
-    public abstract void Use(/*GameObject player*/);
+    public string itemName;
+    public string description;
+    public float value;
+    public Sprite icon;           
+    public ItemType itemType;      
+    public abstract void Use();
 }

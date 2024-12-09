@@ -32,7 +32,7 @@ public class ItemMaker : MonoBehaviour
             consumableItem.gameObject.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         }
 
-        Inventory.myInventory.UpdateInventorySlots();
+        Inventory.myInventory.SyncUIData();
         yield return null;
     }
 

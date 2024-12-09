@@ -19,6 +19,13 @@ public class ConsumableItemSC : ItemDataSC
     private void Start()
     {
         iconImg = GetComponent<Image>();
+        consumableCountText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+        if(consumableCountText == null)
+        {
+            Debug.LogWarning("CountText 할당 실패...");
+        }
+
         UpdateCountCallback();
 
         if (consumableItem != null)
@@ -55,7 +62,6 @@ public class ConsumableItemSC : ItemDataSC
         }
     }
 
-    //콜백용.
     private void UpdateCountCallback()
     {
         if (consumableItem == null) Destroy(gameObject);
@@ -69,7 +75,6 @@ public class ConsumableItemSC : ItemDataSC
         else
         {
             consumableCountText.text = consumableCount.ToString();
-            Debug.Log($"TEXT : {consumableCount}");
         }
     }
 }

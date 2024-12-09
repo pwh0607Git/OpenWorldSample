@@ -16,7 +16,7 @@ public class Consumable : ItemData
     public ConsumableType subType;
     public bool isPresetting { get; set; }
     private int consumableCount;
-
+    
     public event Action OnConsumableUsed;           //소비아이템 사용/획득 콜백.
 
     private void OnEnable()
@@ -28,7 +28,7 @@ public class Consumable : ItemData
 
     public int GetConsumableCount() { return consumableCount; }
 
-    public override void Use(/*GameObject player*/)
+    public override void Use()
     {
         if(consumableCount <= 0)
         {
