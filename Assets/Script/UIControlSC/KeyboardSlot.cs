@@ -2,18 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEditor.Progress;
 
-public class KeyboardSlot : MonoBehaviour, IDropHandler
+public class KeyboardSlot : DragAndDropSlot
 {
-    public KeyCode assignedKey;
-    public GameObject currentItem { get; set; }             //현재 프리셋에 존재하는 아이템
+    private KeyCode assignedKey;
 
-    void Update()
+    public void SetAssigneKey(KeyCode assignedKey) { this.assignedKey = assignedKey; }
+
+    public override void Update()
     {
-        if (transform.childCount == 0)
-        {
-            currentItem = null;
-        }
+        base.Update();
 
         if (Input.GetKeyDown(assignedKey))
         {
@@ -33,16 +32,14 @@ public class KeyboardSlot : MonoBehaviour, IDropHandler
         currentItem.GetComponent<ConsumableItemSC>().GetItem.Use();
     }
 
-    private void AssignItem(GameObject item)
-    {
-        Debug.Log($"{item} 할당..");
-        currentItem = item;
-        Keyboard.myKeyboard.UpdateKeyboardPreset();
-    }
-
-    public void OnDrop(PointerEventData eventData)
+    public override void OnDrop(PointerEventData eventData)
     {
         GameObject droppedItem = eventData.pointerDrag;                                 //드래그 상태인 item 참조.
-        AssignItem(droppedItem);
+
+        if (CheckVaildItem(droppedItem))
+        {
+            currentItem = droppedItem;
+            PlayerController.player.myKeyboard.UpdateKeyboardPreset();
+        }
     }
 }

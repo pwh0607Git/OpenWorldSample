@@ -4,62 +4,52 @@ using System.Net;
 using Unity.VisualScripting;
 using UnityEditor.Build.Content;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerUIController : MonoBehaviour
 {
-    public GameObject inventory;
-    public GameObject equipment;
+    public GameObject inventoryWindow;
+    public  GameObject equipmentWindow;
 
-    Stack<GameObject> activeWindows;        //활성화 되어있는 창들..
+    //Stack<GameObject> activeWindows;
 
     private void Start()
     {
-        inventory.SetActive(false);
-        equipment.SetActive(false);
+        //activeWindows = new Stack<GameObject>(); // 스택 초기화
+        inventoryWindow.SetActive(false);
+        equipmentWindow.SetActive(false);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            SetSingleWindowActive(inventory);
+            if (inventoryWindow.activeSelf)
+            {
+                inventoryWindow.SetActive(false);
+            }
+            else {
+                inventoryWindow.SetActive(true);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            SetSingleWindowActive(equipment);
+            if (equipmentWindow.activeSelf)
+            {
+                equipmentWindow.SetActive(false);
+            }
+            else
+            {
+                equipmentWindow.SetActive(true);
+            }
         }
 
+        /*
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SetWindowsActiveEvent();
         }
-    }
-
-    private void SetSingleWindowActive(GameObject window)
-    {   
-        window.SetActive(!window.activeSelf);
-        activeWindows.Push(window);
-    }
-
-    private void SetWindowsActiveEvent()
-    {
-        if(activeWindows.Count == 0)
-        {
-            Debug.Log("현재 열여 있는 윈도우가 존재하지 않습니다.");
-            return;
-        }
-
-        while (activeWindows.Count > 0)
-        {
-            GameObject windowRef = activeWindows.Pop();
-
-            if (windowRef.activeSelf)
-            {
-                //윈도우가 활성화된 상태라면 닫기
-                windowRef.SetActive(false);
-                break;
-            }
-        }
+        */
     }
 }

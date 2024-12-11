@@ -4,24 +4,10 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public static Inventory myInventory { get; private set; }
-
-    private void Awake()
-    {
-        if (myInventory == null)
-        {
-            myInventory = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     private void Start()
     {
         CreateInventorySlot();
@@ -42,7 +28,7 @@ public class Inventory : MonoBehaviour
         SyncUIData();
     }
 
-    void CreateInventorySlot()
+    private void CreateInventorySlot()
     {
         int columns = 4;
 
@@ -54,7 +40,7 @@ public class Inventory : MonoBehaviour
             GameObject slotInstance = Instantiate(slotPrefab);
             slotInstance.transform.SetParent(scrollContent);
 
-            AddInventorySlotRef(slotInstance.GetComponent<InventorySlot>());
+            slots.Add(slotInstance.GetComponent<InventorySlot>());
 
             int row = i / columns;
             int column = i % columns;
@@ -64,11 +50,6 @@ public class Inventory : MonoBehaviour
             rectTransform.localScale = Vector2.one;
             rectTransform.anchoredPosition = new Vector2(startPosition.x + column * (componentSize.x), startPosition.y - row * (componentSize.y));
         }
-    }
-
-    private void AddInventorySlotRef(InventorySlot slotRef)
-    {
-        slots.Add(slotRef);
     }
 
     public bool CheckSlotSize()
@@ -128,59 +109,68 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            //Queue에 넣기..
             itemQueue.Enqueue(itemData);
         }
     }
 
-    //장비창이 활성화 되었을 때, 동기화하기.
+    //Inventory가 활성화 되었을 때, 동기화하기.
     public void SyncUIData()
     {
+        if (itemQueue.Count <= 0) return;
+
         while (itemQueue.Count >= 0)
         {
             ItemData newitemData = itemQueue.Dequeue();
 
             if (newitemData != null)
             {
-                //아이템이 존재하지 않으면 아이템 아이콘 생성.
-                //먹은 아이템 구분하기
-                if (newitemData != null)
+                if (newitemData is Consumable consumable)
                 {
-                    if (newitemData is Consumable consumable)
+                    if (SearchItemByType<ConsumableType>(newitemData.itemType, consumable.subType))
                     {
-                        if (SearchItemByType<ConsumableType>(newitemData.itemType, consumable.subType))
-                        {
-                            Debug.Log($"{consumable.subType}은 인벤토리에 존재...");
-                            consumable.GetThisItem();
-                            //return;
-                        }
-                        else
-                        {
-                            GetNewItem(newitemData);
-                        }
+                        consumable.GetThisItem();
                     }
-                    else if (newitemData is Equipment equipment)
+                    else
                     {
                         GetNewItem(newitemData);
                     }
                 }
-                else
+                else if (newitemData is Equipment equipment)
                 {
-                    Debug.Log("ItemData is Null...");
+                    GetNewItem(newitemData);
                 }
+            }
+            else
+            {
+                Debug.Log("ItemData is Null...");
             }
         }
     }
 
-    //inventory에 존재하지 않은 아이템 GET
     public void GetNewItem(ItemData newItem)
     {
         InventorySlot emptySlot = GetEmptyInventorySlot();
         inventoryItemIconManager.CreateItemIcon(newItem, emptySlot);
     }
 
-    public void UpdateInventorySlots()
+    //윈도우 세팅.
+    public Transform originalParent;
+
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        SyncUIData();
+        originalParent = transform.parent;
+        GetComponent<RectTransform>().SetParent(transform.root);                // 아이템을 최상위로 이동 (canvas)
+        GetComponent<CanvasGroup>().blocksRaycasts = false;                     // 드래그 중 드롭이 가능한지 설정
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        GetComponent<RectTransform>().anchoredPosition += eventData.delta / transform.root.GetComponent<Canvas>().scaleFactor;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        GetComponent<CanvasGroup>().blocksRaycasts = true; 
+        GetComponent<RectTransform>().SetParent(originalParent);
     }
 }

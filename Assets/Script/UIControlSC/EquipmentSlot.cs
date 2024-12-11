@@ -4,26 +4,41 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EquipmentSlot : MonoBehaviour, IDropHandler
+public class EquipmentSlot : DragAndDropSlot
 {
-    private GameObject currentItem;
+    public EquipmentType equipmentType;
 
-    public void AssignItem(GameObject item)
+    public override void Update()
     {
-        currentItem = item;
+        base.Update();
     }
 
-    public void OnDrop(PointerEventData eventData)
+    public override void OnDrop(PointerEventData eventData)
     {
         GameObject droppedItem = eventData.pointerDrag.gameObject;
 
-        if (droppedItem != null && droppedItem.GetComponent<ItemContoller>() != null)
+        if (CheckVaildItem(droppedItem))
         {
-            droppedItem.transform.SetParent(transform);
-            droppedItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            AssignItem(droppedItem);
+            ItemData itemData = droppedItem.GetComponent<ItemDataSC>().GetItem;
+            if (checkEquipmentItem(itemData))
+            {
+                droppedItem.transform.SetParent(transform);
+                droppedItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                currentItem = droppedItem;
+            }
         }
     }
 
-    public GameObject GetCurrentItem() { return currentItem; }
+    bool checkEquipmentItem(ItemData itemData)
+    {
+        if (itemData != null && itemData is Equipment equipment)
+        {
+            if (equipment.subType == equipmentType) return true;
+            else return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

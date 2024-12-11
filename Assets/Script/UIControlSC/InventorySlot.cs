@@ -3,35 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEditor.Progress;
 
-public class InventorySlot : MonoBehaviour, IDropHandler
+public class InventorySlot : DragAndDropSlot
 {
-    private GameObject currentItem; 
-
-    void Update()
+    public override void Update()
     {
-        if (transform.childCount == 0)
-        {
-            currentItem = null;
-        }
+        base.Update();
     }
 
-    public void AssignItem(GameObject item)
-    {
-        currentItem = item;
-    }
-
-    public void OnDrop(PointerEventData eventData)
+    public override void OnDrop(PointerEventData eventData)
     {
         GameObject droppedItem = eventData.pointerDrag;                                 //드래그 상태인 item 참조.
 
-        if (droppedItem != null && droppedItem.GetComponent<ItemContoller>() != null)
+        if (CheckVaildItem(droppedItem))
         {
             droppedItem.transform.SetParent(transform);
             droppedItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            AssignItem(droppedItem);
+            currentItem = droppedItem;
         }
     }
-
-    public GameObject GetCurrentItem() { return currentItem; }
 }

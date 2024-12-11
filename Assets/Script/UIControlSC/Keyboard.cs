@@ -6,26 +6,12 @@ using UnityEngine.UIElements;
 
 public class Keyboard : MonoBehaviour
 {
-    public static Keyboard myKeyboard { get; private set; }
-
-    private void Awake()
-    {
-        if (myKeyboard == null)
-        {
-            myKeyboard = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     public int maxSlotSize = 8;
     public GameObject slotPrefab;
-    public List<KeyboardSlot> slots;            //Dictionary<KeyboardSlot, int>... 로 변경 예정.
+    public List<KeyboardSlot> slots;
     public Transform slotParent;
-    
+    public KeyCode[] keyCodes = new KeyCode[8];
+
     private void Start()
     {
         CreateKeyboardSlot();
@@ -42,20 +28,14 @@ public class Keyboard : MonoBehaviour
         {
             GameObject slotInstance = Instantiate(slotPrefab);
             slotInstance.transform.SetParent(slotParent);
-            slotInstance.GetComponent<KeyboardSlot>().assignedKey = KeyCode.Alpha1 + i;
-
-            AddKeyboardSlotRef(slotInstance.GetComponent<KeyboardSlot>());
+            slotInstance.GetComponent<KeyboardSlot>().SetAssigneKey(keyCodes[i]);
+            slots.Add(slotInstance.GetComponent<KeyboardSlot>());
 
             RectTransform rectTransform = slotInstance.GetComponent<RectTransform>();
             rectTransform.sizeDelta = componentSize;
             rectTransform.anchoredPosition = new Vector2(startPosition.x + i * (componentSize.x + spacingX), startPosition.y);
             rectTransform.localScale = Vector2.one;
         }
-    }
-
-    private void AddKeyboardSlotRef(KeyboardSlot slotRef)
-    {
-        slots.Add(slotRef);
     }
 
     /*
@@ -69,9 +49,9 @@ public class Keyboard : MonoBehaviour
         foreach (KeyboardSlot slot in slots)
         {
             //칸은 비어있고, 키보드에 해당 아이템이 존재하지 않다면 false.
-            if (slot.currentItem == null) continue;
+            if (slot.GetCurrentItem() == null) continue;
             
-            ItemData slotItemData = slot.currentItem.GetComponent<ItemDataSC>().GetItem;
+            ItemData slotItemData = slot.GetCurrentItem().GetComponent<ItemDataSC>().GetItem;
 
             Debug.Log($"current Slot Item Data : {slotItemData}");
 
@@ -99,10 +79,10 @@ public class Keyboard : MonoBehaviour
     {
         foreach(KeyboardSlot slot in slots)
         {
-            if(slot.gameObject.transform.childCount ==0) continue;
+            if(slot.gameObject.transform.childCount == 0) continue;
             else
             {
-                slot.currentItem = slot.gameObject.transform.GetChild(0).gameObject;
+                slot.SetCurrentItem(slot.gameObject.transform.GetChild(0).gameObject);
             }
         }
     }
