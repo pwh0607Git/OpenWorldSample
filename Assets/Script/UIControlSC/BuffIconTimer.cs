@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -14,32 +15,31 @@ public class BuffIconTimer : MonoBehaviour
     private bool blinking;
     public GameObject buffTimerImg;
     private Image buffStateBar;
-    BuffManager buffManager;
 
+    private BuffManager buffManager;
+
+    public Action<GameObject> OnBuffEnd; // 버프 종료 시 실행할 콜백
 
     private void Start()
     {
         buffStateBar = buffTimerImg.GetComponent<Image>();
+        BuffManager buffManager = FindObjectOfType<BuffManager>();
         StartTimer();
     }
 
     public void StartTimer()
     {
         timerRunning = true;
-        duration = 5f;
         curTime = 0;
     }
 
     private void Update()
     {
-        curTime += Time.deltaTime; // 매 프레임 경과 시간 추가
+        curTime += Time.deltaTime;
         if (curTime >= duration)
         {
             timerRunning = false;
-            Debug.Log("Timer finished!");
-
-            //타이머 종료시 비활성화하기
-            Destroy(this);
+            Destroy(gameObject);
         }
 
         UpdateBuffState();
@@ -48,16 +48,10 @@ public class BuffIconTimer : MonoBehaviour
     private void UpdateBuffState()
     {
         buffStateBar.fillAmount = curTime / duration;
-
-        //몇초 남았을 때 깜박거리게 세팅하기.
-        if (curTime / duration <= 0.1f)
-        {
-
-        }
     }
 
     private void OnDestroy()
     {
-        //버프 매니저에게 버프가 종료 되었음을 알림...
+        OnBuffEnd?.Invoke(gameObject);
     }
 }

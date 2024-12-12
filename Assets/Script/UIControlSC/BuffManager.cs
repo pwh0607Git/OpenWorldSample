@@ -1,27 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.CullingGroup;
 using static UnityEngine.Rendering.DebugUI.Table;
 
 public class BuffManager : MonoBehaviour
 {
-    //아이콘 정렬
     public List<GameObject> activeBuff;
+
+    public GameObject testBuffPrefab;
+
+    public Action OnOffBuffChanged;
 
     private void Start()
     {
-        //activeBuff = new List<GameObject>();
         SortIcons();
     }
 
     public void SortIcons()
     {
-        Debug.Log("버프 아이콘 정렬 수행");
-        int padding = 5;
-
         Vector2 startPosition = new Vector2(0f, 0f);
         Vector2 componentSize = new Vector2(40f, 40f);
         
+        int padding = 5;
         int i = 0;
 
         foreach(var buffIcon in activeBuff)
@@ -34,13 +37,23 @@ public class BuffManager : MonoBehaviour
         }
     }
 
-    public void OnBuff(GameObject buffEffect)
+    public void OnBuff(Sprite buffIcon, float duration)
     {
-        activeBuff.Add(buffEffect);
+        GameObject newBuff = Instantiate(testBuffPrefab);
+        newBuff.GetComponent<Image>().sprite = buffIcon;
+        newBuff.transform.SetParent(transform);
+        activeBuff.Add(newBuff);
+
+        BuffIconTimer timer = newBuff.GetComponent<BuffIconTimer>();
+        if (timer != null)
+        {
+            timer.OnBuffEnd = OffBuffCallback;
+        }
+
         SortIcons();
     }
 
-    public void OffBuff(GameObject buffEffect)
+    public void OffBuffCallback(GameObject buffEffect)
     {
         activeBuff.Remove(buffEffect);
         SortIcons();

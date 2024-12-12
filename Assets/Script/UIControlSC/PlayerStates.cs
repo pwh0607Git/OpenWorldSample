@@ -16,9 +16,7 @@ public class PlayerStates : MonoBehaviour
 
     private State myState;
 
-    //TEST 용 코드
-    int testDamage = 10;
-    int testHeal = 20;
+    public Action<GameObject> OnBuffEnd; // 버프 종료 시 실행할 콜백
 
     private void Start()
     {
@@ -32,25 +30,5 @@ public class PlayerStates : MonoBehaviour
     {
         HP_Image.fillAmount = (float)myState.curHP / myState.maxHP;
         MP_Image.fillAmount = (float)myState.curMP / myState.maxMP;
-    }
-
-    //TEST Code;
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1)) TakeDamage();
-
-        if (Input.GetKeyDown(KeyCode.F2)) TakeHeal();
-    }
-
-    public void TakeDamage()
-    {
-        myState.curHP -= testDamage;
-        UpdateStateUI();
-    }
-
-    public void TakeHeal()
-    {
-        myState.curHP += testHeal;
-        UpdateStateUI();
     }
 }
