@@ -38,13 +38,8 @@ public class Keyboard : MonoBehaviour
         }
     }
 
-    /*
-        itemType = Consumable, Equipment, ETC,
-        subType = ConsumableType, EquipmentType
-    */
     public bool SearchItemByType<T>(ItemType itemType, T? subType = null) where T : struct
     {
-        bool res = false;
         //slot들에 루프를 돌아서 존재하는 지 찾기
         foreach (KeyboardSlot slot in slots)
         {

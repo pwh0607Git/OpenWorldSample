@@ -20,10 +20,6 @@ public class KeyboardSlot : DragAndDropSlot
             {
                 UseItem();
             }
-            else
-            {
-                Debug.Log("Null Item...");
-            }
         }
     }
 
@@ -39,7 +35,7 @@ public class KeyboardSlot : DragAndDropSlot
         if (CheckVaildItem(droppedItem))
         {
             currentItem = droppedItem;
-            PlayerController.player.myKeyboard.UpdateKeyboardPreset();
+            PlayerController.myKeyboard.UpdateKeyboardPreset();
         }
     }
 }

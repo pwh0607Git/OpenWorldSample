@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    private void Start()
+    private void Awake()
     {
         CreateInventorySlot();
         itemQueue = new Queue<ItemData>();
@@ -22,7 +22,7 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public List<InventorySlot> slots;
     public int maxSlotSize;
-
+        
     private void OnEnable()
     {
         SyncUIData();
@@ -113,12 +113,9 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         }
     }
 
-    //Inventory가 활성화 되었을 때, 동기화하기.
     public void SyncUIData()
     {
-        if (itemQueue.Count <= 0) return;
-
-        while (itemQueue.Count >= 0)
+        while (itemQueue.Count > 0)
         {
             ItemData newitemData = itemQueue.Dequeue();
 

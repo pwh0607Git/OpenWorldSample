@@ -21,7 +21,7 @@ public class InventoryItemIconManager : MonoBehaviour
 
     IEnumerator CreateItemIconCoroutine(ItemData newItemData, InventorySlot emptySlot)
     {
-        while (!PlayerController.player.myInventory.CheckSlotSize())
+        while (!PlayerController.myInventory.CheckSlotSize())
         {
             yield return null;
         }
@@ -32,7 +32,7 @@ public class InventoryItemIconManager : MonoBehaviour
         newItemIcon.gameObject.transform.SetParent(emptySlot.gameObject.transform);
         newItemIcon.GetComponent<RectTransform>().localScale = Vector2.one;
 
-        PlayerController.player.myInventory.SyncUIData();
+        PlayerController.myInventory.SyncUIData();
         yield return null;
     }
 
