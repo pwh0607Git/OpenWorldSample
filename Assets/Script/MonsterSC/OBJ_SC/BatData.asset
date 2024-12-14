@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 045dc1a52e6b7b74b937b2e098abcf59, type: 3}
+  m_Name: BatData
+  m_EditorClassIdentifier: 
+  monsterName: MushRoomMon
+  monsterType: 0
+  health: 1000
+  attackPower: 15
+  moveSpeed: 10
+  monsterPrefab: {fileID: 919132149155446097, guid: 9cbca15fca8ba4d4fbddec1742291dd7, type: 3}
