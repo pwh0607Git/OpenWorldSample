@@ -13,7 +13,7 @@ public class MonsterData : ScriptableObject
     [Header("Basic Attributes")]
     public string monsterName;
     public MonsterType monsterType;
-    public int health;
+    public int HP;
     public int attackPower;
     public float moveSpeed;
 

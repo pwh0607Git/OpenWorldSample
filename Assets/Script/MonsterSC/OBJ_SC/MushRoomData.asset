@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: MushRoomData
   m_EditorClassIdentifier: 
   monsterName: MushRoomMon
-  health: 2500
+  monsterType: 0
+  HP: 800
   attackPower: 20
   moveSpeed: 5
-  monsterPrefab: {fileID: 4574192825567932450, guid: 88716498407968c4abc511b0e063fb77, type: 3}
+  monsterPrefab: {fileID: 4574192825567932450, guid: 8e84736f9fe9c064fba6e6bd2fc32017, type: 3}

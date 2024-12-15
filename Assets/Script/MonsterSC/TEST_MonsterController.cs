@@ -7,15 +7,16 @@ public class TEST_MonsterController : MonoBehaviour
     MonsterData monsterData;
     public MonsterData MonsterData { set { monsterData = value; } }
 
-    private GameObject monsterUI;
+    private MonsterStateUIController monsterUI;
 
-    private void Update()
+    public void SetMonsterUI(MonsterStateUIController monsterUI)
     {
-        W
+        this.monsterUI = monsterUI;
     }
 
-    void UpdateUI()
+    public void TakeDamage(int damage)
     {
-
+        Debug.Log($"{gameObject.name} Damaged : {damage}");
+        monsterUI.TakeDamage(damage);
     }
 }

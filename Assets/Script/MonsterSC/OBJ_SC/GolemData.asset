@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 045dc1a52e6b7b74b937b2e098abcf59, type: 3}
   m_Name: GolemData
   m_EditorClassIdentifier: 
-  monsterName: MushRoomMon
+  monsterName: Golem
   monsterType: 0
-  health: 5000
+  HP: 1500
   attackPower: 50
   moveSpeed: 10
-  monsterPrefab: {fileID: 474825259339910810, guid: cfdaf9009eaf6284bb2e89504bc24020, type: 3}
+  monsterPrefab: {fileID: 474825259339910810, guid: e3b3149dcd677a84b9709111cce0442e, type: 3}
