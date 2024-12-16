@@ -27,7 +27,6 @@ public class TEST_MonsterSpawner : MonoBehaviour
             monster.transform.position = new Vector3(transX, gameObject.transform.position.y, gameObject.transform.position.z);
             
             transX += 10f;
-
             
             if (monsterController != null)
             {
@@ -39,19 +38,15 @@ public class TEST_MonsterSpawner : MonoBehaviour
 
     public void SetMonsterStateUI(GameObject monster, MonsterData data)
     {
-        GameObject stateUI = Instantiate(monsterStateUIPrefab);
+        GameObject stateUI = Instantiate(monsterStateUIPrefab, monster.transform);
         MonsterStateUIController monsterStateUIController = stateUI.GetComponent<MonsterStateUIController>();
         monsterStateUIController.InitMonsterUI(data);
-        stateUI.transform.SetParent(monster.transform);
-        stateUI.GetComponent<RectTransform>().anchoredPosition3D = Vector3.zero;
-        Renderer monsterRenderer = monster.transform.GetChild(0).GetComponent<Renderer>();
 
-        if (monsterRenderer != null)
+        Collider monsterCollider = monster.GetComponent<Collider>();
+        if (monsterCollider != null)
         {
-            float monsterHeight = monsterRenderer.bounds.size.y;
-
-            Debug.Log($"높이 출력 {monsterHeight}");
-            stateUI.GetComponent<RectTransform>().anchoredPosition.Set(0, monsterHeight + 0.5f);
+            float monsterHeight = monsterCollider.bounds.size.y;
+            stateUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, monsterHeight, 0);
         }
 
         //controller에 ui참조 적용

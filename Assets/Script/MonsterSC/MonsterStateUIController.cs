@@ -16,10 +16,6 @@ public class MonsterStateUIController : MonoBehaviour
 
     public GameObject damageText;          //몬스터가 데미지를 입었을 때, 출력되는 데미지 이펙트.
 
-    //데미지 출력 중복 호출방지
-    bool isAttacked1 = false;
-    bool isAttacked2 = false;
-
     public void InitMonsterUI(MonsterData monsterData)
     {
         GetComponent<RectTransform>().localPosition = Vector2.zero;
@@ -31,16 +27,13 @@ public class MonsterStateUIController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isAttacked1)
-        {
-            return;     //무시..
-        }
-        isAttacked1 = true;
-        StartCoroutine(DamageHandler(isAttacked1));
-
         curHP -= damage;
-        //damageText.SetActive(true);
-        //damageText.GetComponent<MonsterDamage>().SetDamage(damage);
+        /*
+        GameObject damageIcon = Instantiate(damageText);
+        damageIcon.GetComponent<MonsterDamage>().SetDamage(damage);
+        */
+        Debug.Log($"현재 받은 데미지 : {damage}, {curHP}");
+
         UpdateMonsterUI();
     }
 
@@ -48,11 +41,5 @@ public class MonsterStateUIController : MonoBehaviour
     {
         curHPTxt.text = curHP.ToString();
         HP_Bar.fillAmount = (float)curHP / monsterData.HP;
-    }
-
-    IEnumerator DamageHandler(bool flag)
-    {
-        yield return new WaitForSeconds(0.5f);
-        flag = false;
     }
 }
