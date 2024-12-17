@@ -30,24 +30,14 @@ public class Consumable : ItemData
 
     public override void Use()
     {
-        if(consumableCount <= 0)
+        if (consumableCount <= 0)
         {
             Debug.Log("해당 아이템이 없습니다.");
             return;
         }
 
-        switch (subType)
-        {
-            case ConsumableType.HP:
-                Debug.Log("HP 포션 사용!");
-            break;
-            case ConsumableType.MP:
-                Debug.Log("MP 포션 사용!");
-            break;
-            case ConsumableType.SpeedUp:
-                Debug.Log("SpeedUp 포션 사용!");
-            break;
-        }
+        State state = PlayerController.player.myState;
+        state.UesConsumable(this);
         consumableCount--;
         OnConsumableUsed?.Invoke();
     }
@@ -55,14 +45,12 @@ public class Consumable : ItemData
     public void GetThisItem()
     {
         consumableCount++;
-        Debug.Log($"{consumableCount}");
         OnConsumableUsed?.Invoke();
     }
 
     public void ThrowThisItem()
     {
         consumableCount = 0;
-        Debug.Log($"{subType} 개수 ; {consumableCount}");
         OnConsumableUsed?.Invoke();
     }
 }

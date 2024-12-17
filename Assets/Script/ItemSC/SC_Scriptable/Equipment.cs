@@ -22,13 +22,15 @@ public class Equipment : ItemData
 
     //장비 아이템은 장착을 의미...
     public override void Use(){
-        State state = PlayerController.player.GetMyState();
+        State state = PlayerController.player.myState;
+        PlayerController.player.SetEquipment(model);
         state.EquipItem(this);
     }
 
     public void Detach()
     {
-        State state = PlayerController.player.GetMyState();
+        State state = PlayerController.player.myState;
+        PlayerController.player.CleanEquipment();
         state.DetachItem(this);
     }
 }
