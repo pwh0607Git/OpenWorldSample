@@ -32,6 +32,8 @@ public class InventoryItemIconManager : MonoBehaviour
         newItemIcon.gameObject.transform.SetParent(emptySlot.gameObject.transform);
         newItemIcon.GetComponent<RectTransform>().localScale = Vector2.one;
 
+        emptySlot.AssignCurrentItem(newItemIcon.gameObject);
+
         PlayerController.myInventory.SyncUIData();
         yield return null;
     }

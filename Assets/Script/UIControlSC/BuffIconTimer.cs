@@ -9,27 +9,23 @@ using UnityEngine.UI;
 public class BuffIconTimer : MonoBehaviour
 {
     private float curTime;
-    public float duration;
+    private float duration;
     private bool timerRunning;
 
-    private bool blinking;
     public GameObject buffTimerImg;
     private Image buffStateBar;
 
-    private BuffManager buffManager;
-
-    public Action<GameObject> OnBuffEnd; // 버프 종료 시 실행할 콜백
+    public Action<GameObject> OnBuffEnd;        // 버프 종료 시 실행할 콜백
 
     private void Start()
     {
         buffStateBar = buffTimerImg.GetComponent<Image>();
-        BuffManager buffManager = FindObjectOfType<BuffManager>();
-        StartTimer();
     }
 
-    public void StartTimer()
+    public void StartTimer(float duration)
     {
         timerRunning = true;
+        this.duration = duration;
         curTime = 0;
     }
 

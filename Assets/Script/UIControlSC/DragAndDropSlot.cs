@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,30 +9,40 @@ public class DragAndDropSlot : MonoBehaviour, IDropHandler
     protected GameObject currentItem;
 
     public GameObject GetCurrentItem() { return currentItem; }
-    public void SetCurrentItem(GameObject newItem) { currentItem = newItem; }
-
-    public virtual void Update()
-    {
-        if (transform.childCount == 0)
-        {
-            currentItem = null;
-        }
-    }
 
     public virtual void OnDrop(PointerEventData eventData)
     {
-        GameObject droppedItem = eventData.pointerDrag;                                 //드래그 상태인 item 참조.
+        GameObject droppedItem = eventData.pointerDrag;
 
-        if (droppedItem != null && droppedItem.GetComponent<ItemContoller>() != null)
+        if (droppedItem != null && droppedItem.GetComponent<ItemIconController>() != null)
         {
             droppedItem.transform.SetParent(transform);
             droppedItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            currentItem = droppedItem;
         }
     }
 
-    protected virtual bool CheckVaildItem(GameObject item)
+    //아이템 유효성 검사
+    public virtual bool CheckVaildItem<T>(GameObject item, T? validType = null) where T : struct
     {
-        return (item != null && item.GetComponent<ItemContoller>() != null);
+        ItemData itemData = item.GetComponent<ItemDataSC>().GetItem;
+
+        if (validType.HasValue)
+        {
+            return (item != null && itemData != null && itemData.itemType.Equals(validType));
+        }
+        else
+        {
+            return (item != null && itemData != null);
+        }
+    }
+
+    public void AssignCurrentItem(GameObject item)
+    {
+        currentItem = item;
+    }
+
+    public void CleanCurrentItem()
+    {
+        currentItem = null;
     }
 }

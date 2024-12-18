@@ -37,25 +37,56 @@ public class BuffManager : MonoBehaviour
         }
     }
 
-    public void OnBuff(Sprite buffIcon, float duration)
+    //소비아이템을 통한 버프 On
+    public void OnBuffItem(Consumable itemData, float duration)
     {
+        GameObject existingBuff = CheckExistingBuff(itemData.icon);
+        if (existingBuff != null)
+        {
+            BuffIconTimer timer = existingBuff.GetComponent<BuffIconTimer>();
+            timer.StartTimer(duration);
+
+            return;
+        }
+
         GameObject newBuff = Instantiate(testBuffPrefab);
-        newBuff.GetComponent<Image>().sprite = buffIcon;
+        newBuff.GetComponent<Image>().sprite = itemData.icon;
         newBuff.transform.SetParent(transform);
         activeBuff.Add(newBuff);
 
-        BuffIconTimer timer = newBuff.GetComponent<BuffIconTimer>();
-        if (timer != null)
+        BuffIconTimer newTimer = newBuff.GetComponent<BuffIconTimer>();
+        if (newTimer != null)
         {
-            timer.OnBuffEnd = OffBuffCallback;
+            newTimer.OnBuffEnd = OffBuffCallback;
         }
 
+        newTimer.StartTimer(duration);
+
         SortIcons();
+    }
+
+    public void OnBuffSkill()
+    {
+
     }
 
     public void OffBuffCallback(GameObject buffEffect)
     {
         activeBuff.Remove(buffEffect);
         SortIcons();
+    }
+
+    public GameObject CheckExistingBuff(Sprite buffIcon)
+    {
+        foreach (var buff in activeBuff)
+        {
+            BuffIconTimer timer = buff.GetComponent<BuffIconTimer>();
+            
+            if(timer.GetComponent<Image>().sprite == buffIcon)
+            {
+                return buff;
+            }
+        }
+        return null;
     }
 }

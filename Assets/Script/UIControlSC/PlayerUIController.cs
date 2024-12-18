@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 public class PlayerUIController : MonoBehaviour
 {
     public GameObject inventoryWindow;
-    public  GameObject equipmentWindow;
+    public GameObject equipmentWindow;
 
     //Stack<GameObject> activeWindows;
 

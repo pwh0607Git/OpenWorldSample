@@ -63,6 +63,16 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
         if (eventData.pointerEnter != null)
         {
+            //ActionBar에 들어왔는데 현재 아이템이 소비 아이템이 아니면 원래 자리로 복귀
+            if(itemData is Consumable consumableItem && eventData.pointerEnter.tag != "ActionBarSlot")
+            {
+                ResetToOriginalSlot();
+            }else if(itemData is Equipment equipmentItem && eventData.pointerEnter.tag != "EquipmentSlot")
+            {
+                ResetToOriginalSlot();
+            }
+            //장비 칸에 들어왔는데 현재 아이템이 장비 아이템이 아니라면
+
             if (originalParent.tag == "ActionBarSlot")
             {
                 if (eventData.pointerEnter.tag == "ActionBarSlot")                      //프리셋 -> 빈 프리셋(이동)

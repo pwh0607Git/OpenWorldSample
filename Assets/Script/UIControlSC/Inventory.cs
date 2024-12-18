@@ -79,21 +79,33 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
             ItemData slotItemData = slot.GetCurrentItem().GetComponent<ItemDataSC>().GetItem;
 
-            if (slot.GetCurrentItem() != null && slotItemData.itemType == itemType)
+            if (slotItemData.itemType == itemType)
             {
-                if (subType == null) return true;
+                if (subType == null)
+                {
+                    Debug.Log("Search Code : 001");
+                    return true;           //기타 아이템
+                }
+
                 if (itemType == ItemType.Consumable && slotItemData is Consumable consumable)
                 {
                     if (EqualityComparer<T>.Default.Equals((T)(object)consumable.subType, subType.Value))
+                    {
+                        Debug.Log("Search Code : 002");
                         return true;
+                    }
                 }
                 else if (itemType == ItemType.Equipment && slotItemData is Equipment equipment)
                 {
                     if (EqualityComparer<T>.Default.Equals((T)(object)equipment.subType, subType.Value))
+                    {
+                        Debug.Log("Search Code : 003");
                         return true;
+                    }
                 }
             }
         }
+        Debug.Log("Search Code : 004");
         return false;
     }
     
@@ -101,15 +113,10 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         ItemDataSC itemDataSC = item.GetComponent<ItemDataSC>();            //DroppedItemSC를 참조한다...
         ItemData itemData = itemDataSC.GetItem;
+        itemQueue.Enqueue(itemData);
 
-        if (gameObject.activeSelf)
-        {
-            itemQueue.Enqueue(itemData);
-            SyncUIData();
-        }
-        else
-        {
-            itemQueue.Enqueue(itemData);
+        if (gameObject.activeSelf) {
+            SyncUIData();       //인벤토리 창이 활성화되어 있으면 바로 출력.
         }
     }
 
@@ -117,24 +124,24 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         while (itemQueue.Count > 0)
         {
-            ItemData newitemData = itemQueue.Dequeue();
+            ItemData newItemData = itemQueue.Dequeue();
 
-            if (newitemData != null)
+            if (newItemData != null)
             {
-                if (newitemData is Consumable consumable)
+                if (newItemData is Consumable consumable)
                 {
-                    if (SearchItemByType<ConsumableType>(newitemData.itemType, consumable.subType))
+                    if (SearchItemByType<ConsumableType>(newItemData.itemType, consumable.subType))
                     {
                         consumable.GetThisItem();
                     }
                     else
                     {
-                        GetNewItem(newitemData);
+                        GetNewItem(newItemData);
                     }
                 }
-                else if (newitemData is Equipment equipment)
+                else if (newItemData is Equipment equipment)
                 {
-                    GetNewItem(newitemData);
+                    GetNewItem(newItemData);
                 }
             }
             else
