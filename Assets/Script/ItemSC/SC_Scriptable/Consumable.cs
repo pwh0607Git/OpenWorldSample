@@ -30,15 +30,16 @@ public class Consumable : ItemData
 
     public override void Use()
     {
+        Debug.Log($"CosumableItem 사용!");
         if (consumableCount <= 0)
         {
             Debug.Log("해당 아이템이 없습니다.");
             return;
         }
 
+        consumableCount--;
         State state = PlayerController.player.myState;
         state.UesConsumable(this);
-        consumableCount--;
         OnConsumableUsed?.Invoke();
     }
 

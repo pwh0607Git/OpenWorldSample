@@ -17,5 +17,5 @@ MonoBehaviour:
   value: 50
   itemType: 1
   icon: {fileID: 21300000, guid: ab070fe17266e9d4fbe897af68624f88, type: 3}
-  model: {fileID: 919132149155446097, guid: 3c34a709fd085e04fab8f6be19466284, type: 3}
+  model: {fileID: 834515513267351657, guid: bf39dad96329d2e4f8eee51a092a8560, type: 3}
   subType: 2
