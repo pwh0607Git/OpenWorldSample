@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using UnityEngine;
 using System;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public enum MonsterAnimState
 {
@@ -44,7 +45,6 @@ public class MonsterController : MonoBehaviour
 
     private void Update()
     {
-        //CheckState();
         UpdateAnim();
     }
 
@@ -78,5 +78,33 @@ public class MonsterController : MonoBehaviour
         OnMonsterDeath?.Invoke();
         gameObject.SetActive(false);
         currentAnimState = MonsterAnimState.Down;
+    }
+
+    public float attackRadius = 2f; // 공격 반경
+    public float attackDamage = 10f; // 공격 데미지
+    public Transform attackPoint; // 공격 중심 위치
+
+    public void PerformAttack()
+    {
+        // 공격 범위 내의 적 감지
+        Collider[] hitColliders = Physics.OverlapSphere(attackPoint.position, attackRadius);
+
+        foreach (Collider collider in hitColliders)
+        {
+            // 적인지 확인
+            if (collider.CompareTag("Player"))
+            {
+                // 데미지 처리 (예: 적 스크립트에서 TakeDamage 함수 호출)
+                //collider.GetComponent<PlayerController>().TakeDamage(attackDamage);
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
     }
 }
