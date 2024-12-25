@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TEST_MonsterController : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class TEST_MonsterController : MonoBehaviour
 
     private MonsterStateUIController monsterUI;
 
-    private bool isDamaged = true;
+    private bool canTakeDamage = true;
     private bool isDown = false;
 
     public int monsterCurHP;
@@ -26,7 +27,7 @@ public class TEST_MonsterController : MonoBehaviour
 
     private void Update()
     {
-        if(monsterData.HP <= 0 && isDown)
+        if (monsterCurHP <= 0 && !isDown)
         {
             Down();
         }
@@ -39,10 +40,27 @@ public class TEST_MonsterController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (isDown || !canTakeDamage)
+        {
+            Debug.Log("현재는 골렘이 데미지를 받지 않습니다.");
+            return;
+        }
+        StartCoroutine(HandleDamage(damage));
+    }
+
+    float noDamage = 0.3f;
+
+    IEnumerator HandleDamage(int damage)
+    {
+        canTakeDamage = false;
+
         animator.SetTrigger("Damaged");
         monsterCurHP -= damage;
         monsterUI.UpdateMonsterUI(monsterCurHP);
         Debug.Log($"현재 받은 데미지 : {damage}, 남은 HP : {monsterCurHP}");
+
+        yield return new WaitForSeconds(noDamage);
+        canTakeDamage = true;
     }
 
     public void AttackHandler()
@@ -55,15 +73,13 @@ public class TEST_MonsterController : MonoBehaviour
     {
         Debug.Log("몬스터 Down!!");
         isDown = true;
-        animator.SetTrigger("Down");
 
+        //이후 몬스터의 애니메이션 명 조정.
+        animator.Play("SA_Golem_Down");
         AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
 
         // 애니메이션 이름이 일치하고, 재생이 끝났는지 확인
-        if(currentState.IsName("SA_Golem_Down") && currentState.normalizedTime >= 1.0f)
-        {
-            Invoke("OnDownMonster", 2f);
-        }
+        Invoke("OnDownMonster", 1.5f);
     }
 
     public void OnDownMonster()
