@@ -4,7 +4,24 @@ using UnityEngine;
 
 public enum MonsterType
 {
-    MushRoom
+    MushRoom,
+    Golem,
+    Bat
+}
+
+[System.Serializable]
+public class LootEntry
+{
+    //아이템 확률 테이블.
+    public GameObject item;
+
+    public float dropRate;
+
+    public LootEntry(GameObject item, float dropRate)
+    {
+        this.item = item;
+        this.dropRate = dropRate;
+    }
 }
 
 [CreateAssetMenu(fileName = "Monster Data", menuName = "Scriptable Object/Monster Data")]
@@ -18,5 +35,11 @@ public class MonsterData : ScriptableObject
     public float moveSpeed;
 
     [Header("Visuals")]
-    public GameObject monsterPrefab; // 몬스터 3D 모델 프리팹
+    public GameObject monsterPrefab;        // 몬스터 3D 모델 프리팹
+
+    [Header("Props")]
+    public List<GameObject> basicLoot;      //기본적으로 가지고 있는 전리품.
+    public List<LootEntry> randomLoot;           //전리품
+
+    //유효성 검사 코드.
 }

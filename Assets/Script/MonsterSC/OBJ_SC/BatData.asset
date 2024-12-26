@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: BatData
   m_EditorClassIdentifier: 
   monsterName: Bat
-  monsterType: 0
+  monsterType: 2
   HP: 400
   attackPower: 15
   moveSpeed: 10
   monsterPrefab: {fileID: 6537493377709287581, guid: 3607cfb9e266cd5418b53726f85b05ef, type: 3}
+  basicLoot:
+  - {fileID: 5246923711102340494, guid: b627fcf0ca97bf547bdef1ff7adc2d67, type: 3}
+  randomLoot:
+  - item: {fileID: 8750965566074464243, guid: d41b49cd30332d74a8ad7e49945f1de7, type: 3}
+    dropRate: 20
