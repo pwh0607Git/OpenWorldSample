@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class TEST_MonsterController : MonoBehaviour
 {
     MonsterData monsterData;
-    public MonsterData MonsterData { set { monsterData = value; } }
+    public MonsterData MonsterData { get { return monsterData; } set { monsterData = value; } }
 
     private Animator animator;
 
@@ -48,7 +48,7 @@ public class TEST_MonsterController : MonoBehaviour
         StartCoroutine(HandleDamage(damage));
     }
 
-    float noDamage = 0.3f;
+    float noDamage = 0.4f;
 
     IEnumerator HandleDamage(int damage)
     {
@@ -78,14 +78,26 @@ public class TEST_MonsterController : MonoBehaviour
         animator.Play("SA_Golem_Down");
         AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-        // 애니메이션 이름이 일치하고, 재생이 끝났는지 확인
         Invoke("OnDownMonster", 1.5f);
+        
+        //전리품 출력.
+        MonsterLootHandler loots = transform.GetComponentInChildren<MonsterLootHandler>();
+
+        if(loots != null)
+        {
+            loots.ShootLoots();
+        }
+        else
+        {
+            Debug.Log("전리품 시스템 XXXX");
+        }
     }
 
     public void OnDownMonster()
     {
         Destroy(gameObject);
     }
+
 
     //캐릭터 인식 범위
     //공격 범위는 따로 설정하기.

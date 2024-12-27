@@ -53,13 +53,4 @@ public class TEST_MonsterSpawner : MonoBehaviour
         TEST_MonsterController monsterController = monster.GetComponent<TEST_MonsterController>();
         monsterController.SetMonsterUI(monsterStateUIController);
     }
-
-    public void SetLoot(GameObject monster)
-    {
-        for(int i = 0; i < 3; i++)
-        {
-            GameObject loot = new GameObject("loot " + i);
-            loot.transform.SetParent(monster.transform);
-        }
-    }
 }
