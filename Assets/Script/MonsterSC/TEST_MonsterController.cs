@@ -8,31 +8,85 @@ public class TEST_MonsterController : MonoBehaviour
 {
     MonsterData monsterData;
     public MonsterData MonsterData { get { return monsterData; } set { monsterData = value; } }
-
+    private MonsterStateUIController monsterUI;
     private Animator animator;
 
-    private MonsterStateUIController monsterUI;
+    public int monsterCurHP;
 
     private bool canTakeDamage = true;
     private bool isDown = false;
 
-    public int monsterCurHP;
+    Transform attackTarget;
+    private float lastAttackTime = -Mathf.Infinity;
+    private Vector3 originalPosition;
 
     private void Start()
     {
         monsterCurHP = monsterData.HP;
         animator = transform.GetComponent<Animator>();
-        AttackHandler();
+        originalPosition = transform.position;
     }
 
     private void Update()
     {
+        float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
+        DetectPlayer(distanceToTarget);
+
+        if (IsAttackTarget(distanceToTarget))
+        {
+            AttackHandler();
+        }
+
         if (monsterCurHP <= 0 && !isDown)
         {
             Down();
         }
     }
+    
+    private void DetectPlayer(float distanceToTarget)
+    {
+        if(distanceToTarget < monsterData.detectionRadius)
+        {
+            ChasePlayer(distanceToTarget);
+        }
+        else
+        {
+            ReturnOriginPosition();
+        }
 
+    }
+
+    private void ReturnOriginPosition()
+    {
+        MoveToward(originalPosition);
+    }
+
+    private void ChasePlayer(float distanceToTarget)
+    {
+        MoveToward(attackTarget.position);
+    }
+
+    private void MoveToward(Vector3 destination)
+    {
+        float returnSpeed = 10f;
+
+        Vector3 direction = (destination - transform.position).normalized;
+
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * returnSpeed);
+        }
+        transform.position = Vector3.MoveTowards(transform.position, destination, returnSpeed * Time.deltaTime);
+    }
+
+    private bool IsAttackTarget(float distanceToTarget)
+    {
+        //현재 타겟이 공격 가능 범위에 들어 왔는가.
+        return(distanceToTarget <= monsterData.attackDamageRadius);
+    }
+
+    //UI 세팅
     public void SetMonsterUI(MonsterStateUIController monsterUI)
     {
         this.monsterUI = monsterUI;
@@ -65,8 +119,11 @@ public class TEST_MonsterController : MonoBehaviour
 
     public void AttackHandler()
     {
-        Debug.Log("몬스터 공격!!");
+        Debug.Log($"{monsterData.monsterName}가 공격을 수행합니다!");
         animator.SetTrigger("Attack");
+
+        //애니메이션이 끝나는 시점에 캐릭터가 공격 범위에 있으면 데미지 주기.
+
     }
 
     public void Down()
