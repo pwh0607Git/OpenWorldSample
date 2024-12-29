@@ -31,14 +31,17 @@ public class MonsterData : ScriptableObject
     public string monsterName;
     public MonsterType monsterType;
     public int HP;
-    public int attackPower;
+    
+    //이동
     public float moveSpeed;
+    public float movingArea = 100f;             //이동 가능 범위.
+
     //공격
-    public float detectionRadius = 10f;         // 골렘이 캐릭터를 인식하는 범위
+    public float detectionRadius = 15f;         // 골렘이 캐릭터를 인식하는 범위
     public float attackRadius = 3f;             // 공격을 시작하는 범위
     public float attackDamageRadius = 5f;       // 공격 피해를 주는 범위
     public float attackCooldown = 2f;           // 공격 후 대기 시간
-
+    public int attackPower;
 
     [Header("Visuals")]
     public GameObject monsterPrefab;        // 몬스터 3D 모델 프리팹

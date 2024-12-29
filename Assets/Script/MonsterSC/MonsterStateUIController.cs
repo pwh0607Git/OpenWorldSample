@@ -17,7 +17,6 @@ public class MonsterStateUIController : MonoBehaviour
 
     public void InitMonsterUI(MonsterData monsterData)
     {
-        Debug.Log("몬스터 UI 초기화");
         GetComponent<RectTransform>().localPosition = Vector2.zero;
         this.monsterData = monsterData;
         monsterName.text = monsterData.monsterName;

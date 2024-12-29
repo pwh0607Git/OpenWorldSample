@@ -16,6 +16,8 @@ public class TEST_MonsterController : MonoBehaviour
     private bool canTakeDamage = true;
     private bool isDown = false;
 
+    private bool isAttacking = false;
+
     Transform attackTarget;
     private float lastAttackTime = -Mathf.Infinity;
     private Vector3 originalPosition;
@@ -29,12 +31,13 @@ public class TEST_MonsterController : MonoBehaviour
 
     private void Update()
     {
-        float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
-        DetectPlayer(distanceToTarget);
-
-        if (IsAttackTarget(distanceToTarget))
+        if (attackTarget != null)
         {
-            AttackHandler();
+            HandlePlayerDetection();
+        }
+        else
+        {
+            ReturnToOriginPosition();
         }
 
         if (monsterCurHP <= 0 && !isDown)
@@ -42,42 +45,83 @@ public class TEST_MonsterController : MonoBehaviour
             Down();
         }
     }
-    
-    private void DetectPlayer(float distanceToTarget)
+
+    //캐릭터 인식 범위
+    //공격 범위는 따로 설정하기.
+    public void SetAttackTarget(Transform target)
     {
-        if(distanceToTarget < monsterData.detectionRadius)
+        attackTarget = target;
+    }
+
+    private void HandlePlayerDetection()
+    {
+        float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
+
+        if (distanceToTarget <= monsterData.attackDamageRadius)
         {
-            ChasePlayer(distanceToTarget);
+            if (!isAttacking)
+            {
+                AttackHandler();
+            }
+        }
+        else if (distanceToTarget <= monsterData.detectionRadius)
+        {
+            if (!isAttacking)
+            {
+                ChasePlayer();
+            }
         }
         else
         {
-            ReturnOriginPosition();
+            attackTarget = null; // 인식 범위 벗어남
+            ReturnToOriginPosition();
         }
-
     }
 
-    private void ReturnOriginPosition()
+    private void ReturnToOriginPosition()
     {
+        if (isAttacking) return;
+
         MoveToward(originalPosition);
+
+        if (Vector3.Distance(transform.position, originalPosition) < 0.1f)
+        {
+            animator.SetTrigger("Idle");
+        }
     }
 
-    private void ChasePlayer(float distanceToTarget)
+    private void ChasePlayer()
     {
+        Debug.Log("Monster Chasing Player...");
+        transform.LookAt(attackTarget);
+
+        Vector3 dir = attackTarget.position - transform.position;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * monsterData.moveSpeed);
         MoveToward(attackTarget.position);
+    }
+
+    private bool IsMovingArea()
+    {
+        float distance = Vector3.Distance(transform.position, originalPosition);
+
+        return distance < monsterData.movingArea;
     }
 
     private void MoveToward(Vector3 destination)
     {
-        float returnSpeed = 10f;
-
-        Vector3 direction = (destination - transform.position).normalized;
-
-        if (direction != Vector3.zero)
+        //현재 공격중이라면 무시...
+        if (!isAttacking)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * returnSpeed);
+            animator.SetTrigger("Walk");
+            Vector3 direction = (destination - transform.position).normalized;
+
+            if (direction != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * monsterData.moveSpeed);
+            }
+            transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * monsterData.moveSpeed);
         }
-        transform.position = Vector3.MoveTowards(transform.position, destination, returnSpeed * Time.deltaTime);
     }
 
     private bool IsAttackTarget(float distanceToTarget)
@@ -96,39 +140,62 @@ public class TEST_MonsterController : MonoBehaviour
     {
         if (isDown || !canTakeDamage)
         {
-            Debug.Log("현재는 골렘이 데미지를 받지 않습니다.");
             return;
         }
         StartCoroutine(HandleDamage(damage));
     }
 
-    float noDamage = 0.4f;
+    float noDamageTime = 0.4f;
 
-    IEnumerator HandleDamage(int damage)
+    private IEnumerator HandleDamage(int damage)
     {
         canTakeDamage = false;
 
         animator.SetTrigger("Damaged");
         monsterCurHP -= damage;
         monsterUI.UpdateMonsterUI(monsterCurHP);
-        Debug.Log($"현재 받은 데미지 : {damage}, 남은 HP : {monsterCurHP}");
 
-        yield return new WaitForSeconds(noDamage);
+        yield return new WaitForSeconds(noDamageTime);
         canTakeDamage = true;
     }
 
     public void AttackHandler()
     {
-        Debug.Log($"{monsterData.monsterName}가 공격을 수행합니다!");
-        animator.SetTrigger("Attack");
+        if (!isAttacking)
+        {
+            animator.SetTrigger("Attack");
+            isAttacking = true;
 
-        //애니메이션이 끝나는 시점에 캐릭터가 공격 범위에 있으면 데미지 주기.
+            //애니메이션이 끝나는 시점에 캐릭터가 공격 범위에 있으면 데미지 주기.
+            StartCoroutine(MonsterAttack());
+        }
+    }
 
+    private IEnumerator MonsterAttack()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float animationDuration = stateInfo.length;
+
+        yield return new WaitForSeconds(animationDuration);
+
+        //공격 범위에 Player가 존재하는지...
+        Collider[] hitTargets = Physics.OverlapSphere(transform.position, monsterData.attackRadius);
+
+        foreach(var target in  hitTargets)
+        {
+            if (target.CompareTag("Player"))
+            {
+                //Player에게 대미지 주기
+                Debug.Log("Monster hit Player!!");
+            }
+        }
+        isAttacking = false;
+        animator.SetTrigger("Idle");
+        yield return new WaitForSeconds(2);
     }
 
     public void Down()
     {
-        Debug.Log("몬스터 Down!!");
         isDown = true;
 
         //이후 몬스터의 애니메이션 명 조정.
@@ -144,18 +211,10 @@ public class TEST_MonsterController : MonoBehaviour
         {
             loots.ShootLoots();
         }
-        else
-        {
-            Debug.Log("전리품 시스템 XXXX");
-        }
     }
 
     public void OnDownMonster()
     {
         Destroy(gameObject);
     }
-
-
-    //캐릭터 인식 범위
-    //공격 범위는 따로 설정하기.
 }
