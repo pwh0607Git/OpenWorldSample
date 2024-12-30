@@ -22,7 +22,6 @@ public class MonsterDectionHandler : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log($"PlayerDetection : Player Detect!!");
             monsterController.SetAttackTarget(other.transform);
         }
     }
@@ -31,7 +30,6 @@ public class MonsterDectionHandler : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log($"PlayerDetection : Player null!!");
             monsterController.SetAttackTarget(null);
         }
     }

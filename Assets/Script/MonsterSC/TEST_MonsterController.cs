@@ -16,9 +16,12 @@ public class TEST_MonsterController : MonoBehaviour
     private bool canTakeDamage = true;
     private bool isDown = false;
 
-    private bool isAttacking = false;
+    //플레이어와의 상호작용용 플래그
+    private bool isAttacking;
+    private bool isDetecting;
+    private bool isChaseing;
 
-    Transform attackTarget;
+    private Transform attackTarget;
     private float lastAttackTime = -Mathf.Infinity;
     private Vector3 originalPosition;
 
@@ -27,10 +30,13 @@ public class TEST_MonsterController : MonoBehaviour
         monsterCurHP = monsterData.HP;
         animator = transform.GetComponent<Animator>();
         originalPosition = transform.position;
+        attackTarget = null;
+        isAttacking = false;
     }
 
     private void Update()
     {
+        //공격 대상을 발견했을 때.
         if (attackTarget != null)
         {
             HandlePlayerDetection();
@@ -53,28 +59,23 @@ public class TEST_MonsterController : MonoBehaviour
         attackTarget = target;
     }
 
+    //캐릭터가 추적범위에 들어온 상태이다.
     private void HandlePlayerDetection()
     {
         float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
 
         if (distanceToTarget <= monsterData.attackDamageRadius)
         {
-            if (!isAttacking)
-            {
-                AttackHandler();
-            }
-        }
-        else if (distanceToTarget <= monsterData.detectionRadius)
-        {
-            if (!isAttacking)
-            {
-                ChasePlayer();
-            }
+            //타겟이 공격 범위에 들어와있는 경우.
+            AttackHandler();
         }
         else
         {
-            attackTarget = null; // 인식 범위 벗어남
-            ReturnToOriginPosition();
+            //타겟이 인식범위에는 들어왔지만, 공격 범위는 벗어난 경우.
+            if (attackTarget != null)
+            {
+                ChasePlayer();
+            }
         }
     }
 
@@ -92,10 +93,11 @@ public class TEST_MonsterController : MonoBehaviour
 
     private void ChasePlayer()
     {
-        Debug.Log("Monster Chasing Player...");
-        transform.LookAt(attackTarget);
+        if (isAttacking) return;
 
         Vector3 dir = attackTarget.position - transform.position;
+        transform.LookAt(attackTarget);
+        Quaternion targetAngle = Quaternion.LookRotation(attackTarget.position);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * monsterData.moveSpeed);
         MoveToward(attackTarget.position);
     }
@@ -112,7 +114,7 @@ public class TEST_MonsterController : MonoBehaviour
         //현재 공격중이라면 무시...
         if (!isAttacking)
         {
-            animator.SetTrigger("Walk");
+            animator.SetBool("Walk", true);
             Vector3 direction = (destination - transform.position).normalized;
 
             if (direction != Vector3.zero)
@@ -163,19 +165,21 @@ public class TEST_MonsterController : MonoBehaviour
     {
         if (!isAttacking)
         {
-            animator.SetTrigger("Attack");
             isAttacking = true;
-
-            //애니메이션이 끝나는 시점에 캐릭터가 공격 범위에 있으면 데미지 주기.
             StartCoroutine(MonsterAttack());
         }
     }
 
+    private float monsterAttackCooldown = 2f;
+
     private IEnumerator MonsterAttack()
     {
+        animator.SetBool("Walk", false);
+        animator.SetTrigger("Attack");
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         float animationDuration = stateInfo.length;
 
+        Debug.Log($"Animation Duration : {animationDuration}");
         yield return new WaitForSeconds(animationDuration);
 
         //공격 범위에 Player가 존재하는지...
@@ -190,8 +194,8 @@ public class TEST_MonsterController : MonoBehaviour
             }
         }
         isAttacking = false;
-        animator.SetTrigger("Idle");
-        yield return new WaitForSeconds(2);
+        
+        //공격 쿨다운 설정하기.
     }
 
     public void Down()
@@ -199,7 +203,7 @@ public class TEST_MonsterController : MonoBehaviour
         isDown = true;
 
         //이후 몬스터의 애니메이션 명 조정.
-        animator.Play("SA_Golem_Down");
+        animator.SetTrigger("Down");
         AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
 
         Invoke("OnDownMonster", 1.5f);

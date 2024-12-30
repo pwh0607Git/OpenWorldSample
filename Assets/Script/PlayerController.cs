@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
@@ -6,6 +7,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using static UnityEditor.Progress;
+using static UnityEngine.CullingGroup;
 
 public enum PlayerAnimState
 {
@@ -14,15 +16,16 @@ public enum PlayerAnimState
 
 public class State
 {
-    private int maxHP;
-    private int curHP;
-    private int maxMP;
-    private int curMP;
+    public int maxHP;
+    public int curHP;
+    public int maxMP;
+    public int curMP;
 
     public float speed;
-    private float defend;
-    private float attack;
-    private List<string> buffList;
+    public float defend;
+    public float attack;
+
+    public Action OnStateChanged;
 
     public State()
     {
@@ -33,71 +36,65 @@ public class State
         curMP = 100;
         speed = 10f;
         defend = 50f;
-        attack = 100;
+        attack = 500f;
     }
 
     public void EquipItem(Equipment item)
     {
+        Debug.Log($"Equip Item {item.itemName}");
         switch (item.subType)
         {
             case EquipmentType.Head:
                 {
                     defend += item.value;
-                    Debug.Log("Head 장착");
                     break;
                 }
             case EquipmentType.Weapon:
                 {
                     attack += item.value;
-                    Debug.Log("Weapon 장착");
                     break;
                 }
             case EquipmentType.Cloth:
                 {
                     maxHP += (int)item.value;
-                    Debug.Log("Cloth 장착");
                     break;
                 }
             case EquipmentType.Foot:
                 {
                     speed += item.value;
-                    Debug.Log("Foot 장착");
                     break;
                 }
         }
-        PrintCurrentState();
+        NotifyStateChange();
     }
 
     public void DetachItem(Equipment item)
     {
+        Debug.Log($"Detach Item {item.itemName}");
         switch (item.subType)
         {
             case EquipmentType.Head:
             {
                 defend -= item.value;
-                Debug.Log("Head 탈착");
                 break;
             }
             case EquipmentType.Weapon:
             {
                 attack -= item.value;
-                Debug.Log("Weapon 탈착");
                 break;
             }
             case EquipmentType.Cloth:
             {
                 maxHP -= (int)item.value;
-                Debug.Log("Cloth 탈착");
                 break;
             }
             case EquipmentType.Foot:
             {
                 speed -= item.value;
-                Debug.Log("Foot 탈착");
                 break;
             }
         }
-        PrintCurrentState();
+        NotifyStateChange();
     }
 
     public void UesConsumable(Consumable itemData)
@@ -107,30 +104,29 @@ public class State
             case ConsumableType.HP:
                 {
                     curHP += (int)itemData.value;
-                    if (curHP > maxHP) curHP = maxHP;
+                    if (curHP >= maxHP) curHP = maxHP;
                     break;
                 }
             case ConsumableType.MP:
                 {
                     curMP += (int)itemData.value;
-                    if (curMP > maxMP) curMP = maxMP;
+                    if (curMP >= maxMP) curMP = maxMP;
                     break;
                 }
             case ConsumableType.SpeedUp:
                 {
-                    buffList.Add("SpeedUP");
-                    Debug.Log("SpeedUP 버프 적용");
-                    //코루틴 혹은 3분 버프 적용 파트[이후]
-                    //------------------------------------
+                    speed += itemData.value;
+                    float duration = 10f;
+                    PlayerController.myBuffManager.OnBuffItem(itemData, duration);
                     break;
                 }
         }
-        PrintCurrentState();
+        NotifyStateChange();
     }
 
-    public void PrintCurrentState()
+    private void NotifyStateChange()
     {
-        Debug.Log($"Current State Print_ MAX HP : {maxHP}, MAX MP : {maxMP}, Speed : {speed}, Defend : {defend}, Attack : {attack}");
+        OnStateChanged?.Invoke();
     }
 }
 
@@ -138,6 +134,11 @@ public class State
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController player { get; private set; }
+    public static Inventory myInventory;
+    public static EquipmentWindow myEquipments;
+    public static ActionBar myKeyboard;
+    public static BuffManager myBuffManager;
+    public State myState;
 
     private void Awake()
     {
@@ -150,6 +151,15 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        InitUI();
+    }
+
+    void InitUI()
+    {
+        myInventory = FindAnyObjectByType<Inventory>();
+        myEquipments = FindAnyObjectByType<EquipmentWindow>();
+        myKeyboard = FindAnyObjectByType<ActionBar>();
+        myBuffManager = FindAnyObjectByType<BuffManager>();
     }
 
     private Animator animator;
@@ -158,15 +168,13 @@ public class PlayerController : MonoBehaviour
     Transform CamDir;
     public Transform SpawnPos;
 
-    public float moveSpeed = 5f;
+    private float moveSpeed;
     private CharacterController controller;
     
     private RaycastHit hit;
     public float maxSlopeAngle = 45f;
     public float gravity = 30f;
     private Vector3 moveDirection;
-
-    private State myState;
 
     //Ground Checking 
     /*
@@ -178,20 +186,23 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        // isGrounded = false;
         myState = new State();
         controller = GetComponent<CharacterController>();
         animator = transform.GetChild(0).GetComponent<Animator>();
-        //transform.position = SpawnPos.position;
         currentAnimState = PlayerAnimState.Idle;
+        moveSpeed = myState.speed;
+
+        // isGrounded = false;
+        //transform.position = SpawnPos.position;
     }
 
     void Update()
     {
         Move();
-       // isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) Player_Attack();
+        // isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) AttackHandler();
         UpdateAnim();
+        CheckAttack();
     }
 
     void Move()
@@ -206,7 +217,7 @@ public class PlayerController : MonoBehaviour
         cameraRight.y = 0;
 
         Vector3 movement = cameraRight * moveHorizontal + cameraForward * moveVertical;
-        movement = Vector3.ClampMagnitude(movement, 1);         //대각선 이동시 값 보정.
+        movement = Vector3.ClampMagnitude(movement, 1);
 
         bool isOnSlope = checkSlope();
         Vector3 adjustedMovement = isOnSlope ? AdjustDirectionToSlope(movement) : movement;
@@ -269,13 +280,11 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("Idle", currentAnimState == PlayerAnimState.Idle);
         animator.SetBool("Walk", currentAnimState == PlayerAnimState.Walk);
-        animator.SetBool("Attack1", currentAnimState == PlayerAnimState.Attack1);
     }
 
-    void Player_Attack()
+    void AttackHandler()
     {
-        Debug.Log("Player Attack!!");
-        currentAnimState = PlayerAnimState.Attack1;
+        animator.SetTrigger("ComboAttack");
     }
 
     void Player_Damaged()
@@ -288,12 +297,76 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Item")
         {
             Destroy(other.gameObject);
-            Inventory.myInventory.GetItem(other.gameObject);
+            myInventory.GetItem(other.gameObject);
         }
     }
 
-    public State GetMyState()
+    //Attack 처리.
+    //나중에 무기에 따라 공격 범위 세팅하기.
+    public float attackRange = 1.5f;                // 공격 범위
+    
+    private void CheckAttack()
     {
-        return myState;
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Attack1"))
+        {
+            OnAttackHit1();
+        }
+
+        if (stateInfo.IsName("Attack2"))
+        {
+            OnAttackHit2();
+
+        }
+    }
+
+    public void OnAttackHit1()
+    {
+        PlayerAttack playerAttack = GetComponentInChildren<PlayerAttack>();
+
+        foreach (GameObject monster in playerAttack.getAttackableMonster)
+        {
+            TEST_MonsterController monsterScript = monster.GetComponent<TEST_MonsterController>();
+            if (monsterScript != null)
+            {
+                monsterScript.TakeDamage((int)myState.attack);
+            }
+        }
+    }
+
+    public void OnAttackHit2()
+    {
+        PlayerAttack playerAttack = GetComponentInChildren<PlayerAttack>();
+
+        foreach (GameObject monster in playerAttack.getAttackableMonster)
+        {
+            TEST_MonsterController monsterScript = monster.GetComponent<TEST_MonsterController>();
+            if (monsterScript != null)
+            {
+                monsterScript.TakeDamage((int)myState.attack);
+            }
+        }
+    }
+
+    //장비처리 코드
+    public Transform weaponTransform;
+    
+    public void SetEquipment(GameObject item)
+    {
+        if(weaponTransform.childCount > 0)
+        {
+            Destroy(weaponTransform.GetChild(0).gameObject);
+        }
+
+        GameObject newItem = Instantiate(item, weaponTransform);
+
+        Destroy(newItem.GetComponent<DroppedItemAnimation>());                  //이후에는 아이템이 드롭되었을 때 해당 컴포넌트를 추가하는 방식
+        Destroy(newItem.GetComponent<Equipment_DroppedItemSC>());
+        Destroy(newItem.GetComponent<Collider>());
+    }
+
+    public void CleanEquipment()
+    {
+        Destroy(weaponTransform.GetChild(0).gameObject);
     }
 }

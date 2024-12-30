@@ -35,9 +35,4 @@ public class EquipmentItemSC : ItemDataSC
             iconImg.sprite = equipmentItem.icon;           // 아이콘 설정
         }
     }
-
-    public void UpdatePlayerStateCallback()
-    {
-
-    }
 }
