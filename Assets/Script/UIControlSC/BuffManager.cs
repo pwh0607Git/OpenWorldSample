@@ -37,7 +37,6 @@ public class BuffManager : MonoBehaviour
         }
     }
 
-    //소비아이템을 통한 버프 On
     public void OnBuffItem(Consumable itemData, float duration)
     {
         GameObject existingBuff = CheckExistingBuff(itemData.icon);

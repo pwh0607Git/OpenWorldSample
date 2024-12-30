@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -55,69 +52,32 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         canvasGroup.blocksRaycasts = true;
 
         // 슬롯별 처리
-        if (originalParent.GetComponent<DragAndDropSlot>() is ActionBarSlot)
+        if (originalParent.GetComponent<DragAndDropSlot>() is InventorySlot)
         {
-            if (!HandleActionBarSlot(dropTarget)) return;
+            if (!HandleInventorySlot(dropTarget, itemData))
+            {
+                ResetToOriginalSlot();
+                return;
+            }
         }
-        else if (originalParent.GetComponent<DragAndDropSlot>() is InventorySlot)
+        else if (originalParent.GetComponent<DragAndDropSlot>() is ActionBarSlot)
         {
-            if(!HandleInventorySlot(dropTarget, itemData)) return;
+            if (!HandleActionBarSlot(dropTarget)) {
+                ResetToOriginalSlot();
+                return;
+            } 
         }
         else if (originalParent.GetComponent<DragAndDropSlot>() is EquipmentSlot)
         {
-            if(!HandleEquipmentSlot(dropTarget, itemData)) return;
+            if(!HandleEquipmentSlot(dropTarget, itemData))
+            {
+                ResetToOriginalSlot();
+                return;
+            }
         }
 
         // 슬롯 동기화
         dropTarget.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
-    }
-
-    //각각의 슬롯 처리
-    private bool HandleActionBarSlot(Transform dropTarget)
-    {
-        DragAndDropSlot dropSlot = dropTarget.GetComponent<DragAndDropSlot>();
-        
-        if (dropSlot == null)
-        {
-            // dropTarget 자체에 슬롯이 없으면 부모 계층에서 가져오기
-            dropSlot = dropTarget.GetComponentInParent<DragAndDropSlot>();
-        }
-
-        if (dropSlot == null)
-        {
-            // 유효하지 않은 슬롯인 경우 원래 슬롯으로 복귀
-            ResetToOriginalSlot();
-            return false;
-        }
-
-        bool hasItem = dropSlot.GetCurrentItem() != null;
-        //actionBar 기준
-        if (dropSlot is ActionBarSlot)
-        {
-            if(!hasItem)
-            {
-                //ActionBar -> ActionBar[빈] : 이동
-                Debug.Log("ActionBar -> ActionBar[빈]");
-                TransformItemIcon(dropTarget);
-            }
-            else
-            {
-                //ActionBar -> ActionBar[아이템이 할당된 슬롯]
-                Debug.Log("ActionBar -> ActionBar[아이템이 할당된 슬롯]");
-                Transform changeItem = dropTarget.GetComponentInChildren<ItemIconController>().transform;            //아이템 아이콘 컴포넌트를 가지고있는 오브젝트의 Transform 가져오기
-                SwapItemIcon(transform, changeItem);
-            }
-        }else if(dropSlot is InventorySlot)
-        {
-            //ActionBar -> Inventory
-            //그냥 제거.
-            Destroy(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        return true;
     }
 
     private bool HandleInventorySlot(Transform dropTarget, ItemData itemData)
@@ -126,13 +86,10 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
         if (dropSlot == null)
         {
+            //dropTarget 자체에 슬롯이 없으면 부모 계층에서 가져오기
             dropSlot = dropTarget.GetComponentInParent<DragAndDropSlot>();
-        }
 
-        if (dropSlot == null)
-        {
-            ResetToOriginalSlot();
-            return false;
+            if (dropSlot == null) return false;
         }
 
         bool hasItem = dropSlot.GetCurrentItem() != null;
@@ -144,14 +101,14 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
             Debug.Log("Inventory -> ActionBar");
             if (itemData is Consumable consumable && consumable.isPresetting)
             {
-                ResetToOriginalSlot();
                 return false;
             }
             else
             {
                 DuplicateItemIcon(dropTarget);
             }
-        }else if(dropSlot is InventorySlot inventorySlot)
+        }
+        else if (dropSlot is InventorySlot inventorySlot)
         {
             if (!hasItem)
             {
@@ -164,15 +121,15 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
                 //Inventory -> Inventory[아이템이 할당 된 Slot]
                 Debug.Log("Inventory -> Inventory[아이템이 할당 된 Slot]");
                 Transform changeItem = dropTarget.GetComponentInChildren<ItemIconController>().transform;            //아이템 아이콘 컴포넌트를 가지고있는 오브젝트의 Transform 가져오기
+
                 SwapItemIcon(transform, changeItem);
             }
         }
-        else if(dropSlot is EquipmentSlot equipmentSlot)
+        else if (dropSlot is EquipmentSlot equipmentSlot)
         {
             if (!equipmentSlot.CheckEquipmentItem(gameObject))
             {
                 Debug.Log($"{gameObject.name}은 장비 아이템이 아닙니다.");
-                ResetToOriginalSlot();
                 return false;
             }
 
@@ -202,14 +159,54 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
             }
             else
             {
-                ResetToOriginalSlot();
                 return false;
             }
         }
         else
         {
-            ResetToOriginalSlot();
             return false;
+        }
+        return true;
+    }
+
+    //각각의 슬롯 처리
+    private bool HandleActionBarSlot(Transform dropTarget)
+    {
+        DragAndDropSlot dropSlot = dropTarget.GetComponent<DragAndDropSlot>();
+        
+        if (dropSlot == null)
+        {
+            //dropTarget 자체에 슬롯이 없으면 부모 계층에서 가져오기
+            dropSlot = dropTarget.GetComponentInParent<DragAndDropSlot>();
+
+            if (dropSlot == null) return false;
+        }
+
+        bool hasItem = dropSlot.GetCurrentItem() != null;
+        //actionBar 기준
+        if (dropSlot is ActionBarSlot)
+        {
+            if(!hasItem)
+            {
+                //ActionBar -> ActionBar[빈] : 이동
+                Debug.Log("ActionBar -> ActionBar[빈]");
+                TransformItemIcon(dropTarget);
+            }
+            else
+            {
+                //ActionBar -> ActionBar[아이템이 할당된 슬롯]
+                Debug.Log("ActionBar -> ActionBar[아이템이 할당된 슬롯]");
+                Transform changeItem = dropTarget.GetComponentInChildren<ItemIconController>().transform;            //아이템 아이콘 컴포넌트를 가지고있는 오브젝트의 Transform 가져오기
+                SwapItemIcon(transform, changeItem);
+            }
+        }else if(dropSlot is InventorySlot)
+        {
+            //ActionBar -> Inventory
+            Destroy(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
         return true;
     }
@@ -220,15 +217,10 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
         if (dropSlot == null)
         {
-            // dropTarget 자체에 슬롯이 없으면 부모 계층에서 가져오기
+            //dropTarget 자체에 슬롯이 없으면 부모 계층에서 가져오기
             dropSlot = dropTarget.GetComponentInParent<DragAndDropSlot>();
-        }
 
-        if (dropSlot == null)
-        {
-            // 유효하지 않은 슬롯인 경우 원래 슬롯으로 복귀
-            ResetToOriginalSlot();
-            return false;
+            if (dropSlot == null) return false;
         }
 
         //조건
@@ -244,7 +236,6 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         }
         else
         {
-            ResetToOriginalSlot();
             return false;
         }
         return true;
@@ -256,11 +247,16 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         transform.SetParent(slot.transform);
     }
 
+    //item1은 현재 드래그한 아이템
+    //item2은 슬롯에 들어있는 아이템
     private void SwapItemIcon(Transform item1, Transform item2)
     {
-        Transform newParent = item2.parent;
-        item1.SetParent(newParent);
-        ResetToOriginalSlot();
+        item1.SetParent(item2.parent);
+
+        DragAndDropSlot slot = GetSlot(originalParent);
+        slot.AssignCurrentItem(item2.gameObject);
+        item2.SetParent(originalParent);
+
         item2.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 
@@ -291,5 +287,21 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
     {
         Consumable itemData = GetComponent<ItemDataSC>().GetItem as Consumable;
         itemData.isPresetting = false;
+    }
+
+    public DragAndDropSlot GetSlot(Transform dropTarget)
+    {
+        //아이템이 할당되어있는 슬롯을 가져오는 메서드.
+        DragAndDropSlot slot = dropTarget.GetComponent<DragAndDropSlot>();
+
+        if (slot == null)
+        {
+            //dropTarget 자체에 슬롯이 없으면 부모 계층에서 가져오기
+            slot = dropTarget.GetComponentInParent<DragAndDropSlot>();
+
+            if (slot == null) return null;
+        }
+
+        return slot;
     }
 }

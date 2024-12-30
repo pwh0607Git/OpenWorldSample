@@ -37,7 +37,6 @@ public class BuffIconTimer : MonoBehaviour
             timerRunning = false;
             Destroy(gameObject);
         }
-
         UpdateBuffState();
     }
 

@@ -23,7 +23,7 @@ public class PlayerStates : MonoBehaviour
         myState = PlayerController.player.myState;
         HP_Image = HP_Bar.GetComponent<Image>();
         MP_Image = MP_Bar.GetComponent<Image>();
-        myState.OnStateChanged += UpdateStateUI;
+        //myState.OnStateChanged += UpdateStateUI;
     }
 
     public void UpdateStateUI()
