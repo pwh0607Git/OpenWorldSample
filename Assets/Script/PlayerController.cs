@@ -41,7 +41,6 @@ public class State
 
     public void EquipItem(Equipment item)
     {
-        Debug.Log($"Equip Item {item.itemName}");
         switch (item.subType)
         {
             case EquipmentType.Head:
@@ -70,7 +69,6 @@ public class State
 
     public void DetachItem(Equipment item)
     {
-        Debug.Log($"Detach Item {item.itemName}");
         switch (item.subType)
         {
             case EquipmentType.Head:
@@ -304,26 +302,40 @@ public class PlayerController : MonoBehaviour
     //Attack 처리.
     //나중에 무기에 따라 공격 범위 세팅하기.
     public float attackRange = 1.5f;                // 공격 범위
-    
+    public bool isAttacking = false;                // 데미지 중첩 방지용.
+
     private void CheckAttack()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Attack1"))
-        {
-            OnAttackHit1();
-        }
 
-        if (stateInfo.IsName("Attack2"))
+        if (!isAttacking)
         {
-            OnAttackHit2();
+            if (stateInfo.IsName("Attack1"))
+            {
+                OnAttackHit1();
+            }
 
+            if (stateInfo.IsName("Attack2"))
+            {
+                OnAttackHit2();
+            }
+            StartCoroutine(PlayerAttackHandler());
         }
+    }
+
+    IEnumerator PlayerAttackHandler()
+    {
+        float fixedTime = 0.5f;
+        yield return new WaitForSeconds(fixedTime);
+
+        isAttacking = false;
     }
 
     public void OnAttackHit1()
     {
         PlayerAttack playerAttack = GetComponentInChildren<PlayerAttack>();
 
+        isAttacking = true;
         foreach (GameObject monster in playerAttack.getAttackableMonster)
         {
             TEST_MonsterController monsterScript = monster.GetComponent<TEST_MonsterController>();
@@ -338,6 +350,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerAttack playerAttack = GetComponentInChildren<PlayerAttack>();
 
+        isAttacking = true;
         foreach (GameObject monster in playerAttack.getAttackableMonster)
         {
             TEST_MonsterController monsterScript = monster.GetComponent<TEST_MonsterController>();
@@ -360,7 +373,6 @@ public class PlayerController : MonoBehaviour
 
         GameObject newItem = Instantiate(item, weaponTransform);
 
-        Destroy(newItem.GetComponent<DroppedItemAnimation>());                  //이후에는 아이템이 드롭되었을 때 해당 컴포넌트를 추가하는 방식
         Destroy(newItem.GetComponent<Equipment_DroppedItemSC>());
         Destroy(newItem.GetComponent<Collider>());
     }
