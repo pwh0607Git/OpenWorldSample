@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UIElements;
 
 public class TEST_MonsterController : MonoBehaviour
@@ -47,6 +48,36 @@ public class TEST_MonsterController : MonoBehaviour
         if (monsterCurHP <= 0 && !isDown)
         {
             Down();
+        }
+
+        if (isWaiting)
+        {
+            waitTimer -= Time.deltaTime;
+            if (waitTimer <= 0f)
+            {
+                //monsterController.ChangeState(MonsterAnimState.Walk);
+                isWaiting = false;
+                MoveToRandomPosition();
+            }
+        }
+    }
+
+    //이동
+    private bool isWaiting = false;
+    private float waitTimer = 0.0f;
+    public float waitingTime = 2.0f;            //특정 지점으로 이동으 2초뒤에 이동한다.
+
+    private void MoveToRandomPosition()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
+        randomDirection += transform.position;
+
+        //NavMesh를 통해 몬스터의 이동범위에서 가장 가까운 유효 위치로 이동시킬것.
+        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, monsterData.movingAreaRedius, NavMesh.AllAreas))
+        {
+            // 3. 유효한 위치가 발견되면 `NavMeshAgent`의 목적지를 해당 위치로 설정.
+            //agent.destination = hit.position;
+        
         }
     }
 
@@ -115,16 +146,8 @@ public class TEST_MonsterController : MonoBehaviour
         return false;
     }
 
-    private bool IsMovingArea()
-    {
-        float distance = Vector3.Distance(transform.position, originalPosition);
-
-        return distance < monsterData.movingArea;
-    }
-
     private void MoveToward(Vector3 destination)
     {
-        //현재 공격중이라면 무시...
         if (!isAttackingTarget)
         {
             animator.SetBool("Walk", true);
@@ -139,7 +162,6 @@ public class TEST_MonsterController : MonoBehaviour
         }
     }
 
-    //UI 세팅
     public void SetMonsterUI(MonsterStateUIController monsterUI)
     {
         this.monsterUI = monsterUI;
@@ -154,9 +176,18 @@ public class TEST_MonsterController : MonoBehaviour
         StartCoroutine(Coroutine_TakenDamage(damage));
     }
 
+    //****** 피데미지 출력
+    GameObject damageTextPrefab;
+
+    void makeDamageEffect(int damage)
+    {
+        //데미지 출력 메서드
+        GameObject damageTextInstance = Instantiate(damageTextPrefab);
+    }
+
     float noDamageTime = 0.4f;
-    private bool isMonsterAttackCoolDown = false;           //현재 몬스터의 공격 쿨타임이 지나가고 있는가...
-    private float monsterAttackCooldownTime = 5f;         //몬스터는 공격이 완료된 후 1초 뒤에 공격할 수 있다.
+    private bool isMonsterAttackCoolDown = false;          
+    private float monsterAttackCooldownTime = 2f;         
 
     private IEnumerator Coroutine_TakenDamage(int damage)
     {

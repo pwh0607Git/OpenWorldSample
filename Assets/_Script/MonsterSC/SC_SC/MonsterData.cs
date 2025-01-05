@@ -34,7 +34,8 @@ public class MonsterData : ScriptableObject
     
     //이동
     public float moveSpeed;
-    public float movingArea = 100f;             //이동 가능 범위.
+    public float movableArea = 50f;            //이동 가능 범위.
+    public float movingAreaRedius = 30f;        //idle 동안 이동하는 공간.
 
     //공격
     public float detectionRadius = 15f;         // 골렘이 캐릭터를 인식하는 범위
