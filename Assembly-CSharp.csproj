@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{9D58404B-166E-7728-3EA1-EC2C99810755}</ProjectGuid>
+    <ProjectGuid>{601A3EA1-F5C6-E41E-181B-98D2F2AB869A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -60,9 +60,125 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.40f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Script\CamearaConroller.cs" />
-    <Compile Include="Assets\Script\PlayerController.cs" />
-    <Compile Include="Assets\Script\StreamingSC\StreamingManager.cs" />
+    <Compile Include="Assets\_Script\StreamingSC\MapStreamingManager.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\PlayerRenderCameraController.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\MonsterUI\MonsterDamage.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\PlayerUIController.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\MonsterController.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\TEST_MonsterSpawner.cs" />
+    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\ItemDataSC.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\ItemIconController.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\EquipmentWindow.cs" />
+    <Compile Include="Assets\_Script\PlayerController.cs" />
+    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\ConsumableItemSC.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\ItemContoller.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\MonsterStateUIController.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
+    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\Consumable.cs" />
+    <Compile Include="Assets\_Script\StreamingSC\StreamingManager.cs" />
+    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\Consumable_DroppedItemSC.cs" />
+    <Compile Include="Assets\_Script\EnvironmentSC\CameraConroller.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
+    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\Equipment_DroppedItemSC.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\BuffIconTimer.cs" />
+    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\ItemData.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\InventorySlot.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
+    <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\MouseLook.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\SC_SC\MonsterData.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\PlayerStates.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
+    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\Equipment.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\InventoryIconsController.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
+    <Compile Include="Assets\_Script\EnvironmentSC\ObjectPooling.cs" />
+    <Compile Include="Assets\_Script\StreamingSC\MonsterManager.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\MonsterDetectionHandler.cs" />
+    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\EquipmentItemSC.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
+    <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\DragAndDropSlot.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\MonsterLootHandler.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\EquipmentSlot.cs" />
+    <Compile Include="Assets\_Script\StreamingSC\SectorMonsterSpawner.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\MonsterAI.cs" />
+    <Compile Include="Assets\_Script\PlayerAttack.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\ActionBar.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\InventoryItemIconManager.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\TEST_MonsterController.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\ActionBarSlot.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\Inventory.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\BuffManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\Gentleland\SteampunkUI\Fonts\Environment Maps\cc0.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\Gentleland\SteampunkUI\ThirdPartyLicenses\RobotoSlab Font License.txt" />
+    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
+    <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Plants_Shader.shader" />
+    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Anton OFL.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
+    <None Include="Assets\Gentleland\SteampunkUI\ThirdPartyLicenses\Arvo Font License.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\Polytope Studio\Lowpoly_Village\Sources\Shaders\PT_Buildings_Shader_PBR.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\Gentleland\SteampunkUI\Fonts\BebasNeue\OFL.txt" />
+    <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Opaque_Shader.shader" />
+    <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Foliage_Shader.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\Gentleland\SteampunkUI\Fonts\RobotoSlab\LICENSE.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Water_Shader.shader" />
+    <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Flowers_Shader.shader" />
+    <None Include="Assets\_Assets\UI\Dark_Brown_GUI_kit\Dark_Brown_GUI_kit.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\Gentleland\SteampunkUI\Fonts\Arvo\OFL.txt" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\Gentleland\SteampunkUI\ThirdPartyLicenses\Environment Maps cc0.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\Gentleland\SteampunkUI\ThirdPartyLicenses\BebasNeue Font License.txt" />
+    <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Rock_Shader.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
+    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Bangers - OFL.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -999,6 +1115,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Gentleland.SteampunkUI.DemoAndExample.csproj">
+      <Project>{5EBE753A-EF33-D16B-AA9B-47BC42A2A7DA}</Project>
+      <Name>Gentleland.SteampunkUI.DemoAndExample</Name>
+    </ProjectReference>
+    <ProjectReference Include="Gentleland.Utils.SteampunkUI.csproj">
+      <Project>{5EFBC17E-67CB-EDF2-2390-91827F91D4D1}</Project>
+      <Name>Gentleland.Utils.SteampunkUI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
