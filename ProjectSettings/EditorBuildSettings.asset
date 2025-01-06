@@ -6,15 +6,108 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/GameScene01.unity
+    path: Assets/_Scenes/GameScene.unity
     guid: e967026381575324980708374148d523
   - enabled: 1
-    path: Assets/Scenes/Sectors/Sector_0_1.unity
+    path: Assets/_Scenes/Sectors/Sector_2_1.unity
     guid: ef2b43df8d84c00478a943b441495835
   - enabled: 1
-    path: Assets/Scenes/Sectors/Sector_1_0.unity
-    guid: af64423be46a66c45b3b32cffe7dcf3e
+    path: Assets/_Scenes/Sectors/Sector_1_0.unity
+    guid: effcd405793f96747af116aef2b45305
   - enabled: 1
-    path: Assets/Scenes/Sectors/Sector_1_1.unity
-    guid: 55f20fd0f5a39ee4ba3736087b323e4d
+    path: Assets/_Scenes/Sectors/Sector_-1_-1.unity
+    guid: 94134a1aec2905c44aad8f8ed3a19819
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_-1_0.unity
+    guid: 317a929fcb3b400429ef3354e3c52979
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_-1_-2.unity
+    guid: 4929ae9cc4512db40a2dda2b3793848f
+  - enabled: 1
+    path: Assets/_Scenes/MapSector/MapSector_-1_-1.unity
+    guid: 5ea193b8999d7c94da9b9e5fa6db738a
+  - enabled: 1
+    path: Assets/_Scenes/MapSector/MapSector_-1_0.unity
+    guid: 37eb8699d2baebb45a6f5f64ad4baae2
+  - enabled: 1
+    path: Assets/_Scenes/MapSector/MapSector_-1_1.unity
+    guid: d3bb28e76d53c5b41bf11e7a36dec204
+  - enabled: 1
+    path: Assets/_Scenes/MapSector/MapSector_0_-1.unity
+    guid: 9724b590ca36e2648a1491156e3a49fb
+  - enabled: 1
+    path: Assets/_Scenes/MapSector/MapSector_0_0.unity
+    guid: 97ebbcb0380c66547a9cd0a89eb60130
+  - enabled: 1
+    path: Assets/_Scenes/MapSector/MapSector_0_1.unity
+    guid: 98af0d69b352d584aa5ce7ce14d1ddd2
+  - enabled: 1
+    path: Assets/_Scenes/MapSector/MapSector_1_-1.unity
+    guid: 571bceb9ef87c05409d9986bba16e885
+  - enabled: 1
+    path: Assets/_Scenes/MapSector/MapSector_1_0.unity
+    guid: 88b1add657f0848499461c53a086fcb1
+  - enabled: 1
+    path: Assets/_Scenes/MapSector/MapSector_1_1.unity
+    guid: 01e762b3fe98f014d9d04b35830d1ac4
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_-2_-1.unity
+    guid: 63f7b5cffbd6baa40b4f01a778a0a654
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_-2_-2.unity
+    guid: c682e773eeb1e054ebf774caccb2f123
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_-2_0.unity
+    guid: c985298b25b274642a2783cd31951d95
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_-2_1.unity
+    guid: 55c2e108418ba04438852b915aff2d1a
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_-2_2.unity
+    guid: a234d7bb3aa28df4a9ca781bbf0c1d77
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_0_-2.unity
+    guid: 19e52b0f793bcdf458b6353f08a6e0d9
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_1_-2.unity
+    guid: 6bb8ac9393c60954497a26bc4f81a1f3
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_2_-2.unity
+    guid: 957e161d9b1d759459f9a5cdcea320b2
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_-1_1.unity
+    guid: 8e1ae067be6d58244975d1e92fb4fd55
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_-1_2.unity
+    guid: 0a41eb6242fc26549aa02656c9c599f7
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_0_-1.unity
+    guid: 88f1e4f197c45724b946ad170b0ccd73
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_0_0.unity
+    guid: ef7d90964f6c834469e148f4619073f2
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_0_1.unity
+    guid: 4f839ca4770d92b4ea19a47a7ad9ea05
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_0_2.unity
+    guid: a3754dbb536a123479430eceaa0589c3
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_1_-1.unity
+    guid: cff15262128dca14ab6bc71382c5b1e5
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_1_1.unity
+    guid: 7cb1e64aa06113345aa69d4d8bb79071
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_1_2.unity
+    guid: 25f2592b1ca871944a2c2c605191a754
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_2_-1.unity
+    guid: 3d2420e082a317540a74abe435afddd3
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_2_0.unity
+    guid: 4cac6488e0a811c47a643528ac639f5d
+  - enabled: 1
+    path: Assets/_Scenes/Sectors/Sector_2_2.unity
+    guid: 6eb8ad122f235d2449ea8f2544b74ceb
   m_configObjects: {}

@@ -3,17 +3,28 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Monster-BlackBall
+  - Monster-Golem
+  - Monster-Mushroom
+  - Player_Sword
+  - Item
+  - InventorySlot
+  - ActionBarSlot
+  - EquipmentSlot
+  - InventoryWindow
+  - EquipmentWindow
+  - Monster
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Player
+  - Monster
+  - Level
   - 
   - 
   - 
