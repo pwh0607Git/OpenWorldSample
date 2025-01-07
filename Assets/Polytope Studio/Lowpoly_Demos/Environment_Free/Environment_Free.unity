@@ -252,13 +252,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.5
+  m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.78, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &139766769
 Transform:
   m_ObjectHideFlags: 0
@@ -268,12 +268,11 @@ Transform:
   m_GameObject: {fileID: 139766767}
   serializedVersion: 2
   m_LocalRotation: {x: 0.04314583, y: 0.7489485, z: -0.0490049, w: 0.6594036}
-  m_LocalPosition: {x: 25.08, y: 3.1, z: 68.8}
+  m_LocalPosition: {x: 25.08, y: 4, z: 68.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1589245845}
-  - {fileID: 913403054}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 7.4870005, y: 97.276, z: 0}
 --- !u!114 &139766770
@@ -643,68 +642,6 @@ Transform:
   - {fileID: 1143006926}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &913403053
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 139766769}
-    m_Modifications:
-    - target: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9188608849454181664, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-      propertyPath: m_Name
-      value: KnightCharacter
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
---- !u!4 &913403054 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8417139451256010650, guid: b24a22bcaeab35247842c0ab6ff9001e, type: 3}
-  m_PrefabInstance: {fileID: 913403053}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &996878104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1720,14 +1657,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1589245842}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1acb5eaee9100434abe8a188f0bd62ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 51763bafdae3792488a76927e0169d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 139766769}
-  rotationSpeed: 100
-  zoomSpeed: 5
-  minZoom: 3
-  maxZoom: 10
+  mouseSensitivity: 80
+  playerBody: {fileID: 139766769}
 --- !u!1001 &1590409431
 PrefabInstance:
   m_ObjectHideFlags: 0
