@@ -8,12 +8,12 @@ public class MonsterStateUIController : MonoBehaviour
 {
     MonsterData monsterData;
 
-    public TextMeshProUGUI monsterName;            //¸ó½ºÅÍ ÀÌ¸§.
-    public TextMeshProUGUI curHPTxt;               //ÇöÀç Ã¼·ÂÀ» txtÇü½ÄÀ¸·Î Ãâ·Â
+    public TextMeshProUGUI monsterName;            //ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½.
+    public TextMeshProUGUI curHPTxt;               //ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ï¿½ï¿½ txtï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 
     public Image HP_Bar;
 
-    public GameObject damageText;          //¸ó½ºÅÍ°¡ µ¥¹ÌÁö¸¦ ÀÔ¾úÀ» ¶§, Ãâ·ÂµÇ´Â µ¥¹ÌÁö ÀÌÆåÆ®.
+    public GameObject damageText;          //ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¾ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ÂµÇ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®.
 
     public void InitMonsterUI(MonsterData monsterData)
     {
