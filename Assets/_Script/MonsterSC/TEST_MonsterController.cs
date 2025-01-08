@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 public class TEST_MonsterController : MonoBehaviour
 {
@@ -174,6 +171,7 @@ public class TEST_MonsterController : MonoBehaviour
             return;
         }
         StartCoroutine(Coroutine_TakenDamage(damage));
+        monsterUI.ShowDamage(damage);
     }
 
     //****** 피데미지 출력

@@ -1,13 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEditor.Progress;
-using static UnityEngine.CullingGroup;
 
 public enum PlayerAnimState
 {
@@ -334,7 +327,6 @@ public class PlayerController : MonoBehaviour
     public void OnAttackHit1()
     {
         PlayerAttack playerAttack = GetComponentInChildren<PlayerAttack>();
-
         isAttacking = true;
         foreach (GameObject monster in playerAttack.getAttackableMonster)
         {

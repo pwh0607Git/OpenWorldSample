@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,32 +6,33 @@ public class MonsterStateUIController : MonoBehaviour
 {
     MonsterData monsterData;
 
-    public TextMeshProUGUI monsterName;            //ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½.
-    public TextMeshProUGUI curHPTxt;               //ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ï¿½ï¿½ txtï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    public TextMeshProUGUI monsterName;            //¸ó½ºÅÍ ÀÌ¸§.
+    public TextMeshProUGUI curHPText;               //ÇöÀç Ã¼·ÂÀ» txtÇü½ÄÀ¸·Î Ãâ·Â
 
     public Image HP_Bar;
 
-    public GameObject damageText;          //ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¾ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ÂµÇ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®.
+    public GameObject damageTextPrefab;          //¸ó½ºÅÍ°¡ µ¥¹ÌÁö¸¦ ÀÔ¾úÀ» ¶§, Ãâ·ÂµÇ´Â µ¥¹ÌÁö ÀÌÆåÆ®.
+    public Transform damageTextTransform;
 
     public void InitMonsterUI(MonsterData monsterData)
     {
-        GetComponent<RectTransform>().localPosition = Vector2.zero;
         this.monsterData = monsterData;
         monsterName.text = monsterData.monsterName;
+        
+        GetComponent<RectTransform>().localPosition = Vector2.zero;
         UpdateMonsterUI(monsterData.HP);
     }
 
     public void UpdateMonsterUI(int curHP)
     {
-        curHPTxt.text = curHP.ToString();
+        curHPText.text = curHP.ToString();
         HP_Bar.fillAmount = (float)curHP / monsterData.HP;
     }
 
     public void ShowDamage(int damage)
     {
-        /*
-        GameObject damageIcon = Instantiate(damageText);
-        damageIcon.GetComponent<MonsterDamage>().SetDamage(damage);
-        */
+        GameObject damageText = Instantiate(damageTextPrefab, damageTextTransform);
+        damageText.GetComponent<MonsterDamage>().SetDamage(damage);
+        damageText.SetActive(true);
     }
 }
