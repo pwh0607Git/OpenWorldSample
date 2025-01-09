@@ -1,10 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using Unity.VisualScripting;
-using UnityEditor.Build.Content;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerUIController : MonoBehaviour
 {
@@ -15,7 +9,7 @@ public class PlayerUIController : MonoBehaviour
 
     private void Start()
     {
-        //activeWindows = new Stack<GameObject>(); // ½ºÅÃ ÃÊ±âÈ­
+        //activeWindows = new Stack<GameObject>(); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         inventoryWindow.SetActive(false);
         equipmentWindow.SetActive(false);
     }

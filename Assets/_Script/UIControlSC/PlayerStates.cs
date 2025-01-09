@@ -1,13 +1,124 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.CullingGroup;
+
+
+public class State
+{
+    public int maxHP;
+    public int curHP;
+    public int maxMP;
+    public int curMP;
+
+    public float speed;
+    public float defend;
+    public float attack;
+
+    public Action OnStateChanged;
+
+    public State()
+    {
+        maxHP = 100;
+        curHP = 100;
+
+        maxMP = 100;
+        curMP = 100;
+        speed = 10f;
+        defend = 50f;
+        attack = 500f;
+    }
+
+    public void EquipItem(Equipment item)
+    {
+        switch (item.subType)
+        {
+            case EquipmentType.Head:
+                {
+                    defend += item.value;
+                    break;
+                }
+            case EquipmentType.Weapon:
+                {
+                    attack += item.value;
+                    break;
+                }
+            case EquipmentType.Cloth:
+                {
+                    maxHP += (int)item.value;
+                    break;
+                }
+            case EquipmentType.Foot:
+                {
+                    speed += item.value;
+                    break;
+                }
+        }
+        NotifyStateChange();
+    }
+
+    public void DetachItem(Equipment item)
+    {
+        switch (item.subType)
+        {
+            case EquipmentType.Head:
+            {
+                defend -= item.value;
+                break;
+            }
+            case EquipmentType.Weapon:
+            {
+                attack -= item.value;
+                break;
+            }
+            case EquipmentType.Cloth:
+            {
+                maxHP -= (int)item.value;
+                break;
+            }
+            case EquipmentType.Foot:
+            {
+                speed -= item.value;
+                break;
+            }
+        }
+        NotifyStateChange();
+    }
+
+    public void UesConsumable(Consumable itemData)
+    {
+        switch (itemData.subType)
+        {
+            case ConsumableType.HP:
+                {
+                    curHP += (int)itemData.value;
+                    if (curHP >= maxHP) curHP = maxHP;
+                    break;
+                }
+            case ConsumableType.MP:
+                {
+                    curMP += (int)itemData.value;
+                    if (curMP >= maxMP) curMP = maxMP;
+                    break;
+                }
+            case ConsumableType.SpeedUp:
+                {
+                    speed += itemData.value;
+                    float duration = 10f;
+                    PlayerController.myBuffManager.OnBuffItem(itemData, duration);
+                    break;
+                }
+        }
+        NotifyStateChange();
+    }
+
+    public void NotifyStateChange()
+    {
+        OnStateChanged?.Invoke();
+    }
+}
 
 public class PlayerStates : MonoBehaviour
 {
-    //ÀÌÈÄ¿¡ ½Ì±ÛÅæÀ¸·Î ¹Ù²ÜÁö °í¹Î...
     public GameObject HP_Bar;
     public GameObject MP_Bar;
 
@@ -16,14 +127,14 @@ public class PlayerStates : MonoBehaviour
 
     private State myState;
 
-    public Action<GameObject> OnBuffEnd; // ¹öÇÁ Á¾·á ½Ã ½ÇÇàÇÒ ÄÝ¹é
+    public Action<GameObject> OnBuffEnd; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¹ï¿½
 
     private void Start()
     {
         myState = PlayerController.player.myState;
         HP_Image = HP_Bar.GetComponent<Image>();
         MP_Image = MP_Bar.GetComponent<Image>();
-        //myState.OnStateChanged += UpdateStateUI;
+        myState.OnStateChanged += UpdateStateUI;
     }
 
     public void UpdateStateUI()

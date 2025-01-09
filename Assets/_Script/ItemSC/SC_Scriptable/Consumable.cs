@@ -17,7 +17,7 @@ public class Consumable : ItemData
     public bool isPresetting { get; set; }
     private int consumableCount;
     
-    public event Action OnConsumableUsed;           //¼Òºñ¾ÆÀÌÅÛ »ç¿ë/È¹µæ ÄÝ¹é.
+    public event Action OnConsumableUsed;           //ï¿½Òºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½/È¹ï¿½ï¿½ ï¿½Ý¹ï¿½.
 
     private void OnEnable()
     {
@@ -30,10 +30,8 @@ public class Consumable : ItemData
 
     public override void Use()
     {
-        Debug.Log($"CosumableItem »ç¿ë!");
         if (consumableCount <= 0)
         {
-            Debug.Log("ÇØ´ç ¾ÆÀÌÅÛÀÌ ¾ø½À´Ï´Ù.");
             return;
         }
 
