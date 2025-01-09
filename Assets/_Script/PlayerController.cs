@@ -7,119 +7,6 @@ public enum PlayerAnimState
     Idle, Walk, Jump, Attack1, Attack2, Damaged, Down
 }
 
-public class State
-{
-    public int maxHP;
-    public int curHP;
-    public int maxMP;
-    public int curMP;
-
-    public float speed;
-    public float defend;
-    public float attack;
-
-    public Action OnStateChanged;
-
-    public State()
-    {
-        maxHP = 100;
-        curHP = 100;
-
-        maxMP = 100;
-        curMP = 100;
-        speed = 10f;
-        defend = 50f;
-        attack = 500f;
-    }
-
-    public void EquipItem(Equipment item)
-    {
-        switch (item.subType)
-        {
-            case EquipmentType.Head:
-                {
-                    defend += item.value;
-                    break;
-                }
-            case EquipmentType.Weapon:
-                {
-                    attack += item.value;
-                    break;
-                }
-            case EquipmentType.Cloth:
-                {
-                    maxHP += (int)item.value;
-                    break;
-                }
-            case EquipmentType.Foot:
-                {
-                    speed += item.value;
-                    break;
-                }
-        }
-        NotifyStateChange();
-    }
-
-    public void DetachItem(Equipment item)
-    {
-        switch (item.subType)
-        {
-            case EquipmentType.Head:
-            {
-                defend -= item.value;
-                break;
-            }
-            case EquipmentType.Weapon:
-            {
-                attack -= item.value;
-                break;
-            }
-            case EquipmentType.Cloth:
-            {
-                maxHP -= (int)item.value;
-                break;
-            }
-            case EquipmentType.Foot:
-            {
-                speed -= item.value;
-                break;
-            }
-        }
-        NotifyStateChange();
-    }
-
-    public void UesConsumable(Consumable itemData)
-    {
-        switch (itemData.subType)
-        {
-            case ConsumableType.HP:
-                {
-                    curHP += (int)itemData.value;
-                    if (curHP >= maxHP) curHP = maxHP;
-                    break;
-                }
-            case ConsumableType.MP:
-                {
-                    curMP += (int)itemData.value;
-                    if (curMP >= maxMP) curMP = maxMP;
-                    break;
-                }
-            case ConsumableType.SpeedUp:
-                {
-                    speed += itemData.value;
-                    float duration = 10f;
-                    PlayerController.myBuffManager.OnBuffItem(itemData, duration);
-                    break;
-                }
-        }
-        NotifyStateChange();
-    }
-
-    private void NotifyStateChange()
-    {
-        OnStateChanged?.Invoke();
-    }
-}
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -291,11 +178,8 @@ public class PlayerController : MonoBehaviour
             myInventory.GetItem(other.gameObject);
         }
     }
-
-    //Attack Ã³¸®.
-    //³ªÁß¿¡ ¹«±â¿¡ µû¶ó °ø°İ ¹üÀ§ ¼¼ÆÃÇÏ±â.
-    public float attackRange = 1.5f;                // °ø°İ ¹üÀ§
-    public bool isAttacking = false;                // µ¥¹ÌÁö ÁßÃ¸ ¹æÁö¿ë.
+    public float attackRange = 1.5f;      
+    public bool isAttacking = false;
 
     private void CheckAttack()
     {
@@ -340,6 +224,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttackHit2()
     {
+        //StopCoroutine("Coroutine_PlayerAttack");
         PlayerAttack playerAttack = GetComponentInChildren<PlayerAttack>();
 
         isAttacking = true;
@@ -352,8 +237,14 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    private bool isDamaging = false;
+    public void PlayerTakeDamage(int damage){
+        myState.curHP -= damage;
+        Debug.Log($"{damage}ì˜ í”¼í•´ë¥¼ ì…ì—ˆë‹¤. í˜„ì¬ ë‚¨ì€ HP : {myState.curHP}");
+        animator.SetTrigger("Damaged");
+        myState.NotifyStateChange();
+    }
 
-    //ÀåºñÃ³¸® ÄÚµå
     public Transform weaponTransform;
     
     public void SetEquipment(GameObject item)

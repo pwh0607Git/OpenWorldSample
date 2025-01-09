@@ -14,7 +14,7 @@ public class TEST_MonsterController : MonoBehaviour
     private bool canTakeDamage = true;
     private bool isDown = false;
 
-    //ÇÃ·¹ÀÌ¾î¿ÍÀÇ »óÈ£ÀÛ¿ë¿ë ÇÃ·¡±×
+    //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½
     private bool isAttackingTarget;
     private bool isDetectingTarget = false;
     private bool isChaseingTarget;
@@ -32,7 +32,7 @@ public class TEST_MonsterController : MonoBehaviour
 
     private void Update()
     {
-        //°ø°Ý ´ë»óÀ» ¹ß°ßÇßÀ» ¶§.
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½.
         if (attackTarget != null)
         {
             HandlePlayerDetection();
@@ -59,45 +59,45 @@ public class TEST_MonsterController : MonoBehaviour
         }
     }
 
-    //ÀÌµ¿
+    //ï¿½Ìµï¿½
     private bool isWaiting = false;
     private float waitTimer = 0.0f;
-    public float waitingTime = 2.0f;            //Æ¯Á¤ ÁöÁ¡À¸·Î ÀÌµ¿À¸ 2ÃÊµÚ¿¡ ÀÌµ¿ÇÑ´Ù.
+    public float waitingTime = 2.0f;            //Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ 2ï¿½ÊµÚ¿ï¿½ ï¿½Ìµï¿½ï¿½Ñ´ï¿½.
 
     private void MoveToRandomPosition()
     {
         Vector3 randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
         randomDirection += transform.position;
 
-        //NavMesh¸¦ ÅëÇØ ¸ó½ºÅÍÀÇ ÀÌµ¿¹üÀ§¿¡¼­ °¡Àå °¡±î¿î À¯È¿ À§Ä¡·Î ÀÌµ¿½ÃÅ³°Í.
+        //NavMeshï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¿ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å³ï¿½ï¿½.
         if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, monsterData.movingAreaRedius, NavMesh.AllAreas))
         {
-            // 3. À¯È¿ÇÑ À§Ä¡°¡ ¹ß°ßµÇ¸é `NavMeshAgent`ÀÇ ¸ñÀûÁö¸¦ ÇØ´ç À§Ä¡·Î ¼³Á¤.
+            // 3. ï¿½ï¿½È¿ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ß°ßµÇ¸ï¿½ `NavMeshAgent`ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
             //agent.destination = hit.position;
         
         }
     }
 
-    //Ä³¸¯ÅÍ ÀÎ½Ä ¹üÀ§
-    //°ø°Ý ¹üÀ§´Â µû·Î ¼³Á¤ÇÏ±â.
+    //Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½Î½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½.
     public void SetAttackTarget(Transform target)
     {
         attackTarget = target;
     }
 
-    //Ä³¸¯ÅÍ°¡ ÃßÀû¹üÀ§¿¡ µé¾î¿Â »óÅÂÀÌ´Ù.
+    //Ä³ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½.
     private void HandlePlayerDetection()
     {
         float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
 
         if (distanceToTarget <= monsterData.attackableRadius)
         {
-            //Å¸°ÙÀÌ °ø°Ý ¹üÀ§¿¡ µé¾î¿ÍÀÖ´Â °æ¿ì.
+            //Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½.
             MonsterAttackHandler();
         }
         else
         {
-            //Å¸°ÙÀÌ ÀÎ½Ä¹üÀ§¿¡´Â µé¾î¿ÔÁö¸¸, °ø°Ý ¹üÀ§´Â ¹þ¾î³­ °æ¿ì.
+            //Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Î½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³­ ï¿½ï¿½ï¿½.
             if (attackTarget != null)
             {
                 ChasePlayer();
@@ -119,7 +119,7 @@ public class TEST_MonsterController : MonoBehaviour
         Vector3 targetDirection = attackTarget.position - transform.position;
         Quaternion targetAngle = Quaternion.LookRotation(attackTarget.position);
 
-        //»çÀÌ¿¡ º®ÀÌ ÀÖ´ÂÁö È®ÀÎÇÏ±â
+        //ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï±ï¿½
         if (ExistingObject(targetDirection, targetAngle)) {
             isDetectingTarget = false;
             return;
@@ -137,7 +137,7 @@ public class TEST_MonsterController : MonoBehaviour
     bool ExistingObject(Vector3 direction, Quaternion angle)
     {
         if(Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, monsterData.detectionRadius, LayerMask.GetMask("Level"))){
-            //Áß°£¿¡ º®ÀÌ ÀÖ´Ù¸é...
+            //ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½...
             return true;
         }
         return false;
@@ -174,12 +174,11 @@ public class TEST_MonsterController : MonoBehaviour
         monsterUI.ShowDamage(damage);
     }
 
-    //****** ÇÇµ¥¹ÌÁö Ãâ·Â
+    //****** ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     GameObject damageTextPrefab;
 
     void makeDamageEffect(int damage)
     {
-        //µ¥¹ÌÁö Ãâ·Â ¸Þ¼­µå
         GameObject damageTextInstance = Instantiate(damageTextPrefab);
     }
 
@@ -198,62 +197,56 @@ public class TEST_MonsterController : MonoBehaviour
         yield return new WaitForSeconds(noDamageTime);
         canTakeDamage = true;
     }
+    public void MonsterAttackHandler()
+    {
+        //ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ýµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç½ï¿½.
+        if (isDetectingTarget && !isAttackingTarget && !isMonsterAttackCoolDown)
+        {
+            StartMonsterAttack(); 
+        }
+    }
+
+    public void StartMonsterAttack(){
+        isAttackingTarget = true;
+        animator.SetBool("Walk", false);
+        animator.SetTrigger("Attack");
+    }
+
+    //ì• ë‹ˆë©”ì´ì…˜ ì´ë²¤íŠ¸.
+    public void PerformAttack(){
+         Collider[] hitTargets = Physics.OverlapSphere(transform.position, monsterData.attackDamageRadius);
+
+        foreach(var target in  hitTargets)
+        {
+            if (target.CompareTag("Player"))
+            {
+                Debug.Log($"{gameObject.name} hit Player!!");
+                target.GetComponentInChildren<PlayerController>().PlayerTakeDamage(10);
+            }
+        }
+        StartCoroutine(Coroutine_AttackCoolDown());
+    }
 
     private IEnumerator Coroutine_AttackCoolDown()
     {
         isMonsterAttackCoolDown = true;
         yield return new WaitForSeconds(monsterAttackCooldownTime);
         isMonsterAttackCoolDown = false;
-        Debug.Log("°ø°Ý ÄðÅ¸ÀÓ Á¾·á!");
-    }
-
-    public void MonsterAttackHandler()
-    {
-        //¸ó½ºÅÍ°¡ ÇÃ·¹ÀÌ¾î¸¦ ÀÎÁöÇÑ »óÅÂÀÌ°í µû·Î °ø°Ýµµ ÇÏÁö ¾ÊÀº »óÅÂ¿¡¼­¸¸ °ø°Ý ½Ç½Ã.
-        if (isDetectingTarget && !isAttackingTarget && !isMonsterAttackCoolDown)
-        {
-            isAttackingTarget = true;
-            StartCoroutine(Coroutine_MonsterAttack());
-        }
-    }
-
-    private IEnumerator Coroutine_MonsterAttack()
-    {
-        animator.SetBool("Walk", false);
-        animator.SetTrigger("Attack");
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        float animationDuration = stateInfo.length;
-
-        yield return new WaitForSeconds(animationDuration);
-
-        //°ø°Ý ¹üÀ§¿¡ Player°¡ Á¸ÀçÇÏ´ÂÁö...
-        Collider[] hitTargets = Physics.OverlapSphere(transform.position, monsterData.attackDamageRadius);
-
-        foreach(var target in  hitTargets)
-        {
-            if (target.CompareTag("Player"))
-            {
-                //Player¿¡°Ô ´ë¹ÌÁö ÁÖ±â
-                Debug.Log("Monster hit Player!!");
-            }
-        }
         isAttackingTarget = false;
-
-        //°ø°Ý Äð´Ù¿î ¼³Á¤ÇÏ±â.
-        StartCoroutine(Coroutine_AttackCoolDown());
     }
+
 
     public void Down()
     {
         isDown = true;
 
-        //ÀÌÈÄ ¸ó½ºÅÍÀÇ ¾Ö´Ï¸ÞÀÌ¼Ç ¸í Á¶Á¤.
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
         animator.SetTrigger("Down");
         AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
 
         Invoke("OnDownMonster", 1.5f);
         
-        //Àü¸®Ç° Ãâ·Â.
+        //ï¿½ï¿½ï¿½ï¿½Ç° ï¿½ï¿½ï¿½.
         MonsterLootHandler loots = transform.GetComponentInChildren<MonsterLootHandler>();
 
         if(loots != null)
