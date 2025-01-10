@@ -15,6 +15,7 @@ TagManager:
   - InventoryWindow
   - EquipmentWindow
   - Monster
+  - Floor
   layers:
   - Default
   - TransparentFX

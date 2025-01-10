@@ -18,12 +18,10 @@ public class TEST_MonsterSpawner : MonoBehaviour
     {
         float transX = -10f;
 
-        //현재 위치에 소환.
         foreach (var data in monsterDatas)
         {
             GameObject monster = Instantiate(data.monsterPrefab);
             TEST_MonsterController monsterController = monster.GetComponent<TEST_MonsterController>();
-
             monster.transform.position = new Vector3(transX, gameObject.transform.position.y, gameObject.transform.position.z);
             
             transX += 10f;
@@ -49,7 +47,6 @@ public class TEST_MonsterSpawner : MonoBehaviour
             stateUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, monsterHeight, 0);
         }
 
-        //controller에 ui참조 적용
         TEST_MonsterController monsterController = monster.GetComponent<TEST_MonsterController>();
         monsterController.SetMonsterUI(monsterStateUIController);
     }

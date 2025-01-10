@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class State
 {
     public int maxHP;
@@ -25,7 +24,7 @@ public class State
         curMP = 100;
         speed = 10f;
         defend = 50f;
-        attack = 500f;
+        attack = 100f;
     }
 
     public void EquipItem(Equipment item)

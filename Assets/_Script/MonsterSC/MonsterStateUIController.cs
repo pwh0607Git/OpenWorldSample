@@ -6,13 +6,17 @@ public class MonsterStateUIController : MonoBehaviour
 {
     MonsterData monsterData;
 
-    public TextMeshProUGUI monsterName;            //몬스터 이름.
-    public TextMeshProUGUI curHPText;               //현재 체력을 txt형식으로 출력
+    public TextMeshProUGUI monsterName;            
+    public TextMeshProUGUI curHPText;              
 
     public Image HP_Bar;
 
-    public GameObject damageTextPrefab;          //몬스터가 데미지를 입었을 때, 출력되는 데미지 이펙트.
+    public GameObject damageTextPrefab;          
     public Transform damageTextTransform;
+
+    void Update(){
+        gameObject.GetComponent<RectTransform>().LookAt(Camera.main.transform);
+    }
 
     public void InitMonsterUI(MonsterData monsterData)
     {
