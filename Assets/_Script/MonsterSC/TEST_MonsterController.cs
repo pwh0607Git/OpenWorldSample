@@ -14,10 +14,8 @@ public class TEST_MonsterController : MonoBehaviour
     private bool canTakeDamage = true;
     private bool isDown = false;
 
-    //�÷��̾���� ��ȣ�ۿ�� �÷���
     private bool isAttackingTarget;
     private bool isDetectingTarget = false;
-    private bool isChaseingTarget;
 
     private Transform attackTarget;
     private Vector3 originalPosition;
@@ -25,21 +23,21 @@ public class TEST_MonsterController : MonoBehaviour
     private void Start()
     {
         monsterCurHP = monsterData.HP;
-        animator = transform.GetComponent<Animator>();
         originalPosition = transform.position;
         attackTarget = null;
+        TryGetComponent(out animator);
+        originalPosition = GetComponentInChildren<ObjectSpawnInitController>().GetOriginalPosition();    
     }
 
     private void Update()
     {
-        //���� ����� �߰����� ��.
         if (attackTarget != null)
         {
             HandlePlayerDetection();
         }
         else
         {
-            ReturnToOriginPosition();
+           ReturnToOriginPosition();
         }
 
         if (monsterCurHP <= 0 && !isDown)
@@ -59,17 +57,20 @@ public class TEST_MonsterController : MonoBehaviour
         }
     }
 
-    //�̵�
+    private void SetOriginalPosition(){
+        originalPosition = GetComponentInChildren<ObjectSpawnInitController>().GetOriginalPosition();
+        Debug.Log(originalPosition);
+    }
+
     private bool isWaiting = false;
     private float waitTimer = 0.0f;
-    public float waitingTime = 2.0f;            //Ư�� �������� �̵��� 2�ʵڿ� �̵��Ѵ�.
+    public float waitingTime = 2.0f;
 
     private void MoveToRandomPosition()
     {
         Vector3 randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
         randomDirection += transform.position;
 
-        //NavMesh�� ���� ������ �̵��������� ���� ����� ��ȿ ��ġ�� �̵���ų��.
         if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, monsterData.movingAreaRedius, NavMesh.AllAreas))
         {
             // 3. ��ȿ�� ��ġ�� �߰ߵǸ� `NavMeshAgent`�� �������� �ش� ��ġ�� ����.
@@ -78,26 +79,21 @@ public class TEST_MonsterController : MonoBehaviour
         }
     }
 
-    //ĳ���� �ν� ����
-    //���� ������ ���� �����ϱ�.
     public void SetAttackTarget(Transform target)
     {
         attackTarget = target;
     }
 
-    //ĳ���Ͱ� ���������� ���� �����̴�.
     private void HandlePlayerDetection()
     {
         float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
 
         if (distanceToTarget <= monsterData.attackableRadius)
         {
-            //Ÿ���� ���� ������ �����ִ� ���.
             MonsterAttackHandler();
         }
         else
         {
-            //Ÿ���� �νĹ������� ��������, ���� ������ ��� ���.
             if (attackTarget != null)
             {
                 ChasePlayer();
@@ -119,7 +115,6 @@ public class TEST_MonsterController : MonoBehaviour
         Vector3 targetDirection = attackTarget.position - transform.position;
         Quaternion targetAngle = Quaternion.LookRotation(attackTarget.position);
 
-        //���̿� ���� �ִ��� Ȯ���ϱ�
         if (ExistingObject(targetDirection, targetAngle)) {
             isDetectingTarget = false;
             return;
@@ -137,7 +132,6 @@ public class TEST_MonsterController : MonoBehaviour
     bool ExistingObject(Vector3 direction, Quaternion angle)
     {
         if(Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, monsterData.detectionRadius, LayerMask.GetMask("Level"))){
-            //�߰��� ���� �ִٸ�...
             return true;
         }
         return false;

@@ -295,7 +295,8 @@ GameObject:
   - component: {fileID: 5981100774074380928}
   - component: {fileID: 6300995581140619990}
   - component: {fileID: 860681303303824025}
-  - component: {fileID: 1010419733175594896}
+  - component: {fileID: -2300008734168306330}
+  - component: {fileID: 2968013875797044529}
   m_Layer: 7
   m_Name: Bat
   m_TagString: Monster
@@ -333,7 +334,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: ce7374b0d548484488ab2e3987e659ef, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -357,8 +358,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterCurHP: 0
   waitingTime: 2
---- !u!65 &1010419733175594896
-BoxCollider:
+--- !u!114 &-2300008734168306330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096101378255670412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e707e7cd0852d1c41b47446161a0d62e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &2968013875797044529
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -372,11 +385,13 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.8, y: 0.5, z: 0.3}
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Height: 0.5
+  m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!1 &2309311707844874034
 GameObject:

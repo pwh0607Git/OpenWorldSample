@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -65,7 +64,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         myState = new State();
-        controller = GetComponent<CharacterController>();
+        TryGetComponent(out controller);
         animator = transform.GetChild(0).GetComponent<Animator>();
         currentAnimState = PlayerAnimState.Idle;
         moveSpeed = myState.speed;
@@ -165,11 +164,6 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("ComboAttack");
     }
 
-    void Player_Damaged()
-    {
-        currentAnimState = PlayerAnimState.Damaged;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Item")
@@ -238,11 +232,20 @@ public class PlayerController : MonoBehaviour
         }
     }
     private bool isDamaging = false;
+    private float noDamagingTime = 0.2f;            //0.초간 데미지 받지 않기...
     public void PlayerTakeDamage(int damage){
+        if(isDamaging) return;
+
         myState.curHP -= damage;
-        Debug.Log($"{damage}의 피해를 입었다. 현재 남은 HP : {myState.curHP}");
         animator.SetTrigger("Damaged");
         myState.NotifyStateChange();
+        StartCoroutine(Coroutine_NoDamage());
+    }
+
+    IEnumerator Coroutine_NoDamage(){
+        isDamaging = true;
+        yield return new WaitForSeconds(noDamagingTime);
+        isDamaging = false; 
     }
 
     public Transform weaponTransform;

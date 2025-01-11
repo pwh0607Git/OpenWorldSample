@@ -203,8 +203,8 @@ GameObject:
   - component: {fileID: 634011402}
   - component: {fileID: 634011405}
   m_Layer: 8
-  m_Name: Plane
-  m_TagString: Untagged
+  m_Name: Floor
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -373,27 +373,6 @@ Transform:
   - {fileID: 334565711}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1188369183
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874324166090637268}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4c4509fc32965114dabee4994915da58, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1250589564
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,7 +526,7 @@ Transform:
   m_GameObject: {fileID: 1412396044}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 9.25, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -588,7 +567,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7664203534702934821, guid: bb9f0de058c15b548a8634803f810b81, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 10.75
       objectReference: {fileID: 0}
     - target: {fileID: 7664203534702934821, guid: bb9f0de058c15b548a8634803f810b81, type: 3}
       propertyPath: m_LocalPosition.z
@@ -724,27 +703,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 300095d9b66555b4b84ee8314095268f, type: 3}
---- !u!95 &1483209283
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8750965564872908239}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4c4509fc32965114dabee4994915da58, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1580725640
 GameObject:
   m_ObjectHideFlags: 0
@@ -855,111 +813,6 @@ MonoBehaviour:
   zoomSpeed: 5
   minZoom: 3
   maxZoom: 10
---- !u!95 &1709614465
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8750965566620266408}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4c4509fc32965114dabee4994915da58, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!95 &1858906336
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 834515514400755358}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4c4509fc32965114dabee4994915da58, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!95 &1860655627
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5246923709758319080}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4c4509fc32965114dabee4994915da58, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!95 &2096186643
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8423721972403445014}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4c4509fc32965114dabee4994915da58, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!95 &2105342497
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 834515514754641995}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4c4509fc32965114dabee4994915da58, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2122821927
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,27 +844,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1250589565}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &2144352260
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5246923711124625190}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4c4509fc32965114dabee4994915da58, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &292297706328826449
 Transform:
   m_ObjectHideFlags: 0
@@ -1063,7 +895,6 @@ GameObject:
   - component: {fileID: 6732354977289637369}
   - component: {fileID: 2193158116498866306}
   - component: {fileID: 3568461618587806145}
-  - component: {fileID: 1858906336}
   m_Layer: 0
   m_Name: Potion Yellow Variant
   m_TagString: Item
@@ -1084,7 +915,6 @@ GameObject:
   - component: {fileID: 6732354976578204460}
   - component: {fileID: 2193158116089429591}
   - component: {fileID: 3568461619239507732}
-  - component: {fileID: 2105342497}
   m_Layer: 0
   m_Name: Potion Yellow Variant
   m_TagString: Item
@@ -1105,7 +935,6 @@ GameObject:
   - component: {fileID: 973886082428678948}
   - component: {fileID: 6910062940568835180}
   - component: {fileID: 1765169227923479249}
-  - component: {fileID: 1188369183}
   m_Layer: 0
   m_Name: Sword_Small
   m_TagString: Item
@@ -1539,7 +1368,6 @@ GameObject:
   - component: {fileID: 1279318848723272157}
   - component: {fileID: 8751764399582206540}
   - component: {fileID: 1540837635269939248}
-  - component: {fileID: 1860655627}
   m_Layer: 0
   m_Name: Potion Blue Variant
   m_TagString: Item
@@ -1560,7 +1388,6 @@ GameObject:
   - component: {fileID: 1279318847338102547}
   - component: {fileID: 8751764398819878018}
   - component: {fileID: 1540837634488741630}
-  - component: {fileID: 2144352260}
   m_Layer: 0
   m_Name: Potion Blue Variant
   m_TagString: Item
@@ -1850,7 +1677,6 @@ GameObject:
   - component: {fileID: 4911986098811453552}
   - component: {fileID: 4967826824171509641}
   - component: {fileID: 2322782637260156427}
-  - component: {fileID: 2096186643}
   m_Layer: 0
   m_Name: Sword_Big
   m_TagString: Item
@@ -1901,7 +1727,6 @@ GameObject:
   - component: {fileID: 5702229033512774469}
   - component: {fileID: 6330564835919237140}
   - component: {fileID: 1536017332802164123}
-  - component: {fileID: 1483209283}
   m_Layer: 0
   m_Name: Potion Red Variant
   m_TagString: Item
@@ -1922,7 +1747,6 @@ GameObject:
   - component: {fileID: 5702229034370144546}
   - component: {fileID: 6330564834156094067}
   - component: {fileID: 1536017332583507964}
-  - component: {fileID: 1709614465}
   m_Layer: 0
   m_Name: Potion Red Variant
   m_TagString: Item
