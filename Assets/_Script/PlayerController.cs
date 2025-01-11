@@ -6,7 +6,6 @@ public enum PlayerAnimState
     Idle, Walk, Jump, Attack1, Attack2, Damaged, Down
 }
 
-
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
@@ -65,7 +64,7 @@ public class PlayerController : MonoBehaviour
     {
         myState = new State();
         TryGetComponent(out controller);
-        animator = transform.GetChild(0).GetComponent<Animator>();
+        TryGetComponent(out animator);
         currentAnimState = PlayerAnimState.Idle;
         moveSpeed = myState.speed;
 
@@ -79,7 +78,6 @@ public class PlayerController : MonoBehaviour
         // isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) AttackHandler();
         UpdateAnim();
-        CheckAttack();
     }
 
     void Move()
@@ -173,34 +171,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     public float attackRange = 1.5f;      
-    public bool isAttacking = false;
-
-    private void CheckAttack()
-    {
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
-        if (!isAttacking)
-        {
-            if (stateInfo.IsName("Attack1"))
-            {
-                OnAttackHit1();
-            }
-
-            if (stateInfo.IsName("Attack2"))
-            {
-                OnAttackHit2();
-            }
-            StartCoroutine(Coroutine_PlayerAttack());
-        }
-    }
-
-    IEnumerator Coroutine_PlayerAttack()
-    {
-        float fixedTime = 0.5f;
-        yield return new WaitForSeconds(fixedTime);
-
-        isAttacking = false;
-    }
+    private bool isAttacking = false;
 
     public void OnAttackHit1()
     {
@@ -212,15 +183,15 @@ public class PlayerController : MonoBehaviour
             if (monsterScript != null)
             {
                 monsterScript.TakeDamage((int)myState.attack);
+                Debug.Log("Player Attack Hit1");
             }
         }
     }
 
     public void OnAttackHit2()
     {
-        //StopCoroutine("Coroutine_PlayerAttack");
         PlayerAttack playerAttack = GetComponentInChildren<PlayerAttack>();
-
+        
         isAttacking = true;
         foreach (GameObject monster in playerAttack.getAttackableMonster)
         {
@@ -228,9 +199,16 @@ public class PlayerController : MonoBehaviour
             if (monsterScript != null)
             {
                 monsterScript.TakeDamage((int)myState.attack);
+                Debug.Log("Player Attack Hit2");
             }
         }
     }
+
+    public void EndAttack()
+    {
+        isAttacking= false;
+    }
+
     private bool isDamaging = false;
     private float noDamagingTime = 0.2f;            //0.초간 데미지 받지 않기...
     public void PlayerTakeDamage(int damage){

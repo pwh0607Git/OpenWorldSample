@@ -6,8 +6,7 @@ public class MonsterStateUIController : MonoBehaviour
 {
     MonsterData monsterData;
 
-    public TextMeshProUGUI monsterName;            
-    public TextMeshProUGUI curHPText;              
+    public TextMeshProUGUI monsterName;
 
     public Image HP_Bar;
 
@@ -29,7 +28,6 @@ public class MonsterStateUIController : MonoBehaviour
 
     public void UpdateMonsterUI(int curHP)
     {
-        curHPText.text = curHP.ToString();
         HP_Bar.fillAmount = (float)curHP / monsterData.HP;
     }
 

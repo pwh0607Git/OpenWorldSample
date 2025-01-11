@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class EquipmentSlot : DragAndDropSlot
 {
-    public EquipmentType equipmentType;
+    public EquipmentType equipmentType;         //Inspector를 통해 장비 종류 설정
 
     public override void OnDrop(PointerEventData eventData)
     {

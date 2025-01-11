@@ -1,12 +1,10 @@
 using UnityEngine;
+
 public class ObjectSpawnInitController : MonoBehaviour
 {
-    private Vector3 originalPosition; 
-    void Start(){
-        SetOntheFloor();
-    }
+    public Vector3 originalPosition { get; set; }
 
-    void SetOntheFloor(){
+    public void SetOntheFloor(){
         Ray upRay = new Ray(transform.position, Vector3.up);
         Ray downRay = new Ray(transform.position, Vector3.down);
         RaycastHit hit;
@@ -19,10 +17,5 @@ public class ObjectSpawnInitController : MonoBehaviour
                 originalPosition = newSpawnPos;
             }
         }
-    }
-
-    public Vector3 GetOriginalPosition(){
-        Debug.Log($"originalposition : {originalPosition}");
-        return originalPosition;
     }
 }

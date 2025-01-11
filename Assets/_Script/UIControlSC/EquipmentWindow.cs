@@ -14,7 +14,7 @@ public class EquipmentWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         slots = new List<EquipmentSlot>();
     }
 
-    //슬롯창 체크.
+    //슬롯창 초기화
     private void AddEquipmentSlotRef()
     {
         foreach(Transform child in equipmentSlotContent.transform)

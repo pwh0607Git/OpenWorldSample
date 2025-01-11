@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -126,11 +128,21 @@ public class PlayerStates : MonoBehaviour
 
     private State myState;
 
-    public Action<GameObject> OnBuffEnd; // ���� ���� �� ������ �ݹ�
+    public Action<GameObject> OnBuffEnd;
 
     private void Start()
     {
-        myState = PlayerController.player.myState;
+        StartCoroutine(Coroutine_InitMyState());
+    }
+
+    IEnumerator Coroutine_InitMyState()
+    {
+        while (myState == null)
+        {
+            myState = PlayerController.player.myState;
+            yield return null;
+        }
+
         HP_Image = HP_Bar.GetComponent<Image>();
         MP_Image = MP_Bar.GetComponent<Image>();
         myState.OnStateChanged += UpdateStateUI;

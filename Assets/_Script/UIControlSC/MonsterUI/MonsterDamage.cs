@@ -14,7 +14,7 @@ public class MonsterDamage : MonoBehaviour
         timer = 0.0f;
         transform.localPosition = Vector3.zero;
         transform.localEulerAngles = Vector3.zero;
-        damageText.GetComponentInChildren<TextMeshPro>();
+        damageText = GetComponentInChildren<TextMeshPro>();
     }
 
     private void Update()

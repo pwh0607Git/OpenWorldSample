@@ -23,10 +23,10 @@ public class TEST_MonsterController : MonoBehaviour
     private void Start()
     {
         monsterCurHP = monsterData.HP;
-        originalPosition = transform.position;
         attackTarget = null;
         TryGetComponent(out animator);
-        originalPosition = GetComponentInChildren<ObjectSpawnInitController>().GetOriginalPosition();    
+        GetComponentInChildren<ObjectSpawnInitController>().SetOntheFloor();
+        originalPosition = GetComponentInChildren<ObjectSpawnInitController>().originalPosition;
     }
 
     private void Update()
@@ -58,7 +58,7 @@ public class TEST_MonsterController : MonoBehaviour
     }
 
     private void SetOriginalPosition(){
-        originalPosition = GetComponentInChildren<ObjectSpawnInitController>().GetOriginalPosition();
+        originalPosition = GetComponentInChildren<ObjectSpawnInitController>().originalPosition;
         Debug.Log(originalPosition);
     }
 
