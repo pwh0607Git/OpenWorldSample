@@ -20,7 +20,6 @@ public class Equipment : ItemData
         itemType = ItemType.Equipment;
     }
 
-    //장비 아이템은 장착을 의미...
     public override void Use(){
         State state = PlayerController.player.myState;
         PlayerController.player.SetEquipment(model);

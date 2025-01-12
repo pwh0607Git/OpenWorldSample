@@ -1180,6 +1180,7 @@ GameObject:
   - component: {fileID: 4129383714423638056}
   - component: {fileID: 1951736920353196579}
   - component: {fileID: 2945722862447373305}
+  - component: {fileID: 6919763586531851527}
   m_Layer: 7
   m_Name: Golem
   m_TagString: Monster
@@ -1202,7 +1203,7 @@ Transform:
   m_Children:
   - {fileID: 488653587145892593}
   - {fileID: 4900063966797638988}
-  - {fileID: 4976745886031575189}
+  - {fileID: 481964934865610477}
   - {fileID: 8132860302481719042}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1276,48 +1277,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e707e7cd0852d1c41b47446161a0d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &7020979640318755321
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4976745886031575189}
-  - component: {fileID: 7998657730650331139}
-  m_Layer: 7
-  m_Name: Loots
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4976745886031575189
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7020979640318755321}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8165323103463709439}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7998657730650331139
+--- !u!114 &6919763586531851527
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7020979640318755321}
+  m_GameObject: {fileID: 6659422466605757966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 655760e95c6f05248a7a577cce3c97ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7058183623944575213
@@ -1836,6 +1805,64 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0.12823176, z: -0.044749737}
     m_Extent: {x: 0.31050175, y: 0.31050175, z: 0.31050175}
   m_DirtyAABB: 0
+--- !u!1 &9030365071060053659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 481964934865610477}
+  - component: {fileID: 8038899962517374576}
+  - component: {fileID: 1031073150642448443}
+  m_Layer: 7
+  m_Name: Loots
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &481964934865610477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9030365071060053659}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8165323103463709439}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8038899962517374576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9030365071060053659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 655760e95c6f05248a7a577cce3c97ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 200
+--- !u!114 &1031073150642448443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9030365071060053659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9118238645310308296
 GameObject:
   m_ObjectHideFlags: 0

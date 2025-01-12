@@ -1,19 +1,41 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MonsterLootHandler : MonoBehaviour
 {
+    [Header("MonsterData")]
     MonsterData monsterData;
+
+    [Header("MonsterLoot")]
     List<LootEntry> lootEntries;
+
+    List<GameObject> loots;
 
     private void Start()
     {
+        loots = new List<GameObject>();
         monsterData = transform.parent.GetComponent<TEST_MonsterController>().MonsterData;
         
         if(monsterData != null)
         {
             MakeBasicLoot();
             MakeRandomLoot();
+        }
+        SetLootRef();
+
+        gameObject.SetActive(false);
+    }
+
+    void SetLootRef()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            if (child != null)
+            {
+                loots.Add(child.gameObject);
+            }
         }
     }
 
@@ -22,7 +44,6 @@ public class MonsterLootHandler : MonoBehaviour
         foreach (var loot in monsterData.basicLoot)
         {
             GameObject lootInstance = Instantiate(loot, transform);
-            lootInstance.SetActive(false);
         }
     }
 
@@ -33,28 +54,17 @@ public class MonsterLootHandler : MonoBehaviour
             if(randomNumber <= loot.dropRate)
             {
                 GameObject lootInstance = Instantiate(loot.item, transform);
-                lootInstance.SetActive(false);
             }
         }
     }
 
     public void ShootLoots()
     {
-        List<GameObject> loots = new List<GameObject>();
-
-        for(int i = 0; i < transform.childCount; i++)
-        {
-            Transform child = transform.GetChild(i);
-            if(child != null)
-            {
-                loots.Add(child.gameObject);
-            }
-        }
-
         foreach (var loot in loots)
         {
             loot.transform.SetParent(null);
-            loot.SetActive(true);
         }
+
+        Destroy(this.gameObject);
     }
 }

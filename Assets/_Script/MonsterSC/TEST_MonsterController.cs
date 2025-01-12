@@ -27,6 +27,8 @@ public class TEST_MonsterController : MonoBehaviour
         TryGetComponent(out animator);
         GetComponentInChildren<ObjectSpawnInitController>().SetOntheFloor();
         originalPosition = GetComponentInChildren<ObjectSpawnInitController>().originalPosition;
+
+        loots = transform.GetComponentInChildren<MonsterLootHandler>().gameObject;
     }
 
     private void Update()
@@ -229,23 +231,21 @@ public class TEST_MonsterController : MonoBehaviour
         isAttackingTarget = false;
     }
 
+    GameObject loots;
 
     public void Down()
     {
         isDown = true;
 
-        //���� ������ �ִϸ��̼� �� ����.
         animator.SetTrigger("Down");
         AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
 
         Invoke("OnDownMonster", 1.5f);
-        
-        //����ǰ ���.
-        MonsterLootHandler loots = transform.GetComponentInChildren<MonsterLootHandler>();
 
         if(loots != null)
         {
-            loots.ShootLoots();
+            loots.SetActive(true);
+            loots.GetComponent<MonsterLootHandler>().ShootLoots();
         }
     }
 

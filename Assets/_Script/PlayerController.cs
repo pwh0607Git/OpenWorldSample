@@ -161,15 +161,15 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetTrigger("ComboAttack");
     }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Item")
+        if (other.gameObject.CompareTag("Item"))
         {
             Destroy(other.gameObject);
             myInventory.GetItem(other.gameObject);
         }
     }
+
     public float attackRange = 1.5f;      
     private bool isAttacking = false;
 
