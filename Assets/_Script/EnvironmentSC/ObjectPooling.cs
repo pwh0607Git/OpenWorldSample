@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ObjectPooling : MonoBehaviour
 {
@@ -34,7 +30,7 @@ public class ObjectPooling : MonoBehaviour
         {
             GameObject instance = monsterPoolDictionary[tag].Dequeue();
 
-            //raycast- GroundLayer¿¡ ÇÑÇØ¼­¸¸ rayÄ³½ºÆ®°¡ Àû¿ë.
+            //raycast- GroundLayerï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ rayÄ³ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
             instance.transform.position = position;
             instance.transform.rotation = rotation;
             instance.SetActive(true);

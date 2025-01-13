@@ -1,4 +1,5 @@
 using System.Collections;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -39,7 +40,7 @@ public class TEST_MonsterController : MonoBehaviour
         }
         else
         {
-           ReturnToOriginPosition();
+           //ReturnToOriginPosition();
         }
 
         if (monsterCurHP <= 0 && !isDown)

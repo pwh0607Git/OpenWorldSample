@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MonsterLootHandler : MonoBehaviour
@@ -43,7 +42,7 @@ public class MonsterLootHandler : MonoBehaviour
     {
         foreach (var loot in monsterData.basicLoot)
         {
-            GameObject lootInstance = Instantiate(loot, transform);
+            Instantiate(loot, transform);
         }
     }
 
@@ -53,7 +52,7 @@ public class MonsterLootHandler : MonoBehaviour
             int randomNumber = Random.Range(0, 100);
             if(randomNumber <= loot.dropRate)
             {
-                GameObject lootInstance = Instantiate(loot.item, transform);
+                Instantiate(loot.item, transform);
             }
         }
     }
@@ -64,7 +63,5 @@ public class MonsterLootHandler : MonoBehaviour
         {
             loot.transform.SetParent(null);
         }
-
-        Destroy(this.gameObject);
     }
 }
