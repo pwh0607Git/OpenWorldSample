@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6678043722952626834}
+  - component: {fileID: 2031188872045244120}
   m_Layer: 7
   m_Name: body
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 390113324786730147}
   serializedVersion: 2
   m_LocalRotation: {x: 0.07994327, y: 0.22948462, z: 0.31910905, w: 0.9160324}
-  m_LocalPosition: {x: -2.938365e-10, y: 0.11182189, z: -0.04431961}
+  m_LocalPosition: {x: 0, y: 0.11182189, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -35,6 +36,27 @@ Transform:
   - {fileID: 6976379130406002227}
   m_Father: {fileID: 8904932602876775987}
   m_LocalEulerAnglesHint: {x: -0.0000008537736, y: 28.128584, z: 38.412586}
+--- !u!135 &2031188872045244120
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390113324786730147}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.25
+  m_Center: {x: 0, y: 0.1, z: 0.1}
 --- !u!1 &706586029809782394
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,8 +318,7 @@ GameObject:
   - component: {fileID: 6300995581140619990}
   - component: {fileID: 860681303303824025}
   - component: {fileID: -2300008734168306330}
-  - component: {fileID: 2968013875797044529}
-  - component: {fileID: 878553713264862276}
+  - component: {fileID: -6050497584984997254}
   m_Layer: 7
   m_Name: Bat
   m_TagString: Monster
@@ -371,30 +392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e707e7cd0852d1c41b47446161a0d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &2968013875797044529
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096101378255670412}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 0.5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.2, z: 0}
---- !u!54 &878553713264862276
+--- !u!54 &-6050497584984997254
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -413,11 +411,11 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -529,6 +527,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6869386002031627896}
   - component: {fileID: 7724009582369787350}
+  - component: {fileID: 5807599675270821752}
   m_Layer: 7
   m_Name: Loots
   m_TagString: Untagged
@@ -545,7 +544,7 @@ Transform:
   m_GameObject: {fileID: 2892402667590516778}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -563,6 +562,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 655760e95c6f05248a7a577cce3c97ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &5807599675270821752
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2892402667590516778}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.1
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!1 &3726974418326099220
 GameObject:
   m_ObjectHideFlags: 0

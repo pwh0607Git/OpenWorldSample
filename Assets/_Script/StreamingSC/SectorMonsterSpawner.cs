@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class SectorMonsterSpawner : MonoBehaviour
 {
@@ -65,11 +62,6 @@ public class SectorMonsterSpawner : MonoBehaviour
                     {
                         monsterInPosition[spawnPos] = monster;
                         monsterType.PlusCurCount();
-                        // ¿ŒΩ∫≈œΩ∫»≠ µ» ∏ÛΩ∫≈Õø° ªÁ∏¡ ¿Ã∫•∆Æ µÓ∑œ
-                        /*
-                        MonsterController controller = monster.GetComponent<MonsterController>();
-                        controller.OnMonsterDeath += () => HandleMonsterDeath(spawnPos, monsterType);
-                        */
                     }
                     return;
                 }
@@ -100,7 +92,6 @@ public class SectorMonsterSpawner : MonoBehaviour
     {
         if (!isSpawning)
         {
-            //position¿ª √º≈©«œø© æÀæ∆º≠ ∏ÛΩ∫≈Õ º“»Ø ±‚¥…¿ª ºˆ«‡«—¥Ÿ.
             SpawnInitialMonsters();             
             isSpawning = true;
         }
@@ -147,18 +138,12 @@ public class Monster
         this.speed = speed;
         this.size = size;
         this.prefab = prefab;
-        this.inCount = inCount;             //«ˆ¿Á ºΩ≈Õø° «ÿ¥Á ∏ÛΩ∫≈Õ∞° ∏Ó±‚∞° ¿÷æÓæﬂ«œ¥¬¡ˆ...
+        this.inCount = inCount;             //ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÕøÔøΩ ÔøΩÿ¥ÔøΩ ÔøΩÔøΩÔøΩÕ∞ÔøΩ ÔøΩÔøΩ‚∞° ÔøΩ÷æÔøΩÔøΩÔøΩœ¥ÔøΩÔøΩÔøΩ...
         this.curCount = 0;
-        this.poolCount = poolCount;         //ø¿∫Í¡ß∆Æ «Æ∏µøÎ
+        this.poolCount = poolCount;         //ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ∆Æ «ÆÔøΩÔøΩÔøΩÔøΩ
     }
 
     public void MinusCurCount() => curCount--;
     public void PlusCurCount() => curCount++;
     public bool CheckInCount() => curCount < inCount;
-}
-
-//¬˜»ƒ ªÁøÎøπ¡§.
-public class Boss : Monster
-{
-    public Boss(int HP, int size, int damage, float speed, GameObject prefab, int count) : base(size, HP, damage, speed, prefab, 1, count) { }
 }

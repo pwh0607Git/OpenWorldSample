@@ -71,7 +71,10 @@ public class PlayerController : MonoBehaviour
         moveSpeed = myState.speed;
 
         // isGrounded = false;
-        //transform.position = SpawnPos.position;
+        
+        if(SpawnPos != null){
+            transform.position = SpawnPos.position;
+        }
     }
 
     void Update()

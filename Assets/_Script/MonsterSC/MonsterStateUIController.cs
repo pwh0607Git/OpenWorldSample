@@ -20,8 +20,6 @@ public class MonsterStateUIController : MonoBehaviour
         
         InitMonsterUI();
         InitMonsterUIPosition();
-
-        //collider가 위치한 곳에 세팅.
   }
 
     void Update(){
@@ -36,13 +34,15 @@ public class MonsterStateUIController : MonoBehaviour
         UpdateMonsterUI(monsterData.HP);
     }
 
-    public void InitMonsterUIPosition(){
-      Collider monsterCollider = rootMonster.GetComponentInChildren<Collider>();
+    public void InitMonsterUIPosition()
+    {
+        Collider monsterCollider = rootMonster.GetComponentInChildren<Collider>();
+
         if (monsterCollider != null)
         {
-            transform.SetParent(monsterCollider.gameObject.transform);
             float monsterHeight = monsterCollider.bounds.size.y;
-            GetComponent<RectTransform>().localPosition = new Vector3(0, monsterHeight, 0);
+            transform.SetParent(monsterCollider.gameObject.transform);
+            GetComponent<RectTransform>().anchoredPosition = new Vector3(0, monsterHeight - 0.5f, 0);
         }
         transform.GetComponentInParent<TEST_MonsterController>().SetMonsterUI(this);
     }
