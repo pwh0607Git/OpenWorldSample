@@ -4,8 +4,9 @@ using UnityEngine.UI;
 
 public class MonsterStateUIController : MonoBehaviour
 {
-    MonsterData monsterData;
+    private MonsterData monsterData;
 
+    private GameObject rootMonster;
     public TextMeshProUGUI monsterName;
 
     public Image HP_Bar;
@@ -13,17 +14,37 @@ public class MonsterStateUIController : MonoBehaviour
     public GameObject damageTextPrefab;          
     public Transform damageTextTransform;
 
+    void Start(){
+        rootMonster = transform.root.gameObject;
+        this.monsterData = rootMonster.GetComponent<TEST_MonsterController>().MonsterData;
+        
+        InitMonsterUI();
+        InitMonsterUIPosition();
+
+        //collider가 위치한 곳에 세팅.
+  }
+
     void Update(){
         gameObject.GetComponent<RectTransform>().LookAt(Camera.main.transform);
     }
 
-    public void InitMonsterUI(MonsterData monsterData)
+    public void InitMonsterUI()
     {
-        this.monsterData = monsterData;
         monsterName.text = monsterData.monsterName;
         
         GetComponent<RectTransform>().localPosition = Vector2.zero;
         UpdateMonsterUI(monsterData.HP);
+    }
+
+    public void InitMonsterUIPosition(){
+      Collider monsterCollider = rootMonster.GetComponentInChildren<Collider>();
+        if (monsterCollider != null)
+        {
+            transform.SetParent(monsterCollider.gameObject.transform);
+            float monsterHeight = monsterCollider.bounds.size.y;
+            GetComponent<RectTransform>().localPosition = new Vector3(0, monsterHeight, 0);
+        }
+        transform.GetComponentInParent<TEST_MonsterController>().SetMonsterUI(this);
     }
 
     public void UpdateMonsterUI(int curHP)

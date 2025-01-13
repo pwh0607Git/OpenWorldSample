@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TEST_MonsterSpawner : MonoBehaviour
@@ -36,18 +33,6 @@ public class TEST_MonsterSpawner : MonoBehaviour
 
     public void SetMonsterStateUI(GameObject monster, MonsterData data)
     {
-        GameObject stateUI = Instantiate(monsterStateUIPrefab, monster.transform);
-        MonsterStateUIController monsterStateUIController = stateUI.GetComponent<MonsterStateUIController>();
-        monsterStateUIController.InitMonsterUI(data);
-
-        Collider monsterCollider = monster.GetComponent<Collider>();
-        if (monsterCollider != null)
-        {
-            float monsterHeight = monsterCollider.bounds.size.y;
-            stateUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, monsterHeight, 0);
-        }
-
-        TEST_MonsterController monsterController = monster.GetComponent<TEST_MonsterController>();
-        monsterController.SetMonsterUI(monsterStateUIController);
+        Instantiate(monsterStateUIPrefab, monster.transform);
     }
 }
