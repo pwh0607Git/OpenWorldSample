@@ -10,6 +10,8 @@ public enum PlayerAnimState
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController player { get; private set; }
+
+    [Header("PlayerUI")]
     public static Inventory myInventory;
     public static EquipmentWindow myEquipments;
     public static ActionBar myKeyboard;
