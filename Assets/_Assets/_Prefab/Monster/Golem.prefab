@@ -1180,7 +1180,6 @@ GameObject:
   - component: {fileID: 4129383714423638056}
   - component: {fileID: 1951736920353196579}
   - component: {fileID: 2945722862447373305}
-  - component: {fileID: 6919763586531851527}
   m_Layer: 7
   m_Name: Golem
   m_TagString: Monster
@@ -1275,18 +1274,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e707e7cd0852d1c41b47446161a0d62e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6919763586531851527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6659422466605757966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7058183623944575213
@@ -1815,7 +1802,6 @@ GameObject:
   m_Component:
   - component: {fileID: 481964934865610477}
   - component: {fileID: 8038899962517374576}
-  - component: {fileID: 1031073150642448443}
   m_Layer: 7
   m_Name: Loots
   m_TagString: Untagged
@@ -1848,19 +1834,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 655760e95c6f05248a7a577cce3c97ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  force: 200
---- !u!114 &1031073150642448443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9030365071060053659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9118238645310308296

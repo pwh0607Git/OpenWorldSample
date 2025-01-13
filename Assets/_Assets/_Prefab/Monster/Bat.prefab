@@ -297,6 +297,7 @@ GameObject:
   - component: {fileID: 860681303303824025}
   - component: {fileID: -2300008734168306330}
   - component: {fileID: 2968013875797044529}
+  - component: {fileID: 878553713264862276}
   m_Layer: 7
   m_Name: Bat
   m_TagString: Monster
@@ -393,6 +394,33 @@ CapsuleCollider:
   m_Height: 0.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!54 &878553713264862276
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096101378255670412}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2309311707844874034
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,7 +529,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6869386002031627896}
   - component: {fileID: 7724009582369787350}
-  - component: {fileID: 7654089843532183127}
   m_Layer: 7
   m_Name: Loots
   m_TagString: Untagged
@@ -534,19 +561,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 655760e95c6f05248a7a577cce3c97ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  force: 200
---- !u!114 &7654089843532183127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2892402667590516778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3726974418326099220

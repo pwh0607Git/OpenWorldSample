@@ -120,7 +120,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\_Script\EnvironmentSC\ObjectPooling.cs" />
     <Compile Include="Assets\_Script\StreamingSC\MonsterManager.cs" />
-    <Compile Include="Assets\_Script\MonsterSC\MonsterDropLoots.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\PlayerRenderCameraController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\PlayerUIController.cs" />

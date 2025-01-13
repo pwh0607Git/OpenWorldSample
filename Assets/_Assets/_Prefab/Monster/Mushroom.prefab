@@ -533,7 +533,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2472772618410131982}
   - component: {fileID: 774774373498449143}
-  - component: {fileID: 4315748670570515852}
   m_Layer: 7
   m_Name: Loots
   m_TagString: Untagged
@@ -566,19 +565,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 655760e95c6f05248a7a577cce3c97ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  force: 200
---- !u!114 &4315748670570515852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6025942575275241687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6350472492661180917
@@ -901,7 +887,6 @@ GameObject:
   - component: {fileID: 3870236100694108443}
   - component: {fileID: 726191229035972915}
   - component: {fileID: -8259605773485019104}
-  - component: {fileID: 7493698977563608158}
   m_Layer: 7
   m_Name: Mushroom
   m_TagString: Monster
@@ -996,18 +981,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e707e7cd0852d1c41b47446161a0d62e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7493698977563608158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7369327913803325875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7692084701500569823
