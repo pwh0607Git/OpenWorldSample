@@ -1064,12 +1064,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.Muse.Chat.Bridge.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Rider.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.Muse.Chat.AccountHelper">
       <HintPath>Library\ScriptAssemblies\Unity.Muse.Chat.AccountHelper.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Rider.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Editor">
@@ -1230,21 +1230,9 @@
       <Project>{5EBE753A-EF33-D16B-AA9B-47BC42A2A7DA}</Project>
       <Name>Gentleland.SteampunkUI.DemoAndExample</Name>
     </ProjectReference>
-    <ProjectReference Include="NaughtyAttributes.Test.csproj">
-      <Project>{7C76960C-FEDD-7856-D7E8-123B8AACF2E1}</Project>
-      <Name>NaughtyAttributes.Test</Name>
-    </ProjectReference>
     <ProjectReference Include="Gentleland.Utils.SteampunkUI.csproj">
       <Project>{5EFBC17E-67CB-EDF2-2390-91827F91D4D1}</Project>
       <Name>Gentleland.Utils.SteampunkUI</Name>
-    </ProjectReference>
-    <ProjectReference Include="NaughtyAttributes.Core.csproj">
-      <Project>{6AFAEA1C-253C-DE81-40C8-58506F31CF3A}</Project>
-      <Name>NaughtyAttributes.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="NaughtyAttributes.Editor.csproj">
-      <Project>{536CBA02-B2AD-A0AF-036A-82517D89285B}</Project>
-      <Name>NaughtyAttributes.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

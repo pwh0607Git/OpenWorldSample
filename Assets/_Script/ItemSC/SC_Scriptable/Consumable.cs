@@ -1,7 +1,5 @@
 using System;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public enum ConsumableType
 {
@@ -18,6 +16,13 @@ public class Consumable : ItemData
     private int consumableCount;
     
     public event Action OnConsumableUsed;           //�Һ������ ���/ȹ�� �ݹ�.
+
+    public void Init()
+    {
+
+    }
+
+    public ItemData GetItemData() => this;
 
     private void OnEnable()
     {

@@ -55057,11 +55057,4 @@ AnimationClip:
     flags: 0
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 1.25
-    functionName: 
-    data: 
-    objectReferenceParameter: {fileID: 2096101378255670412, guid: 55f0b9b41e413174592474649b069fd5, type: 3}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

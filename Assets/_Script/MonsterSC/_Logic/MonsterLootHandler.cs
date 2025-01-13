@@ -3,11 +3,7 @@ using UnityEngine;
 
 public class MonsterLootHandler : MonoBehaviour
 {
-    [Header("MonsterData")]
     MonsterData monsterData;
-
-    [Header("MonsterLoot")]
-    List<LootEntry> lootEntries;
 
     List<GameObject> loots;
 
@@ -42,7 +38,7 @@ public class MonsterLootHandler : MonoBehaviour
     {
         foreach (var loot in monsterData.basicLoot)
         {
-            Instantiate(loot, transform);
+            GameObject instance = SetDroppedProperties(Instantiate(loot, transform));
         }
     }
 
@@ -52,7 +48,7 @@ public class MonsterLootHandler : MonoBehaviour
             int randomNumber = Random.Range(0, 100);
             if(randomNumber <= loot.dropRate)
             {
-                Instantiate(loot.item, transform);
+                GameObject instance = SetDroppedProperties(Instantiate(loot.item, transform));
             }
         }
     }
@@ -63,5 +59,13 @@ public class MonsterLootHandler : MonoBehaviour
         {
             loot.transform.SetParent(null);
         }
+    }
+
+    GameObject SetDroppedProperties(GameObject droppedObject)
+    {
+        droppedObject.AddComponent<Rigidbody>();
+        droppedObject.AddComponent<BoxCollider>();
+
+        return droppedObject;
     }
 }

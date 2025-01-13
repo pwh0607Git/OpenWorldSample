@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public enum EquipmentType
@@ -11,9 +10,16 @@ public enum EquipmentType
 }
 
 [CreateAssetMenu(fileName = "Equipment", menuName = "Items/Equipment")]
-public class Equipment : ItemData
+public class Equipment : ItemData, IDroppableItem
 {
     public EquipmentType subType;
+    //작성할 부분
+    public void Init()
+    {
+
+    }
+
+    public ItemData GetItemData() => this;
 
     private void OnEnable()
     {

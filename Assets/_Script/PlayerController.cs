@@ -161,7 +161,8 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetTrigger("ComboAttack");
     }
-    private void OnCollisionEnter(Collision other)
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Item"))
         {
@@ -169,7 +170,6 @@ public class PlayerController : MonoBehaviour
             myInventory.GetItem(other.gameObject);
         }
     }
-
     public float attackRange = 1.5f;      
     private bool isAttacking = false;
 

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7109133877520420467}
   - component: {fileID: 4099786095315776901}
   - component: {fileID: 6139811377423835444}
-  - component: {fileID: 5605910473133709925}
   - component: {fileID: 1101017213726973930}
   m_Layer: 0
   m_Name: Potion Red
@@ -30,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -85,27 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5605910473133709925
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7162748861593786302}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.18979803, y: 0.23894009, z: 0.18979803}
-  m_Center: {x: 0, y: 0.024571028, z: 0}
 --- !u!114 &1101017213726973930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,4 +96,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e126f878fb54a54493ece4599a96113, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  consumableItem: {fileID: 0}
+  consumableItem: {fileID: 11400000, guid: a0e2f3a0ad6abca40b0755007595c24d, type: 2}
