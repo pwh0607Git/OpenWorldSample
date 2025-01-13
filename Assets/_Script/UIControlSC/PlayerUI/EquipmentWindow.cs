@@ -7,14 +7,14 @@ public class EquipmentWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 {
     public GameObject equipmentSlotContent;
 
-    private List<EquipmentSlot> slots;
+    public List<EquipmentSlot> slots;
 
     private void Start()
     {
         slots = new List<EquipmentSlot>();
     }
 
-    //ï¿½ï¿½ï¿½ï¿½Ã¢ ï¿½Ê±ï¿½È­
+    //½½·ÔÃ¢ ÃÊ±âÈ­
     private void AddEquipmentSlotRef()
     {
         foreach(Transform child in equipmentSlotContent.transform)
@@ -32,8 +32,8 @@ public class EquipmentWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalParent = transform.parent;
-        GetComponent<RectTransform>().SetParent(transform.root);                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ (canvas)
-        GetComponent<CanvasGroup>().blocksRaycasts = false;                     // ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        GetComponent<RectTransform>().SetParent(transform.root);                // ¾ÆÀÌÅÛÀ» ÃÖ»óÀ§·Î ÀÌµ¿ (canvas)
+        GetComponent<CanvasGroup>().blocksRaycasts = false;                     // µå·¡±× Áß µå·ÓÀÌ °¡´ÉÇÑÁö ¼³Á¤
     }
 
     public void OnDrag(PointerEventData eventData)
