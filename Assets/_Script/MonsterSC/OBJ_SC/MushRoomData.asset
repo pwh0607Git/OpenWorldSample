@@ -20,7 +20,7 @@ MonoBehaviour:
   movingAreaRedius: 30
   detectionRadius: 15
   attackableRadius: 2
-  attackDamageRadius: 1
+  attackDamageRadius: 0.3
   attackCooldown: 2
   attackPower: 20
   monsterPrefab: {fileID: 7369327913803325875, guid: e8e7410d68db893459d8d0d004f05576, type: 3}

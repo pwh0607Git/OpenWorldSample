@@ -10,16 +10,20 @@ public class TEST_MonsterController : MonoBehaviour
 
     public int monsterCurHP;
 
+    [Header("Flag")]
     private bool canTakeDamage = true;
     private bool isDown = false;
 
-    private bool isAttackingTarget;
+    private bool isAttackingTarget = false;
     private bool isDetectingTarget = false;
 
-    private Transform attackTarget;
+    [Header("Moveing")]
     private Vector3 originalPosition;
 
     private Vector3 nextDestination;
+    
+    [Header("Monster-Attack")]
+    private Transform attackTarget;
     private void Start()
     {
         monsterCurHP = monsterData.HP;
@@ -31,51 +35,52 @@ public class TEST_MonsterController : MonoBehaviour
         SetNextDestination();
     }
 
-    void FixPosition(){
-        GetComponentInChildren<ObjectSpawnInitController>().SetOntheFloor();
-        originalPosition = GetComponentInChildren<ObjectSpawnInitController>().originalPosition;
-    }
-
     private void Update()
     {
-        //Move...
-        if (isWaiting)
-        {
-            waitTimer -= Time.deltaTime;
-            if (waitTimer <= 0f)
-            {
-                isWaiting = false;
-                SetNextDestination();
-            }
-        }
-
-        //위치 도착시.
-        if(transform.position == nextDestination){
-            if(!isWaiting){
-                isWaiting = true;
-                waitTimer = waitingTime;
-            }
-        }
-        else{
-            MoveToward(nextDestination);
-        }
-
+        //Chase Player
         if (attackTarget != null)
         {
             HandlePlayerDetection();
-        }
-        
-        //자신의 구역이 아닌 경우.
-        if(CheckIsSoFar()){
-            MoveToward(nextDestination);    
+        }else{
+            // Return Position
+            if(CheckIsSoFar() || attackTarget == null){
+                MoveToward(nextDestination);    
+            }
+
+            //Move...
+            if (isWaiting)
+            {
+                waitTimer -= Time.deltaTime;
+                if (waitTimer <= 0f)
+                {
+                    isWaiting = false;
+                    SetNextDestination();
+                }
+            }
+
+            // TakeOff Destination.
+            if(transform.position == nextDestination){
+                if(!isWaiting){
+                    isWaiting = true;
+                    waitTimer = waitingTime;
+                }
+            }
+            else{
+                MoveToward(nextDestination);
+            }
         }
 
-        //죽음
+        //Down
         if (monsterCurHP <= 0 && !isDown)
         {
             Down();
         }
 
+    }
+
+    void FixPosition(){
+        GetComponentInChildren<ObjectSpawnInitController>().SetOntheFloor();
+        originalPosition = GetComponentInChildren<ObjectSpawnInitController>().originalPosition;
     }
 
     private bool CheckIsSoFar(){
@@ -94,7 +99,7 @@ public class TEST_MonsterController : MonoBehaviour
         nextDestination.y = 0;
     }
 
-    public void SetAttackTarget(Transform target)
+    public void SetAttackTarget(Transform target)           //<= MonsterDetection.sc
     {
         attackTarget = target;
     }
@@ -114,13 +119,6 @@ public class TEST_MonsterController : MonoBehaviour
                 ChasePlayer();
             }
         }
-    }
-
-    private void ReturnToOriginPosition()
-    {
-        if (isAttackingTarget) return;
-
-        MoveToward(originalPosition);
     }
 
     private void ChasePlayer()
@@ -154,27 +152,18 @@ public class TEST_MonsterController : MonoBehaviour
 
     private void MoveToward(Vector3 destination)
     {
-        animator.SetBool("Walk", true);
-        Vector3 direction = (destination - transform.position).normalized;
-
-        if (direction != Vector3.zero)
+        if (!isAttackingTarget)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * monsterData.moveSpeed);
-        }
-        transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * monsterData.moveSpeed);
-        // if (!isAttackingTarget)
-        // {
-        //     animator.SetBool("Walk", true);
-        //     Vector3 direction = (destination - transform.position).normalized;
+            animator.SetBool("Walk", true);
+            Vector3 direction = (destination - transform.position).normalized;
 
-        //     if (direction != Vector3.zero)
-        //     {
-        //         Quaternion targetRotation = Quaternion.LookRotation(direction);
-        //         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * monsterData.moveSpeed);
-        //     }
-        //     transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * monsterData.moveSpeed);
-        // }
+            if (direction != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * monsterData.moveSpeed);
+            }
+            transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * monsterData.moveSpeed);
+        }
     }
 
     public void SetMonsterUI(MonsterStateUIController monsterUI)
@@ -209,7 +198,7 @@ public class TEST_MonsterController : MonoBehaviour
     }
     public void MonsterAttackHandler()
     {
-        if (isDetectingTarget && !isAttackingTarget && !isMonsterAttackCoolDown)
+        if (!isDown && isDetectingTarget && !isAttackingTarget && !isMonsterAttackCoolDown)
         {
             StartMonsterAttack(); 
         }
@@ -249,16 +238,17 @@ public class TEST_MonsterController : MonoBehaviour
     public void Down()
     {
         isDown = true;
-
         animator.SetTrigger("Down");
-        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
-
         Invoke("OnDownMonster", 1.5f);
+    }
 
+    void OnDownMonster(){
         if(loots != null)
         {
             loots.SetActive(true);
             loots.GetComponent<MonsterLootHandler>().ShootLoots();
         }
+
+        Destroy(gameObject);
     }
 }
