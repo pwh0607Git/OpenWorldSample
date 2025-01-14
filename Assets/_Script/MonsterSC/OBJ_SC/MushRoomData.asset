@@ -20,13 +20,13 @@ MonoBehaviour:
   movingAreaRedius: 30
   detectionRadius: 15
   attackableRadius: 2
-  attackDamageRadius: 1
+  attackDamageRadius: 0.3
   attackCooldown: 2
   attackPower: 20
   monsterPrefab: {fileID: 7369327913803325875, guid: e8e7410d68db893459d8d0d004f05576, type: 3}
   basicLoot:
-  - {fileID: 8750965566074464243, guid: d41b49cd30332d74a8ad7e49945f1de7, type: 3}
-  - {fileID: 5246923711102340494, guid: b627fcf0ca97bf547bdef1ff7adc2d67, type: 3}
+  - {fileID: 11400000, guid: 6fb461691e9ebbf4ab4e879b6149f3d4, type: 2}
+  - {fileID: 11400000, guid: a0e2f3a0ad6abca40b0755007595c24d, type: 2}
   randomLoot:
-  - item: {fileID: 5246923711102340494, guid: b627fcf0ca97bf547bdef1ff7adc2d67, type: 3}
+  - itemData: {fileID: 11400000, guid: 418a42520f616b342b88699ee38d6e68, type: 2}
     dropRate: 20

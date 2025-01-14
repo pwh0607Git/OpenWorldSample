@@ -1,28 +1,27 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 public class MonsterAI : MonoBehaviour
 {
     private NavMeshAgent agent;
 
-    public Transform[] patrolPoints;    // ¸ó½ºÅÍ°¡ ÀÌµ¿ÇÒ Æ¯Á¤ À§Ä¡µé
-    public Transform initPoint;         // ¸ó½ºÅÍÀÇ ÃÊ±â À§Ä¡.
+    public Transform[] patrolPoints;    // ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ Æ¯ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½
+    public Transform initPoint;         // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½Ä¡.
     
-    public float waitTime = 2f;         // °¢ ÁöÁ¡¿¡¼­ ´ë±â ½Ã°£, Â÷ÈÄ ·£´ýÇÑ ¼ö¿­ÀÇ ÇüÅÂ·Î ±¸Çö... 2ÃÊ 3ÃÊ 10ÃÊ µîµî...
-    public float moveRadius = 10f;      // ·£´ý ÀÌµ¿ ¹Ý°æ
+    public float waitTime = 2f;         // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½... 2ï¿½ï¿½ 3ï¿½ï¿½ 10ï¿½ï¿½ ï¿½ï¿½ï¿½...
+    public float moveRadius = 10f;      // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Ý°ï¿½
     public float speed = 10f;
 
     private int currentPointIndex;
     private bool waiting;
     private float waitTimer;
 
-    private MonsterController monsterController;
+    // private MonsterController monsterController;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        monsterController = GetComponent<MonsterController>();
+        // monsterController = GetComponent<MonsterController>();
         
         if (patrolPoints.Length > 0)
         {
@@ -45,7 +44,7 @@ public class MonsterAI : MonoBehaviour
             {
                 waiting = true;
                 waitTimer = waitTime;
-                monsterController.ChangeState(MonsterAnimState.Idle);
+                // monsterController.ChangeState(MonsterAnimState.Idle);
             }
         }
 
@@ -54,7 +53,7 @@ public class MonsterAI : MonoBehaviour
             waitTimer -= Time.deltaTime;
             if (waitTimer <= 0f)
             {
-                monsterController.ChangeState(MonsterAnimState.Walk);
+                // monsterController.ChangeState(MonsterAnimState.Walk);
                 waiting = false;
                 if (patrolPoints.Length > 0)
                 {
@@ -69,8 +68,8 @@ public class MonsterAI : MonoBehaviour
     }
 
     public Transform player;
-    public float detectionRadius = 10f;     // °¨Áö °Å¸®
-    public float detectionAngle = 80f;      // °¨Áö °¢µµ (ºÎÃ¤²Ã ¹üÀ§)
+    public float detectionRadius = 10f;     // ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
+    public float detectionAngle = 80f;      // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½Ã¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
 
     private void DetectPlayer()
     {
@@ -96,18 +95,18 @@ public class MonsterAI : MonoBehaviour
 
         if (distanceToPlayer > detectionRadius)
         {
-            return false;       // °¨Áö ¹Ý°æ ¹Û
+            return false;       // ï¿½ï¿½ï¿½ï¿½ ï¿½Ý°ï¿½ ï¿½ï¿½
         }
 
-        // °¢µµ °è»ê
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer.normalized);
 
         if (angleToPlayer > detectionAngle / 2)
         {
-            return false;       // °¨Áö °¢µµ ¹Û
+            return false;       // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         }
 
-        return true;            //¸ðµç Á¶°ÇÀ» ¸¸Á·ÇÑ °æ¿ì...
+        return true;            //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½...
     }
     
     private void BackInitPoint()

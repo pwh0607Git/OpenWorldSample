@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +5,15 @@ public class PlayerAttack : MonoBehaviour
 {
     private List<GameObject> attackableMonsters = new List<GameObject>();
 
-    //À§ List´Â ¹Þ¾Æ¼­ »ç¿ëÇÏ±â¸¸ °¡´É!!
-    public List<GameObject> getAttackableMonster { get { return attackableMonsters; } }
+    //ï¿½ï¿½ Listï¿½ï¿½ ï¿½Þ¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±â¸¸ ï¿½ï¿½ï¿½ï¿½!!
+    public List<GameObject> getAttackableMonster
+    {
+        get
+        {
+            attackableMonsters.RemoveAll(monster => monster == null);
+            return attackableMonsters;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {

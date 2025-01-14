@@ -1178,9 +1178,8 @@ GameObject:
   - component: {fileID: 8165323103463709439}
   - component: {fileID: 6267424456463248193}
   - component: {fileID: 4129383714423638056}
-  - component: {fileID: 1951736920353196579}
-  - component: {fileID: 2945722862447373305}
-  - component: {fileID: 6919763586531851527}
+  - component: {fileID: 5294307983800664967}
+  - component: {fileID: 2402420579690983838}
   m_Layer: 7
   m_Name: Golem
   m_TagString: Monster
@@ -1242,8 +1241,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterCurHP: 0
   waitingTime: 2
---- !u!136 &1951736920353196579
-CapsuleCollider:
+--- !u!143 &5294307983800664967
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1257,15 +1256,18 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2.4
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.2, z: 0}
---- !u!114 &2945722862447373305
+  serializedVersion: 3
+  m_Height: 2.2
+  m_Radius: 0.6
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.1, z: 0}
+--- !u!114 &2402420579690983838
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1275,18 +1277,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e707e7cd0852d1c41b47446161a0d62e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6919763586531851527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6659422466605757966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7058183623944575213
@@ -1814,8 +1804,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 481964934865610477}
-  - component: {fileID: 8038899962517374576}
-  - component: {fileID: 1031073150642448443}
+  - component: {fileID: 547128835515140734}
   m_Layer: 7
   m_Name: Loots
   m_TagString: Untagged
@@ -1838,7 +1827,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8165323103463709439}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8038899962517374576
+--- !u!114 &547128835515140734
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1848,19 +1837,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 655760e95c6f05248a7a577cce3c97ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  force: 200
---- !u!114 &1031073150642448443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9030365071060053659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9118238645310308296

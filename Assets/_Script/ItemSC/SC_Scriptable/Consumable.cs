@@ -15,8 +15,7 @@ public class Consumable : ItemData
     public bool isPresetting { get; set; }
     private int consumableCount;
     
-    public event Action OnConsumableUsed;           //�Һ������ ���/ȹ�� �ݹ�.
-
+    public event Action OnConsumableUsed;
     public void Init()
     {
 

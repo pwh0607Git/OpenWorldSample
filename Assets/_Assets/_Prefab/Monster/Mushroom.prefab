@@ -532,8 +532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2472772618410131982}
-  - component: {fileID: 774774373498449143}
-  - component: {fileID: 4315748670570515852}
+  - component: {fileID: 7417979005667699396}
   m_Layer: 7
   m_Name: Loots
   m_TagString: Untagged
@@ -556,7 +555,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 483484072671260950}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &774774373498449143
+--- !u!114 &7417979005667699396
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -566,19 +565,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 655760e95c6f05248a7a577cce3c97ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  force: 200
---- !u!114 &4315748670570515852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6025942575275241687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6350472492661180917
@@ -899,9 +885,8 @@ GameObject:
   - component: {fileID: 483484072671260950}
   - component: {fileID: 1751653928444507892}
   - component: {fileID: 3870236100694108443}
-  - component: {fileID: 726191229035972915}
-  - component: {fileID: -8259605773485019104}
-  - component: {fileID: 7493698977563608158}
+  - component: {fileID: 2497624285544175455}
+  - component: {fileID: 4342763630117552103}
   m_Layer: 7
   m_Name: Mushroom
   m_TagString: Monster
@@ -963,8 +948,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterCurHP: 0
   waitingTime: 2
---- !u!136 &726191229035972915
-CapsuleCollider:
+--- !u!143 &2497624285544175455
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -978,15 +963,18 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.4
-  m_Height: 1
-  m_Direction: 1
+  serializedVersion: 3
+  m_Height: 1.1
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &-8259605773485019104
+--- !u!114 &4342763630117552103
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -996,18 +984,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e707e7cd0852d1c41b47446161a0d62e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7493698977563608158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7369327913803325875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775b0c205d7701146a7360593cf91baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7692084701500569823
