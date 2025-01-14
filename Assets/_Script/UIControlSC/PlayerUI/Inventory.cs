@@ -1,8 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,9 +12,9 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
 
     public GameObject slotPrefab;
-    public Transform scrollContent;                 //inventorySlotÀÇ ºÎ¸ð°´Ã¼
+    public Transform scrollContent;                 //inventorySlotï¿½ï¿½ ï¿½Î¸ï¿½Ã¼
 
-    private Queue<ItemData> itemQueue;              //¸ÔÀº ¾ÆÀÌÅÛ¿¡ ´ëÇÑ ¼ø¼­°¡ º¸ÀåµÇ¾î¾ßÇÏ±â ¶§¹®...
+    private Queue<ItemData> itemQueue;             
 
     public List<InventorySlot> slots;
     public int maxSlotSize;
@@ -84,7 +80,7 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 if (subType == null)
                 {
                     Debug.Log("Search Code : 001");
-                    return true;           //±âÅ¸ ¾ÆÀÌÅÛ
+                    return true;           //ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 }
 
                 if (itemType == ItemType.Consumable && slotItemData is Consumable consumable)
@@ -111,12 +107,12 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void GetItem(GameObject item)
     {
-        ItemDataSC itemDataSC = item.GetComponent<ItemDataSC>();            //DroppedItemSC¸¦ ÂüÁ¶ÇÑ´Ù...
+        ItemDataSC itemDataSC = item.GetComponent<ItemDataSC>();            //DroppedItemSCï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½...
         ItemData itemData = itemDataSC.GetItem;
         itemQueue.Enqueue(itemData);
 
         if (gameObject.activeSelf) {
-            SyncUIData();       //ÀÎº¥Åä¸® Ã¢ÀÌ È°¼ºÈ­µÇ¾î ÀÖÀ¸¸é ¹Ù·Î Ãâ·Â.
+            SyncUIData();       //ï¿½Îºï¿½ï¿½ä¸® Ã¢ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½Ç¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½.
         }
     }
 
@@ -157,14 +153,14 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         inventoryItemIconManager.CreateItemIcon(newItem, emptySlot);
     }
 
-    //À©µµ¿ì ¼¼ÆÃ.
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
     public Transform originalParent;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalParent = transform.parent;
-        GetComponent<RectTransform>().SetParent(transform.root);                // ¾ÆÀÌÅÛÀ» ÃÖ»óÀ§·Î ÀÌµ¿ (canvas)
-        GetComponent<CanvasGroup>().blocksRaycasts = false;                     // µå·¡±× Áß µå·ÓÀÌ °¡´ÉÇÑÁö ¼³Á¤
+        GetComponent<RectTransform>().SetParent(transform.root);                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ (canvas)
+        GetComponent<CanvasGroup>().blocksRaycasts = false;                     // ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     public void OnDrag(PointerEventData eventData)

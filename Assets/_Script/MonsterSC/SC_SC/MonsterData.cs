@@ -11,7 +11,6 @@ public enum MonsterType
 [System.Serializable]
 public class LootEntry
 {
-    //¾ÆÀÌÅÛ È®·ü Å×ÀÌºí.
     public GameObject item;
 
     public float dropRate;
@@ -31,24 +30,22 @@ public class MonsterData : ScriptableObject
     public MonsterType monsterType;
     public int HP;
     
-    //ÀÌµ¿
     public float moveSpeed;
-    public float movableArea = 50f;            //ÀÌµ¿ °¡´É ¹üÀ§.
-    public float movingAreaRedius = 30f;        //idle µ¿¾È ÀÌµ¿ÇÏ´Â °ø°£.
+    public float movableArea = 50f;            //ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+    public float movingAreaRedius = 30f;        //idle ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½.
 
-    //°ø°Ý
-    public float detectionRadius = 15f;         // °ñ·½ÀÌ Ä³¸¯ÅÍ¸¦ ÀÎ½ÄÇÏ´Â ¹üÀ§
-    public float attackableRadius = 3f;             // °ø°ÝÀ» ½ÃÀÛÇÏ´Â ¹üÀ§
-    public float attackDamageRadius = 5f;       // °ø°Ý ÇÇÇØ¸¦ ÁÖ´Â ¹üÀ§
-    public float attackCooldown = 2f;           // °ø°Ý ÈÄ ´ë±â ½Ã°£
+    public float detectionRadius = 15f;         // ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Î½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float attackableRadius = 3f;             // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float attackDamageRadius = 5f;       // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¸ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float attackCooldown = 2f;           // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
     public int attackPower;
 
     [Header("Visuals")]
-    public GameObject monsterPrefab;        // ¸ó½ºÅÍ 3D ¸ðµ¨ ÇÁ¸®ÆÕ
+    public GameObject monsterPrefab;        // ï¿½ï¿½ï¿½ï¿½ 3D ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     [Header("Props")]
-    public List<GameObject> basicLoot;      //±âº»ÀûÀ¸·Î °¡Áö°í ÀÖ´Â Àü¸®Ç°.
-    public List<LootEntry> randomLoot;           //Àü¸®Ç°
+    public List<GameObject> basicLoot;      //ï¿½âº»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Ç°.
+    public List<LootEntry> randomLoot;           //ï¿½ï¿½ï¿½ï¿½Ç°
 
-    //À¯È¿¼º °Ë»ç ÄÚµå.
+    //ï¿½ï¿½È¿ï¿½ï¿½ ï¿½Ë»ï¿½ ï¿½Úµï¿½.
 }

@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public enum EquipmentType
@@ -13,7 +12,7 @@ public enum EquipmentType
 public class Equipment : ItemData, IDroppableItem
 {
     public EquipmentType subType;
-    //작성할 부분
+
     public void Init()
     {
 

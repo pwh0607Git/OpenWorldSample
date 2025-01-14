@@ -17,8 +17,8 @@ public class MonsterLootHandler : MonoBehaviour
             MakeBasicLoot();
             MakeRandomLoot();
         }
-        SetLootRef();
 
+        SetLootRef();
         gameObject.SetActive(false);
     }
 

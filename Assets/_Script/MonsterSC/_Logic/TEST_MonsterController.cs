@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class TEST_MonsterController : MonoBehaviour
 {
@@ -20,65 +19,79 @@ public class TEST_MonsterController : MonoBehaviour
     private Transform attackTarget;
     private Vector3 originalPosition;
 
+    private Vector3 nextDestination;
     private void Start()
     {
         monsterCurHP = monsterData.HP;
         attackTarget = null;
         TryGetComponent(out animator);
+        FixPosition();
+        loots = transform.GetComponentInChildren<MonsterLootHandler>().gameObject;
+
+        SetNextDestination();
+    }
+
+    void FixPosition(){
         GetComponentInChildren<ObjectSpawnInitController>().SetOntheFloor();
         originalPosition = GetComponentInChildren<ObjectSpawnInitController>().originalPosition;
-
-        loots = transform.GetComponentInChildren<MonsterLootHandler>().gameObject;
     }
 
     private void Update()
     {
-        if (attackTarget != null)
-        {
-            HandlePlayerDetection();
-        }
-        else
-        {
-           //ReturnToOriginPosition();
-        }
-
-        if (monsterCurHP <= 0 && !isDown)
-        {
-            Down();
-        }
-
+        //Move...
         if (isWaiting)
         {
             waitTimer -= Time.deltaTime;
             if (waitTimer <= 0f)
             {
-                //monsterController.ChangeState(MonsterAnimState.Walk);
                 isWaiting = false;
-                MoveToRandomPosition();
+                SetNextDestination();
             }
         }
+
+        //위치 도착시.
+        if(transform.position == nextDestination){
+            if(!isWaiting){
+                isWaiting = true;
+                waitTimer = waitingTime;
+            }
+        }
+        else{
+            MoveToward(nextDestination);
+        }
+
+        if (attackTarget != null)
+        {
+            HandlePlayerDetection();
+        }
+        
+        //자신의 구역이 아닌 경우.
+        if(CheckIsSoFar()){
+            MoveToward(nextDestination);    
+        }
+
+        //죽음
+        if (monsterCurHP <= 0 && !isDown)
+        {
+            Down();
+        }
+
     }
 
-    private void SetOriginalPosition(){
-        originalPosition = GetComponentInChildren<ObjectSpawnInitController>().originalPosition;
-        Debug.Log(originalPosition);
-    }
+    private bool CheckIsSoFar(){
+        float distance = Vector3.Distance(transform.position, originalPosition);
 
+        return distance > monsterData.movableArea;
+    }
     private bool isWaiting = false;
     private float waitTimer = 0.0f;
     public float waitingTime = 2.0f;
-
-    private void MoveToRandomPosition()
+    private void SetNextDestination()
     {
         Vector3 randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
-        randomDirection += transform.position;
-
-        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, monsterData.movingAreaRedius, NavMesh.AllAreas))
-        {
-            // 3. ��ȿ�� ��ġ�� �߰ߵǸ� `NavMeshAgent`�� �������� �ش� ��ġ�� ����.
-            //agent.destination = hit.position;
-        
-        }
+        randomDirection += originalPosition;            //최초 위치를 기준으로 원을 그려서 이동 범위를 설정한다.
+        nextDestination = randomDirection;
+        nextDestination.y = 0;
     }
 
     public void SetAttackTarget(Transform target)
@@ -141,18 +154,27 @@ public class TEST_MonsterController : MonoBehaviour
 
     private void MoveToward(Vector3 destination)
     {
-        if (!isAttackingTarget)
-        {
-            animator.SetBool("Walk", true);
-            Vector3 direction = (destination - transform.position).normalized;
+        animator.SetBool("Walk", true);
+        Vector3 direction = (destination - transform.position).normalized;
 
-            if (direction != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * monsterData.moveSpeed);
-            }
-            transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * monsterData.moveSpeed);
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * monsterData.moveSpeed);
         }
+        transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * monsterData.moveSpeed);
+        // if (!isAttackingTarget)
+        // {
+        //     animator.SetBool("Walk", true);
+        //     Vector3 direction = (destination - transform.position).normalized;
+
+        //     if (direction != Vector3.zero)
+        //     {
+        //         Quaternion targetRotation = Quaternion.LookRotation(direction);
+        //         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * monsterData.moveSpeed);
+        //     }
+        //     transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * monsterData.moveSpeed);
+        // }
     }
 
     public void SetMonsterUI(MonsterStateUIController monsterUI)
@@ -168,14 +190,6 @@ public class TEST_MonsterController : MonoBehaviour
         }
         StartCoroutine(Coroutine_TakenDamage(damage));
         monsterUI.ShowDamage(damage);
-    }
-
-    //****** �ǵ����� ���
-    GameObject damageTextPrefab;
-
-    void makeDamageEffect(int damage)
-    {
-        GameObject damageTextInstance = Instantiate(damageTextPrefab);
     }
 
     float noDamageTime = 0.4f;
@@ -195,7 +209,6 @@ public class TEST_MonsterController : MonoBehaviour
     }
     public void MonsterAttackHandler()
     {
-        //���Ͱ� �÷��̾ ������ �����̰� ���� ���ݵ� ���� ���� ���¿����� ���� �ǽ�.
         if (isDetectingTarget && !isAttackingTarget && !isMonsterAttackCoolDown)
         {
             StartMonsterAttack(); 
@@ -247,10 +260,5 @@ public class TEST_MonsterController : MonoBehaviour
             loots.SetActive(true);
             loots.GetComponent<MonsterLootHandler>().ShootLoots();
         }
-    }
-
-    public void OnDownMonster()
-    {
-        Destroy(gameObject);
     }
 }
