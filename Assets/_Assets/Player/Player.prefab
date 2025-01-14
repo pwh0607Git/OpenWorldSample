@@ -1898,9 +1898,8 @@ GameObject:
   - component: {fileID: 844971428979492509}
   - component: {fileID: 4683892608248683765}
   - component: {fileID: 884971976024013800}
-  - component: {fileID: 1040201357791983251}
   m_Layer: 6
-  m_Name: Player(fixed)
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1989,35 +1988,7 @@ MonoBehaviour:
   SpawnPos: {fileID: 0}
   maxSlopeAngle: 0
   gravity: 30
-  attackRange: 1.5
   weaponTransform: {fileID: 2308224215631239213}
---- !u!54 &1040201357791983251
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5262115286170287335}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &5585188234756302310
 GameObject:
   m_ObjectHideFlags: 0

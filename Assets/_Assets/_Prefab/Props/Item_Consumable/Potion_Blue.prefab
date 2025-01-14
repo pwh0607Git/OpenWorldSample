@@ -9,16 +9,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 111163691622270667, guid: 182b2b8c2ad44044aa7d730b56059f83, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 111163691622270667, guid: 182b2b8c2ad44044aa7d730b56059f83, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 111163691622270667, guid: 182b2b8c2ad44044aa7d730b56059f83, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 111163691622270667, guid: 182b2b8c2ad44044aa7d730b56059f83, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.2649403
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 111163691622270667, guid: 182b2b8c2ad44044aa7d730b56059f83, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 111163691622270667, guid: 182b2b8c2ad44044aa7d730b56059f83, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.71
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 111163691622270667, guid: 182b2b8c2ad44044aa7d730b56059f83, type: 3}
       propertyPath: m_LocalRotation.w
@@ -52,7 +64,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Potion_Blue
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5060281285769896139, guid: 182b2b8c2ad44044aa7d730b56059f83, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

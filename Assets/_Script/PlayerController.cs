@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) AttackHandler();
         UpdateAnim();
     }
-
+    
     void Move()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
@@ -170,7 +170,6 @@ public class PlayerController : MonoBehaviour
             myInventory.GetItem(other.gameObject);
         }
     }
-    public float attackRange = 1.5f;      
     private bool isAttacking = false;
 
     public void OnAttackHit1()

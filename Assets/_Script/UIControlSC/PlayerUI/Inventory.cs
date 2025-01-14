@@ -107,12 +107,12 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void GetItem(GameObject item)
     {
-        ItemDataSC itemDataSC = item.GetComponent<ItemDataSC>();            //DroppedItemSC�� �����Ѵ�...
-        ItemData itemData = itemDataSC.GetItem;
+        DroppedItem itemDataSC = item.GetComponent<DroppedItem>();            //DroppedItemSC�� �����Ѵ�...
+        ItemData itemData = itemDataSC.itemData;
         itemQueue.Enqueue(itemData);
 
         if (gameObject.activeSelf) {
-            SyncUIData();       //�κ��丮 â�� Ȱ��ȭ�Ǿ� ������ �ٷ� ���.
+            SyncUIData();                                                       //�κ��丮 â�� Ȱ��ȭ�Ǿ� ������ �ٷ� ���.
         }
     }
 

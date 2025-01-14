@@ -67,7 +67,6 @@ public class MonsterLootHandler : MonoBehaviour
         droppedObject.AddComponent<BoxCollider>();
         DroppedItem sc = droppedObject.AddComponent<DroppedItem>();
         sc.itemData = itemData;
-        sc.CheckType();
         return droppedObject;
     }
 }

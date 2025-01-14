@@ -54,6 +54,7 @@ public class TEST_MonsterController : MonoBehaviour
                 waitTimer -= Time.deltaTime;
                 if (waitTimer <= 0f)
                 {
+                    animator.SetBool("Walk", true);
                     isWaiting = false;
                     SetNextDestination();
                 }
@@ -62,6 +63,7 @@ public class TEST_MonsterController : MonoBehaviour
             // TakeOff Destination.
             if(transform.position == nextDestination){
                 if(!isWaiting){
+                    animator.SetBool("Walk", false);
                     isWaiting = true;
                     waitTimer = waitingTime;
                 }
@@ -158,17 +160,29 @@ public class TEST_MonsterController : MonoBehaviour
 
     private void MoveToward(Vector3 destination)
     {
-        if (!isAttackingTarget)
+        if (!isAttackingTarget && !isWaiting)
         {
             animator.SetBool("Walk", true);
             Vector3 direction = (destination - transform.position).normalized;
 
             if (direction != Vector3.zero)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z)); // Y축 고정
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * monsterData.moveSpeed);
             }
-            transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * monsterData.moveSpeed);
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, Mathf.Infinity))
+            {
+                // 이동 처리
+                float fixedY = hit.point.y;              // Terrain의 높이
+                Vector3 targetPosition = new Vector3(
+                    transform.position.x,
+                    fixedY,
+                    transform.position.z
+                );
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(destination.x, targetPosition.y, destination.z), Time.deltaTime * monsterData.moveSpeed);
+            }
         }
     }
 
