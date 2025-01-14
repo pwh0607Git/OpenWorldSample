@@ -38,7 +38,7 @@ public class MonsterLootHandler : MonoBehaviour
     {
         foreach (var loot in monsterData.basicLoot)
         {
-            GameObject instance = SetDroppedProperties(Instantiate(loot, transform));
+            GameObject instance = SetDroppedProperties(Instantiate(loot.model, transform), loot);
         }
     }
 
@@ -48,7 +48,7 @@ public class MonsterLootHandler : MonoBehaviour
             int randomNumber = Random.Range(0, 100);
             if(randomNumber <= loot.dropRate)
             {
-                GameObject instance = SetDroppedProperties(Instantiate(loot.item, transform));
+                GameObject instance = SetDroppedProperties(Instantiate(loot.itemData.model, transform), loot.itemData);
             }
         }
     }
@@ -61,11 +61,13 @@ public class MonsterLootHandler : MonoBehaviour
         }
     }
 
-    GameObject SetDroppedProperties(GameObject droppedObject)
+    GameObject SetDroppedProperties(GameObject droppedObject, ItemData itemData)
     {
         droppedObject.AddComponent<Rigidbody>();
         droppedObject.AddComponent<BoxCollider>();
-
+        DroppedItem sc = droppedObject.AddComponent<DroppedItem>();
+        sc.itemData = itemData;
+        sc.CheckType();
         return droppedObject;
     }
 }

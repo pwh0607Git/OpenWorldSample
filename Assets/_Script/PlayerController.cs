@@ -236,9 +236,6 @@ public class PlayerController : MonoBehaviour
         }
 
         GameObject newItem = Instantiate(item, weaponTransform);
-
-        Destroy(newItem.GetComponent<Equipment_DroppedItemSC>());
-        Destroy(newItem.GetComponent<Collider>());
     }
 
     public void CleanEquipment()

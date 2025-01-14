@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using NaughtyAttributes;
 
 public class TEST_MonsterController : MonoBehaviour
 {
@@ -76,6 +77,11 @@ public class TEST_MonsterController : MonoBehaviour
             Down();
         }
 
+    }
+
+    [Button]
+    public void DownMonster(){
+        Down();
     }
 
     void FixPosition(){

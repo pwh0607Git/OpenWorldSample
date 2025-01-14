@@ -11,13 +11,13 @@ public enum MonsterType
 [System.Serializable]
 public class LootEntry
 {
-    public GameObject item;
+    public ItemData itemData;
 
     public float dropRate;
 
-    public LootEntry(GameObject item, float dropRate)
+    public LootEntry(ItemData itemData, float dropRate)
     {
-        this.item = item;
+        this.itemData = itemData;
         this.dropRate = dropRate;
     }
 }
@@ -44,7 +44,7 @@ public class MonsterData : ScriptableObject
     public GameObject monsterPrefab;        // ���� 3D �� ������
 
     [Header("Props")]
-    public List<GameObject> basicLoot;      //�⺻������ ������ �ִ� ����ǰ.
+    public List<ItemData> basicLoot;      //�⺻������ ������ �ִ� ����ǰ.
     public List<LootEntry> randomLoot;           //����ǰ
 
     //��ȿ�� �˻� �ڵ�.

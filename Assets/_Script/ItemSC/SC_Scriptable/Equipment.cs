@@ -9,17 +9,10 @@ public enum EquipmentType
 }
 
 [CreateAssetMenu(fileName = "Equipment", menuName = "Items/Equipment")]
-public class Equipment : ItemData, IDroppableItem
+public class Equipment : ItemData
 {
     public EquipmentType subType;
-
-    public void Init()
-    {
-
-    }
-
-    public ItemData GetItemData() => this;
-
+    
     private void OnEnable()
     {
         itemType = ItemType.Equipment;

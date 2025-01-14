@@ -96,11 +96,9 @@
     <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\Consumable.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\InventoryIconsController.cs" />
     <Compile Include="Assets\_Script\StreamingSC\StreamingManager.cs" />
-    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\Consumable_DroppedItemSC.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\InventorySlot.cs" />
     <Compile Include="Assets\_Script\EnvironmentSC\CameraConroller.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
-    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\Equipment_DroppedItemSC.cs" />
     <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\ItemData.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\MonsterDetectionHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
@@ -143,7 +141,6 @@
     <Compile Include="Assets\_Script\PlayerAttack.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\BuffManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
-    <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\IDroppableItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -1079,6 +1076,7 @@
     <ProjectReference Include="Unity.Muse.Chat.AccountHelper.csproj" />
     <ProjectReference Include="Unity.Rider.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Flow.csproj" />
+    <ProjectReference Include="NaughtyAttributes.Test.csproj" />
     <ProjectReference Include="Unity.Mathematics.Editor.csproj" />
     <ProjectReference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.csproj" />
     <ProjectReference Include="Gentleland.Utils.SteampunkUI.csproj" />
@@ -1092,6 +1090,7 @@
     <ProjectReference Include="Unity.TextMeshPro.csproj" />
     <ProjectReference Include="Unity.AI.Navigation.Editor.ConversionSystem.csproj" />
     <ProjectReference Include="Unity.VSCode.Editor.csproj" />
+    <ProjectReference Include="NaughtyAttributes.Core.csproj" />
     <ProjectReference Include="Unity.EditorCoroutines.Editor.csproj" />
     <ProjectReference Include="Unity.PlasticSCM.Editor.csproj" />
     <ProjectReference Include="Unity.Burst.csproj" />
@@ -1100,6 +1099,7 @@
     <ProjectReference Include="Unity.VisualStudio.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Core.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Core.Editor.csproj" />
+    <ProjectReference Include="NaughtyAttributes.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Flow.Editor.csproj" />
     <ProjectReference Include="Unity.Serialization.Editor.csproj" />
     <ProjectReference Include="Unity.Timeline.csproj" />
