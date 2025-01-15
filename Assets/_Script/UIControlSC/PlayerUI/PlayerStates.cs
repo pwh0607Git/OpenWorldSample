@@ -25,7 +25,7 @@ public class State
         maxMP = 100;
         curMP = 100;
 
-        speed = 10f;
+        speed = 5f;
         defend = 50f;
         attack = 1000f;
     }

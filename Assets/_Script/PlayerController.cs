@@ -51,15 +51,6 @@ public class PlayerController : MonoBehaviour
     public float maxSlopeAngle = 45f;
     public float gravity = 30f;
     private Vector3 moveDirection;
-
-    //Ground Checking 
-    /*
-    public Transform groundCheck;
-    public float groundDistance = 0.4f;
-    public LayerMask groundMask;
-    bool isGrounded;
-    */
-
     void Start()
     {
         myState = new State();
@@ -68,14 +59,12 @@ public class PlayerController : MonoBehaviour
         currentAnimState = PlayerAnimState.Idle;
         moveSpeed = myState.speed;
 
-        // isGrounded = false;
         //transform.position = SpawnPos.position;
     }
 
     void Update()
     {
         Move();
-        // isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) AttackHandler();
         UpdateAnim();
     }
@@ -112,8 +101,8 @@ public class PlayerController : MonoBehaviour
 
         moveDirection.x = adjustedMovement.x;
         moveDirection.z = adjustedMovement.z;
-
         controller.Move(moveDirection * moveSpeed * Time.deltaTime);
+        
         if (movement != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movement);
