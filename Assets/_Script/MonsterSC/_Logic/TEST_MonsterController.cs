@@ -163,6 +163,7 @@ public class TEST_MonsterController : MonoBehaviour
 
     bool ExistingObject(Vector3 direction, Quaternion angle)
     {
+        Debug.DrawRay(new Vector3(transform.position.x,transform.position.y+1,transform.position.z), direction.normalized,Color.red, monsterData.detectionRadius);
         if(Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, monsterData.detectionRadius, LayerMask.GetMask("Level"))){
             return true;
         }
@@ -183,7 +184,7 @@ public class TEST_MonsterController : MonoBehaviour
             {
                 float rotationSpeed = 5.0f; // 회전 속도
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);  
             }
         }
         else
@@ -192,7 +193,6 @@ public class TEST_MonsterController : MonoBehaviour
         }
 
         controller.Move(moveDirection * monsterData.moveSpeed * Time.deltaTime);
-        Debug.Log($"{gameObject.name}의 속도 : {controller.velocity}");
     }
 
     public void SetMonsterUI(MonsterStateUIController monsterUI)
@@ -234,6 +234,7 @@ public class TEST_MonsterController : MonoBehaviour
     }
 
     public void StartMonsterAttack(){
+        Debug.Log($"{gameObject.name} 공격!");
         isAttackingTarget = true;
         animator.SetBool("Walk", false);
         animator.SetTrigger("Attack");
