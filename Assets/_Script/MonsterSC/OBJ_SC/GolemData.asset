@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: Golem
   monsterType: 1
   HP: 1500
-  moveSpeed: 1.5
+  moveSpeed: 0.5
   movableArea: 50
   movingAreaRedius: 30
   detectionRadius: 10

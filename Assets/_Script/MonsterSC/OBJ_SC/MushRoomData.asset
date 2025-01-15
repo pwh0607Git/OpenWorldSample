@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: MushRoomMon
   monsterType: 0
   HP: 800
-  moveSpeed: 3
+  moveSpeed: 1
   movableArea: 50
   movingAreaRedius: 30
   detectionRadius: 15

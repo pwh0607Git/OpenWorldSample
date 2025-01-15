@@ -15,7 +15,7 @@ MonoBehaviour:
   monsterName: Bat
   monsterType: 2
   HP: 400
-  moveSpeed: 5
+  moveSpeed: 1.1
   movableArea: 50
   movingAreaRedius: 30
   detectionRadius: 15
