@@ -17,12 +17,7 @@ public class CameraConroller : MonoBehaviour
     public float minZoom;                
     public float maxZoom;               
     private float currentZoom;
-
-    /*
-     *  currentZoom = 5
-     *  minZoom = 3
-     *  maxZoom = 10
-    */
+    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked; 

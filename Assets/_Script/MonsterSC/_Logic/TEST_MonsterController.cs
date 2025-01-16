@@ -10,6 +10,8 @@ public class TEST_MonsterController : MonoBehaviour
     private MonsterStateUIController monsterUI;
     private Animator animator;
     private CharacterController controller;
+
+    [Header("MonsterState")]
     public int monsterCurHP;
 
     [Header("Flag")]
@@ -46,7 +48,8 @@ public class TEST_MonsterController : MonoBehaviour
         {
             HandlePlayerDetection();
         }else{
-            if(CheckIsSoFar() || attackTarget == null){
+            if(CheckIsSoFar() || attackTarget == null)
+            {
                 MoveToward(nextDestination);    
             }
 
@@ -82,7 +85,7 @@ public class TEST_MonsterController : MonoBehaviour
     bool isArrivingDestination(Vector3 position, Vector3 destination){
         position.y = 0;
         destination.y = 0;
-        return Vector3.Distance(position, destination) <= 0.5f;
+        return Vector3.Distance(position, destination) <= 0.5f;             //공격시 충돌.
     }
 
     [Button]
@@ -113,8 +116,7 @@ public class TEST_MonsterController : MonoBehaviour
     private void SetNextDestination()
     {
         Vector3 randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
-        randomDirection += originalPosition;            //최초 위치를 기준으로 원을 그려서 이동 범위를 설정한다.
-        nextDestination = randomDirection;
+        nextDestination = randomDirection + originalPosition;
         nextDestination.y = 0;
     }
 
@@ -125,6 +127,7 @@ public class TEST_MonsterController : MonoBehaviour
 
     private void HandlePlayerDetection()
     {
+        if(attackTarget == null) return;
         float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
 
         if (distanceToTarget <= monsterData.attackableRadius)
@@ -133,10 +136,7 @@ public class TEST_MonsterController : MonoBehaviour
         }
         else
         {
-            if (attackTarget != null)
-            {
-                ChasePlayer();
-            }
+            ChasePlayer();
         }
     }
 
@@ -156,14 +156,12 @@ public class TEST_MonsterController : MonoBehaviour
             isDetectingTarget = true;
         }
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetDirection), Time.deltaTime * monsterData.moveSpeed);
-        transform.LookAt(attackTarget);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetAngle, Time.deltaTime * monsterData.moveSpeed);
         MoveToward(attackTarget.position);
     }
 
     bool ExistingObject(Vector3 direction, Quaternion angle)
     {
-        Debug.DrawRay(new Vector3(transform.position.x,transform.position.y+1,transform.position.z), direction.normalized,Color.red, monsterData.detectionRadius);
         if(Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, monsterData.detectionRadius, LayerMask.GetMask("Level"))){
             return true;
         }
@@ -175,14 +173,15 @@ public class TEST_MonsterController : MonoBehaviour
         if (isAttackingTarget || isWaiting) return;
 
         Vector3 moveDirection = (destination - transform.position).normalized;
-
+        float fixedSpeed = (attackTarget == null) ? monsterData.moveSpeed : monsterData.moveSpeed * 2f;
+        
+        moveDirection.y = 0;
         if (controller.isGrounded)
         {
             animator.SetBool("Walk", true);
-
             if (moveDirection != Vector3.zero)
             {
-                float rotationSpeed = 5.0f; // 회전 속도
+                float rotationSpeed = 10.0f;
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);  
             }
@@ -192,7 +191,7 @@ public class TEST_MonsterController : MonoBehaviour
             moveDirection.y += Physics.gravity.y * Time.deltaTime;
         }
 
-        controller.Move(moveDirection * monsterData.moveSpeed * Time.deltaTime);
+        controller.Move(moveDirection * fixedSpeed * Time.deltaTime);
     }
 
     public void SetMonsterUI(MonsterStateUIController monsterUI)
@@ -227,14 +226,14 @@ public class TEST_MonsterController : MonoBehaviour
     }
     public void MonsterAttackHandler()
     {
-        if (!isDown && isDetectingTarget && !isAttackingTarget && !isMonsterAttackCoolDown)
+        Debug.Log("MonsterAttackHandler");
+        if (!isDown && !isAttackingTarget && !isMonsterAttackCoolDown)
         {
             StartMonsterAttack(); 
         }
     }
 
     public void StartMonsterAttack(){
-        Debug.Log($"{gameObject.name} 공격!");
         isAttackingTarget = true;
         animator.SetBool("Walk", false);
         animator.SetTrigger("Attack");
@@ -242,17 +241,33 @@ public class TEST_MonsterController : MonoBehaviour
 
     //애니메이션 이벤트.
     public void PerformAttack(){
-         Collider[] hitTargets = Physics.OverlapSphere(transform.position, monsterData.attackDamageRadius);
+        Debug.Log("Perform Attack");
+        Vector3 attackOffset = transform.localPosition + Vector3.up/2 + transform.forward;
+        Collider[] hitTargets = Physics.OverlapSphere(attackOffset, monsterData.attackDamageRadius);
 
-        foreach(var target in  hitTargets)
-        {
-            if (target.CompareTag("Player"))
+        if(hitTargets.Length == 0){
+            //공격 위치가 올바르지 못하다
+            Debug.Log("위치가 올바르지 못함... 바라보기");
+            transform.rotation = Quaternion.Lerp(transform.rotation, attackTarget.transform.rotation, Time.deltaTime * 5.0f);
+        }else{
+            foreach(var target in  hitTargets)
             {
-                Debug.Log($"{gameObject.name} hit Player!!");
-                target.GetComponentInChildren<PlayerController>().PlayerTakeDamage(10);
+                if (target.CompareTag("Player"))
+                {
+                    target.GetComponentInChildren<PlayerController>().PlayerTakeDamage(monsterData.attackPower);
+                }
             }
         }
         StartCoroutine(Coroutine_AttackCoolDown());
+    }
+
+    public void OnDrawGizmos(){
+        Gizmos.color = Color.red;
+        Vector3 attackOffset = transform.localPosition + Vector3.up/2 + transform.forward;
+        Gizmos.DrawWireSphere(attackOffset, monsterData.attackDamageRadius);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, monsterData.attackableRadius);
     }
 
     private IEnumerator Coroutine_AttackCoolDown()
