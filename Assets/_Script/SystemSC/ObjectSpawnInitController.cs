@@ -10,8 +10,7 @@ public class ObjectSpawnInitController : MonoBehaviour
         RaycastHit hit;
         
         //바닥이 위에 있다면... 바닥 면에 맞닿아야한다.
-        if(Physics.Raycast(upRay, out hit, Mathf.Infinity, LayerMask.GetMask("Level")) || Physics.Raycast(downRay, out hit, Mathf.Infinity, LayerMask.GetMask("Level"))){
-            
+        if(Physics.Raycast(upRay, out hit, Mathf.Infinity, LayerMask.GetMask("Ground")) || Physics.Raycast(downRay, out hit, Mathf.Infinity, LayerMask.GetMask("Ground"))){
             if(hit.transform.CompareTag("Floor") || hit.transform.GetComponent<Terrain>() != null){
                 originalPosition = new Vector3(transform.position.x, hit.point.y, transform.position.z);
             }

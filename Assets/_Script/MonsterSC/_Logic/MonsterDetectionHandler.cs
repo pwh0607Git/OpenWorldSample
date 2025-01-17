@@ -6,9 +6,12 @@ public class MonsterDetectionHandler : MonoBehaviour
 
     private SphereCollider detectionCollider;
 
+    public float detectionRadius = 10f;     // ���� �Ÿ�
+    public float detectionAngle = 80f;      // ���� ���� (��ä�� ����)
+
     private void Start()
     {
-        monsterController = transform.parent.GetComponent<TEST_MonsterController>();
+        monsterController = transform.GetComponentInParent<TEST_MonsterController>();
         
         detectionCollider = gameObject.AddComponent<SphereCollider>();
         detectionCollider.isTrigger = true;

@@ -140,7 +140,6 @@
     <Compile Include="Assets\_Script\PlayerAttack.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\BuffManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
-    <Compile Include="Assets\_Script\_Test\Test_Player.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -363,6 +363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33fe8b329ef23534297be0a60e0e454e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRadius: 10
+  detectionAngle: 80
 --- !u!1 &3562456135058523293
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,7 +949,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterCurHP: 0
+  attackTarget: {fileID: 0}
+  print_distance: 0
   waitingTime: 2
+  addSpeed: 2.5
 --- !u!143 &2497624285544175455
 CharacterController:
   m_ObjectHideFlags: 0
