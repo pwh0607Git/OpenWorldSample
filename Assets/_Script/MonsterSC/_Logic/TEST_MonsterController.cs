@@ -19,7 +19,6 @@ public class TEST_MonsterController : MonoBehaviour
     private bool isDown = false;
 
     private bool isAttackingTarget = false;
-    private bool isDetectingTarget = false;
 
     [Header("Moveing")]
     private Vector3 originalPosition;
@@ -27,7 +26,9 @@ public class TEST_MonsterController : MonoBehaviour
     private Vector3 nextDestination;
     
     [Header("Monster-Attack")]
-    private Transform attackTarget;
+    [SerializeField] private Transform attackTarget;
+
+    [ReadOnly, SerializeField] float print_distance = 0f;
     private void Start()
     {
         monsterCurHP = monsterData.HP;
@@ -35,7 +36,7 @@ public class TEST_MonsterController : MonoBehaviour
         TryGetComponent(out animator);
         controller = GetComponentInChildren<CharacterController>();
 
-        FixPosition();
+        FixOriginalPosition();
         
         loots = transform.GetComponentInChildren<MonsterLootHandler>().gameObject;
         SetNextDestination();
@@ -43,16 +44,17 @@ public class TEST_MonsterController : MonoBehaviour
 
     private void Update()
     {
-        //Chase Player
-        if (attackTarget != null)
-        {
-            HandlePlayerDetection();
-        }else{
-            if(CheckIsSoFar() || attackTarget == null)
-            {
-                MoveToward(nextDestination);    
+        if(attackTarget == null){
+            if(isArrivingDestination(transform.position, nextDestination)){
+                if(!isWaiting){
+                    animator.SetBool("Walk", false);
+                    isWaiting = true;
+                    waitTimer = waitingTime;
+                }
+            }else{
+                MoveToward(nextDestination);
             }
-
+            //플레이어 미인식 상태.
             if (isWaiting)
             {
                 waitTimer -= Time.deltaTime;
@@ -63,17 +65,9 @@ public class TEST_MonsterController : MonoBehaviour
                     SetNextDestination();
                 }
             }
-
-            if(isArrivingDestination(transform.position, nextDestination)){
-                if(!isWaiting){
-                    animator.SetBool("Walk", false);
-                    isWaiting = true;
-                    waitTimer = waitingTime;
-                }
-            }
-            else{
-                MoveToward(nextDestination);
-            }
+        }else{
+            // 추격 시작
+            HandlePlayerDetection();
         }
 
         if (monsterCurHP <= 0 && !isDown)
@@ -83,9 +77,7 @@ public class TEST_MonsterController : MonoBehaviour
     }
 
     bool isArrivingDestination(Vector3 position, Vector3 destination){
-        position.y = 0;
-        destination.y = 0;
-        return Vector3.Distance(position, destination) <= 0.5f;             //공격시 충돌.
+        return Vector3.Distance(NonYValue(position), NonYValue(destination)) <= 0.5f;
     }
 
     [Button]
@@ -93,7 +85,7 @@ public class TEST_MonsterController : MonoBehaviour
         Down();
     }
 
-    void FixPosition()
+    void FixOriginalPosition()
     {
         controller.enabled = false;
 
@@ -106,30 +98,37 @@ public class TEST_MonsterController : MonoBehaviour
     }
 
     private bool CheckIsSoFar(){
-        float distance = Vector3.Distance(transform.position, originalPosition);
-
+        float distance = Vector3.Distance(NonYValue(transform.position), NonYValue(originalPosition));
         return distance > monsterData.movableArea;
     }
+
+    private Vector3 NonYValue(Vector3 vec){
+        Vector3 newVector = new Vector3(vec.x, 0,vec.z);
+        return newVector;
+    }
+
     private bool isWaiting = false;
     private float waitTimer = 0.0f;
     public float waitingTime = 2.0f;
     private void SetNextDestination()
     {
         Vector3 randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
-        nextDestination = randomDirection + originalPosition;
-        nextDestination.y = 0;
+        nextDestination = NonYValue(randomDirection + originalPosition);
     }
 
     public void SetAttackTarget(Transform target)           //<= MonsterDetection.sc
     {
         attackTarget = target;
     }
-
+    [SerializeField] float chasingSpeed = 2.5f;
+    
     private void HandlePlayerDetection()
     {
-        if(attackTarget == null) return;
-        float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
+        if(attackTarget == null || IsExistingObject(attackTarget.transform.position)) return;
 
+        float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
+        print_distance = distanceToTarget;
+        
         if (distanceToTarget <= monsterData.attackableRadius)
         {
             MonsterAttackHandler();
@@ -143,24 +142,10 @@ public class TEST_MonsterController : MonoBehaviour
     private void ChasePlayer()
     {
         if (isAttackingTarget) return;
-
-        Vector3 targetDirection = (attackTarget.position - transform.position).normalized;
-        Quaternion targetAngle = Quaternion.LookRotation(attackTarget.position);
-
-        if (ExistingObject(targetDirection, targetAngle)) {
-            isDetectingTarget = false;
-            return;
-        }
-        else
-        {
-            isDetectingTarget = true;
-        }
-
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetAngle, Time.deltaTime * monsterData.moveSpeed);
         MoveToward(attackTarget.position);
     }
 
-    bool ExistingObject(Vector3 direction, Quaternion angle)
+    bool IsExistingObject(Vector3 direction)
     {
         if(Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, monsterData.detectionRadius, LayerMask.GetMask("Level"))){
             return true;
@@ -172,16 +157,15 @@ public class TEST_MonsterController : MonoBehaviour
     {
         if (isAttackingTarget || isWaiting) return;
 
-        Vector3 moveDirection = (destination - transform.position).normalized;
-        float fixedSpeed = (attackTarget == null) ? monsterData.moveSpeed : monsterData.moveSpeed * 2f;
+        Vector3 moveDirection = NonYValue((destination - transform.position).normalized);
+        float fixedSpeed = (attackTarget == null) ? monsterData.moveSpeed : monsterData.moveSpeed * chasingSpeed;
         
-        moveDirection.y = 0;
         if (controller.isGrounded)
         {
             animator.SetBool("Walk", true);
             if (moveDirection != Vector3.zero)
             {
-                float rotationSpeed = 10.0f;
+                float rotationSpeed = 20.0f;
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);  
             }
