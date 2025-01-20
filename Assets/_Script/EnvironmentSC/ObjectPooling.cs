@@ -1,32 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ObjectPooling : MonoBehaviour
 {
     private Dictionary<string, Queue<GameObject>> monsterPoolDictionary = new Dictionary<string, Queue<GameObject>>();
     public Transform monsters;
 
-    public void InitializeMonsterPool(List<Monster> monsterList)
-    {
-        foreach (Monster monster in monsterList)
-        {
-            Queue<GameObject> pool = new Queue<GameObject>();
+    // public void InitializeMonsterPool(List<Monster> monsterList)
+    // {
+    //     foreach (Monster monster in monsterList)
+    //     {
+    //         Queue<GameObject> pool = new Queue<GameObject>();
 
-            for (int i = 0; i < monster.poolCount; i++)
-            {
-                GameObject instance = Instantiate(monster.prefab);
-                instance.name = monster.prefab.tag;
-                instance.transform.SetParent(monsters);
-                instance.SetActive(false);
-                pool.Enqueue(instance);
-            }
-            monsterPoolDictionary[monster.prefab.tag] = pool;
-        }
-    }
+    //         for (int i = 0; i < monster.poolCount; i++)
+    //         {
+    //             GameObject instance = Instantiate(monster.prefab);
+    //             instance.name = monster.prefab.tag;
+    //             instance.transform.SetParent(monsters);
+    //             instance.SetActive(false);
+    //             pool.Enqueue(instance);
+    //         }
+    //         monsterPoolDictionary[monster.prefab.tag] = pool;
+    //     }
+    // }
 
     public GameObject GetObject(string tag, Vector3 position, Quaternion rotation)
     {
@@ -34,7 +30,7 @@ public class ObjectPooling : MonoBehaviour
         {
             GameObject instance = monsterPoolDictionary[tag].Dequeue();
 
-            //raycast- GroundLayer¿¡ ÇÑÇØ¼­¸¸ rayÄ³½ºÆ®°¡ Àû¿ë.
+            //raycast- GroundLayerï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ rayÄ³ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
             instance.transform.position = position;
             instance.transform.rotation = rotation;
             instance.SetActive(true);

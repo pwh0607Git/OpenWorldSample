@@ -18,7 +18,7 @@ public class TEST_MonsterSpawner : MonoBehaviour
         foreach (var data in monsterDatas)
         {
             GameObject monster = Instantiate(data.monsterPrefab);
-            TEST_MonsterController monsterController = monster.GetComponent<TEST_MonsterController>();
+            MonsterController monsterController = monster.GetComponent<MonsterController>();
             monster.transform.position = new Vector3(gameObject.transform.position.x + transX, 5f, gameObject.transform.position.z);
             
             transX += 10f;

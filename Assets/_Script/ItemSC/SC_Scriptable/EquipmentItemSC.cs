@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,7 +29,7 @@ public class EquipmentItemSC : ItemDataSC
 
         if (equipmentItem != null && iconImg != null)
         {
-            iconImg.sprite = equipmentItem.icon;           // ¾ÆÀÌÄÜ ¼³Á¤
+            iconImg.sprite = equipmentItem.icon;           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
 }

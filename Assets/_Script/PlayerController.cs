@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum PlayerAnimState
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public static EquipmentWindow myEquipments;
     public static ActionBar myKeyboard;
     public static BuffManager myBuffManager;
+    private static PlayerAttack playerAttack;
     public State myState;
 
     private void Awake()
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
         myEquipments = FindAnyObjectByType<EquipmentWindow>();
         myKeyboard = FindAnyObjectByType<ActionBar>();
         myBuffManager = FindAnyObjectByType<BuffManager>();
+        playerAttack = GetComponentInChildren<PlayerAttack>();
     }
 
     private Animator animator;
@@ -145,10 +148,20 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Idle", currentAnimState == PlayerAnimState.Idle);
         animator.SetBool("Walk", currentAnimState == PlayerAnimState.Walk);
     }
-
+    [SerializeField] List<GameObject> attackAbleMonsters = null;
     void AttackHandler()
     {
+        attackAbleMonsters = playerAttack.getAttackableMonster;
+        Transform attackTarget = attackAbleMonsters == null ? null : attackAbleMonsters[0].transform;
+        LookTarget(attackTarget);
         animator.SetTrigger("ComboAttack");
+    }
+
+    void LookTarget(Transform target){
+        if(target == null) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation((target.position- transform.position).normalized);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -162,39 +175,40 @@ public class PlayerController : MonoBehaviour
     private bool isAttacking = false;
 
     public void OnAttackHit1()
-    {
-        PlayerAttack playerAttack = GetComponentInChildren<PlayerAttack>();
+    {   
+        if(attackAbleMonsters.Count <= 0) return;
         isAttacking = true;
-        foreach (GameObject monster in playerAttack.getAttackableMonster)
+          
+        foreach (GameObject monster in attackAbleMonsters)
         {
-            TEST_MonsterController monsterScript = monster.GetComponent<TEST_MonsterController>();
+            MonsterController monsterScript = monster.GetComponent<MonsterController>();
             if (monsterScript != null)
             {
                 monsterScript.TakeDamage((int)myState.attack);
-                Debug.Log("Player Attack Hit1");
+                Debug.Log($"Player AttackHit1");
             }
         }
     }
 
     public void OnAttackHit2()
     {
-        PlayerAttack playerAttack = GetComponentInChildren<PlayerAttack>();
+        if(attackAbleMonsters.Count <= 0) return;
+           isAttacking = true;
         
-        isAttacking = true;
         foreach (GameObject monster in playerAttack.getAttackableMonster)
         {
-            TEST_MonsterController monsterScript = monster.GetComponent<TEST_MonsterController>();
+            MonsterController monsterScript = monster.GetComponent<MonsterController>();
             if (monsterScript != null)
             {
                 monsterScript.TakeDamage((int)myState.attack);
-                Debug.Log("Player Attack Hit2");
+                Debug.Log($"Player AttackHit2");
             }
         }
     }
 
     public void EndAttack()
     {
-        isAttacking= false;
+        isAttacking = false;
     }
 
     private bool isDamaging = false;

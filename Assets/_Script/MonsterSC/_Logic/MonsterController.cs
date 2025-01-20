@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using NaughtyAttributes;
 
-public class TEST_MonsterController : MonoBehaviour
+public class MonsterController : MonoBehaviour
 {
     [Header("MonsterData")]
     MonsterData monsterData;
@@ -210,7 +210,6 @@ public class TEST_MonsterController : MonoBehaviour
     }
     public void MonsterAttackHandler()
     {
-        Debug.Log("MonsterAttackHandler");
         if (!isDown && !isAttackingTarget && !isMonsterAttackCoolDown)
         {
             StartMonsterAttack(); 
@@ -225,7 +224,6 @@ public class TEST_MonsterController : MonoBehaviour
 
     //애니메이션 이벤트.
     public void PerformAttack(){
-        Debug.Log("Perform Attack");
         Vector3 attackOffset = transform.localPosition + Vector3.up/2 + transform.forward;
         Collider[] hitTargets = Physics.OverlapSphere(attackOffset, monsterData.attackDamageRadius);
 

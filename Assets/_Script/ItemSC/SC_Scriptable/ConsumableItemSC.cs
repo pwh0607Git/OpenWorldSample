@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-//½ÇÁúÀû ÀÓ¹«¼öÇà ÄÚµå.
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½.
 public class ConsumableItemSC : ItemDataSC
 {
     [SerializeField]
@@ -23,7 +21,7 @@ public class ConsumableItemSC : ItemDataSC
 
         if(consumableCountText == null)
         {
-            Debug.LogWarning("CountText ÇÒ´ç ½ÇÆÐ...");
+            Debug.LogWarning("CountText ï¿½Ò´ï¿½ ï¿½ï¿½ï¿½ï¿½...");
         }
 
         UpdateCountCallback();
@@ -48,7 +46,7 @@ public class ConsumableItemSC : ItemDataSC
             consumableItem.OnConsumableUsed += UpdateCountCallback;
         }
 
-        MapImage();         // µ¥ÀÌÅÍ ¼³Á¤ ÈÄ ¾ÆÀÌÄÜ ¸ÅÇÎ                    // µ¥ÀÌÅÍ ¼³Á¤ ÈÄ ¾ÆÀÌÄÜ ¸ÅÇÎ
+        MapImage();         // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     private void MapImage()
@@ -58,7 +56,7 @@ public class ConsumableItemSC : ItemDataSC
 
         if (consumableItem != null && iconImg != null)
         {
-            iconImg.sprite = consumableItem.icon;           // ¾ÆÀÌÄÜ ¼³Á¤
+            iconImg.sprite = consumableItem.icon;           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
 

@@ -1,106 +1,90 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class SectorMonsterSpawner : MonoBehaviour
+[System.Serializable]
+public class MonsterSpawnEntry
 {
-    public List<Monster> monsterObjects = new List<Monster>();
-    public List<GameObject> spawnPositionGroup;
-    private Dictionary<Transform, GameObject> monsterInPosition= new Dictionary<Transform, GameObject>();    
-    private ObjectPooling objectPooling;
+    public MonsterData monsterData;
+    public int count;
+}
 
-    private bool isSpawning;
-    public Vector2Int sectorVec;
+[System.Serializable]
+public class MonsterSpawnPoint{
+    public Transform point;
+    public List<MonsterSpawnEntry> monsterSpawnTable;
 
-    private void Awake()
-    {
-        objectPooling = GetComponent<ObjectPooling>();
+    private Dictionary<MonsterData, int> countInPoint;
 
-        foreach (GameObject posGroup in spawnPositionGroup)
-        {
-            int ran = Random.Range(0, 360);
-            posGroup.transform.Rotate(0, ran, 0);
-
-            Transform[] group = posGroup.GetComponentsInChildren<Transform>();
-            foreach (Transform spawnPos in group)
-            {
-                if (spawnPos != posGroup.transform)
-                {
-                    monsterInPosition[spawnPos] = null;
+    public Dictionary<MonsterData, int> GetMonsterCountTable(){
+        if(countInPoint == null){
+            countInPoint = new Dictionary<MonsterData, int>();
+            foreach(var entry in monsterSpawnTable){
+                if(!countInPoint.ContainsKey(entry.monsterData)){
+                    countInPoint.Add(entry.monsterData, entry.count);
                 }
             }
         }
+        return countInPoint;
+    }
+}
 
-        objectPooling.InitializeMonsterPool(monsterObjects);
+public class SectorMonsterSpawner : MonoBehaviour
+{
+    /*
+        ÏÑ§Í≥Ñ
+        1. monsterDataList, 
+        2. ÌäπÏ†ï Empty GameObjectÎ•º ÌÜµÌï¥ Î™¨Ïä§ÌÑ∞Í∞Ä ÏÜåÌôòÎêòÎäî ÏßÄÏ†êÏùÑ ÏÑ§Ï†ï(Random CircleÏÇ¨Ïö©(Vector2 => yÏ∂ï Î¨¥Ïãú)Î•º Í∏∞Ï§ÄÏúºÎ°ú Î™¨Ïä§ÌÑ∞Í∞Ä ÏÜåÌôòÎêòÎäî Ï†ïÌôïÌïú ÏßÄÏ†ê ÏÑ§Ï†ïÌïòÍ∏∞)
+        3. Ìï¥Îãπ ÏßÄÏ†êÎßàÎã§ ÏÜåÌôòÎêòÎäî Î™¨Ïä§ÌÑ∞Í∞Ä Í∞ÅÍ∞Å Ìï†Îãπ ÎêòÏñ¥ÏûàÎã§. 
+
+        4. PlayerÍ∞Ä ÌäπÏ†ï ÏßÄÏ†êÏóê Í∞ÄÍπåÏù¥ Í∞îÏùÑ Îïå ÏÜåÌôòÌïòÎèÑÎ°ù ÏÑ§Ï†ïÌïòÍ∏∞ => Ïù¥Í±¥ mapStreamingÏóêÏÑú Ìï†Îãπ
+    */
+    public List<MonsterSpawnPoint> spawnPoints;
+    private ObjectPooling objectPooling;
+    private bool isSpawning;
+    public Vector2Int sectorVec;
+
+    [SerializeField] GameObject monsterStateUIPrefab;
+    private void Awake()
+    {
+        objectPooling = GetComponent<ObjectPooling>();
+    }
+
+    [SerializeField] float spawnRadius;
+
+    void SpawnInitialMonsters(){
+        foreach(var point in spawnPoints){
+            Transform spawnPoint = point.point;
+            foreach(var entry in point.monsterSpawnTable){
+                for(int i=0;i<entry.count;i++){
+                    Vector2 ran = Random.insideUnitCircle * spawnRadius;
+                    Vector3 spawnPosition = new Vector3(spawnPoint.position.x + ran.x, 0, spawnPoint.position.z + ran.y);
+
+                    MonsterData monsterData = entry.monsterData;
+                    GameObject monster = Instantiate(monsterData.monsterPrefab, spawnPosition, Quaternion.identity);
+
+                    // Must Fix...
+                    MonsterController monsterController = monster.GetComponent<MonsterController>();
+                    if (monsterController != null)
+                    {
+                        monsterController.MonsterData = monsterData;
+                    }
+                    
+                    Instantiate(monsterStateUIPrefab, monster.transform);
+                }
+            }
+        }
     }
 
     void Start()
     {
         isSpawning = false;
+        SpawnInitialMonsters();
     }
-
-    private void SpawnInitialMonsters()
-    {
-        foreach (Monster monsterType in monsterObjects)
-        {
-            while (monsterType.CheckInCount()) SpawnMonster(monsterType);
-        }
-    }
-
-    public void SpawnMonster(Monster monsterType)
-    {
-        foreach (GameObject posGroup in spawnPositionGroup)
-        {
-            Transform[] group = posGroup.GetComponentsInChildren<Transform>().Where(t => t != posGroup.transform).ToArray();
-
-            foreach (Transform spawnPos in group)
-            {
-                if (monsterInPosition[spawnPos] == null)
-                {
-                    GameObject monster = objectPooling.GetObject(monsterType.prefab.tag, spawnPos.position, Quaternion.identity);
-                    if (monster != null)
-                    {
-                        monsterInPosition[spawnPos] = monster;
-                        monsterType.PlusCurCount();
-                        // ¿ŒΩ∫≈œΩ∫»≠ µ» ∏ÛΩ∫≈Õø° ªÁ∏¡ ¿Ã∫•∆Æ µÓ∑œ
-                        /*
-                        MonsterController controller = monster.GetComponent<MonsterController>();
-                        controller.OnMonsterDeath += () => HandleMonsterDeath(spawnPos, monsterType);
-                        */
-                    }
-                    return;
-                }
-            }
-        }
-    }
-
-    void HandleMonsterDeath(Transform position, Monster monsterType)
-    {
-        monsterInPosition[position] = null;
-        monsterType.MinusCurCount();
-        objectPooling.ReturnObject(gameObject);
-    }
-
-    public void DespawnMonsterTotal()
-    {
-        foreach(var monster in monsterInPosition)
-        {
-            if(monster.Value != null)
-            {
-                objectPooling.ReturnObject(monster.Value);
-            }
-        }
-        monsterInPosition.Clear();
-    }
-
     public void OnPlayerEnter()
     {
         if (!isSpawning)
         {
-            //position¿ª √º≈©«œø© æÀæ∆º≠ ∏ÛΩ∫≈Õ º“»Ø ±‚¥…¿ª ºˆ«‡«—¥Ÿ.
             SpawnInitialMonsters();             
             isSpawning = true;
         }
@@ -110,7 +94,7 @@ public class SectorMonsterSpawner : MonoBehaviour
     {
         if (isSpawning)
         {
-            DespawnMonsterTotal();
+            // DespawnMonsterTotal();
             isSpawning = false;
         }
     }
@@ -118,47 +102,12 @@ public class SectorMonsterSpawner : MonoBehaviour
     private void OnEnable()
     {
         isSpawning = false;
-        MonsterManager.instance.AddMonsterSpawnerSC(sectorVec, this);
+        // MonsterManager.instance.AddMonsterSpawnerSC(sectorVec, this);
     }
 
     private void OnDisable()
     {
         isSpawning = false;
-        MonsterManager.instance.RemoveMonsterSpawnerSC(sectorVec);
+        // MonsterManager.instance.RemoveMonsterSpawnerSC(sectorVec);
     }
-}
-
-[System.Serializable]
-public class Monster
-{
-    public int HP;
-    public int damage;
-    public float speed;
-    public int size;
-    public GameObject prefab;
-    public int inCount;
-    private int curCount;
-    public int poolCount;
-
-    public Monster(int HP, int size, int damage, float speed, GameObject prefab, int inCount, int poolCount)
-    {
-        this.HP = HP;
-        this.damage = damage;
-        this.speed = speed;
-        this.size = size;
-        this.prefab = prefab;
-        this.inCount = inCount;             //«ˆ¿Á ºΩ≈Õø° «ÿ¥Á ∏ÛΩ∫≈Õ∞° ∏Ó±‚∞° ¿÷æÓæﬂ«œ¥¬¡ˆ...
-        this.curCount = 0;
-        this.poolCount = poolCount;         //ø¿∫Í¡ß∆Æ «Æ∏µøÎ
-    }
-
-    public void MinusCurCount() => curCount--;
-    public void PlusCurCount() => curCount++;
-    public bool CheckInCount() => curCount < inCount;
-}
-
-//¬˜»ƒ ªÁøÎøπ¡§.
-public class Boss : Monster
-{
-    public Boss(int HP, int size, int damage, float speed, GameObject prefab, int count) : base(size, HP, damage, speed, prefab, 1, count) { }
 }
