@@ -10,7 +10,7 @@ public class MonsterLootHandler : MonoBehaviour
     private void Start()
     {
         loots = new List<GameObject>();
-        monsterData = transform.parent.GetComponent<TEST_MonsterController>().MonsterData;
+        monsterData = transform.parent.GetComponent<MonsterController>().MonsterData;
         
         if(monsterData != null)
         {

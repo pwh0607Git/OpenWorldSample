@@ -95,7 +95,7 @@ public class MonsterAI : MonoBehaviour
 
         if (distanceToPlayer > detectionRadius)
         {
-            return false;       // ���� �ݰ� ��
+            return false;
         }
 
         // ���� ���
@@ -103,10 +103,10 @@ public class MonsterAI : MonoBehaviour
 
         if (angleToPlayer > detectionAngle / 2)
         {
-            return false;       // ���� ���� ��
+            return false;
         }
 
-        return true;            //��� ������ ������ ���...
+        return true;
     }
     
     private void BackInitPoint()

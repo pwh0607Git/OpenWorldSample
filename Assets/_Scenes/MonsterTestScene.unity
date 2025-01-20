@@ -397,41 +397,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 844971428979492509, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_Avatar
-      value: 
-      objectReference: {fileID: 9000000, guid: 0308cf4e83cf517488b60af58b290fe0, type: 3}
-    - target: {fileID: 844971428979492509, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 61288ae8f65ae3b4d951523d4cb92538, type: 2}
-    - target: {fileID: 1855329291228611375, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_Size.x
-      value: 1.6
+    - target: {fileID: 884971976024013800, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
+      propertyPath: attackAbleArea
+      value: 60
       objectReference: {fileID: 0}
-    - target: {fileID: 1855329291228611375, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_Size.y
-      value: 2
+    - target: {fileID: 884971976024013800, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
+      propertyPath: attackAbleRadius
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 1855329291228611375, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_Size.z
-      value: 2
+    - target: {fileID: 1513524254318736493, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
+      propertyPath: m_Name
+      value: AttackPoint
       objectReference: {fileID: 0}
-    - target: {fileID: 1855329291228611375, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_Center.y
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1855329291228611375, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_Center.z
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1855329291228611375, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
-    - target: {fileID: 1855329291228611375, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_IncludeLayers.m_Bits
-      value: 128
+    - target: {fileID: 1962263247865366967, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -477,9 +457,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player(fixed)
       objectReference: {fileID: 0}
-    - target: {fileID: 5262115286170287335, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_TagString
-      value: Player
+    - target: {fileID: 7214058607826962048, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
+      propertyPath: m_Radius
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7214058607826962048, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
+      propertyPath: m_Center.z
+      value: -0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

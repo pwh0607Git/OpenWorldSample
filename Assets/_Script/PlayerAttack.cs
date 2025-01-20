@@ -5,13 +5,12 @@ public class PlayerAttack : MonoBehaviour
 {
     private List<GameObject> attackableMonsters = new List<GameObject>();
 
-    //�� List�� �޾Ƽ� ����ϱ⸸ ����!!
     public List<GameObject> getAttackableMonster
     {
         get
         {
             attackableMonsters.RemoveAll(monster => monster == null);
-            return attackableMonsters;
+            return(attackableMonsters.Count == 0 ? null : attackableMonsters);
         }
     }
 

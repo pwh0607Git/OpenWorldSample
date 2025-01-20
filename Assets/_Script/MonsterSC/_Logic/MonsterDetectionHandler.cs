@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MonsterDetectionHandler : MonoBehaviour
 {
-    TEST_MonsterController monsterController;
+    MonsterController monsterController;
 
     private SphereCollider detectionCollider;
 
@@ -11,7 +11,7 @@ public class MonsterDetectionHandler : MonoBehaviour
 
     private void Start()
     {
-        monsterController = transform.GetComponentInParent<TEST_MonsterController>();
+        monsterController = transform.GetComponentInParent<MonsterController>();
         
         detectionCollider = gameObject.AddComponent<SphereCollider>();
         detectionCollider.isTrigger = true;
