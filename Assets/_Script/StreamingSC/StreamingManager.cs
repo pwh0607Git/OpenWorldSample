@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class StreamingManager : MonoBehaviour
 {
-    public Transform player; // ÇÃ·¹ÀÌ¾î Ä³¸¯ÅÍÀÇ Transform
-    public int sectorSize = 10; // °¢ ¼½ÅÍÀÇ Å©±â (´ÜÀ§: ¹ÌÅÍ)
-    public int loadDistance = 1; // ÇÃ·¹ÀÌ¾î¿Í ¸î °³ ¼½ÅÍ ÀÌ³»ÀÇ °Å¸®¿¡¼­ ·ÎµåÇÒÁö ¼³Á¤
+    public Transform player; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Transform
+    public int sectorSize = 10; // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½)
+    public int loadDistance = 1; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì³ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     private Dictionary<Vector2Int, string> loadedSectors = new Dictionary<Vector2Int, string>();
 
@@ -15,7 +15,7 @@ public class StreamingManager : MonoBehaviour
     {
         Vector2Int currentSector = GetSector(player.position);
 
-        // ÁÖº¯ ¼½ÅÍ ·Îµå
+        // ï¿½Öºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½
         for (int x = -loadDistance; x <= loadDistance; x++)
         {
             for (int y = -loadDistance; y <= loadDistance; y++)
@@ -30,7 +30,7 @@ public class StreamingManager : MonoBehaviour
         }
 
         /*
-        // ¸Ö¸® ÀÖ´Â ¼½ÅÍ ¾ð·Îµå
+        // ï¿½Ö¸ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Îµï¿½
         List<Vector2Int> sectorsToUnload = new List<Vector2Int>();
         foreach (var sector in loadedSectors.Keys)
         {
@@ -55,7 +55,7 @@ public class StreamingManager : MonoBehaviour
     /*
     IEnumerator LoadSector(Vector2Int sector)
     {
-        Debug.Log(loadedSectors.Count + " ÇöÀç ·ÎµùµÈ ¾À °³¼ö...");
+        Debug.Log(loadedSectors.Count + " ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½...");
         string sceneName = $"Sector_{sector.x}_{sector.y}";
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         while (!asyncLoad.isDone)
@@ -67,17 +67,17 @@ public class StreamingManager : MonoBehaviour
     }
     */
 
-    private HashSet<Vector2Int> loadingSectors = new HashSet<Vector2Int>(); // ·Îµå ÁßÀÎ ¼½ÅÍ °ü¸®
+    private HashSet<Vector2Int> loadingSectors = new HashSet<Vector2Int>(); // ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     IEnumerator LoadSector(Vector2Int sector)
     {
-        // Áßº¹ ·Îµå ¹æÁö: ÀÌ¹Ì ·Îµå ÁßÀÎ ¼½ÅÍÀÎÁö È®ÀÎ
+        // ï¿½ßºï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½Ì¹ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         if (loadingSectors.Contains(sector) || loadedSectors.ContainsKey(sector))
         {
-            yield break; // ÀÌ¹Ì ·Îµå ÁßÀÌ°Å³ª ·Îµå ¿Ï·áµÈ ¼½ÅÍ¶ó¸é Á¾·á
+            yield break; // ï¿½Ì¹ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½Ì°Å³ï¿½ ï¿½Îµï¿½ ï¿½Ï·ï¿½ï¿½ ï¿½ï¿½ï¿½Í¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
 
-        loadingSectors.Add(sector); // ·Îµå ÁßÀÎ ¼½ÅÍ·Î Ãß°¡\
+        loadingSectors.Add(sector); // ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ß°ï¿½\
 
         string sceneName = $"Sector_{sector.x}_{sector.y}";
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
@@ -86,7 +86,7 @@ public class StreamingManager : MonoBehaviour
             yield return null;
         }
 
-        // ·Îµå°¡ ¿Ï·áµÇ¸é ·ÎµåµÈ ¼½ÅÍ¿¡ Ãß°¡ÇÏ°í ·Îµå ÁßÀÎ ¼½ÅÍ¿¡¼­ Á¦°Å
+        // ï¿½Îµå°¡ ï¿½Ï·ï¿½Ç¸ï¿½ ï¿½Îµï¿½ï¿½ ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ß°ï¿½ï¿½Ï°ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         loadedSectors[sector] = sceneName;
         loadingSectors.Remove(sector);
     }
