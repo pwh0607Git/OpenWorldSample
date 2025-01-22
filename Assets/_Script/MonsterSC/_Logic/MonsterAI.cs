@@ -97,8 +97,7 @@ public class MonsterAI : MonoBehaviour
         {
             return false;
         }
-
-        // ���� ���
+        
         float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer.normalized);
 
         if (angleToPlayer > detectionAngle / 2)

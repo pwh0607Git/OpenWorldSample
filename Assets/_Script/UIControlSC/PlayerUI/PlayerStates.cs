@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
 public class State
 {
     public int maxHP;
@@ -127,7 +127,7 @@ public class PlayerStates : MonoBehaviour
     private Image HP_Image;
     private Image MP_Image;
 
-    private State myState;
+    [SerializeField] private State myState;
 
     public Action<GameObject> OnBuffEnd;
 

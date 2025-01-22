@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Idle", currentAnimState == PlayerAnimState.Idle);
         animator.SetBool("Walk", currentAnimState == PlayerAnimState.Walk);
     }
-    [SerializeField] List<GameObject> attackAbleMonsters = null;
+    [SerializeField] List<GameObject> attackAbleMonsters;
     void AttackHandler()
     {
         attackAbleMonsters = playerAttack.getAttackableMonster;

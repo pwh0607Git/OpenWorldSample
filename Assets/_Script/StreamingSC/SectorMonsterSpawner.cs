@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using NaughtyAttributes;
+using Unity.Mathematics;
 using UnityEngine;
 
 [System.Serializable]
@@ -52,34 +54,33 @@ public class SectorMonsterSpawner : MonoBehaviour
 
     [SerializeField] float spawnRadius;
 
-    void SpawnInitialMonsters(){
+    [Button("SpawnButton")]
+    IEnumerator SpawnInitialMonsters(){
         foreach(var point in spawnPoints){
             Transform spawnPoint = point.point;
             foreach(var entry in point.monsterSpawnTable){
                 for(int i=0;i<entry.count;i++){
-                    Vector2 ran = Random.insideUnitCircle * spawnRadius;
+                    Vector2 ran = UnityEngine.Random.insideUnitCircle * spawnRadius;
                     Vector3 spawnPosition = new Vector3(spawnPoint.position.x + ran.x, 0, spawnPoint.position.z + ran.y);
 
                     MonsterData monsterData = entry.monsterData;
                     GameObject monster = Instantiate(monsterData.monsterPrefab, spawnPosition, Quaternion.identity);
-
-                    // Must Fix...
                     MonsterController monsterController = monster.GetComponent<MonsterController>();
                     if (monsterController != null)
                     {
                         monsterController.MonsterData = monsterData;
                     }
-                    
                     Instantiate(monsterStateUIPrefab, monster.transform);
                 }
             }
         }
+        return null;
     }
 
     void Start()
     {
         isSpawning = false;
-        SpawnInitialMonsters();
+        StartCoroutine(SpawnInitialMonsters());
     }
     public void OnPlayerEnter()
     {

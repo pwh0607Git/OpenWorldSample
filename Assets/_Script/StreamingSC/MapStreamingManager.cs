@@ -41,7 +41,7 @@ public class MapStreamingManager : MonoBehaviour
     void initMainScene()
     {
         LoadSectorFunc();
-        UnloadSectorFunc();
+        // UnloadSectorFunc();
     }
 
     private void Update()
