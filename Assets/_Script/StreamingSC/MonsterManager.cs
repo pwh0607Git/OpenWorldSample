@@ -21,7 +21,7 @@ public class MonsterManager : MonoBehaviour
         }
     }
 
-    public int monsterSpawnCallRange = 1;
+    [SerializeField] int monsterSpawnCallRange = 1;
 
     private void Start()
     {

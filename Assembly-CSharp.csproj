@@ -68,6 +68,7 @@
     <Compile Include="Assets\_Script\UIControlSC\MonsterUI\MonsterDamage.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\PlayerStates.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\_Logic\_MonsterState\MonsterControllerFromState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\ItemContoller.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\EquipmentSlot.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\_Logic\_MonsterState\MonsterStates.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\MonsterController.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\EquipmentWindow.cs" />
     <Compile Include="Assets\_Script\PlayerController.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\DroppedItem.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\ActionBarSlot.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\_Logic\_MonsterState\IMonsterState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\Equipment.cs" />

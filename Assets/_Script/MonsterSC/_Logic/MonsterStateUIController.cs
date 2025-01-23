@@ -16,17 +16,17 @@ public class MonsterStateUIController : MonoBehaviour
 
     void Start(){
         rootMonster = transform.root.gameObject;
-        this.monsterData = rootMonster.GetComponent<MonsterController>().MonsterData;
+        monsterData = rootMonster.GetComponent<MonsterController>().MonsterData;
         
-        InitMonsterUI();
+        InitMonsterUIInform();
         InitMonsterUIPosition();
-  }
+    }
 
     void Update(){
         gameObject.GetComponent<RectTransform>().LookAt(Camera.main.transform);
     }
 
-    public void InitMonsterUI()
+    public void InitMonsterUIInform()
     {
         monsterName.text = monsterData.monsterName;
         

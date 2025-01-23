@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 124441968}
   - component: {fileID: 124441967}
   - component: {fileID: 124441966}
-  m_Layer: 8
+  m_Layer: 3
   m_Name: Plane
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -1054,7 +1054,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2122821928}
-  m_Layer: 8
+  m_Layer: 3
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1081,8 +1081,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1159103827}
-  - {fileID: 1040965942}
   - {fileID: 1250589565}
+  - {fileID: 1040965942}
   - {fileID: 444930259}
   - {fileID: 1419143449}
   - {fileID: 1412396045}

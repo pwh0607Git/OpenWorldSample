@@ -8,22 +8,25 @@ public class MonsterController : MonoBehaviour
     MonsterData monsterData;
     public MonsterData MonsterData { get { return monsterData; } set { monsterData = value; } }
     private MonsterStateUIController monsterUI;
-    private Animator animator;
+    public Animator animator;
     private CharacterController controller;
 
     [Header("MonsterState")]
     public int monsterCurHP;
+    [SerializeField] float rotationSpeed = 20.0f;
 
     [Header("Flag")]
     private bool canTakeDamage = true;
     private bool isDown = false;
+    private bool isLookingPlayerAction = false;
+    private bool isIdle = true;         //현재 플레이어와 전투중인지 아닌지 판별하는 flag
 
     private bool isAttackingTarget = false;
 
-    [Header("Moveing")]
-    private Vector3 originalPosition;
+    [Header("Moving")]
+    public Vector3 originalPosition;
 
-    private Vector3 nextDestination;
+    public Vector3 nextDestination;
     
     [Header("Monster-Attack")]
     [SerializeField] private Transform attackTarget;
@@ -35,9 +38,8 @@ public class MonsterController : MonoBehaviour
         attackTarget = null;
         TryGetComponent(out animator);
         controller = GetComponentInChildren<CharacterController>();
-
         FixOriginalPosition();
-        
+        StartCoroutine(Coroutine_SetMonsterUI());
         loots = transform.GetComponentInChildren<MonsterLootHandler>().gameObject;
         SetNextDestination();
     }
@@ -45,7 +47,7 @@ public class MonsterController : MonoBehaviour
     private void Update()
     {
         if(attackTarget == null){
-            if(isArrivingDestination(transform.position, nextDestination)){
+            if(IsArrivingDestination(transform.position, nextDestination)){
                 if(!isWaiting){
                     animator.SetBool("Walk", false);
                     isWaiting = true;
@@ -76,7 +78,7 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    bool isArrivingDestination(Vector3 position, Vector3 destination){
+    public bool IsArrivingDestination(Vector3 position, Vector3 destination){
         return Vector3.Distance(NonYValue(position), NonYValue(destination)) <= 0.5f;
     }
 
@@ -85,16 +87,18 @@ public class MonsterController : MonoBehaviour
         Down();
     }
 
-    void FixOriginalPosition()
-    {
-        controller.enabled = false;
-
+    void FixOriginalPosition(){
         var spawnController = GetComponentInChildren<ObjectSpawnInitController>();
         spawnController.SetOntheFloor();
         originalPosition = spawnController.originalPosition;
-        transform.position = originalPosition;
+        transform.position = originalPosition;            
+    }
 
-        controller.enabled = true;  
+    IEnumerator Coroutine_SetMonsterUI(){
+        while(GetComponentInChildren<MonsterStateUIController>() == null){
+            yield return null;
+        }
+        monsterUI = GetComponentInChildren<MonsterStateUIController>();
     }
 
     private bool CheckIsSoFar(){
@@ -110,7 +114,7 @@ public class MonsterController : MonoBehaviour
     private bool isWaiting = false;
     private float waitTimer = 0.0f;
     public float waitingTime = 2.0f;
-    private void SetNextDestination()
+    public void SetNextDestination()
     {
         Vector3 randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
         nextDestination = NonYValue(randomDirection + originalPosition);
@@ -120,13 +124,15 @@ public class MonsterController : MonoBehaviour
     {
         attackTarget = target;
     }
-    [SerializeField] float chasingSpeed = 2.5f;
+    [SerializeField] float chasingSpeed = 10f;
     
     private void HandlePlayerDetection()
     {
-        if(attackTarget == null || IsExistingObject(attackTarget.transform.position)) return;
+        if(attackTarget == null) return;
 
-        float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
+        Vector3 directionToTarget = attackTarget.position - transform.position;
+        float distanceToTarget = directionToTarget.magnitude;
+
         print_distance = distanceToTarget;
         
         if (distanceToTarget <= monsterData.attackableRadius)
@@ -145,15 +151,7 @@ public class MonsterController : MonoBehaviour
         MoveToward(attackTarget.position);
     }
 
-    bool IsExistingObject(Vector3 direction)
-    {
-        if(Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, monsterData.detectionRadius, LayerMask.GetMask("Level"))){
-            return true;
-        }
-        return false;
-    }
-
-    private void MoveToward(Vector3 destination)
+    public void MoveToward(Vector3 destination)
     {
         if (isAttackingTarget || isWaiting) return;
 
@@ -165,7 +163,6 @@ public class MonsterController : MonoBehaviour
             animator.SetBool("Walk", true);
             if (moveDirection != Vector3.zero)
             {
-                float rotationSpeed = 20.0f;
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);  
             }
@@ -191,6 +188,9 @@ public class MonsterController : MonoBehaviour
         }
         StartCoroutine(Coroutine_TakenDamage(damage));
         monsterUI.ShowDamage(damage);
+
+        //공격 받으면 player 쳐다보기.
+        // isIdle = false;
     }
 
     float noDamageTime = 0.4f;
@@ -208,6 +208,7 @@ public class MonsterController : MonoBehaviour
         yield return new WaitForSeconds(noDamageTime);
         canTakeDamage = true;
     }
+
     public void MonsterAttackHandler()
     {
         if (!isDown && !isAttackingTarget && !isMonsterAttackCoolDown)
@@ -260,7 +261,7 @@ public class MonsterController : MonoBehaviour
         isAttackingTarget = false;
     }
 
-    GameObject loots;
+    private GameObject loots;
 
     public void Down()
     {
