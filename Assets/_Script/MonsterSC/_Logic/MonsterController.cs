@@ -8,7 +8,7 @@ public class MonsterController : MonoBehaviour
     MonsterData monsterData;
     public MonsterData MonsterData { get { return monsterData; } set { monsterData = value; } }
     private MonsterStateUIController monsterUI;
-    private Animator animator;
+    public Animator animator;
     private CharacterController controller;
 
     [Header("MonsterState")]
@@ -26,7 +26,7 @@ public class MonsterController : MonoBehaviour
     [Header("Moving")]
     public Vector3 originalPosition;
 
-    private Vector3 nextDestination;
+    public Vector3 nextDestination;
     
     [Header("Monster-Attack")]
     [SerializeField] private Transform attackTarget;
@@ -47,7 +47,7 @@ public class MonsterController : MonoBehaviour
     private void Update()
     {
         if(attackTarget == null){
-            if(isArrivingDestination(transform.position, nextDestination)){
+            if(IsArrivingDestination(transform.position, nextDestination)){
                 if(!isWaiting){
                     animator.SetBool("Walk", false);
                     isWaiting = true;
@@ -78,7 +78,7 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    bool isArrivingDestination(Vector3 position, Vector3 destination){
+    public bool IsArrivingDestination(Vector3 position, Vector3 destination){
         return Vector3.Distance(NonYValue(position), NonYValue(destination)) <= 0.5f;
     }
 
@@ -86,11 +86,7 @@ public class MonsterController : MonoBehaviour
     public void DownMonster(){
         Down();
     }
-    // void ReturnOriginalPosition(){
-    //     isIdle = true;
-    //     MoveToward(nextDestination);
-    // }
-    //fix
+
     void FixOriginalPosition(){
         var spawnController = GetComponentInChildren<ObjectSpawnInitController>();
         spawnController.SetOntheFloor();
@@ -118,7 +114,7 @@ public class MonsterController : MonoBehaviour
     private bool isWaiting = false;
     private float waitTimer = 0.0f;
     public float waitingTime = 2.0f;
-    private void SetNextDestination()
+    public void SetNextDestination()
     {
         Vector3 randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
         nextDestination = NonYValue(randomDirection + originalPosition);
@@ -155,7 +151,7 @@ public class MonsterController : MonoBehaviour
         MoveToward(attackTarget.position);
     }
 
-    private void MoveToward(Vector3 destination)
+    public void MoveToward(Vector3 destination)
     {
         if (isAttackingTarget || isWaiting) return;
 
@@ -212,6 +208,7 @@ public class MonsterController : MonoBehaviour
         yield return new WaitForSeconds(noDamageTime);
         canTakeDamage = true;
     }
+
     public void MonsterAttackHandler()
     {
         if (!isDown && !isAttackingTarget && !isMonsterAttackCoolDown)
