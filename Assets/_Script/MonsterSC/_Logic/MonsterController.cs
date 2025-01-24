@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using NaughtyAttributes;
 
 public class MonsterController : MonoBehaviour
 {
@@ -30,8 +29,6 @@ public class MonsterController : MonoBehaviour
     
     [Header("Monster-Attack")]
     [SerializeField] private Transform attackTarget;
-
-    [ReadOnly, SerializeField] float print_distance = 0f;
     private void Start()
     {
         monsterCurHP = monsterData.HP;
@@ -82,7 +79,6 @@ public class MonsterController : MonoBehaviour
         return Vector3.Distance(NonYValue(position), NonYValue(destination)) <= 0.5f;
     }
 
-    [Button]
     public void DownMonster(){
         Down();
     }
@@ -132,8 +128,6 @@ public class MonsterController : MonoBehaviour
 
         Vector3 directionToTarget = attackTarget.position - transform.position;
         float distanceToTarget = directionToTarget.magnitude;
-
-        print_distance = distanceToTarget;
         
         if (distanceToTarget <= monsterData.attackableRadius)
         {
@@ -230,7 +224,6 @@ public class MonsterController : MonoBehaviour
 
         if(hitTargets.Length == 0){
             //공격 위치가 올바르지 못하다
-            Debug.Log("위치가 올바르지 못함... 바라보기");
             transform.rotation = Quaternion.Lerp(transform.rotation, attackTarget.transform.rotation, Time.deltaTime * 5.0f);
         }else{
             foreach(var target in  hitTargets)

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MonsterDetectionHandler : MonoBehaviour
 {
-    MonsterController monsterController;
+    MonsterControllerFromState monsterController;
     
     [SerializeField] GameObject inDectionAreaObject;
     [SerializeField] GameObject inAttackAreaObject;
@@ -14,11 +14,11 @@ public class MonsterDetectionHandler : MonoBehaviour
 
     private void Start()
     {
-        monsterController = transform.GetComponentInParent<MonsterController>();
+        monsterController = transform.GetComponentInParent<MonsterControllerFromState>();
         
         detectionCollider = gameObject.AddComponent<SphereCollider>();
         detectionCollider.isTrigger = true;
-        detectionCollider.radius = monsterController.MonsterData.detectionRadius;
+        detectionCollider.radius = monsterController.monsterData.detectionRadius;
     }
 
        private void Update()
@@ -88,7 +88,6 @@ public class MonsterDetectionHandler : MonoBehaviour
             return false;
         }
 
-        // ���� ���
         float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer.normalized);
 
         if (angleToPlayer > detectionAngle / 2)
