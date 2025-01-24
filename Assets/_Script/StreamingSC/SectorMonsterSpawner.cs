@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
-using Unity.Mathematics;
 using UnityEngine;
 
 [System.Serializable]
@@ -54,7 +52,6 @@ public class SectorMonsterSpawner : MonoBehaviour
 
     [SerializeField] float spawnRadius;
 
-    [Button("SpawnButton")]
     IEnumerator SpawnInitialMonsters(){
         foreach(var point in spawnPoints){
             Transform spawnPoint = point.point;

@@ -118,6 +118,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\_Script\SystemSC\ObjectSpawnInitController.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\_Logic\_MonsterState\MonsterDetectionObserver.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\MonsterAI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -1078,7 +1079,6 @@
     <ProjectReference Include="Unity.Rider.Editor.csproj" />
     <ProjectReference Include="Unity.Muse.Chat.AccountHelper.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Flow.csproj" />
-    <ProjectReference Include="NaughtyAttributes.Test.csproj" />
     <ProjectReference Include="Unity.Mathematics.Editor.csproj" />
     <ProjectReference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.csproj" />
     <ProjectReference Include="Gentleland.Utils.SteampunkUI.csproj" />
@@ -1089,10 +1089,10 @@
     <ProjectReference Include="Unity.Collections.Editor.csproj" />
     <ProjectReference Include="Unity.FilmInternalUtilities.Editor.csproj" />
     <ProjectReference Include="Unity.Toonshader.Editor.csproj" />
+    <ProjectReference Include="CustomInspector.csproj" />
     <ProjectReference Include="Unity.TextMeshPro.csproj" />
     <ProjectReference Include="Unity.AI.Navigation.Editor.ConversionSystem.csproj" />
     <ProjectReference Include="Unity.VSCode.Editor.csproj" />
-    <ProjectReference Include="NaughtyAttributes.Core.csproj" />
     <ProjectReference Include="Unity.EditorCoroutines.Editor.csproj" />
     <ProjectReference Include="Unity.PlasticSCM.Editor.csproj" />
     <ProjectReference Include="Unity.Burst.csproj" />
@@ -1101,7 +1101,6 @@
     <ProjectReference Include="Unity.VisualStudio.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Core.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Core.Editor.csproj" />
-    <ProjectReference Include="NaughtyAttributes.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Flow.Editor.csproj" />
     <ProjectReference Include="Unity.Serialization.Editor.csproj" />
     <ProjectReference Include="Unity.Timeline.csproj" />
