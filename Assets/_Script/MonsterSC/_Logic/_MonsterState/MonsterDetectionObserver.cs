@@ -1,14 +1,17 @@
+using System;
 using UnityEngine;
 
 public class MonsterDetectionObserver : MonoBehaviour
-{
-        MonsterController monsterController;
-    
+{    
+    public event Action<Transform> OnPlayerDetected;
+    public event Action OnPlayerLost;
+
+    private MonsterController monsterController;
+    private SphereCollider detectionCollider;
+
     [SerializeField] GameObject inDectionAreaObject;
     [SerializeField] GameObject inAttackAreaObject;
     
-    private SphereCollider detectionCollider;
-
     [SerializeField] float detectionRadius = 10f;   
     [SerializeField] float detectionAngle = 70f;
 
@@ -50,11 +53,15 @@ public class MonsterDetectionObserver : MonoBehaviour
             }
         }
     }
+
+    //수정 사항 : 각도 안에만 들어온 경우만 판단하기.
+
     private void OnTriggerEnter(Collider other)
     {
         // Angle 안에 들어왔을 때!
         if (other.CompareTag("Player"))
         {
+
             inDectionAreaObject = other.gameObject;
         }
     }

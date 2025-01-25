@@ -1,21 +1,26 @@
+using UnityEditorInternal;
 using UnityEngine;
 
 public class MonsterControllerFromState : MonoBehaviour
 {
-    public IMonsterState currentState;  
+    [Header("MonsterData")]
+    public IMonsterState currentState;
+    public MonsterData monsterData;
     public Animator animator;
     public Transform attackTarget;
-    public MonsterData monsterData;
 
+
+    [SerializeField] Vector3 originalPosition;
     public Vector3 nextDestination;
 
     [SerializeField] float rotationSpeed = 20.0f;
-    
-    [SerializeField] Vector3 originalPosition;
     [SerializeField] float movingAreaRedius;
     [SerializeField] float moveSpeed;
     [SerializeField] float chasingSpeed= 5f;
+
+    MonsterDetectionObserver detection;
     bool isAttackingTarget = false;
+
     private CharacterController controller;
     private void Start()
     {
@@ -31,6 +36,21 @@ public class MonsterControllerFromState : MonoBehaviour
     void InitMonster(){
         TryGetComponent(out animator);
         TryGetComponent(out controller);
+        detection = GetComponentInChildren<MonsterDetectionObserver>();
+        detection.OnTargetDetect += HandleTargetDetecte;
+        detection.OnTargetLost += HandleTargetLost;
+    }
+
+    void HandleTargetDetecte(Transform target)
+    {
+        attackTarget = target;
+        TransitionToState(MonsterStates.MonsterStateChase.GetInstance());
+    }
+
+    void HandleTargetLost()
+    {
+        attackTarget = null;
+        TransitionToState(MonsterStates.MonsterStateIdle.GetInstance());
     }
 
     public void TransitionToState(IMonsterState newState)
@@ -41,20 +61,7 @@ public class MonsterControllerFromState : MonoBehaviour
         currentState.EnterState(this);
     }
 
-    public void SetNextDestination()
-    {
-        Vector3 randomDirection = Random.insideUnitSphere * movingAreaRedius;
-        nextDestination = NonYValue(randomDirection + originalPosition);
-    }
-    public bool IsArrivingDestination(Vector3 position, Vector3 destination){
-        return Vector3.Distance(NonYValue(position), NonYValue(destination)) <= 0.1f;
-    }
-
-    private Vector3 NonYValue(Vector3 vec){
-        Vector3 newVector = new Vector3(vec.x, 0,vec.z);
-        return newVector;
-    }
-
+    //MonsterController
     public void MoveToward(Vector3 destination)
     {
         Vector3 moveDirection = NonYValue((destination - transform.position).normalized);
@@ -77,6 +84,25 @@ public class MonsterControllerFromState : MonoBehaviour
         controller.Move(moveDirection * fixedSpeed * Time.deltaTime);
     }
 
+    // MonsterState-Idle..
+    public void SetNextDestination()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * movingAreaRedius;
+        nextDestination = NonYValue(randomDirection + originalPosition);
+    }
+
+    public bool IsArrivingDestination(Vector3 position, Vector3 destination)
+    {
+        return Vector3.Distance(NonYValue(position), NonYValue(destination)) <= 0.1f;
+    }
+
+    private Vector3 NonYValue(Vector3 vec)
+    {
+        Vector3 newVector = new Vector3(vec.x, 0, vec.z);
+        return newVector;
+    }
+
+    // MonsterState-Chase
     public void ChasePlayer()
     {
         if (isAttackingTarget) return;

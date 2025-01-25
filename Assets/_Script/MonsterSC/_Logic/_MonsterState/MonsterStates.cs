@@ -17,21 +17,23 @@ namespace MonsterStates{
             return Instance;
         }
         
-
         float waitTimer= 0.0f;
         float waitingTime = 2.0f;
         bool isWaiting = false;
+        
         [SerializeField] Vector3 nextDestination;
+
         public void EnterState(MonsterControllerFromState monster){
             monster.SetNextDestination();
         }
+
         public void UpdateState(MonsterControllerFromState monster){
             if(monster.attackTarget != null){
                 monster.TransitionToState(MonsterStateChase.GetInstance());
                 return;
             }
 
-            if(monster.IsArrivingDestination(monster.transform.position, monster.nextDestination))
+            if(monster.IsArrivingDestination(monster.transform.position, nextDestination))
             {
                 if(!isWaiting){
                     monster.animator.SetBool("Walk",false);
@@ -39,7 +41,7 @@ namespace MonsterStates{
                     isWaiting = true;
                 }
             }else{
-                monster.MoveToward(monster.nextDestination);
+                monster.MoveToward(nextDestination);
             }
 
             if (isWaiting)
