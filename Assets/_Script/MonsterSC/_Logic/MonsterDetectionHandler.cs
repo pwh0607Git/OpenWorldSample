@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MonsterDetectionHandler : MonoBehaviour
 {
-    MonsterControllerFromState monsterController;
+    MonsterController monsterController;
     
     [SerializeField] GameObject inDectionAreaObject;
     [SerializeField] GameObject inAttackAreaObject;
@@ -14,14 +14,14 @@ public class MonsterDetectionHandler : MonoBehaviour
 
     private void Start()
     {
-        monsterController = transform.GetComponentInParent<MonsterControllerFromState>();
+        monsterController = transform.GetComponentInParent<MonsterController>();
         
         detectionCollider = gameObject.AddComponent<SphereCollider>();
         detectionCollider.isTrigger = true;
-        detectionCollider.radius = monsterController.monsterData.detectionRadius;
+        detectionCollider.radius = detectionRadius;
     }
 
-       private void Update()
+        private void Update()
     {
         if (inDectionAreaObject != null) // 감지된 객체가 있을 때
         {

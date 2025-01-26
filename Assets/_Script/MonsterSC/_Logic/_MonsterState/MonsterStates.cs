@@ -2,25 +2,11 @@ using UnityEngine;
 
 namespace MonsterStates{
     public class MonsterStateIdle : IMonsterState
-    {
-        // 싱글톤 세팅.
-        private static MonsterStateIdle instance;
-        public static MonsterStateIdle Instance{
-            get{
-                if(instance == null)
-                    instance = new MonsterStateIdle();
-                return instance;
-            }
-        }
-
-        public static MonsterStateIdle GetInstance(){
-            return Instance;
-        }
-        
+    {        
         float waitTimer= 0.0f;
         float waitingTime = 2.0f;
         bool isWaiting = false;
-        
+
         [SerializeField] Vector3 nextDestination;
 
         public void EnterState(MonsterControllerFromState monster){
@@ -28,8 +14,8 @@ namespace MonsterStates{
         }
 
         public void UpdateState(MonsterControllerFromState monster){
-            if(monster.attackTarget != null){
-                monster.TransitionToState(MonsterStateChase.GetInstance());
+            if(monster.GetAttackTarget() != null){
+                monster.TransitionToState(new MonsterStateChase());
                 return;
             }
 
@@ -54,38 +40,26 @@ namespace MonsterStates{
                 }
             }
         }
+
         public void ExitState(MonsterControllerFromState monster){
             
         }
     }
 
     public class MonsterStateChase : IMonsterState{
-        private static MonsterStateChase instance;
-        public static MonsterStateChase Instance{
-            get{
-                if(instance == null)
-                    instance = new MonsterStateChase();
-                return instance;
-            }
-        }
-
-        public static MonsterStateChase GetInstance(){
-            return Instance;
-        }
-
         public void EnterState(MonsterControllerFromState monster){
             
         }
 
         public void UpdateState(MonsterControllerFromState monster){
-            if(monster.attackTarget == null){
-                monster.TransitionToState(MonsterStateIdle.GetInstance());
+            if(monster.GetAttackTarget() == null){
+                monster.TransitionToState(new MonsterStateIdle());
             }
 
-            float distanceToTarget = Vector3.Distance(monster.attackTarget.position, monster.transform.position);
+            float distanceToTarget = Vector3.Distance(monster.GetAttackTarget().position, monster.GetAttackTarget().position);
 
             if(distanceToTarget <= monster.monsterData.attackableRadius){
-                monster.TransitionToState(MonsterStateBattle.GetInstance());
+                monster.TransitionToState(new MonsterStateAttack());
             }else{
                 monster.ChasePlayer();
             }
@@ -96,19 +70,7 @@ namespace MonsterStates{
         }
     }
     
-    public class MonsterStateBattle : IMonsterState{
-        private static MonsterStateBattle instance;
-        public static MonsterStateBattle Instance{
-            get{
-                if(instance == null)
-                    instance = new MonsterStateBattle();
-                return instance;
-            }
-        }
-
-        public static MonsterStateBattle GetInstance(){
-            return Instance;
-        }
+    public class MonsterStateAttack : IMonsterState{
         private float attackCoolTime = 1.5f;
         private float attackTimer;
 
@@ -118,17 +80,17 @@ namespace MonsterStates{
             attackTimer = attackCoolTime;
         }
         public void UpdateState(MonsterControllerFromState monster){
-            if(monster.attackTarget == null){
-                monster.TransitionToState(MonsterStateIdle.GetInstance());
+            if(monster.GetAttackTarget() == null){
+                monster.TransitionToState(new MonsterStateIdle());
                 return;
             }
 
-            Vector3 directionToTarget = monster.attackTarget.position - monster.transform.position;
+            Vector3 directionToTarget = monster.GetAttackTarget().position - monster.transform.position;
             float distanceToTarget = directionToTarget.magnitude;
 
             if (distanceToTarget > monster.monsterData.attackableRadius)
             {
-                monster.TransitionToState(MonsterStateChase.GetInstance());
+                monster.TransitionToState(new MonsterStateChase());
             }
         }
 
@@ -138,14 +100,6 @@ namespace MonsterStates{
     }
         
     public class MonsterStateDown : IMonsterState{
-        private static MonsterStateBattle instance;
-        public static MonsterStateBattle Instance{
-            get{
-                if(instance == null)
-                    instance = new MonsterStateBattle();
-                return instance;
-            }
-        }
         public void EnterState(MonsterControllerFromState monster){
         
         }

@@ -14,7 +14,5 @@ public class ObjectSpawnInitController : MonoBehaviour
                 originalPosition = hit.point;
             }
         }
-        
-        isSettingComplete = true;
     }
 }

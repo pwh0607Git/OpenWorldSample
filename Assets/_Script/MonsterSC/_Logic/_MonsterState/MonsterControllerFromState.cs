@@ -1,4 +1,4 @@
-using UnityEditorInternal;
+using MonsterStates;
 using UnityEngine;
 
 public class MonsterControllerFromState : MonoBehaviour
@@ -7,25 +7,24 @@ public class MonsterControllerFromState : MonoBehaviour
     public IMonsterState currentState;
     public MonsterData monsterData;
     public Animator animator;
-    public Transform attackTarget;
+    [SerializeField] Transform attackTarget;
+    private CharacterController controller;
 
-
-    [SerializeField] Vector3 originalPosition;
-    public Vector3 nextDestination;
+    public Vector3 originalPosition;
 
     [SerializeField] float rotationSpeed = 20.0f;
     [SerializeField] float movingAreaRedius;
     [SerializeField] float moveSpeed;
-    [SerializeField] float chasingSpeed= 5f;
+    [SerializeField] float chasingSpeed;
 
-    MonsterDetectionObserver detection;
+    [SerializeField] Vector3 nextDestination;
+    [SerializeField] MonsterDetectionObserver detection;
     bool isAttackingTarget = false;
 
-    private CharacterController controller;
     private void Start()
     {
         InitMonster();
-        TransitionToState(MonsterStates.MonsterStateIdle.GetInstance());
+        TransitionToState(new MonsterStateIdle());
     }
 
     private void Update()
@@ -37,34 +36,41 @@ public class MonsterControllerFromState : MonoBehaviour
         TryGetComponent(out animator);
         TryGetComponent(out controller);
         detection = GetComponentInChildren<MonsterDetectionObserver>();
-        detection.OnTargetDetect += HandleTargetDetecte;
+
+        detection.OnTargetDetected += HandleTargetDetect;
         detection.OnTargetLost += HandleTargetLost;
     }
 
-    void HandleTargetDetecte(Transform target)
+    void HandleTargetDetect(Transform target)
     {
+        Debug.Log("Target Detect!");
         attackTarget = target;
-        TransitionToState(MonsterStates.MonsterStateChase.GetInstance());
+        TransitionToState(new MonsterStateChase());
     }
 
     void HandleTargetLost()
     {
+        Debug.Log("Target Lost!");
         attackTarget = null;
-        TransitionToState(MonsterStates.MonsterStateIdle.GetInstance());
+        TransitionToState(new MonsterStateIdle());
     }
 
     public void TransitionToState(IMonsterState newState)
     {
+        if (currentState == newState)
+        {
+            return;                     // 동일한 상태로의 전환 방지
+        }
+
         Debug.Log($"상태 변환 : {currentState} -> {newState}");
         currentState?.ExitState(this);
         currentState = newState;
         currentState.EnterState(this);
     }
 
-    //MonsterController
     public void MoveToward(Vector3 destination)
     {
-        Vector3 moveDirection = NonYValue((destination - transform.position).normalized);
+        Vector3 moveDirection = ((destination - transform.position).normalized).FlattenY();
         float fixedSpeed = (attackTarget == null) ? monsterData.moveSpeed : monsterData.moveSpeed * chasingSpeed;
         
         if (controller.isGrounded)
@@ -84,22 +90,15 @@ public class MonsterControllerFromState : MonoBehaviour
         controller.Move(moveDirection * fixedSpeed * Time.deltaTime);
     }
 
-    // MonsterState-Idle..
     public void SetNextDestination()
     {
         Vector3 randomDirection = Random.insideUnitSphere * movingAreaRedius;
-        nextDestination = NonYValue(randomDirection + originalPosition);
+        nextDestination = (randomDirection + originalPosition).FlattenY();
     }
 
     public bool IsArrivingDestination(Vector3 position, Vector3 destination)
     {
-        return Vector3.Distance(NonYValue(position), NonYValue(destination)) <= 0.1f;
-    }
-
-    private Vector3 NonYValue(Vector3 vec)
-    {
-        Vector3 newVector = new Vector3(vec.x, 0, vec.z);
-        return newVector;
+        return Vector3.Distance(position.FlattenY(), destination.FlattenY()) <= 0.1f;
     }
 
     // MonsterState-Chase
@@ -109,7 +108,13 @@ public class MonsterControllerFromState : MonoBehaviour
         MoveToward(attackTarget.position);
     }
 
-    public void SetAttackTarget(Transform target){
+    public Transform GetAttackTarget()
+    {
+        return attackTarget;
+    }
+
+    public void SetAttackTarget(Transform target)
+    {
         attackTarget = target;
     }
 }

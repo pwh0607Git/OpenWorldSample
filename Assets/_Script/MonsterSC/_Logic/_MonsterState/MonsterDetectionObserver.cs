@@ -2,106 +2,70 @@ using System;
 using UnityEngine;
 
 public class MonsterDetectionObserver : MonoBehaviour
-{    
-    public event Action<Transform> OnPlayerDetected;
-    public event Action OnPlayerLost;
+{
+    public event Action<Transform> OnTargetDetected;
+    public event Action OnTargetLost;
 
-    private MonsterController monsterController;
-    private SphereCollider detectionCollider;
+    [SerializeField] Transform target;
 
-    [SerializeField] GameObject inDectionAreaObject;
-    [SerializeField] GameObject inAttackAreaObject;
-    
-    [SerializeField] float detectionRadius = 10f;   
+    [SerializeField] float detectionRadius = 10f;
     [SerializeField] float detectionAngle = 70f;
+
+    bool isTargetDetected;
 
     private void Start()
     {
-        monsterController = transform.GetComponentInParent<MonsterController>();
-        
-        detectionCollider = gameObject.AddComponent<SphereCollider>();
-        detectionCollider.isTrigger = true;
-        detectionCollider.radius = monsterController.MonsterData.detectionRadius;
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+        isTargetDetected = false;
     }
 
-       private void Update()
+    private void Update()
     {
-        if (inDectionAreaObject != null) // 감지된 객체가 있을 때
+        DetectTarget();
+    }
+
+    void DetectTarget()
+    {
+        if (target == null) return;
+
+        Vector3 directionToTarget = target.position - transform.position;
+        float distanceToTarget = directionToTarget.magnitude;
+
+        if (IsTargetInDetectionArea(directionToTarget.normalized, distanceToTarget) && !IsExistingObject(directionToTarget.normalized))
         {
-            Vector3 directionToPlayer = inDectionAreaObject.transform.position - transform.position;
-            float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer.normalized);
-
-            if(IsExistingObject(directionToPlayer)) return;
-
-            // 부채꼴 범위 안으로 들어온 경우
-            if (angleToPlayer < detectionAngle / 2)
+            if (!isTargetDetected)
             {
-                if (inAttackAreaObject == null) // 처음으로 부채꼴 범위 안으로 들어온 경우
-                {
-                    inAttackAreaObject = inDectionAreaObject;
-                    monsterController.SetAttackTarget(inAttackAreaObject.transform); // 타겟 설정
-                    Debug.Log("플레이어가 부채꼴 범위 안으로 들어옴!");
-                }
+                isTargetDetected = true;
+                OnTargetDetected?.Invoke(target);
             }
-            else
+        }
+        else
+        {
+            if (isTargetDetected)
             {
-                if (inAttackAreaObject != null) // 부채꼴 범위 밖으로 나간 경우
-                {
-                    inAttackAreaObject = null;
-                    Debug.Log("플레이어가 부채꼴 범위 밖으로 나감.");
-                }
+                isTargetDetected = false;
+                OnTargetLost?.Invoke();
             }
         }
     }
 
-    //수정 사항 : 각도 안에만 들어온 경우만 판단하기.
-
-    private void OnTriggerEnter(Collider other)
+    bool IsExistingObject(Vector3 directionToTarget)
     {
-        // Angle 안에 들어왔을 때!
-        if (other.CompareTag("Player"))
-        {
-
-            inDectionAreaObject = other.gameObject;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            inDectionAreaObject = null;
-            inAttackAreaObject = null; // 부채꼴 범위 객체도 초기화
-            monsterController.SetAttackTarget(null);
-        }
-    }
-
-    bool IsExistingObject(Vector3 direction)
-    {
-        if(Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, detectionRadius, LayerMask.GetMask("Level"))){
+        if(Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, detectionRadius, LayerMask.GetMask("Level"))){
             return true;
         }
         return false;
     }
 
-    private bool IsPlayerInDetectionArea(GameObject target)
+    private bool IsTargetInDetectionArea(Vector3 directionToTarget, float distanceToTarget)
     {
         if (target == null) return false;
-        Vector3 directionToPlayer = target.transform.position - transform.position;
-        float distanceToPlayer = directionToPlayer.magnitude;
+        if (distanceToTarget > detectionRadius) return false;
 
-        if (distanceToPlayer > detectionRadius)
-        {
-            return false;
-        }
+        float angleToTarget = Vector3.Angle(transform.forward, directionToTarget);
 
-        float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer.normalized);
-
-        if (angleToPlayer > detectionAngle / 2)
-        {
-            return false;
-        }
-
+        if (angleToTarget > detectionAngle / 2) return false;
+        
         return true;
     }
 

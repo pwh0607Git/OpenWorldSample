@@ -5,11 +5,11 @@ public class MonsterAI : MonoBehaviour
 {
     private NavMeshAgent agent;
 
-    public Transform[] patrolPoints;    // ���Ͱ� �̵��� Ư�� ��ġ��
-    public Transform initPoint;         // ������ �ʱ� ��ġ.
+    public Transform[] patrolPoints;    
+    public Transform initPoint;         
     
-    public float waitTime = 2f;         // �� �������� ��� �ð�, ���� ������ ������ ���·� ����... 2�� 3�� 10�� ���...
-    public float moveRadius = 10f;      // ���� �̵� �ݰ�
+    public float waitTime = 2f;         
+    public float moveRadius = 10f;     
     public float speed = 10f;
 
     private int currentPointIndex;
@@ -17,7 +17,6 @@ public class MonsterAI : MonoBehaviour
     private float waitTimer;
 
     // private MonsterController monsterController;
-
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
