@@ -5,13 +5,10 @@ public class PlayerAttack : MonoBehaviour
 {
     private List<GameObject> attackableMonsters = new List<GameObject>();
 
-    public List<GameObject> getAttackableMonster
+    public List<GameObject> GetAttackableMonsters()
     {
-        get
-        {
-            attackableMonsters.RemoveAll(monster => monster == null);
-            return(attackableMonsters.Count == 0 ? null : attackableMonsters);
-        }
+        attackableMonsters.RemoveAll(monster => monster == null);
+        return attackableMonsters;
     }
 
     private void OnTriggerEnter(Collider other)

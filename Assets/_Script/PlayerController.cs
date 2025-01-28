@@ -54,8 +54,15 @@ public class PlayerController : MonoBehaviour
     public float maxSlopeAngle = 45f;
     public float gravity = 30f;
     private Vector3 moveDirection;
+
     void Start()
     {
+        InitPlayer();
+    }
+
+    void InitPlayer()
+    {
+
         myState = new State();
         TryGetComponent(out controller);
         TryGetComponent(out animator);
@@ -68,7 +75,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
-        if ( Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) AttackHandler();
+        AttackHandler();
         UpdateAnim();
     }
     
@@ -148,12 +155,20 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Idle", currentAnimState == PlayerAnimState.Idle);
         animator.SetBool("Walk", currentAnimState == PlayerAnimState.Walk);
     }
+
     [SerializeField] List<GameObject> attackAbleMonsters;
     void AttackHandler()
     {
-        attackAbleMonsters = playerAttack.getAttackableMonster;
-        Transform attackTarget = attackAbleMonsters == null ? null : attackAbleMonsters[0].transform;
-        LookTarget(attackTarget);
+        //if (weaponTransform.childCount == 0) return;            //무기 미장착시 무시하기.
+        if (!Input.GetKeyDown(KeyCode.LeftControl) && !Input.GetKeyDown(KeyCode.RightControl)) return;
+
+        attackAbleMonsters = playerAttack.GetAttackableMonsters();
+        if (attackAbleMonsters.Count > 0)
+        {
+            //공격 가능 몬스터가 없으면...?
+            Transform attackTarget = attackAbleMonsters.Count <= 0 ? null : attackAbleMonsters[0].transform;
+            LookTarget(attackTarget);
+        }
         animator.SetTrigger("ComboAttack");
     }
 
@@ -176,9 +191,9 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttackHit1()
     {   
-        if(attackAbleMonsters.Count <= 0) return;
+        //if(attackAbleMonsters.Count <= 0) return;
         isAttacking = true;
-          
+        
         foreach (GameObject monster in attackAbleMonsters)
         {
             //MonsterController monsterScript = monster.GetComponent<MonsterController>();
@@ -193,12 +208,13 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttackHit2()
     {
-        if(attackAbleMonsters.Count <= 0) return;
-           isAttacking = true;
+        //if(attackAbleMonsters.Count <= 0) return;
+        isAttacking = true;
         
-        foreach (GameObject monster in playerAttack.getAttackableMonster)
+        foreach (GameObject monster in attackAbleMonsters)
         {
-            MonsterController monsterScript = monster.GetComponent<MonsterController>();
+            MonsterControllerBT monsterScript = monster.GetComponent<MonsterControllerBT>();
+            //MonsterController monsterScript = monster.GetComponent<MonsterController>();
             if (monsterScript != null)
             {
                 monsterScript.TakeDamage((int)myState.attack);
@@ -213,7 +229,8 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool isDamaging = false;
-    private float noDamagingTime = 0.2f;            //0.초간 데미지 받지 않기...
+    private float noDamagingTime = 0.3f;            //0.초간 데미지 받지 않기...
+
     public void PlayerTakeDamage(int damage){
         if(isDamaging) return;
 
