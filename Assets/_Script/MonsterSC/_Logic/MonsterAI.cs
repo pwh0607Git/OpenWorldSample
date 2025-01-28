@@ -72,6 +72,7 @@ public class MonsterAI : MonoBehaviour
 
     private void DetectPlayer()
     {
+        Debug.Log("Detection Player!!");
         if (IsPlayerInDetectionArea())
         {
             ChasePlayer();

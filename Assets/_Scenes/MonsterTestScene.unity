@@ -399,7 +399,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 884971976024013800, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: myState.speed
-      value: 30
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 884971976024013800, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: attackAbleArea
@@ -1162,27 +1162,6 @@ Transform:
   - {fileID: 5883546585626903539}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &662408160192003825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7369327913288331466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0930febb01857df4bb0a54258dc9663c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  attackTarget: {fileID: 0}
-  monsterData: {fileID: 11400000, guid: df04fc41d4bd7e340a644919c503f748, type: 2}
-  nextDestination: {x: 0, y: 0, z: 0}
-  rotationSpeed: 20
-  originalPosition: {x: 0, y: 0, z: 0}
-  movingAreaRedius: 5
-  moveSpeed: 10
-  chasingSpeed: 5
 --- !u!4 &674968801568910631
 Transform:
   m_ObjectHideFlags: 0
@@ -1843,13 +1822,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3318493534441765415}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cd1199bdc9911e840bbb20b48341e306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inDectionAreaObject: {fileID: 0}
-  inAttackAreaObject: {fileID: 0}
+  target: {fileID: 444930260}
   detectionRadius: 10
   detectionAngle: 70
 --- !u!4 &6131238299313706887
@@ -2072,7 +2050,7 @@ GameObject:
   - component: {fileID: 1751653928760502157}
   - component: {fileID: 2497624286266263078}
   - component: {fileID: 4342763629432647326}
-  - component: {fileID: 662408160192003825}
+  - component: {fileID: 7369327913288331467}
   m_Layer: 7
   m_Name: TesterMonster
   m_TagString: Monster
@@ -2080,6 +2058,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7369327913288331467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7369327913288331466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f90897090323664ba7e1f2d4e7215a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: df04fc41d4bd7e340a644919c503f748, type: 2}
+  detectionAngle: 80
+  originalPosition: {x: 0, y: 0, z: 0}
+  nextDestination: {x: 0, y: 0, z: 0}
 --- !u!4 &7434328110808251931
 Transform:
   m_ObjectHideFlags: 0

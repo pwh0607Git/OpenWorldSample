@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
-        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) AttackHandler();
+        if ( Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) AttackHandler();
         UpdateAnim();
     }
     
@@ -181,7 +181,8 @@ public class PlayerController : MonoBehaviour
           
         foreach (GameObject monster in attackAbleMonsters)
         {
-            MonsterController monsterScript = monster.GetComponent<MonsterController>();
+            //MonsterController monsterScript = monster.GetComponent<MonsterController>();
+            MonsterControllerBT monsterScript = monster.GetComponent<MonsterControllerBT>();
             if (monsterScript != null)
             {
                 monsterScript.TakeDamage((int)myState.attack);

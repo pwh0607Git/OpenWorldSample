@@ -6,7 +6,7 @@ public class MonsterController : MonoBehaviour
     [Header("MonsterData")]
     MonsterData monsterData;
     public MonsterData MonsterData { get { return monsterData; } set { monsterData = value; } }
-    private MonsterStateUIController monsterUI;
+    private MonsterStateUIController monsterUI;             // UI는 동적 생성이 아닌 프리팹에 추가한 상태로 스폰하도록하기.
     public Animator animator;
     private CharacterController controller;
 
@@ -18,17 +18,17 @@ public class MonsterController : MonoBehaviour
     private bool canTakeDamage = true;
     private bool isDown = false;
     private bool isLookingPlayerAction = false;
-    private bool isIdle = true;         //현재 플레이어와 전투중인지 아닌지 판별하는 flag
+    private bool isIdle = true;                             //현재 플레이어와 전투중인지 아닌지 판별하는 flag
 
     private bool isAttackingTarget = false;
 
     [Header("Moving")]
     public Vector3 originalPosition;
-
     public Vector3 nextDestination;
     
     [Header("Monster-Attack")]
     [SerializeField] private Transform attackTarget;
+
     private void Start()
     {
         monsterCurHP = monsterData.HP;
@@ -110,18 +110,19 @@ public class MonsterController : MonoBehaviour
     private bool isWaiting = false;
     private float waitTimer = 0.0f;
     public float waitingTime = 2.0f;
+
     public void SetNextDestination()
     {
         Vector3 randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
         nextDestination = NonYValue(randomDirection + originalPosition);
     }
 
-    public void SetAttackTarget(Transform target)           //<= MonsterDetection.sc
+    public void SetAttackTarget(Transform target)
     {
         attackTarget = target;
     }
+
     [SerializeField] float chasingSpeed = 10f;
-    
     private void HandlePlayerDetection()
     {
         if(attackTarget == null) return;

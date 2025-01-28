@@ -61,10 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_Script\Utility\Vector3Extensions.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\_Logic\BehaviorTree\MonsterControllerBT.cs" />
     <Compile Include="Assets\_Script\StreamingSC\MapStreamingManager.cs" />
     <Compile Include="Assets\_Script\UIControlSC\MonsterUI\MonsterDamage.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\PlayerStates.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\_Logic\BehaviorTree\BTComposite.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\_MonsterState\MonsterControllerFromState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Assets\_Script\MonsterSC\_Logic\TEST_MonsterSpawner.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\InventoryItemIconManager.cs" />
+    <Compile Include="Assets\TeKniKo_Free\Power_Ups\Scripts\ObjectBounce.cs" />
     <Compile Include="Assets\_Script\PlayerAttack.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\BuffManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />

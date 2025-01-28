@@ -13,6 +13,11 @@ public class MonsterDetectionObserver : MonoBehaviour
 
     bool isTargetDetected;
 
+    public MonsterDetectionObserver(MonsterData monsterData)
+    {
+        detectionRadius = monsterData.detectionRadius;
+    }
+
     private void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -69,19 +74,20 @@ public class MonsterDetectionObserver : MonoBehaviour
         return true;
     }
 
-    void OnDrawGizmos(){
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawWireSphere(transform.position, detectionRadius);
 
-        Vector3 forward = transform.forward * detectionRadius;
-        Quaternion leftRayRotation = Quaternion.Euler(0, -detectionAngle / 2, 0);
-        Quaternion rightRayRotation = Quaternion.Euler(0, detectionAngle / 2, 0);
+    //    Vector3 forward = transform.forward * detectionRadius;
+    //    Quaternion leftRayRotation = Quaternion.Euler(0, -detectionAngle / 2, 0);
+    //    Quaternion rightRayRotation = Quaternion.Euler(0, detectionAngle / 2, 0);
 
-        Vector3 leftRay = leftRayRotation * forward;
-        Vector3 rightRay = rightRayRotation * forward;
+    //    Vector3 leftRay = leftRayRotation * forward;
+    //    Vector3 rightRay = rightRayRotation * forward;
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(transform.position, leftRay);
-        Gizmos.DrawRay(transform.position, rightRay);
-    }
+    //    Gizmos.color = Color.blue;
+    //    Gizmos.DrawRay(transform.position, leftRay);
+    //    Gizmos.DrawRay(transform.position, rightRay);
+    //}
 }
