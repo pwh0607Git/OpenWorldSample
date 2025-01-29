@@ -81,6 +81,8 @@ public class PlayerController : MonoBehaviour
     
     void Move()
     {
+        if (isDamaging) return;
+
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
@@ -162,13 +164,24 @@ public class PlayerController : MonoBehaviour
         //if (weaponTransform.childCount == 0) return;            //무기 미장착시 무시하기.
         if (!Input.GetKeyDown(KeyCode.LeftControl) && !Input.GetKeyDown(KeyCode.RightControl)) return;
 
+        Vector3 attackDirection = transform.forward;
+        float moveDistance = 1f;
+
         attackAbleMonsters = playerAttack.GetAttackableMonsters();
         if (attackAbleMonsters.Count > 0)
         {
-            //공격 가능 몬스터가 없으면...?
             Transform attackTarget = attackAbleMonsters.Count <= 0 ? null : attackAbleMonsters[0].transform;
             LookTarget(attackTarget);
+
+            //몬스터 쪽으로 살짝 이동.
+            Vector3 attackVector = attackTarget.position - transform.position;
+            attackDirection = attackVector.normalized;
+            moveDistance = attackVector.magnitude / 3f;    
         }
+
+        //추력 수정
+        //Vector3 movement = attackDirection * Time.deltaTime * 5f;
+        //controller.Move(movement);
         animator.SetTrigger("ComboAttack");
     }
 
@@ -191,12 +204,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttackHit1()
     {   
-        //if(attackAbleMonsters.Count <= 0) return;
         isAttacking = true;
         
         foreach (GameObject monster in attackAbleMonsters)
         {
-            //MonsterController monsterScript = monster.GetComponent<MonsterController>();
             MonsterControllerBT monsterScript = monster.GetComponent<MonsterControllerBT>();
             if (monsterScript != null)
             {
@@ -208,13 +219,11 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttackHit2()
     {
-        //if(attackAbleMonsters.Count <= 0) return;
         isAttacking = true;
         
         foreach (GameObject monster in attackAbleMonsters)
         {
             MonsterControllerBT monsterScript = monster.GetComponent<MonsterControllerBT>();
-            //MonsterController monsterScript = monster.GetComponent<MonsterController>();
             if (monsterScript != null)
             {
                 monsterScript.TakeDamage((int)myState.attack);
