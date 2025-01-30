@@ -503,28 +503,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 884971976024013800, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: myState.speed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 884971976024013800, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: attackAbleArea
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 884971976024013800, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: attackAbleRadius
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1513524254318736493, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_Name
-      value: AttackPoint
-      objectReference: {fileID: 0}
-    - target: {fileID: 1962263247865366967, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3092847943253279668, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: field of view
-      value: 20
+      propertyPath: attackForce
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -532,7 +512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -540,19 +520,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.4274837
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.90402305
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -560,27 +540,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -129.384
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3439750867801698017, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5262115286170287335, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_Name
-      value: Player(fixed)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7214058607826962048, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_Radius
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7214058607826962048, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
-      propertyPath: m_Center.z
-      value: -0.1
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

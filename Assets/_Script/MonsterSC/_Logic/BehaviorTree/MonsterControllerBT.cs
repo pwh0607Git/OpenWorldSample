@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -216,7 +217,7 @@ public class MonsterControllerBT : MonoBehaviour
 
     public void SetNextDestination()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * monsterData.movingAreaRedius;
         nextDestination = (randomDirection + originalPosition).FlattenY();
     }
 
@@ -273,4 +274,13 @@ public class MonsterControllerBT : MonoBehaviour
 
         controller.Move(moveDirection * fixedSpeed * Time.deltaTime);
     }
+
+    #region monsterDestroy
+    public static event Action<GameObject> OnMonsterDestroyed; // 이벤트 선언
+
+    private void OnDestroy()
+    {
+        OnMonsterDestroyed?.Invoke(gameObject); // 몬스터가 삭제될 때 이벤트 발생
+    }
+    #endregion
 }

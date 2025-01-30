@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public enum PlayerAnimState
 {
@@ -62,7 +65,6 @@ public class PlayerController : MonoBehaviour
 
     void InitPlayer()
     {
-
         myState = new State();
         TryGetComponent(out controller);
         TryGetComponent(out animator);
@@ -72,16 +74,18 @@ public class PlayerController : MonoBehaviour
         //transform.position = SpawnPos.position;
     }
 
+
     void Update()
     {
         Move();
         AttackHandler();
         UpdateAnim();
     }
-    
+    [SerializeField] Vector3 vel = Vector3.zero;
+  
     void Move()
     {
-        if (isDamaging) return;
+        if (isDamaging || isAttacking) return;
 
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
@@ -158,37 +162,37 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Walk", currentAnimState == PlayerAnimState.Walk);
     }
 
+    [SerializeField] float attackForce = 5.0f;
     [SerializeField] List<GameObject> attackAbleMonsters;
+
     void AttackHandler()
     {
         //if (weaponTransform.childCount == 0) return;            //무기 미장착시 무시하기.
-        if (!Input.GetKeyDown(KeyCode.LeftControl) && !Input.GetKeyDown(KeyCode.RightControl)) return;
-
-        Vector3 attackDirection = transform.forward;
-        float moveDistance = 1f;
-
-        attackAbleMonsters = playerAttack.GetAttackableMonsters();
-        if (attackAbleMonsters.Count > 0)
+        UpdateAttackableMonsterList();
+        if (isAttacking)
         {
-            Transform attackTarget = attackAbleMonsters.Count <= 0 ? null : attackAbleMonsters[0].transform;
-            LookTarget(attackTarget);
-
-            //몬스터 쪽으로 살짝 이동.
-            Vector3 attackVector = attackTarget.position - transform.position;
-            attackDirection = attackVector.normalized;
-            moveDistance = attackVector.magnitude / 3f;    
+            LookTarget(GetAttackTarget());
+            Vector3 attackTargetDirection = GetAttackTarget() == null ? transform.forward : (GetAttackTarget().position - transform.position).normalized;
+            controller.Move(attackTargetDirection * attackForce * Time.deltaTime);
         }
-
-        //추력 수정
-        //Vector3 movement = attackDirection * Time.deltaTime * 5f;
-        //controller.Move(movement);
+        
+        if (!Input.GetKeyDown(KeyCode.LeftControl) && !Input.GetKeyDown(KeyCode.RightControl)) return;
         animator.SetTrigger("ComboAttack");
     }
 
+    Transform GetAttackTarget()
+    {
+        Transform attackTarget = attackAbleMonsters.Count <= 0 ? null : attackAbleMonsters[0].transform;
+        return attackTarget;
+    }
+    private void UpdateAttackableMonsterList()
+    {
+        attackAbleMonsters = playerAttack.GetAttackableMonsterList();
+    }
     void LookTarget(Transform target){
         if(target == null) return;
 
-        Quaternion targetRotation = Quaternion.LookRotation((target.position- transform.position).normalized);
+        Quaternion targetRotation = Quaternion.LookRotation((target.position - transform.position).normalized);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
     }
 
@@ -200,7 +204,7 @@ public class PlayerController : MonoBehaviour
             myInventory.GetItem(other.gameObject);
         }
     }
-    private bool isAttacking = false;
+    [SerializeField] bool isAttacking = false;
 
     public void OnAttackHit1()
     {   

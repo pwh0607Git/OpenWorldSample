@@ -1,21 +1,18 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    private List<GameObject> attackableMonsters = new List<GameObject>();
+    List<GameObject> attackableMonsterList = new List<GameObject>();
 
-    public List<GameObject> GetAttackableMonsters()
-    {
-        attackableMonsters.RemoveAll(monster => monster == null);
-        return attackableMonsters;
-    }
+    public List<GameObject> GetAttackableMonsterList() => attackableMonsterList;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Monster"))
         {
-            attackableMonsters.Add(other.gameObject);
+            attackableMonsterList.Add(other.gameObject);
         }
     }
 
@@ -23,7 +20,14 @@ public class PlayerAttack : MonoBehaviour
     {
         if (other.CompareTag("Monster"))
         {
-            attackableMonsters.Remove(other.gameObject);
+            attackableMonsterList.Remove(other.gameObject);
         }
     }
+
+    #region 몬스터가 죽었을 때 로직
+    private void RemoveMonster(GameObject monster)
+    {
+        attackableMonsterList.Remove(monster);
+    }
+    #endregion
 }
