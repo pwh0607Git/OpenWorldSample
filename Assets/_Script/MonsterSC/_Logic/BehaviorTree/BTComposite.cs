@@ -12,7 +12,6 @@ public abstract class BTNode
     public abstract NodeState Evaluate();
 }
 
-// 자식 노드중 가장 먼저 성공한 노드를 실행 => 순서가 중요 !!!!
 public class Selector : BTNode
 {
     private List<BTNode> children = new List<BTNode>();
@@ -38,7 +37,6 @@ public class Selector : BTNode
     }
 }
 
-// 자식 노드가 모두 성공해야한다.
 public class Sequence : BTNode
 {
     private List<BTNode> children;
@@ -65,12 +63,10 @@ public class Sequence : BTNode
             }
         }
 
-        //모두 성공한 경우...
         return anyChildRunning ? NodeState.Running : NodeState.Success; 
     }
 }
 
-// 특정 조건 평가
 public class ConditionNode : BTNode
 {
     private System.Func<bool> condition;
@@ -86,8 +82,7 @@ public class ConditionNode : BTNode
     }
 }
 
-// 특정 행동 실행
-public class ActionNode : BTNode
+    public class ActionNode : BTNode
 {
     private System.Action action;
 
