@@ -1,6 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class MonsterControllerBT : MonoBehaviour
@@ -32,26 +33,29 @@ public class MonsterControllerBT : MonoBehaviour
 
         rootNode = new Selector(new List<BTNode>
         {
-            new Sequence(new List<BTNode>
-            {
-                new ConditionNode(CheckTakeDamage),
-                new ActionNode(HandleDamage)
+            new Sequence(new List<BTNode>{
+                new ConditionNode(IsDownMonster),
+                new ActionNode(DownMonster)
             }),
             new Sequence(new List<BTNode>
             {
-                //∞¯∞›
+                new ConditionNode(CheckTakeDamage),
+                new ActionNode(HandleDamage),      // ÌîºÌï¥ Ï≤òÎ¶¨
+                new ActionNode(LookAtPlayer),      // ÌîåÎ†àÏù¥Ïñ¥ Î∞îÎùºÎ≥¥Í∏∞
+                new ActionNode(ChaseTarget)        // ÌîåÎ†àÏù¥Ïñ¥ Ï∂îÍ≤©
+            }),
+            new Sequence(new List<BTNode>
+            {
                 new ConditionNode(CheckTargetInAttackRange),
                 new ActionNode(AttackTarget)
             }),
             new Sequence(new List<BTNode>
             {   
-                // √ﬂ¿˚
                 new ConditionNode(IsTargetInDetectionRange),
                 new ActionNode(ChaseTarget)
             }),
             new Sequence(new List<BTNode>
             {
-                // πË»∏
                 new ActionNode(Patrol),
                 new ConditionNode(IsTargetInDetectionRange),
             }),
@@ -70,16 +74,9 @@ public class MonsterControllerBT : MonoBehaviour
         return isDamaged;
     }
 
-    //««∞› ∑Œ¡˜ ºˆ«‡!
     private void HandleDamage()
     {
         StartCoroutine(Coroutine_ResetDamageState());
-    }
-
-    IEnumerator Coroutine_ResetDamageState()
-    {
-        yield return new WaitForSeconds(damageCooldown);
-        isDamaged = false;
     }
 
     public void TakeDamage(int damage)
@@ -91,9 +88,14 @@ public class MonsterControllerBT : MonoBehaviour
         monsterCurHP -= damage;
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
-            // ∞¯∞› æ÷¥œ∏ﬁ¿Ãº«¿ª ºˆ«‡¡ﬂ¿Ã¡ˆ æ ¿∏∏È µ•πÃ¡ˆ ¥©¿˚∏∏«œ±‚
             animator.SetTrigger("Damaged");
         }
+    }
+
+    IEnumerator Coroutine_ResetDamageState()
+    {
+        yield return new WaitForSeconds(damageCooldown);
+        isDamaged = false;
     }
     #endregion
 
@@ -113,11 +115,10 @@ public class MonsterControllerBT : MonoBehaviour
         #endregion
     }
 
+    #region Chase
     private bool IsTargetInDetectionRange()
     {
-        #region Test
         if (player == null) return false;
-        #endregion
 
         Vector3 directionToTarget = player.position - transform.position;
         float distanceToTarget = directionToTarget.magnitude;
@@ -131,8 +132,7 @@ public class MonsterControllerBT : MonoBehaviour
 
         return true;
     }
-
-    private bool isAttacking = false;
+    #endregion
 
     private bool CheckTargetInAttackRange()
     {
@@ -143,6 +143,7 @@ public class MonsterControllerBT : MonoBehaviour
         return distanceToTarget <= monsterData.attackableRadius;
     }
 
+    #region Attack
     void AttackTarget()
     {
         Vector3 attackOffset = transform.localPosition + Vector3.up / 2 + transform.forward;
@@ -150,7 +151,6 @@ public class MonsterControllerBT : MonoBehaviour
 
         if (hitTargets.Length == 0)
         {
-            //∞¯∞› ¿ßƒ°∞° ø√πŸ∏£¡ˆ ∏¯«œ¥Ÿ
             transform.rotation = Quaternion.Lerp(transform.rotation, player.transform.rotation, Time.deltaTime * 5.0f);
         }
         else
@@ -159,20 +159,47 @@ public class MonsterControllerBT : MonoBehaviour
             {
                 if (target.CompareTag("Player"))
                 {
+                    animator.SetTrigger("Attack");
+                    return;
+                }
+            }
+        }
+    }
+
+    //animation
+    public void PerformAttack(){
+        Vector3 attackOffset = transform.localPosition + Vector3.up/2 + transform.forward;
+        Collider[] hitTargets = Physics.OverlapSphere(attackOffset, monsterData.attackDamageRadius);
+
+        if(hitTargets.Length == 0){
+            //Í≥µÍ≤© ÏúÑÏπòÍ∞Ä Ïò¨Î∞îÎ•¥ÏßÄ Î™ªÌïòÎã§
+            transform.rotation = Quaternion.Slerp(transform.rotation, player.transform.rotation, Time.deltaTime * 5.0f);
+        }else{
+            foreach(var target in  hitTargets)
+            {
+                if (target.CompareTag("Player"))
+                {
                     target.GetComponentInChildren<PlayerController>().PlayerTakeDamage(monsterData.attackPower);
                 }
             }
         }
-
         StartCoroutine(Coroutine_AttackCoolDown());
     }
-    #region Attack
+
     bool isMonsterAttackCoolDown = false;
     float monsterAttackCooldownTime = 2.0f;
-
     void ChaseTarget()
     {
         MoveToward(player.position);
+    }
+
+    private void LookAtPlayer()
+    {
+        if (player == null) return;
+
+        Vector3 direction = (player.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
     private IEnumerator Coroutine_AttackCoolDown()
     {
@@ -215,9 +242,13 @@ public class MonsterControllerBT : MonoBehaviour
         }
     }
 
+
     public void SetNextDestination()
     {
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * monsterData.movingAreaRedius;
+        Vector3 randomDirection = Vector3.zero;
+        do{
+            randomDirection = Random.insideUnitSphere * monsterData.movingAreaRedius;
+        }while(Vector3.Distance(randomDirection, transform.position) < 3.0f);
         nextDestination = (randomDirection + originalPosition).FlattenY();
     }
 
@@ -275,12 +306,23 @@ public class MonsterControllerBT : MonoBehaviour
         controller.Move(moveDirection * fixedSpeed * Time.deltaTime);
     }
 
-    #region monsterDestroy
-    public static event Action<GameObject> OnMonsterDestroyed; // ¿Ã∫•∆Æ º±æ
-
-    private void OnDestroy()
-    {
-        OnMonsterDestroyed?.Invoke(gameObject); // ∏ÛΩ∫≈Õ∞° ªË¡¶µ… ∂ß ¿Ã∫•∆Æ πﬂª˝
+    #region Down
+    private bool isDown;
+    
+    public bool IsDownMonster(){
+        return isDown && monsterCurHP <= 0;
     }
+
+    public void DownMonster(){
+        Debug.Log("monster Down...!");
+        animator.SetTrigger("Down");
+        Invoke("DestroyMonster", 1f);
+    }
+
+    private void DestroyMonster(){
+        //Loot Handler Code Part
+        Destroy(gameObject);
+    }
+
     #endregion
 }
