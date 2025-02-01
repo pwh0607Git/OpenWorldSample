@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum NodeState
 {
@@ -82,7 +83,7 @@ public class ConditionNode : BTNode
     }
 }
 
-    public class ActionNode : BTNode
+public class ActionNode : BTNode
 {
     private System.Action action;
 
@@ -95,5 +96,44 @@ public class ConditionNode : BTNode
     {
         action.Invoke();
         return NodeState.Success;
+    }
+}
+
+//Coroutine 처럼 특정 행동을 대기해야하는 상태의 경우에는 커스텀으로 node를 생성한다.
+public class LookAtTargetNode : BTNode
+{
+    private Transform monster;
+    private Transform player;
+    private Animator animator;
+    private float rotationSpeed;
+
+    public LookAtTargetNode(Transform monster, Transform player, Animator animator, float rotationSpeed)
+    {
+        this.monster = monster;
+        this.player = player;
+        this.animator = animator;
+        this.rotationSpeed = rotationSpeed;
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (player == null) return NodeState.Failure;
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Damaged"))
+        {
+            return NodeState.Running;
+        }
+
+        Vector3 direction = (player.position - monster.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, Time.deltaTime * 5f);
+
+        if (Quaternion.Angle(monster.rotation, lookRotation) < 5f)
+        {
+            return NodeState.Success;
+        }
+
+        Debug.Log("현재 캐릭터 쳐다보기 행동중...");
+        return NodeState.Running;
     }
 }

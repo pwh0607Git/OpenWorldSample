@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class MonsterControllerBT : MonoBehaviour
@@ -41,7 +39,7 @@ public class MonsterControllerBT : MonoBehaviour
             {
                 new ConditionNode(CheckTakeDamage),
                 new ActionNode(HandleDamage),      // 피해 처리
-                new ActionNode(LookAtPlayer),      // 플레이어 바라보기
+                new LookAtTargetNode(transform, player, animator, rotationSpeed),
                 new ActionNode(ChaseTarget)        // 플레이어 추격
             }),
             new Sequence(new List<BTNode>
@@ -188,6 +186,7 @@ public class MonsterControllerBT : MonoBehaviour
 
     bool isMonsterAttackCoolDown = false;
     float monsterAttackCooldownTime = 2.0f;
+
     void ChaseTarget()
     {
         MoveToward(player.position);
@@ -196,11 +195,13 @@ public class MonsterControllerBT : MonoBehaviour
     private void LookAtPlayer()
     {
         if (player == null) return;
+        // 피격 애니메이션이 종료 될때까지 대기.
 
         Vector3 direction = (player.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
+
     private IEnumerator Coroutine_AttackCoolDown()
     {
         isMonsterAttackCoolDown = true;
