@@ -121,19 +121,48 @@ public class LookAtTargetNode : BTNode
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Damaged"))
         {
+            Debug.Log("피격 애니메이션 수행중...");
             return NodeState.Running;
         }
+        Debug.Log("현재 캐릭터 쳐다보기 행동중...");
 
         Vector3 direction = (player.position - monster.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, Time.deltaTime * 5f);
+        monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, Time.deltaTime * 2f);
 
         if (Quaternion.Angle(monster.rotation, lookRotation) < 5f)
         {
+            Debug.Log("현재 캐릭터 쳐다보기 행동 완료...");
             return NodeState.Success;
         }
 
-        Debug.Log("현재 캐릭터 쳐다보기 행동중...");
         return NodeState.Running;
+    }
+}
+
+public class AttackTargetNode : BTNode
+{
+    Animator animator;
+    //Transform monster;
+
+    public AttackTargetNode(Animator animator)
+    {
+        this.animator = animator;
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (animator == null) return NodeState.Failure;
+
+        //중복 방지.
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        {
+            return NodeState.Running;
+        }
+
+        Debug.Log("몬스터 공격 수행!");
+        animator.SetTrigger("Attack");
+
+        return NodeState.Success;
     }
 }

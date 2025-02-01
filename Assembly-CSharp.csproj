@@ -96,6 +96,7 @@
     <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\Consumable.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\InventoryIconsController.cs" />
     <Compile Include="Assets\_Script\StreamingSC\StreamingManager.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\_Logic\BehaviorTree\MonsterWander.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\InventorySlot.cs" />
     <Compile Include="Assets\_Script\EnvironmentSC\CameraConroller.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />

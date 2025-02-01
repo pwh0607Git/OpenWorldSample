@@ -12,7 +12,7 @@ public class MonsterControllerBT : MonoBehaviour
 
     [Header("Monster-State")]
     private int monsterCurHP = 0;
-    
+
     [Header("Monster-Properties")]
     [SerializeField] private MonsterData monsterData;
     [SerializeField] private float detectionAngle = 80f;
@@ -39,8 +39,8 @@ public class MonsterControllerBT : MonoBehaviour
             {
                 new ConditionNode(CheckTakeDamage),
                 new ActionNode(HandleDamage),      // 피해 처리
-                new LookAtTargetNode(transform, player, animator, rotationSpeed),
-                new ActionNode(ChaseTarget)        // 플레이어 추격
+                new LookAtTargetNode(transform, player, animator, rotationSpeed)
+                //new ActionNode(ChaseTarget)        // 플레이어 추격
             }),
             new Sequence(new List<BTNode>
             {
@@ -48,15 +48,11 @@ public class MonsterControllerBT : MonoBehaviour
                 new ActionNode(AttackTarget)
             }),
             new Sequence(new List<BTNode>
-            {   
+            {
                 new ConditionNode(IsTargetInDetectionRange),
                 new ActionNode(ChaseTarget)
             }),
-            new Sequence(new List<BTNode>
-            {
-                new ActionNode(Patrol),
-                new ConditionNode(IsTargetInDetectionRange),
-            }),
+            new ActionNode(Patrol)    
         });
 
         #region Test
@@ -72,22 +68,23 @@ public class MonsterControllerBT : MonoBehaviour
         return isDamaged;
     }
 
-    private void HandleDamage()
-    {
-        StartCoroutine(Coroutine_ResetDamageState());
-    }
-
+    //공격 받았을 때 바로 처리.
     public void TakeDamage(int damage)
     {
         if (isDamaged) return;
-
         isDamaged = true;
-        Debug.Log($"Take Damage!");
         monsterCurHP -= damage;
+    }
+
+    private void HandleDamage()
+    {
+        if (isDamaged) return;
+        Debug.Log($"Take Damage!");
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
             animator.SetTrigger("Damaged");
         }
+        StartCoroutine(Coroutine_ResetDamageState());
     }
 
     IEnumerator Coroutine_ResetDamageState()
@@ -107,7 +104,6 @@ public class MonsterControllerBT : MonoBehaviour
     private void Update()
     {
         rootNode.Evaluate();
-
         #region Test
         if (Input.GetKeyDown(KeyCode.Space)) TakeDamage(10);
         #endregion
@@ -135,11 +131,15 @@ public class MonsterControllerBT : MonoBehaviour
     private bool CheckTargetInAttackRange()
     {
         if (player == null) return false;
-        if (isMonsterAttackCoolDown) return false;
+        if (isMonsterAttackCoolDown || isAttacking) return false;
 
         float distanceToTarget = Vector3.Distance(transform.position, player.position);
         return distanceToTarget <= monsterData.attackableRadius;
     }
+
+    [SerializeField] bool isAttacking = false;
+    [SerializeField] bool isMonsterAttackCoolDown = false;
+    float monsterAttackCooldownTime = 2.0f;
 
     #region Attack
     void AttackTarget()
@@ -147,24 +147,27 @@ public class MonsterControllerBT : MonoBehaviour
         Vector3 attackOffset = transform.localPosition + Vector3.up / 2 + transform.forward;
         Collider[] hitTargets = Physics.OverlapSphere(attackOffset, monsterData.attackDamageRadius);
 
-        if (hitTargets.Length == 0)
+        //if (hitTargets.Length == 0)
+        //{
+        //    Debug.Log("공격 수행 실패..");
+        //    transform.rotation = Quaternion.Lerp(transform.rotation, player.transform.rotation, Time.deltaTime * 5.0f);
+        //}
+        //else
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, player.transform.rotation, Time.deltaTime * 5.0f);
-        }
-        else
-        {
+            Debug.Log("공격 수행!");
             foreach (var target in hitTargets)
             {
                 if (target.CompareTag("Player"))
                 {
+                    isAttacking = true;
+                    animator.SetBool("Walk", false);
                     animator.SetTrigger("Attack");
-                    return;
                 }
             }
         }
     }
 
-    //animation
+    //animation Event
     public void PerformAttack(){
         Vector3 attackOffset = transform.localPosition + Vector3.up/2 + transform.forward;
         Collider[] hitTargets = Physics.OverlapSphere(attackOffset, monsterData.attackDamageRadius);
@@ -184,11 +187,9 @@ public class MonsterControllerBT : MonoBehaviour
         StartCoroutine(Coroutine_AttackCoolDown());
     }
 
-    bool isMonsterAttackCoolDown = false;
-    float monsterAttackCooldownTime = 2.0f;
-
     void ChaseTarget()
     {
+        Debug.Log("캐릭터 추격중...");
         MoveToward(player.position);
     }
 
@@ -207,6 +208,7 @@ public class MonsterControllerBT : MonoBehaviour
         isMonsterAttackCoolDown = true;
         yield return new WaitForSeconds(monsterAttackCooldownTime);
         isMonsterAttackCoolDown = false;
+        isAttacking = false;
     }
     #endregion
 
