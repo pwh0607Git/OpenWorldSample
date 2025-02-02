@@ -99,13 +99,14 @@ public class ActionNode : BTNode
     }
 }
 
-//Coroutine Ã³·³ Æ¯Á¤ Çàµ¿À» ´ë±âÇØ¾ßÇÏ´Â »óÅÂÀÇ °æ¿ì¿¡´Â Ä¿½ºÅÒÀ¸·Î node¸¦ »ı¼ºÇÑ´Ù.
 public class LookAtTargetNode : BTNode
 {
     private Transform monster;
     private Transform player;
     private Animator animator;
     private float rotationSpeed;
+    private float lookDelay = 1.0f; // 1ì´ˆ ëŒ€ê¸°
+    private float lookTimer = 0f;
 
     public LookAtTargetNode(Transform monster, Transform player, Animator animator, float rotationSpeed)
     {
@@ -119,32 +120,33 @@ public class LookAtTargetNode : BTNode
     {
         if (player == null) return NodeState.Failure;
 
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Damaged"))
+        if (lookTimer < lookDelay)
         {
-            Debug.Log("ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç ¼öÇàÁß...");
+            lookTimer += Time.deltaTime;
             return NodeState.Running;
         }
-        Debug.Log("ÇöÀç Ä³¸¯ÅÍ ÃÄ´Ùº¸±â Çàµ¿Áß...");
 
         Vector3 direction = (player.position - monster.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, Time.deltaTime * 2f);
 
-        if (Quaternion.Angle(monster.rotation, lookRotation) < 5f)
+        float angle = Quaternion.Angle(monster.rotation, lookRotation);
+        Debug.Log($"ğŸ”¥ í˜„ì¬ ëª¬ìŠ¤í„°-í”Œë ˆì´ì–´ ê°ë„: {angle}");
+        
+        monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, Time.deltaTime * 2f);
+        
+        if (angle > 5f)
         {
-            Debug.Log("ÇöÀç Ä³¸¯ÅÍ ÃÄ´Ùº¸±â Çàµ¿ ¿Ï·á...");
-            return NodeState.Success;
+            Debug.Log("í”Œë ˆì´ì–´ ì³ë‹¤ë³´ëŠ” ì¤‘...");
+            return NodeState.Running;
         }
 
-        return NodeState.Running;
+        return NodeState.Success;
     }
 }
 
 public class AttackTargetNode : BTNode
 {
     Animator animator;
-    //Transform monster;
-
     public AttackTargetNode(Animator animator)
     {
         this.animator = animator;
@@ -153,14 +155,10 @@ public class AttackTargetNode : BTNode
     public override NodeState Evaluate()
     {
         if (animator == null) return NodeState.Failure;
-
-        //Áßº¹ ¹æÁö.
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
             return NodeState.Running;
         }
-
-        Debug.Log("¸ó½ºÅÍ °ø°İ ¼öÇà!");
         animator.SetTrigger("Attack");
 
         return NodeState.Success;

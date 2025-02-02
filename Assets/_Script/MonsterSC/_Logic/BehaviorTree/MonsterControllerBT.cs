@@ -39,8 +39,11 @@ public class MonsterControllerBT : MonoBehaviour
             {
                 new ConditionNode(CheckTakeDamage),
                 new ActionNode(HandleDamage),      // 피해 처리
-                new LookAtTargetNode(transform, player, animator, rotationSpeed)
-                //new ActionNode(ChaseTarget)        // 플레이어 추격
+                new ConditionNode(IsPlayingDamagedAnim),
+                new ActionNode(WaitAfterDamage),
+                new LookAtTargetNode(transform, player, animator, rotationSpeed),
+                new ConditionNode(IsTargetInDetectionRange),
+                new ActionNode(ChaseTarget)        // 플레이어 추격
             }),
             new Sequence(new List<BTNode>
             {
@@ -54,13 +57,10 @@ public class MonsterControllerBT : MonoBehaviour
             }),
             new ActionNode(Patrol)    
         });
-
-        #region Test
-        #endregion
     }
 
     #region TakeDamage
-    private bool isDamaged = false;
+    [SerializeField] bool isDamaged = false;
     private float damageCooldown = 0.5f;
 
     private bool CheckTakeDamage()
@@ -68,23 +68,45 @@ public class MonsterControllerBT : MonoBehaviour
         return isDamaged;
     }
 
-    //공격 받았을 때 바로 처리.
     public void TakeDamage(int damage)
     {
         if (isDamaged) return;
-        isDamaged = true;
-        monsterCurHP -= damage;
-    }
 
+        isDamaged = true;   
+        monsterCurHP -= damage;
+        
+        if(!isAttacking){
+            animator.SetTrigger("Damaged");
+            Debug.Log("🔥 Damaged 애니메이션 실행됨");
+        }
+    }
+    private bool IsPlayingDamagedAnim(){
+        AnimatorStateInfo animState = animator.GetCurrentAnimatorStateInfo(0);
+        Debug.Log($"애니메이션 상태 : {animState}");
+        if (animState.IsName("Damaged") && animState.normalizedTime < 0.99f)
+        {
+            Debug.Log("🔥 피격 애니메이션 진행 중...");
+            return false;  // 애니메이션이 끝날 때까지 기다림
+        }
+
+        Debug.Log("🔥 피격 애니메이션 종료됨!");
+        return true;  // 애니메이션이 종료됨
+    }    
     private void HandleDamage()
     {
-        if (isDamaged) return;
-        Debug.Log($"Take Damage!");
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-        {
-            animator.SetTrigger("Damaged");
-        }
         StartCoroutine(Coroutine_ResetDamageState());
+    }
+
+    private float damageWaitTime = 1.0f;
+    private float damageWaitTimer = 0f;
+
+    private void WaitAfterDamage()
+    {
+        if (damageWaitTimer < damageWaitTime)
+        {
+            damageWaitTimer += Time.deltaTime;
+            Debug.Log($"🔥 1초 대기 중... {damageWaitTimer}");
+        }
     }
 
     IEnumerator Coroutine_ResetDamageState()
@@ -113,7 +135,6 @@ public class MonsterControllerBT : MonoBehaviour
     private bool IsTargetInDetectionRange()
     {
         if (player == null) return false;
-
         Vector3 directionToTarget = player.position - transform.position;
         float distanceToTarget = directionToTarget.magnitude;
 
@@ -124,6 +145,15 @@ public class MonsterControllerBT : MonoBehaviour
         if (angleToTarget > detectionAngle / 2)
             return false;
 
+        return true;
+    }
+
+    private bool IsTargetInChasingRange(){
+        if(player == null) return false;
+        float distanceToTarget = Vector3.Distance(transform.position, player.position);
+
+        // after : detectionRadius -> chasingRadius 변경 요망
+        if(distanceToTarget > monsterData.detectionRadius) return false;
         return true;
     }
     #endregion
@@ -147,14 +177,12 @@ public class MonsterControllerBT : MonoBehaviour
         Vector3 attackOffset = transform.localPosition + Vector3.up / 2 + transform.forward;
         Collider[] hitTargets = Physics.OverlapSphere(attackOffset, monsterData.attackDamageRadius);
 
-        //if (hitTargets.Length == 0)
-        //{
-        //    Debug.Log("공격 수행 실패..");
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, player.transform.rotation, Time.deltaTime * 5.0f);
-        //}
-        //else
+        if (hitTargets.Length == 0)
         {
-            Debug.Log("공격 수행!");
+           transform.rotation = Quaternion.Lerp(transform.rotation, player.transform.rotation, Time.deltaTime * 5.0f);
+        }
+        else
+        {
             foreach (var target in hitTargets)
             {
                 if (target.CompareTag("Player"))
@@ -189,23 +217,15 @@ public class MonsterControllerBT : MonoBehaviour
 
     void ChaseTarget()
     {
-        Debug.Log("캐릭터 추격중...");
+        if(isAttacking || isMonsterAttackCoolDown) return;
+        Debug.Log("🔥 몬스터가 플레이어를 추격 중...");
         MoveToward(player.position);
-    }
-
-    private void LookAtPlayer()
-    {
-        if (player == null) return;
-        // 피격 애니메이션이 종료 될때까지 대기.
-
-        Vector3 direction = (player.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
     private IEnumerator Coroutine_AttackCoolDown()
     {
         isMonsterAttackCoolDown = true;
+        animator.SetBool("Walk", false); // Idle 상태 유지
         yield return new WaitForSeconds(monsterAttackCooldownTime);
         isMonsterAttackCoolDown = false;
         isAttacking = false;

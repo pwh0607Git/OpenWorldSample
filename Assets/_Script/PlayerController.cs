@@ -216,7 +216,7 @@ public class PlayerController : MonoBehaviour
             if (monsterScript != null)
             {
                 monsterScript.TakeDamage((int)myState.attack);
-                Debug.Log($"Player AttackHit1");
+                // Debug.Log($"Player AttackHit1");
             }
         }
     }
@@ -231,7 +231,7 @@ public class PlayerController : MonoBehaviour
             if (monsterScript != null)
             {
                 monsterScript.TakeDamage((int)myState.attack);
-                Debug.Log($"Player AttackHit2");
+                // Debug.Log($"Player AttackHit2");
             }
         }
     }

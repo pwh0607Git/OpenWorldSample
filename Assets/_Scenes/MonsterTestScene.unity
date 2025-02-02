@@ -508,7 +508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 29.25
+      value: 13.55
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -516,7 +516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 37.75
+      value: 5.98
       objectReference: {fileID: 0}
     - target: {fileID: 3398086040296073072, guid: 3d848ac7a52006047a53bd8c6c12d60a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2786,6 +2786,9 @@ MonoBehaviour:
   detectionAngle: 80
   originalPosition: {x: 0, y: 0, z: 0}
   nextDestination: {x: 0, y: 0, z: 0}
+  isDamaged: 0
+  isAttacking: 0
+  isMonsterAttackCoolDown: 0
   waitingTime: 2
 --- !u!4 &7434328110808251931
 Transform:
