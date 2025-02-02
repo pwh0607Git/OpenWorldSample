@@ -38,11 +38,10 @@ public class MonsterControllerBT : MonoBehaviour
             new Sequence(new List<BTNode>
             {
                 new ConditionNode(CheckTakeDamage),
-                new ActionNode(HandleDamage),      // 피해 처리
-                new ConditionNode(IsPlayingDamagedAnim),
+                new ActionNode(HandleDamageAnim),      // 피해 처리
+                new ConditionNode(IsDamageAnimDone),
                 new ActionNode(WaitAfterDamage),
                 new LookAtTargetNode(transform, player, animator, rotationSpeed),
-                new ConditionNode(IsTargetInDetectionRange),
                 new ActionNode(ChaseTarget)        // 플레이어 추격
             }),
             new Sequence(new List<BTNode>
@@ -61,8 +60,8 @@ public class MonsterControllerBT : MonoBehaviour
 
     #region TakeDamage
     [SerializeField] bool isDamaged = false;
-    private float damageCooldown = 0.5f;
-
+    private float noDamageCooldown = 0.5f;
+    
     private bool CheckTakeDamage()
     {
         return isDamaged;
@@ -74,27 +73,36 @@ public class MonsterControllerBT : MonoBehaviour
 
         isDamaged = true;   
         monsterCurHP -= damage;
+        Debug.Log($"🔥 몬스터가 {damage}의 피해를 받음! 현재 HP: {monsterCurHP}");
         
         if(!isAttacking){
             animator.SetTrigger("Damaged");
             Debug.Log("🔥 Damaged 애니메이션 실행됨");
         }
+        
+        damageWaitTimer = 0f; // 1초 대기 타이머 초기화
+        StartCoroutine(Coroutine_ResetDamageState());
     }
-    private bool IsPlayingDamagedAnim(){
+    private bool IsDamageAnimDone()
+    {
         AnimatorStateInfo animState = animator.GetCurrentAnimatorStateInfo(0);
-        Debug.Log($"애니메이션 상태 : {animState}");
+
         if (animState.IsName("Damaged") && animState.normalizedTime < 0.99f)
         {
             Debug.Log("🔥 피격 애니메이션 진행 중...");
-            return false;  // 애니메이션이 끝날 때까지 기다림
+            return false;  // 아직 실행 중
         }
 
         Debug.Log("🔥 피격 애니메이션 종료됨!");
-        return true;  // 애니메이션이 종료됨
-    }    
-    private void HandleDamage()
+        isDamaged = false;  // 피격 상태 초기화
+        return true;
+}
+    private void HandleDamageAnim()
     {
-        StartCoroutine(Coroutine_ResetDamageState());
+        if(!isAttacking){
+            animator.SetTrigger("Damaged");
+            Debug.Log("피격 애니메이션 실행,,");
+        }
     }
 
     private float damageWaitTime = 1.0f;
@@ -111,7 +119,7 @@ public class MonsterControllerBT : MonoBehaviour
 
     IEnumerator Coroutine_ResetDamageState()
     {
-        yield return new WaitForSeconds(damageCooldown);
+        yield return new WaitForSeconds(noDamageCooldown);
         isDamaged = false;
     }
     #endregion
@@ -127,7 +135,13 @@ public class MonsterControllerBT : MonoBehaviour
     {
         rootNode.Evaluate();
         #region Test
-        if (Input.GetKeyDown(KeyCode.Space)) TakeDamage(10);
+
+        AnimatorStateInfo animState = animator.GetCurrentAnimatorStateInfo(0);
+        if (animState.IsName("Damaged"))
+        {
+            // Debug.Log("🔥 현재 Damaged 애니메이션 실행 중!");
+        }
+
         #endregion
     }
 
