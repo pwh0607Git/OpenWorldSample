@@ -135,7 +135,6 @@ public class LookAtTargetNode : BTNode
     private Transform player;
     private Animator animator;
     private float rotationSpeed;
-    bool isDamaged;
     
     public LookAtTargetNode(Transform monster, Transform player, Animator animator, float rotationSpeed)
     {
