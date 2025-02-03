@@ -49,7 +49,7 @@ public class MonsterControllerBT : MonoBehaviour
         // }
         
         isDamaged = true;
-        StartCoroutine(Coroutine_ResetDamageState());
+        // StartCoroutine(Coroutine_ResetDamageState());
     }
 
     private NodeState HandleDamageAnim()
@@ -59,7 +59,6 @@ public class MonsterControllerBT : MonoBehaviour
             animator.SetTrigger("Damaged");
             return NodeState.Success;
         }   
-        Debug.Log("실패...");
         return NodeState.Failure; // 실행되지 않을 경우 Failure 반환
     }   
 
@@ -275,7 +274,8 @@ public class MonsterControllerBT : MonoBehaviour
             {
                 new ConditionNode(CheckTakeDamage),      // 몬스터가 피해를 입었는가?
                 new ActionNode(HandleDamageAnim),
-                new ActionNode(IsDamageAnimDone),        // 피격 애니메이션 종료 대기
+                // new ActionNode(IsDamageAnimDone),        // 피격 애니메이션 종료 대기
+                new WaitNode(2f),
                 new LookAtTargetNode(transform, player, animator, rotationSpeed),  // 플레이어 바라보기
                 // new ActionNode(ChaseTarget)                 // 플레이어 추격
             }),
@@ -344,16 +344,6 @@ public class MonsterControllerBT : MonoBehaviour
         }
 
         controller.Move(moveDirection * fixedSpeed * Time.deltaTime);
-    }
-    private float delayTime = 3.0f;
-    private float delayTimer = 0f;
-
-    private void ActionDelay(/*float t*/){
-        if (delayTimer < delayTime)
-        {
-            delayTimer += Time.deltaTime;
-            Debug.Log($"Delay... {delayTimer}");        
-        }
     }
     #endregion
 }

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public enum NodeState
@@ -12,7 +10,9 @@ public enum NodeState
 
 public abstract class BTNode
 {
-    public abstract NodeState Evaluate();
+    public virtual void OnEnter() { }  // 노드 시작 시 실행
+    public abstract NodeState Evaluate();  // 매 프레임 실행
+    public virtual void OnExit() { }  // 노드 종료 시 실행
 }
 
 public class Selector : BTNode
@@ -59,30 +59,43 @@ public class Selector : BTNode
 public class Sequence : BTNode
 {
     private List<BTNode> children;
+    private int currentIndex = 0; // 현재 실행 중인 노드 인덱스
 
     public Sequence(List<BTNode> children)
     {
         this.children = children;
     }
 
+    public override void OnEnter()
+    {
+        currentIndex = 0; // 처음 실행될 때 첫 번째 노드부터 시작
+    }
+
     public override NodeState Evaluate()
     {
-        bool anyChildRunning = false;
-
-        foreach (var node in children)
+        while (currentIndex < children.Count)
         {
-            switch (node.Evaluate())
+            NodeState state = children[currentIndex].Evaluate();
+
+            if (state == NodeState.Running)
             {
-                case NodeState.Failure: return NodeState.Failure;
-                case NodeState.Running:
-                {
-                    anyChildRunning = true;
-                    break;
-                }
+                return NodeState.Running; // 현재 노드가 Running이면 다음 노드 실행하지 않음
             }
+
+            if (state == NodeState.Failure)
+            {
+                return NodeState.Failure; // 실패하면 즉시 실패 반환
+            }
+            // 성공이면 다음 노드로 이동
+            currentIndex++;
         }
 
-        return anyChildRunning ? NodeState.Running : NodeState.Success; 
+        return NodeState.Success; // 모든 노드 성공 시 Success 반환
+    }
+
+    public override void OnExit()
+    {
+        currentIndex = 0; // 시퀀스가 끝나면 다시 초기화
     }
 }
 
@@ -138,18 +151,15 @@ public class LookAtTargetNode : BTNode
 
         Vector3 direction = (player.position - monster.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-
-        // monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, Time.deltaTime * 10f);
-        monster.LookAt(player);
-        Debug.Log("플레이어 쳐다보기!!");
-        // float angle = Quaternion.Angle(monster.rotation, lookRotation);
-        // Debug.Log($"현재 몬스터-플레이어 각도: {angle}");
+        monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, Time.deltaTime * 10f);
+        float angle = Quaternion.Angle(monster.rotation, lookRotation);
+        Debug.Log($"현재 몬스터-플레이어 각도: {angle}");
         
         
-        // if (angle > 10f)
-        // {
-        //     return NodeState.Running;
-        // }
+        if (angle > 10f)
+        {
+            return NodeState.Running;
+        }
 
         return NodeState.Success;
     }
@@ -173,5 +183,34 @@ public class AttackTargetNode : BTNode
         animator.SetTrigger("Attack");
 
         return NodeState.Success;
+    }
+}
+
+public class WaitNode : BTNode
+{
+    private float waitTime;
+    private float elapsedTime;
+
+    public WaitNode(float time)
+    {
+        this.waitTime = time;
+    }
+
+    public override void OnEnter()
+    {
+        elapsedTime = 0f; // 노드 시작 시 초기화
+    }
+
+    public override NodeState Evaluate()
+    {
+        elapsedTime += Time.deltaTime;
+
+        if (elapsedTime >= waitTime)
+        {
+            Debug.Log("대기 완료");
+            return NodeState.Success; // 대기 완료
+        }
+        Debug.Log("대기중...");
+        return NodeState.Running; // 아직 대기 중
     }
 }
