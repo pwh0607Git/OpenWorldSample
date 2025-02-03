@@ -2787,6 +2787,7 @@ MonoBehaviour:
   originalPosition: {x: 0, y: 0, z: 0}
   nextDestination: {x: 0, y: 0, z: 0}
   isDamaged: 0
+  noDamageCooldown: 3
   isAttacking: 0
   isMonsterAttackCoolDown: 0
   waitingTime: 2
