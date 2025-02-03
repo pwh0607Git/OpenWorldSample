@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class MonsterControllerBT : MonoBehaviour
@@ -23,44 +25,9 @@ public class MonsterControllerBT : MonoBehaviour
     [SerializeField] private Vector3 originalPosition;
     [SerializeField] private Vector3 nextDestination;
 
-    private void Start()
-    {
-        InitMonsterData();
-        SetNextDestination();
-        player = GameObject.FindWithTag("Player").transform;
-
-        rootNode = new Selector(new List<BTNode>
-        {
-            new Sequence(new List<BTNode>{
-                new ConditionNode(IsDownMonster),
-                new ActionNode(DownMonster)
-            }),
-            new Sequence(new List<BTNode>
-            {
-                new ConditionNode(CheckTakeDamage),
-                new ActionNode(HandleDamageAnim),      // 피해 처리
-                new ConditionNode(IsDamageAnimDone),
-                new ActionNode(WaitAfterDamage),
-                new LookAtTargetNode(transform, player, animator, rotationSpeed),
-                new ActionNode(ChaseTarget)        // 플레이어 추격
-            }),
-            new Sequence(new List<BTNode>
-            {
-                new ConditionNode(CheckTargetInAttackRange),
-                new ActionNode(AttackTarget)
-            }),
-            new Sequence(new List<BTNode>
-            {
-                new ConditionNode(IsTargetInDetectionRange),
-                new ActionNode(ChaseTarget)
-            }),
-            new ActionNode(Patrol)    
-        });
-    }
-
     #region TakeDamage
-    [SerializeField] bool isDamaged = false;
-    private float noDamageCooldown = 0.5f;
+    [SerializeField] bool isDamaged;
+    [SerializeField] float noDamageCooldown = 0.5f;
     
     private bool CheckTakeDamage()
     {
@@ -69,57 +36,48 @@ public class MonsterControllerBT : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isDamaged) return;
+        if (isDamaged) return;      //중복 피격 방지
 
-        isDamaged = true;   
         monsterCurHP -= damage;
         Debug.Log($"🔥 몬스터가 {damage}의 피해를 받음! 현재 HP: {monsterCurHP}");
         
-        if(!isAttacking){
-            animator.SetTrigger("Damaged");
-            Debug.Log("🔥 Damaged 애니메이션 실행됨");
-        }
+        // if (monsterCurHP <= 0)
+        // {
+        //     // Die(); // 몬스터 사망 처리
+        //     Debug.Log("몬스터 사망...");
+        //     return;
+        // }
         
-        damageWaitTimer = 0f; // 1초 대기 타이머 초기화
+        isDamaged = true;
         StartCoroutine(Coroutine_ResetDamageState());
     }
-    private bool IsDamageAnimDone()
-    {
-        AnimatorStateInfo animState = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (animState.IsName("Damaged") && animState.normalizedTime < 0.99f)
+    private NodeState HandleDamageAnim()
+    {
+        if (isDamaged && !animator.GetCurrentAnimatorStateInfo(0).IsName("Damaged"))              // 🔥 `isDamaged`가 true이면 애니메이션 실행하도록 수정
         {
-            Debug.Log("🔥 피격 애니메이션 진행 중...");
-            return false;  // 아직 실행 중
-        }
-
-        Debug.Log("🔥 피격 애니메이션 종료됨!");
-        isDamaged = false;  // 피격 상태 초기화
-        return true;
-}
-    private void HandleDamageAnim()
-    {
-        if(!isAttacking){
             animator.SetTrigger("Damaged");
-            Debug.Log("피격 애니메이션 실행,,");
-        }
-    }
+            return NodeState.Success;
+        }   
+        Debug.Log("실패...");
+        return NodeState.Failure; // 실행되지 않을 경우 Failure 반환
+    }   
 
-    private float damageWaitTime = 1.0f;
-    private float damageWaitTimer = 0f;
-
-    private void WaitAfterDamage()
-    {
-        if (damageWaitTimer < damageWaitTime)
+    private NodeState IsDamageAnimDone()
+    {  
+        AnimatorStateInfo animState = animator.GetCurrentAnimatorStateInfo(0);
+        if (isDamaged)
         {
-            damageWaitTimer += Time.deltaTime;
-            Debug.Log($"🔥 1초 대기 중... {damageWaitTimer}");
+            return NodeState.Running;
         }
+
+        return NodeState.Success;
     }
 
     IEnumerator Coroutine_ResetDamageState()
     {
-        yield return new WaitForSeconds(noDamageCooldown);
+        yield return new WaitForSeconds(2f);
+        Debug.Log("피격상태 종료...");
         isDamaged = false;
     }
     #endregion
@@ -129,20 +87,7 @@ public class MonsterControllerBT : MonoBehaviour
         TryGetComponent(out animator);
         TryGetComponent(out controller);
         monsterCurHP = monsterData.HP;
-    }
-
-    private void Update()
-    {
-        rootNode.Evaluate();
-        #region Test
-
-        AnimatorStateInfo animState = animator.GetCurrentAnimatorStateInfo(0);
-        if (animState.IsName("Damaged"))
-        {
-            // Debug.Log("🔥 현재 Damaged 애니메이션 실행 중!");
-        }
-
-        #endregion
+        isDamaged = false;
     }
 
     #region Chase
@@ -229,10 +174,9 @@ public class MonsterControllerBT : MonoBehaviour
         StartCoroutine(Coroutine_AttackCoolDown());
     }
 
-    void ChaseTarget()
+    public void ChaseTarget()
     {
         if(isAttacking || isMonsterAttackCoolDown) return;
-        Debug.Log("🔥 몬스터가 플레이어를 추격 중...");
         MoveToward(player.position);
     }
 
@@ -249,7 +193,7 @@ public class MonsterControllerBT : MonoBehaviour
     #region Patrol
     private bool isWaiting = false;
     private float waitTimer = 0.0f;
-    public float waitingTime = 2.0f;
+    [SerializeField] float waitingTime = 2.0f;
 
     void Patrol()
     {
@@ -279,7 +223,6 @@ public class MonsterControllerBT : MonoBehaviour
         }
     }
 
-
     public void SetNextDestination()
     {
         Vector3 randomDirection = Vector3.zero;
@@ -294,6 +237,66 @@ public class MonsterControllerBT : MonoBehaviour
         return Vector3.Distance(position.FlattenY(), destination.FlattenY()) <= 0.1f;
     }
     #endregion
+
+    #region Down
+    private bool isDown;
+    
+    public bool IsDownMonster(){
+        return isDown && monsterCurHP <= 0;
+    }
+
+    public void DownMonster(){
+        Debug.Log("monster Down...!");
+        animator.SetTrigger("Down");
+        Invoke("DestroyMonster", 1f);
+    }
+
+    private void DestroyMonster(){
+        //Loot Handler Code Part
+        Destroy(gameObject);
+    }
+    #endregion
+
+    #region 공용 파트
+
+    private void Start()
+    {
+        InitMonsterData();
+        SetNextDestination();
+        player = GameObject.FindWithTag("Player").transform;
+
+        rootNode = new Selector(new List<BTNode>
+        {
+            // new Sequence(new List<BTNode>{
+            //     new ConditionNode(IsDownMonster),
+            //     new ActionNode(DownMonster)
+            // }),
+            new Sequence(new List<BTNode>
+            {
+                new ConditionNode(CheckTakeDamage),      // 몬스터가 피해를 입었는가?
+                new ActionNode(HandleDamageAnim),
+                new ActionNode(IsDamageAnimDone),        // 피격 애니메이션 종료 대기
+                new LookAtTargetNode(transform, player, animator, rotationSpeed),  // 플레이어 바라보기
+                // new ActionNode(ChaseTarget)                 // 플레이어 추격
+            }),
+            // new Sequence(new List<BTNode>
+            // {
+            //     new ConditionNode(CheckTargetInAttackRange),
+            //     new ActionNode(AttackTarget)
+            // }),
+            // new Sequence(new List<BTNode>
+            // {
+            //     new ConditionNode(IsTargetInDetectionRange),
+            //     new ActionNode(ChaseTarget)
+            // }),
+            // new ActionNode(Patrol)    
+        });
+    }
+
+    private void Update()
+    {
+        rootNode.Evaluate();
+    }
 
     void OnDrawGizmos()
     {
@@ -342,24 +345,15 @@ public class MonsterControllerBT : MonoBehaviour
 
         controller.Move(moveDirection * fixedSpeed * Time.deltaTime);
     }
+    private float delayTime = 3.0f;
+    private float delayTimer = 0f;
 
-    #region Down
-    private bool isDown;
-    
-    public bool IsDownMonster(){
-        return isDown && monsterCurHP <= 0;
+    private void ActionDelay(/*float t*/){
+        if (delayTimer < delayTime)
+        {
+            delayTimer += Time.deltaTime;
+            Debug.Log($"Delay... {delayTimer}");        
+        }
     }
-
-    public void DownMonster(){
-        Debug.Log("monster Down...!");
-        animator.SetTrigger("Down");
-        Invoke("DestroyMonster", 1f);
-    }
-
-    private void DestroyMonster(){
-        //Loot Handler Code Part
-        Destroy(gameObject);
-    }
-
     #endregion
 }

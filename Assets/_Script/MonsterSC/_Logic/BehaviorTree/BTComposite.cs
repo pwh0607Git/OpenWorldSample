@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public enum NodeState
@@ -34,9 +36,25 @@ public class Selector : BTNode
                     return NodeState.Running;
             }
         }
-        return NodeState.Success;
+        return NodeState.Failure;
     }
 }
+
+// public class ActionNode : BTNode
+// {
+//     private System.Action action;
+
+//     public ActionNode(System.Action action)
+//     {
+//         this.action = action;
+//     }
+
+//     public override NodeState Evaluate()
+//     {
+//         action.Invoke();
+//         return NodeState.Success;
+//     }
+// }
 
 public class Sequence : BTNode
 {
@@ -85,17 +103,16 @@ public class ConditionNode : BTNode
 
 public class ActionNode : BTNode
 {
-    private System.Action action;
+    private System.Func<NodeState> action;
 
-    public ActionNode(System.Action action)
+    public ActionNode(System.Func<NodeState> action)
     {
         this.action = action;
     }
 
     public override NodeState Evaluate()
     {
-        action.Invoke();
-        return NodeState.Success;
+        return action();
     }
 }
 
@@ -105,9 +122,8 @@ public class LookAtTargetNode : BTNode
     private Transform player;
     private Animator animator;
     private float rotationSpeed;
-    private float lookDelay = 1.0f; // 1초 대기
-    private float lookTimer = 0f;
-
+    bool isDamaged;
+    
     public LookAtTargetNode(Transform monster, Transform player, Animator animator, float rotationSpeed)
     {
         this.monster = monster;
@@ -120,25 +136,20 @@ public class LookAtTargetNode : BTNode
     {
         if (player == null) return NodeState.Failure;
 
-        if (lookTimer < lookDelay)
-        {
-            lookTimer += Time.deltaTime;
-            return NodeState.Running;
-        }
-
         Vector3 direction = (player.position - monster.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
 
-        float angle = Quaternion.Angle(monster.rotation, lookRotation);
-        Debug.Log($"🔥 현재 몬스터-플레이어 각도: {angle}");
+        // monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, Time.deltaTime * 10f);
+        monster.LookAt(player);
+        Debug.Log("플레이어 쳐다보기!!");
+        // float angle = Quaternion.Angle(monster.rotation, lookRotation);
+        // Debug.Log($"현재 몬스터-플레이어 각도: {angle}");
         
-        monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, Time.deltaTime * 2f);
         
-        if (angle > 5f)
-        {
-            Debug.Log("플레이어 쳐다보는 중...");
-            return NodeState.Running;
-        }
+        // if (angle > 10f)
+        // {
+        //     return NodeState.Running;
+        // }
 
         return NodeState.Success;
     }
