@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class MonsterStateUIController : MonoBehaviour
 {
-    private MonsterData monsterData;
+    [SerializeField] MonsterData monsterData;
 
     private GameObject rootMonster;
     public TextMeshProUGUI monsterName;
@@ -14,16 +14,23 @@ public class MonsterStateUIController : MonoBehaviour
     public GameObject damageTextPrefab;          
     public Transform damageTextTransform;
 
+    #region Public-Part
     void Start(){
         rootMonster = transform.root.gameObject;
-        monsterData = rootMonster.GetComponent<MonsterController>().MonsterData;
+        // monsterData = rootMonster.GetComponent<MonsterController>().MonsterData;
         
         InitMonsterUIInform();
         InitMonsterUIPosition();
     }
+    #endregion
 
     void Update(){
-        gameObject.GetComponent<RectTransform>().LookAt(Camera.main.transform);
+        LookAtCamera();
+    }
+
+    void LookAtCamera(){
+        Quaternion targetRotation = Quaternion.LookRotation(Camera.main.transform.position);
+        GetComponent<RectTransform>().rotation = targetRotation;
     }
 
     public void InitMonsterUIInform()

@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class MonsterControllerBT : MonoBehaviour
@@ -39,7 +37,6 @@ public class MonsterControllerBT : MonoBehaviour
         if (isDamaged) return;      //중복 피격 방지
 
         monsterCurHP -= damage;
-        Debug.Log($"🔥 몬스터가 {damage}의 피해를 받음! 현재 HP: {monsterCurHP}");
         
         // if (monsterCurHP <= 0)
         // {
@@ -49,34 +46,21 @@ public class MonsterControllerBT : MonoBehaviour
         // }
         
         isDamaged = true;
-        // StartCoroutine(Coroutine_ResetDamageState());
+        StartCoroutine(Coroutine_ResetDamageState());
     }
 
-    private NodeState HandleDamageAnim()
+    private void HandleDamageAnim()
     {
         if (isDamaged && !animator.GetCurrentAnimatorStateInfo(0).IsName("Damaged"))              // 🔥 `isDamaged`가 true이면 애니메이션 실행하도록 수정
         {
             animator.SetTrigger("Damaged");
-            return NodeState.Success;
         }   
-        return NodeState.Failure; // 실행되지 않을 경우 Failure 반환
-    }   
-
-    private NodeState IsDamageAnimDone()
-    {  
-        AnimatorStateInfo animState = animator.GetCurrentAnimatorStateInfo(0);
-        if (isDamaged)
-        {
-            return NodeState.Running;
-        }
-
-        return NodeState.Success;
     }
 
     IEnumerator Coroutine_ResetDamageState()
-    {
-        yield return new WaitForSeconds(2f);
-        Debug.Log("피격상태 종료...");
+    {  
+        // 데미지 화력 조절
+        yield return new WaitForSeconds(noDamageCooldown);
         isDamaged = false;
     }
     #endregion
@@ -103,6 +87,7 @@ public class MonsterControllerBT : MonoBehaviour
         if (angleToTarget > detectionAngle / 2)
             return false;
 
+        Debug.Log("player 추격 준비!");
         return true;
     }
 
@@ -114,16 +99,14 @@ public class MonsterControllerBT : MonoBehaviour
         if(distanceToTarget > monsterData.detectionRadius) return false;
         return true;
     }
-    #endregion
-
-    private bool CheckTargetInAttackRange()
+    
+    public void ChaseTarget()
     {
-        if (player == null) return false;
-        if (isMonsterAttackCoolDown || isAttacking) return false;
-
-        float distanceToTarget = Vector3.Distance(transform.position, player.position);
-        return distanceToTarget <= monsterData.attackableRadius;
+        if(isAttacking || isMonsterAttackCoolDown) return;
+        Debug.Log("Player 추격중...");
+        MoveToward(player.position);
     }
+    #endregion
 
     [SerializeField] bool isAttacking = false;
     [SerializeField] bool isMonsterAttackCoolDown = false;
@@ -153,6 +136,15 @@ public class MonsterControllerBT : MonoBehaviour
         }
     }
 
+    private bool CheckTargetInAttackRange()
+    {
+        if (player == null) return false;
+        if (isMonsterAttackCoolDown || isAttacking) return false;
+
+        float distanceToTarget = Vector3.Distance(transform.position, player.position);
+        return distanceToTarget <= monsterData.attackableRadius;
+    }
+
     //animation Event
     public void PerformAttack(){
         Vector3 attackOffset = transform.localPosition + Vector3.up/2 + transform.forward;
@@ -173,16 +165,10 @@ public class MonsterControllerBT : MonoBehaviour
         StartCoroutine(Coroutine_AttackCoolDown());
     }
 
-    public void ChaseTarget()
-    {
-        if(isAttacking || isMonsterAttackCoolDown) return;
-        MoveToward(player.position);
-    }
-
     private IEnumerator Coroutine_AttackCoolDown()
     {
         isMonsterAttackCoolDown = true;
-        animator.SetBool("Walk", false); // Idle 상태 유지
+        animator.SetBool("Walk", false);
         yield return new WaitForSeconds(monsterAttackCooldownTime);
         isMonsterAttackCoolDown = false;
         isAttacking = false;
@@ -256,40 +242,46 @@ public class MonsterControllerBT : MonoBehaviour
     }
     #endregion
 
-    #region 공용 파트
+    #region UI Part
+
+    #endregion
+
+    #region Public Part
 
     private void Start()
     {
+        player = GameObject.FindWithTag("Player").transform;
         InitMonsterData();
         SetNextDestination();
-        player = GameObject.FindWithTag("Player").transform;
+        SetBTNode();
+    }
 
+    void SetBTNode(){
         rootNode = new Selector(new List<BTNode>
         {
-            // new Sequence(new List<BTNode>{
-            //     new ConditionNode(IsDownMonster),
-            //     new ActionNode(DownMonster)
-            // }),
+            new Sequence(new List<BTNode>{
+                new ConditionNode(IsDownMonster),
+                new ActionNode(DownMonster)
+            }),
             new Sequence(new List<BTNode>
             {
-                new ConditionNode(CheckTakeDamage),      // 몬스터가 피해를 입었는가?
+                new ConditionNode(CheckTakeDamage),      
                 new ActionNode(HandleDamageAnim),
-                // new ActionNode(IsDamageAnimDone),        // 피격 애니메이션 종료 대기
-                new WaitNode(2f),
-                new LookAtTargetNode(transform, player, animator, rotationSpeed),  // 플레이어 바라보기
-                // new ActionNode(ChaseTarget)                 // 플레이어 추격
+                new WaitNode(1f),
+                new LookAtTargetNode(transform, player, animator, rotationSpeed),  
+                new ActionNode(ChaseTarget)                 
             }),
-            // new Sequence(new List<BTNode>
-            // {
-            //     new ConditionNode(CheckTargetInAttackRange),
-            //     new ActionNode(AttackTarget)
-            // }),
-            // new Sequence(new List<BTNode>
-            // {
-            //     new ConditionNode(IsTargetInDetectionRange),
-            //     new ActionNode(ChaseTarget)
-            // }),
-            // new ActionNode(Patrol)    
+            new Sequence(new List<BTNode>
+            {
+                new ConditionNode(CheckTargetInAttackRange),
+                new ActionNode(AttackTarget)
+            }),
+            new Sequence(new List<BTNode>
+            {
+                new ConditionNode(IsTargetInDetectionRange),
+                new ActionNode(ChaseTarget)
+            }),
+            new ActionNode(Patrol)    
         });
     }
 
@@ -342,7 +334,6 @@ public class MonsterControllerBT : MonoBehaviour
         {
             moveDirection.y += Physics.gravity.y * Time.deltaTime;
         }
-
         controller.Move(moveDirection * fixedSpeed * Time.deltaTime);
     }
     #endregion
