@@ -23,6 +23,11 @@ public class MonsterControllerBT : MonoBehaviour
     [SerializeField] private Vector3 originalPosition;
     [SerializeField] private Vector3 nextDestination;
 
+    #region MonsterUI
+    public event System.Action<int> OnMonsterDamaged;
+
+    #endregion
+
     #region TakeDamage
     [SerializeField] bool isDamaged;
     [SerializeField] float noDamageCooldown = 0.5f;
@@ -46,6 +51,7 @@ public class MonsterControllerBT : MonoBehaviour
         // }
         
         isDamaged = true;
+        OnMonsterDamaged?.Invoke(monsterCurHP);
         StartCoroutine(Coroutine_ResetDamageState());
     }
 
@@ -89,6 +95,14 @@ public class MonsterControllerBT : MonoBehaviour
 
         Debug.Log("player 추격 준비!");
         return true;
+    }
+    bool IsExistingObject()
+    {
+        Vector3 directionToTarget = (player.position - transform.position).normalized;
+        if(Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, monsterData.detectionRadius, LayerMask.GetMask("Level"))){
+            return true;
+        }
+        return false;
     }
 
     private bool IsTargetInChasingRange(){
@@ -279,6 +293,7 @@ public class MonsterControllerBT : MonoBehaviour
             new Sequence(new List<BTNode>
             {
                 new ConditionNode(IsTargetInDetectionRange),
+                new ConditionNode(IsExistingObject),
                 new ActionNode(ChaseTarget)
             }),
             new ActionNode(Patrol)    
@@ -288,6 +303,12 @@ public class MonsterControllerBT : MonoBehaviour
     private void Update()
     {
         rootNode.Evaluate();
+        #region  Test
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TakeDamage(10);
+        }
+        #endregion
     }
 
     void OnDrawGizmos()

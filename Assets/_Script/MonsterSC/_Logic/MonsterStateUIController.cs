@@ -6,7 +6,7 @@ public class MonsterStateUIController : MonoBehaviour
 {
     [SerializeField] MonsterData monsterData;
 
-    private GameObject rootMonster;
+    private MonsterControllerBT rootMonster;
     public TextMeshProUGUI monsterName;
 
     public Image HP_Bar;
@@ -16,7 +16,7 @@ public class MonsterStateUIController : MonoBehaviour
 
     #region Public-Part
     void Start(){
-        rootMonster = transform.root.gameObject;
+        rootMonster = GetComponentInParent<MonsterControllerBT>();
         // monsterData = rootMonster.GetComponent<MonsterController>().MonsterData;
         
         InitMonsterUIInform();
@@ -54,7 +54,15 @@ public class MonsterStateUIController : MonoBehaviour
         transform.GetComponentInParent<MonsterController>().SetMonsterUI(this);
     }
 
-    public void UpdateMonsterUI(int curHP)
+    void OnEnable(){
+        rootMonster.OnMonsterDamaged += UpdateMonsterUI;
+    }
+
+    void OnDisable(){
+        rootMonster.OnMonsterDamaged -= UpdateMonsterUI;
+    }
+
+    void UpdateMonsterUI(int curHP)
     {
         HP_Bar.fillAmount = (float)curHP / monsterData.HP;
     }

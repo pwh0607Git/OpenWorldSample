@@ -10,6 +10,5 @@ public class UIObserver : MonsterObserver
     public override void OnNotify(int curHP)
     {
         Debug.Log("몬스터 피격! HP바 갱신하기...");
-        
     }
 }

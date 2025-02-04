@@ -198,7 +198,7 @@ public class MonsterController : MonoBehaviour
 
         animator.SetTrigger("Damaged");
         monsterCurHP -= damage;
-        monsterUI.UpdateMonsterUI(monsterCurHP);
+        // monsterUI.UpdateMonsterUI(monsterCurHP);
 
         yield return new WaitForSeconds(noDamageTime);
         canTakeDamage = true;
