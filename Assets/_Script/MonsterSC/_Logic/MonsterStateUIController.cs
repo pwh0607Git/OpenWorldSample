@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public class MonsterStateUIController : MonoBehaviour
 {
-    private MonsterData monsterData;
+    [SerializeField] MonsterData monsterData;
 
-    private GameObject rootMonster;
+    private MonsterControllerBT rootMonster;
     public TextMeshProUGUI monsterName;
 
     public Image HP_Bar;
@@ -14,16 +14,23 @@ public class MonsterStateUIController : MonoBehaviour
     public GameObject damageTextPrefab;          
     public Transform damageTextTransform;
 
+    #region Public-Part
     void Start(){
-        rootMonster = transform.root.gameObject;
-        monsterData = rootMonster.GetComponent<MonsterController>().MonsterData;
+        rootMonster = GetComponentInParent<MonsterControllerBT>();
+        // monsterData = rootMonster.GetComponent<MonsterController>().MonsterData;
         
         InitMonsterUIInform();
         InitMonsterUIPosition();
     }
+    #endregion
 
     void Update(){
-        gameObject.GetComponent<RectTransform>().LookAt(Camera.main.transform);
+        LookAtCamera();
+    }
+
+    void LookAtCamera(){
+        Quaternion targetRotation = Quaternion.LookRotation(Camera.main.transform.position);
+        GetComponent<RectTransform>().rotation = targetRotation;
     }
 
     public void InitMonsterUIInform()
@@ -47,7 +54,15 @@ public class MonsterStateUIController : MonoBehaviour
         transform.GetComponentInParent<MonsterController>().SetMonsterUI(this);
     }
 
-    public void UpdateMonsterUI(int curHP)
+    void OnEnable(){
+        rootMonster.OnMonsterDamaged += UpdateMonsterUI;
+    }
+
+    void OnDisable(){
+        rootMonster.OnMonsterDamaged -= UpdateMonsterUI;
+    }
+
+    void UpdateMonsterUI(int curHP)
     {
         HP_Bar.fillAmount = (float)curHP / monsterData.HP;
     }
