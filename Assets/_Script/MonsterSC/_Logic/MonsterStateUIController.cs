@@ -18,7 +18,6 @@ public class MonsterStateUIController : MonoBehaviour
     void Start(){
         rootMonster = GetComponentInParent<MonsterControllerBT>();
         // monsterData = rootMonster.GetComponent<MonsterController>().MonsterData;
-        
         InitMonsterUIInform();
         InitMonsterUIPosition();
     }
@@ -36,7 +35,7 @@ public class MonsterStateUIController : MonoBehaviour
     public void InitMonsterUIInform()
     {
         monsterName.text = monsterData.monsterName;
-        
+        rootMonster.OnHPChanged += UpdateMonsterUI;
         GetComponent<RectTransform>().localPosition = Vector2.zero;
         UpdateMonsterUI(monsterData.HP);
     }
@@ -51,15 +50,11 @@ public class MonsterStateUIController : MonoBehaviour
             transform.SetParent(monsterCollider.gameObject.transform);
             GetComponent<RectTransform>().anchoredPosition = new Vector3(0, monsterHeight - 0.5f, 0);
         }
-        transform.GetComponentInParent<MonsterController>().SetMonsterUI(this);
+        transform.GetComponentInParent<MonsterControllerBT>().SetMonsterUI(this);
     }
 
-    void OnEnable(){
-        rootMonster.OnMonsterDamaged += UpdateMonsterUI;
-    }
-
-    void OnDisable(){
-        rootMonster.OnMonsterDamaged -= UpdateMonsterUI;
+    void OnDestroy(){
+        rootMonster.OnHPChanged -= UpdateMonsterUI;
     }
 
     void UpdateMonsterUI(int curHP)

@@ -11,7 +11,7 @@ public class MonsterControllerBT : MonoBehaviour
     private MonsterStateUIController monsterUI;
 
     [Header("Monster-State")]
-    private int monsterCurHP = 0;
+    [SerializeField] int monsterCurHP = 100;
 
     [Header("Monster-Properties")]
     [SerializeField] private MonsterData monsterData;
@@ -24,8 +24,11 @@ public class MonsterControllerBT : MonoBehaviour
     [SerializeField] private Vector3 nextDestination;
 
     #region MonsterUI
-    public event System.Action<int> OnMonsterDamaged;
-
+    public event System.Action<int> OnHPChanged;
+    public void SetMonsterUI(MonsterStateUIController monsterUI)
+    {
+        this.monsterUI = monsterUI;
+    }
     #endregion
 
     #region TakeDamage
@@ -51,7 +54,7 @@ public class MonsterControllerBT : MonoBehaviour
         // }
         
         isDamaged = true;
-        OnMonsterDamaged?.Invoke(monsterCurHP);
+        OnHPChanged?.Invoke(monsterCurHP);
         StartCoroutine(Coroutine_ResetDamageState());
     }
 
@@ -117,14 +120,12 @@ public class MonsterControllerBT : MonoBehaviour
     public void ChaseTarget()
     {
         if(isAttacking || isMonsterAttackCoolDown) return;
-        Debug.Log("Player 추격중...");
         MoveToward(player.position);
     }
     #endregion
 
     [SerializeField] bool isAttacking = false;
     [SerializeField] bool isMonsterAttackCoolDown = false;
-    float monsterAttackCooldownTime = 2.0f;
 
     #region Attack
     void AttackTarget()
@@ -165,7 +166,6 @@ public class MonsterControllerBT : MonoBehaviour
         Collider[] hitTargets = Physics.OverlapSphere(attackOffset, monsterData.attackDamageRadius);
 
         if(hitTargets.Length == 0){
-            //공격 위치가 올바르지 못하다
             transform.rotation = Quaternion.Slerp(transform.rotation, player.transform.rotation, Time.deltaTime * 5.0f);
         }else{
             foreach(var target in  hitTargets)
@@ -183,7 +183,7 @@ public class MonsterControllerBT : MonoBehaviour
     {
         isMonsterAttackCoolDown = true;
         animator.SetBool("Walk", false);
-        yield return new WaitForSeconds(monsterAttackCooldownTime);
+        yield return new WaitForSeconds(monsterData.attackCooldown);
         isMonsterAttackCoolDown = false;
         isAttacking = false;
     }
@@ -256,10 +256,6 @@ public class MonsterControllerBT : MonoBehaviour
     }
     #endregion
 
-    #region UI Part
-
-    #endregion
-
     #region Public Part
 
     private void Start()
@@ -267,10 +263,19 @@ public class MonsterControllerBT : MonoBehaviour
         player = GameObject.FindWithTag("Player").transform;
         InitMonsterData();
         SetNextDestination();
-        SetBTNode();
+        InitBTNode();
     }
 
-    void SetBTNode(){
+    private void Update()
+    {
+        rootNode.Evaluate();
+        #region  Test
+
+        #endregion
+    }
+
+    
+    void InitBTNode(){
         rootNode = new Selector(new List<BTNode>
         {
             new Sequence(new List<BTNode>{
@@ -300,17 +305,6 @@ public class MonsterControllerBT : MonoBehaviour
         });
     }
 
-    private void Update()
-    {
-        rootNode.Evaluate();
-        #region  Test
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(10);
-        }
-        #endregion
-    }
-
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -320,7 +314,6 @@ public class MonsterControllerBT : MonoBehaviour
         Quaternion leftRayRotation = Quaternion.Euler(0, -detectionAngle / 2, 0);
         Quaternion rightRayRotation = Quaternion.Euler(0, detectionAngle / 2, 0);
 
-        //Detection Gizmo
         Vector3 leftRay = leftRayRotation * forward;
         Vector3 rightRay = rightRayRotation * forward;
 
@@ -359,3 +352,71 @@ public class MonsterControllerBT : MonoBehaviour
     }
     #endregion
 }
+
+/*
+using UnityEngine;
+
+public class MonsterControllerBT : MonoBehaviour
+{
+    private BTNode rootNode;
+
+    private MonsterHealth monsterHealth;
+    private MonsterDetection monsterDetection;
+    private MonsterMovement monsterMovement;
+    private MonsterAttack monsterAttack;
+    private MonsterStateUIController monsterUI;
+
+    private void Awake()
+    {
+        monsterHealth = GetComponent<MonsterHealth>();
+        monsterDetection = GetComponent<MonsterDetection>();
+        monsterMovement = GetComponent<MonsterMovement>();
+        monsterAttack = GetComponent<MonsterAttack>();
+
+        monsterHealth.OnHPChanged += UpdateUI;
+        monsterHealth.OnDeath += HandleDeath;
+    }
+
+    private void Start()
+    {
+        InitBTNode();
+    }
+
+    private void Update()
+    {
+        rootNode.Evaluate();
+    }
+
+    private void InitBTNode()
+    {
+        rootNode = new Selector(new System.Collections.Generic.List<BTNode>
+        {
+            new Sequence(new System.Collections.Generic.List<BTNode> {
+                new ConditionNode(monsterHealth.GetCurrentHP() <= 0),
+                new ActionNode(HandleDeath)
+            }),
+            new Sequence(new System.Collections.Generic.List<BTNode> {
+                new ConditionNode(monsterDetection.IsTargetInDetectionRange),
+                new ActionNode(() => monsterMovement.MoveTo(GameObject.FindWithTag("Player").transform.position))
+            }),
+            new Sequence(new System.Collections.Generic.List<BTNode> {
+                new ConditionNode(monsterAttack.CheckTargetInAttackRange),
+                new ActionNode(monsterAttack.AttackTarget)
+            })
+        });
+    }
+
+    private void UpdateUI(int hp)
+    {
+        if (monsterUI != null)
+        {
+            monsterUI.UpdateMonsterUI(hp);
+        }
+    }
+
+    private void HandleDeath()
+    {
+        Destroy(gameObject);
+    }
+}
+*/

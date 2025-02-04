@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public enum NodeState
@@ -61,7 +60,6 @@ public class Sequence : BTNode
         return NodeState.Success;       // 모든 노드 성공 시 Success 반환
     }
 }
-
 
 public class ConditionNode : BTNode
 {
