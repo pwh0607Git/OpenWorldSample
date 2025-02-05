@@ -321,8 +321,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5981100774074380928}
   - component: {fileID: 6300995581140619990}
-  - component: {fileID: 860681303303824025}
   - component: {fileID: 8926094578119279552}
+  - component: {fileID: 4701308210869061753}
   m_Layer: 7
   m_Name: Bat
   m_TagString: Monster
@@ -346,7 +346,6 @@ Transform:
   - {fileID: 5977231626141996255}
   - {fileID: 8904932602876775987}
   - {fileID: 6869386002031627896}
-  - {fileID: 8540692043460637394}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6300995581140619990
@@ -370,23 +369,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &860681303303824025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096101378255670412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0c9f8893452f1e43bf98b07c3ced9ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterCurHP: 0
-  attackTarget: {fileID: 0}
-  print_distance: 0
-  waitingTime: 2
-  addSpeed: 2.5
 --- !u!114 &8926094578119279552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,6 +381,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e707e7cd0852d1c41b47446161a0d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSettingComplete: 0
+--- !u!114 &4701308210869061753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096101378255670412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f90897090323664ba7e1f2d4e7215a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blackBoard: {fileID: 0}
+  health: {fileID: 0}
+  wandor: {fileID: 0}
+  detection: {fileID: 0}
+  chase: {fileID: 0}
+  attack: {fileID: 0}
+  down: {fileID: 0}
 --- !u!1 &2309311707844874034
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,52 +969,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0.21823034, z: 0.021374702}
     m_Extent: {x: 0.11529404, y: 0.17678174, z: 0.15921426}
   m_DirtyAABB: 0
---- !u!1 &6827504000910982681
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8540692043460637394}
-  - component: {fileID: 7328450299274159009}
-  m_Layer: 7
-  m_Name: DetectionArea
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8540692043460637394
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6827504000910982681}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5981100774074380928}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7328450299274159009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6827504000910982681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33fe8b329ef23534297be0a60e0e454e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionRadius: 10
-  detectionAngle: 80
 --- !u!1 &6953536710475292064
 GameObject:
   m_ObjectHideFlags: 0

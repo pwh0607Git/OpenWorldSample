@@ -95,52 +95,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 242010906000321485}
   m_LocalEulerAnglesHint: {x: 0.000000013548415, y: 0.0000000021738735, z: 18.230864}
---- !u!1 &696401558454359287
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8132860302481719042}
-  - component: {fileID: 2365238118967541640}
-  m_Layer: 7
-  m_Name: DetectionArea
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8132860302481719042
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696401558454359287}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8165323103463709439}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2365238118967541640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696401558454359287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33fe8b329ef23534297be0a60e0e454e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionRadius: 10
-  detectionAngle: 80
 --- !u!1 &927051837350513859
 GameObject:
   m_ObjectHideFlags: 0
@@ -1179,9 +1133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8165323103463709439}
   - component: {fileID: 6267424456463248193}
-  - component: {fileID: 4129383714423638056}
   - component: {fileID: 5294307983800664967}
   - component: {fileID: 2402420579690983838}
+  - component: {fileID: -3366493894486988135}
   m_Layer: 7
   m_Name: Golem
   m_TagString: Monster
@@ -1205,7 +1159,6 @@ Transform:
   - {fileID: 488653587145892593}
   - {fileID: 4900063966797638988}
   - {fileID: 481964934865610477}
-  - {fileID: 8132860302481719042}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6267424456463248193
@@ -1229,23 +1182,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4129383714423638056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6659422466605757966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0c9f8893452f1e43bf98b07c3ced9ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterCurHP: 0
-  attackTarget: {fileID: 0}
-  print_distance: 0
-  waitingTime: 2
-  addSpeed: 2.5
 --- !u!143 &5294307983800664967
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1284,6 +1220,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e707e7cd0852d1c41b47446161a0d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSettingComplete: 0
+--- !u!114 &-3366493894486988135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6659422466605757966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f90897090323664ba7e1f2d4e7215a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blackBoard: {fileID: 0}
+  health: {fileID: 0}
+  wandor: {fileID: 0}
+  detection: {fileID: 0}
+  chase: {fileID: 0}
+  attack: {fileID: 0}
+  down: {fileID: 0}
 --- !u!1 &7058183623944575213
 GameObject:
   m_ObjectHideFlags: 0

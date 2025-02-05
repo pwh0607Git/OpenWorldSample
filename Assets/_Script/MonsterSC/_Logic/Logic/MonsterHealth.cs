@@ -4,34 +4,42 @@ using System.Collections;
 
 public class MonsterHealth : MonoBehaviour
 {
-    public event Action<int> OnHPChanged;  // 체력 변경 이벤트
-    public event Action OnDeath;
-    private MonsterBlackBoard blackboard;
+    private MonsterBlackBoard blackBoard;
     
     [SerializeField] private float noDamageCooldown = 0.5f;
     private void Start()
     { 
-        blackboard = GetComponent<MonsterBlackBoard>();
+        blackBoard = GetComponent<MonsterBlackBoard>();
     }
 
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.Space)){
+            TakeDamage(1000);
+        }
+    }
     public void TakeDamage(int damage)
     {
-        if (blackboard.isDamaged) return;      //중복 피격 방지
+        if (blackBoard.isMonsterDamaged) return;      //중복 피격 방지
 
-        blackboard.currentHP -= damage;
+        blackBoard.currentHP -= damage;
         
-        if (blackboard.currentHP <= 0)
-        {
-            OnDeath?.Invoke();
-        }
-        
-        blackboard.isDamaged = true;
-        OnHPChanged?.Invoke(blackboard.currentHP);
+        blackBoard.isMonsterDamaged = true;
+        blackBoard.OnHPChanged?.Invoke(blackBoard.currentHP);
         StartCoroutine(Coroutine_ResetDamageState());
     }
+
+
+    public void HandleDamageAnim()
+    {
+        if (blackBoard.isMonsterDamaged && !blackBoard.animator.GetCurrentAnimatorStateInfo(0).IsName("Damaged"))              // 🔥 `isDamaged`가 true이면 애니메이션 실행하도록 수정
+        {
+            blackBoard.animator.SetTrigger("Damaged");
+        }   
+    }
+
     IEnumerator Coroutine_ResetDamageState()
     {  
         yield return new WaitForSeconds(noDamageCooldown);
-        blackboard.isDamaged = false;
+        blackBoard.isMonsterDamaged = false;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,15 +58,15 @@ public class Sequence : BTNode
                 case NodeState.Running: return NodeState.Running;
             }
         }
-        return NodeState.Success;       // 모든 노드 성공 시 Success 반환
+        return NodeState.Success;                                   // 모든 노드 성공 시 Success 반환
     }
 }
 
 public class ConditionNode : BTNode
 {
-    private System.Func<bool> condition;
+    private Func<bool> condition;
 
-    public ConditionNode(System.Func<bool> condition)
+    public ConditionNode(Func<bool> condition)
     {
         this.condition = condition;
     }
@@ -77,9 +78,9 @@ public class ConditionNode : BTNode
 }
 public class ActionNode : BTNode
 {
-    private System.Action action;
+    private Action action;
 
-    public ActionNode(System.Action action)
+    public ActionNode(Action action)
     {
         this.action = action;
     }
@@ -98,12 +99,12 @@ public class LookAtTargetNode : BTNode
     private Animator animator;
     private float rotationSpeed;
     
-    public LookAtTargetNode(Transform monster, Transform player, Animator animator, float rotationSpeed)
+    public LookAtTargetNode(Transform monster, Transform player, Animator animator)
     {
         this.monster = monster;
         this.player = player;
         this.animator = animator;
-        this.rotationSpeed = rotationSpeed;
+        this.rotationSpeed = 20.0f;
     }
 
     public override NodeState Evaluate()
@@ -120,27 +121,6 @@ public class LookAtTargetNode : BTNode
         {
             return NodeState.Running;
         }
-
-        return NodeState.Success;
-    }
-}
-
-public class AttackTargetNode : BTNode
-{
-    Animator animator;
-    public AttackTargetNode(Animator animator)
-    {
-        this.animator = animator;
-    }
-
-    public override NodeState Evaluate()
-    {
-        if (animator == null) return NodeState.Failure;
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-        {
-            return NodeState.Running;
-        }
-        animator.SetTrigger("Attack");
 
         return NodeState.Success;
     }
@@ -167,10 +147,8 @@ public class WaitNode : BTNode
 
         if (elapsedTime >= waitTime)
         {
-            Debug.Log("대기 완료");
             return NodeState.Success; // 대기 완료
         }
-        Debug.Log("대기중...");
         return NodeState.Running; // 아직 대기 중
     }
 }

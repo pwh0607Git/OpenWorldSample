@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class MonsterStateUIController : MonoBehaviour
 {
-    [SerializeField] MonsterData monsterData;
+    [SerializeField] MonsterBlackBoard blackBoard;
 
     private MonsterControllerBT rootMonster;
     public TextMeshProUGUI monsterName;
@@ -16,8 +16,8 @@ public class MonsterStateUIController : MonoBehaviour
 
     #region Public-Part
     void Start(){
+        blackBoard = GetComponentInParent<MonsterBlackBoard>();
         rootMonster = GetComponentInParent<MonsterControllerBT>();
-        // monsterData = rootMonster.GetComponent<MonsterController>().MonsterData;
         InitMonsterUIInform();
         InitMonsterUIPosition();
     }
@@ -34,10 +34,10 @@ public class MonsterStateUIController : MonoBehaviour
 
     public void InitMonsterUIInform()
     {
-        monsterName.text = monsterData.monsterName;
-        rootMonster.OnHPChanged += UpdateMonsterUI;
+        monsterName.text = blackBoard.monsterData.monsterName;
+        blackBoard.OnHPChanged += UpdateMonsterUI;
         GetComponent<RectTransform>().localPosition = Vector2.zero;
-        UpdateMonsterUI(monsterData.HP);
+        UpdateMonsterUI(blackBoard.monsterData.HP);
     }
 
     public void InitMonsterUIPosition()
@@ -54,12 +54,12 @@ public class MonsterStateUIController : MonoBehaviour
     }
 
     void OnDestroy(){
-        rootMonster.OnHPChanged -= UpdateMonsterUI;
+        blackBoard.OnHPChanged -= UpdateMonsterUI;
     }
 
     void UpdateMonsterUI(int curHP)
     {
-        HP_Bar.fillAmount = (float)curHP / monsterData.HP;
+        HP_Bar.fillAmount = (float)curHP / blackBoard.monsterData.HP;
     }
 
     public void ShowDamage(int damage)

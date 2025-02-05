@@ -1,21 +1,24 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterAttack : MonoBehaviour
 {
-    private MonsterBlackBoard blackboard;
-
+    private MonsterBlackBoard blackBoard;
+    
     private bool isMonsterAttackCoolDown = false;
-    [SerializeField] private float detectionAngle = 80f;
-     void AttackTarget()
+    
+    void Start(){
+        blackBoard = GetComponentInChildren<MonsterBlackBoard>();
+    }
+
+    public void AttackTarget()
     {
         Vector3 attackOffset = transform.localPosition + Vector3.up / 2 + transform.forward;
-        Collider[] hitTargets = Physics.OverlapSphere(attackOffset, blackboard.monsterData.attackDamageRadius);
+        Collider[] hitTargets = Physics.OverlapSphere(attackOffset, blackBoard.monsterData.attackDamageRadius);
 
         if (hitTargets.Length == 0)
         {
-           transform.rotation = Quaternion.Lerp(transform.rotation, blackboard.player.transform.rotation, Time.deltaTime * 5.0f);
+           transform.rotation = Quaternion.Lerp(transform.rotation, blackBoard.player.transform.rotation, Time.deltaTime * 5.0f);
         }
         else
         {
@@ -23,36 +26,36 @@ public class MonsterAttack : MonoBehaviour
             {
                 if (target.CompareTag("Player"))
                 {
-                    blackboard.isAttacking = true;
-                    blackboard.animator.SetBool("Walk", false);
-                    blackboard.animator.SetTrigger("Attack");
+                    blackBoard.isMonsterAttacking = true;
+                    blackBoard.animator.SetBool("Walk", false);
+                    blackBoard.animator.SetTrigger("Attack");
                 }
             }
         }
     }
 
-    private bool CheckTargetInAttackRange()
+    public bool CheckTargetInAttackRange()
     {
-        if (blackboard.player == null) return false;
-        if (isMonsterAttackCoolDown || blackboard.isAttacking) return false;
+        if (blackBoard.player == null) return false;
+        if (isMonsterAttackCoolDown || blackBoard.isMonsterAttacking) return false;
 
-        float distanceToTarget = Vector3.Distance(transform.position, blackboard.player.position);
-        return distanceToTarget <= blackboard.monsterData.attackableRadius;
+        float distanceToTarget = Vector3.Distance(transform.position, blackBoard.player.position);
+        return distanceToTarget <= blackBoard.monsterData.attackableRadius;
     }
 
     //animation Event
     public void PerformAttack(){
         Vector3 attackOffset = transform.localPosition + Vector3.up/2 + transform.forward;
-        Collider[] hitTargets = Physics.OverlapSphere(attackOffset, blackboard.monsterData.attackDamageRadius);
+        Collider[] hitTargets = Physics.OverlapSphere(attackOffset, blackBoard.monsterData.attackDamageRadius);
 
         if(hitTargets.Length == 0){
-            transform.rotation = Quaternion.Slerp(transform.rotation, blackboard.player.transform.rotation, Time.deltaTime * 5.0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, blackBoard.player.transform.rotation, Time.deltaTime * 5.0f);
         }else{
             foreach(var target in  hitTargets)
             {
-                if (target.CompareTag("blackboard.player"))
+                if (target.CompareTag("Player"))
                 {
-                    target.GetComponentInChildren<PlayerController>().PlayerTakeDamage(blackboard.monsterData.attackPower);
+                    target.GetComponentInChildren<PlayerController>().PlayerTakeDamage(blackBoard.monsterData.attackPower);
                 }
             }
         }
@@ -62,9 +65,9 @@ public class MonsterAttack : MonoBehaviour
     private IEnumerator Coroutine_AttackCoolDown()
     {
         isMonsterAttackCoolDown = true;
-        blackboard.animator.SetBool("Walk", false);
-        yield return new WaitForSeconds(blackboard.monsterData.attackCooldown);
+        blackBoard.animator.SetBool("Walk", false);
+        yield return new WaitForSeconds(blackBoard.monsterData.attackCooldown);
         isMonsterAttackCoolDown = false;
-        blackboard.isAttacking = false;
+        blackBoard.isMonsterAttacking = false;
     }
 }
