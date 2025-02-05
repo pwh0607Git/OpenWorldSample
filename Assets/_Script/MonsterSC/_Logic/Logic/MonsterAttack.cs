@@ -42,8 +42,6 @@ public class MonsterAttack : MonoBehaviour
         float distanceToTarget = Vector3.Distance(transform.position, blackBoard.player.position);
         return distanceToTarget <= blackBoard.monsterData.attackableRadius;
     }
-
-    //animation Event
     public void PerformAttack(){
         Vector3 attackOffset = transform.localPosition + Vector3.up/2 + transform.forward;
         Collider[] hitTargets = Physics.OverlapSphere(attackOffset, blackBoard.monsterData.attackDamageRadius);
