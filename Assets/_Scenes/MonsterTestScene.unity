@@ -3208,16 +3208,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f90897090323664ba7e1f2d4e7215a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  blackBoard: {fileID: 0}
+  attack: {fileID: 0}
+  detection: {fileID: 0}
+  health: {fileID: 0}
+  wandor: {fileID: 0}
   monsterData: {fileID: 11400000, guid: df04fc41d4bd7e340a644919c503f748, type: 2}
-  detectionAngle: 80
-  originalPosition: {x: 0, y: 0, z: 0}
-  nextDestination: {x: 0, y: 0, z: 0}
-  isDamaged: 0
-  noDamageCooldown: 3
-  isAttacking: 0
-  isMonsterAttackCoolDown: 0
-  waitingTime: 2
 --- !u!4 &7434328110808251931
 Transform:
   m_ObjectHideFlags: 0

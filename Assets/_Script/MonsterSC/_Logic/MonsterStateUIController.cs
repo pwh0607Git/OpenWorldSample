@@ -35,7 +35,7 @@ public class MonsterStateUIController : MonoBehaviour
     public void InitMonsterUIInform()
     {
         monsterName.text = monsterData.monsterName;
-        rootMonster.OnHPChanged += UpdateMonsterUI;
+        rootMonster.GetMonsterlogic().OnHPChanged += UpdateMonsterUI;
         GetComponent<RectTransform>().localPosition = Vector2.zero;
         UpdateMonsterUI(monsterData.HP);
     }
@@ -54,7 +54,7 @@ public class MonsterStateUIController : MonoBehaviour
     }
 
     void OnDestroy(){
-        rootMonster.OnHPChanged -= UpdateMonsterUI;
+        rootMonster.GetMonsterlogic().OnHPChanged -= UpdateMonsterUI;
     }
 
     void UpdateMonsterUI(int curHP)

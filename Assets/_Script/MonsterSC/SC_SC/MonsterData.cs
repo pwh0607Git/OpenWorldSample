@@ -29,7 +29,6 @@ public class MonsterData : ScriptableObject
     public string monsterName;
     public MonsterType monsterType;
     public int HP;
-    
     public float moveSpeed;
     public float movableArea = 50f;             //�̵� ���� ����.
     public float movingAreaRedius = 30f;        //idle ���� �̵��ϴ� ����.
