@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TEST_MonsterSpawner : MonoBehaviour
@@ -25,20 +26,20 @@ public class TEST_MonsterSpawner : MonoBehaviour
         yield return null;
 
         GameObject monster = Instantiate(data.monsterPrefab);
-        MonsterControllerBT monsterController = monster.GetComponent<MonsterControllerBT>();
         monster.transform.position = new Vector3(gameObject.transform.position.x + transX, 5f, gameObject.transform.position.z);
         
-        transX += 10f;
+        MonsterControllerBT monsterController = monster.GetComponent<MonsterControllerBT>();
         
-        if (monsterController != null)
-        {
-            MonsterBlackBoard blackBoard = new MonsterBlackBoard(data);
+        transX += 10f;
+        if (monsterController != null){
+            MonsterBlackBoard blackBoard = monster.AddComponent<MonsterBlackBoard>();
+            blackBoard.monsterData = data;
             monsterController.InitMonsterBlackBoard(blackBoard);
+            SetMonsterStateUI(monster);
         }
-        SetMonsterStateUI(monster);
     }
 
-    public void SetMonsterStateUI(GameObject monster)
+    void SetMonsterStateUI(GameObject monster)
     {
         Instantiate(monsterStateUIPrefab, monster.transform);
     }

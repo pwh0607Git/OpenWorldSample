@@ -1040,7 +1040,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1412396045
 Transform:
   m_ObjectHideFlags: 0
@@ -1069,7 +1069,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterDatas:
-  - {fileID: 11400000, guid: c2bbb3ecd48aef544942b9ad53c43b54, type: 2}
   - {fileID: 11400000, guid: fbec41af55c1dc740aa5f583dbfd981c, type: 2}
   - {fileID: 11400000, guid: df04fc41d4bd7e340a644919c503f748, type: 2}
   monsterStateUIPrefab: {fileID: 3001919952528799720, guid: f4accf96c078c514ebaac37f357ad1b8, type: 3}
@@ -1983,7 +1982,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f4fc77b9f5de344aa548cdd0b3f8b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: df04fc41d4bd7e340a644919c503f748, type: 2}
+  blackBoard: {fileID: 0}
   monsterName: {fileID: 7561760690464363698}
   HP_Bar: {fileID: 1988065729735722349}
   damageTextPrefab: {fileID: 8266190903722032797}
@@ -3195,7 +3194,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &7369327913288331467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3209,10 +3208,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackBoard: {fileID: 0}
-  attack: {fileID: 0}
-  detection: {fileID: 0}
   health: {fileID: 0}
   wandor: {fileID: 0}
+  detection: {fileID: 0}
+  chase: {fileID: 0}
+  attack: {fileID: 0}
+  down: {fileID: 0}
   monsterData: {fileID: 11400000, guid: df04fc41d4bd7e340a644919c503f748, type: 2}
 --- !u!4 &7434328110808251931
 Transform:

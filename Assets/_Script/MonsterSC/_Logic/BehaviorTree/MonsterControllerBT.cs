@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class MonsterControllerBT : MonoBehaviour
@@ -9,14 +10,13 @@ public class MonsterControllerBT : MonoBehaviour
     private MonsterStateUIController monsterUI;
     
     [SerializeField] private MonsterBlackBoard blackBoard = null;
-    [SerializeField] private MonsterAttack attack;
-    [SerializeField] private MonsterDetection detection;
     [SerializeField] private MonsterHealth health;
     [SerializeField] private MonsterWandor wandor;
+    [SerializeField] private MonsterDetection detection;
+    [SerializeField] private MonsterChase chase;
+    [SerializeField] private MonsterAttack attack;
+    [SerializeField] private MonsterDown down;
     #endregion
-
-    private float rotationSpeed = 20.0f;
-    private float speedWeight = 3.0f;
 
     public MonsterHealth GetMonsterlogic(){
         return health;
@@ -26,45 +26,10 @@ public class MonsterControllerBT : MonoBehaviour
     {
         this.monsterUI = monsterUI;
     }
-    
-    // //animation Event => 지우지 말기.
-    // public void PerformAttack(){
-    //     Vector3 attackOffset = transform.localPosition + Vector3.up/2 + transform.forward;
-    //     Collider[] hitTargets = Physics.OverlapSphere(attackOffset, blackBoard.monsterData.attackDamageRadius);
-
-    //     if(hitTargets.Length == 0){
-    //         transform.rotation = Quaternion.Slerp(transform.rotation, player.transform.rotation, Time.deltaTime * 5.0f);
-    //     }else{
-    //         foreach(var target in  hitTargets)
-    //         {
-    //             if (target.CompareTag("Player"))
-    //             {
-    //                 target.GetComponentInChildren<PlayerController>().PlayerTakeDamage(blackBoard.monsterData.attackPower);
-    //             }
-    //         }
-    //     }
-    // }
-
-    private bool isDown;
-    
-    public bool IsDownMonster(){
-        return isDown && blackBoard.currentHP <= 0;
-    }
-
-    public void DownMonster(){
-        Debug.Log("monster Down...!");
-        blackBoard.animator.SetTrigger("Down");
-        Invoke("DestroyMonster", 1f);
-    }
-
-    private void DestroyMonster(){
-        //Loot Handler Code Part
-        Destroy(gameObject);
-    }
 
     private void Start()
     {
-        TestInitBB();
+        FixOriginalPosition();
         StartCoroutine(SetMonsterLogic());
         StartCoroutine(InitBTNode());
     }
@@ -73,7 +38,12 @@ public class MonsterControllerBT : MonoBehaviour
     {
         rootNode.Evaluate();
     }
-
+    void FixOriginalPosition(){
+        var spawnController = GetComponentInChildren<ObjectSpawnInitController>();
+        spawnController.SetOntheFloor();
+        blackBoard.originalPosition = spawnController.originalPosition;
+        transform.position = blackBoard.originalPosition;            
+    }
     IEnumerator SetMonsterLogic(){
         while(blackBoard == null){
             yield return null;
@@ -83,12 +53,15 @@ public class MonsterControllerBT : MonoBehaviour
         attack = gameObject.AddComponent<MonsterAttack>();
         detection = gameObject.AddComponent<MonsterDetection>();
         health = gameObject.AddComponent<MonsterHealth>();
+        chase = gameObject.AddComponent<MonsterChase>();
+        down = gameObject.AddComponent<MonsterDown>();
     }
     
     public void InitMonsterBlackBoard(MonsterBlackBoard blackBoard){
         this.blackBoard = blackBoard;
     }
 
+    float chaseStartTime = 0f;
     IEnumerator InitBTNode(){
         while(blackBoard == null){
             yield return null;
@@ -96,17 +69,19 @@ public class MonsterControllerBT : MonoBehaviour
         Debug.Log("BT Node Init Complete");
         rootNode = new Selector(new List<BTNode>
         {
+            new ConditionNode(() => blackBoard.isDown),
             new Sequence(new List<BTNode>{
-                new ConditionNode(IsDownMonster),
-                new ActionNode(DownMonster)
+                new ConditionNode(down.IsDownMonster),
+                new ActionNode(down.DownMonster),
             }),
             new Sequence(new List<BTNode>
             {
                 new ConditionNode(()=>blackBoard.isMonsterDamaged),      
                 new ActionNode(health.HandleDamageAnim),
                 new WaitNode(1f),
-                new LookAtTargetNode(transform, blackBoard.player, blackBoard.animator, rotationSpeed),  
-                new ActionNode(detection.ChaseTarget),
+                new LookAtTargetNode(transform, blackBoard.player, blackBoard.animator),  
+                new ConditionNode(chase.IsTargetInChasingRange),
+                new ActionNode(chase.ChaseTarget),
             }),
             new Sequence(new List<BTNode>
             {
@@ -117,27 +92,25 @@ public class MonsterControllerBT : MonoBehaviour
             {
                 new ConditionNode(detection.IsTargetInDetectionRange),
                 new ConditionNode(detection.IsExistingObject),
-                new ActionNode(detection.ChaseTarget)
+                new ActionNode(() => 
+                { 
+                    blackBoard.isDetecting = true; // 플레이어 감지 시작
+                }),
+                new ActionNode(chase.ChaseTarget),   // 계속 추적
             }),
-            new ActionNode(wandor.Wandor)    
+            new ActionNode(wandor.Wandor), // 배회 지속
         });
     }
 
     public void TakeDamage(int damage){
         health.TakeDamage(damage);
     }
-    [SerializeField] MonsterData monsterData;           // destroy
-
-    void TestInitBB(){
-        blackBoard = gameObject.AddComponent<MonsterBlackBoard>();
-        blackBoard.monsterData = monsterData;
-    }
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, monsterData.detectionRadius);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, blackBoard.monsterData.detectionRadius);
 
-        Vector3 forward = transform.forward * monsterData.detectionRadius;
+        Vector3 forward = transform.forward * blackBoard.monsterData.detectionRadius;
         Quaternion leftRayRotation = Quaternion.Euler(0, -80f / 2, 0);
         Quaternion rightRayRotation = Quaternion.Euler(0, 80 / 2, 0);
 
@@ -151,9 +124,13 @@ public class MonsterControllerBT : MonoBehaviour
         //Attack Gizmo
         Gizmos.color = Color.red;
         Vector3 attackOffset = transform.localPosition + Vector3.up / 2 + transform.forward;
-        Gizmos.DrawWireSphere(attackOffset, monsterData.attackDamageRadius);
+        Gizmos.DrawWireSphere(attackOffset, blackBoard.monsterData.attackDamageRadius);
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, monsterData.attackableRadius);
+        Gizmos.DrawWireSphere(transform.position, blackBoard.monsterData.attackableRadius);
+
+        //Chasing Gizmo
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, blackBoard.monsterData.chasingRadius);
     }
 }

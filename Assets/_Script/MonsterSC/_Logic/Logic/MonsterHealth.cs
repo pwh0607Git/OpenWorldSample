@@ -5,8 +5,6 @@ using System.Collections;
 public class MonsterHealth : MonoBehaviour
 {
     private MonsterBlackBoard blackBoard;
-    public event Action<int> OnHPChanged;  // 체력 변경 이벤트
-    public event Action OnDeath;
     
     [SerializeField] private float noDamageCooldown = 0.5f;
     private void Start()
@@ -14,19 +12,19 @@ public class MonsterHealth : MonoBehaviour
         blackBoard = GetComponent<MonsterBlackBoard>();
     }
 
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.Space)){
+            TakeDamage(1000);
+        }
+    }
     public void TakeDamage(int damage)
     {
         if (blackBoard.isMonsterDamaged) return;      //중복 피격 방지
 
         blackBoard.currentHP -= damage;
         
-        if (blackBoard.currentHP <= 0)
-        {
-            OnDeath?.Invoke();
-        }
-        
         blackBoard.isMonsterDamaged = true;
-        OnHPChanged?.Invoke(blackBoard.currentHP);
+        blackBoard.OnHPChanged?.Invoke(blackBoard.currentHP);
         StartCoroutine(Coroutine_ResetDamageState());
     }
 

@@ -53,7 +53,7 @@ public class MonsterAttack : MonoBehaviour
         }else{
             foreach(var target in  hitTargets)
             {
-                if (target.CompareTag("blackBoard.player"))
+                if (target.CompareTag("Player"))
                 {
                     target.GetComponentInChildren<PlayerController>().PlayerTakeDamage(blackBoard.monsterData.attackPower);
                 }

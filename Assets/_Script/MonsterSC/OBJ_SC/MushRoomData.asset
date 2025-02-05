@@ -19,6 +19,7 @@ MonoBehaviour:
   movableArea: 50
   movingAreaRedius: 30
   detectionRadius: 8
+  chasingRadius: 20
   attackableRadius: 1.5
   attackDamageRadius: 0.5
   attackCooldown: 2

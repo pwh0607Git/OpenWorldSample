@@ -33,10 +33,11 @@ public class MonsterData : ScriptableObject
     public float movableArea = 50f;             //�̵� ���� ����.
     public float movingAreaRedius = 30f;        //idle ���� �̵��ϴ� ����.
 
-    public float detectionRadius = 15f;         // ���� ĳ���͸� �ν��ϴ� ����
+    public float detectionRadius = 15f;         // 감지 범위
+    public float chasingRadius = 20f;           
     public float attackableRadius = 3f;         // 공격을 시작하는 범위
     public float attackDamageRadius = 5f;       // 공격을 했을 때, 이 범위에 있으면 공격성공.
-    public float attackCooldown = 2f;           // ���� �� ��� �ð�
+    public float attackCooldown = 2f;           // 공격 대기시간.
     public int attackPower;
 
     [Header("Visuals")]

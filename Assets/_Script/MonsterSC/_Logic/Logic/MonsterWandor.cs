@@ -13,7 +13,6 @@ public class MonsterWandor : MonoBehaviour
     }
     public void Wandor()
     {
-        Debug.Log("Wandoring...");
         if (isWaiting)
         {
             waitTimer -= Time.deltaTime;

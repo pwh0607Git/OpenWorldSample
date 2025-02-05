@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class MonsterBlackBoard : MonoBehaviour
 {
@@ -16,7 +17,11 @@ public class MonsterBlackBoard : MonoBehaviour
     public bool isMonsterAttacking;
     public bool isMonsterAttackCoolDown;
     public bool isMonsterDamaged;
-    
+    public bool isDetecting;
+    public bool isDown;
+
+    public Action<int> OnHPChanged;  // 체력 변경 이벤트
+
     public MonsterBlackBoard(MonsterData monster){
         this.monsterData = monster;
     }
@@ -32,9 +37,10 @@ public class MonsterBlackBoard : MonoBehaviour
         isMonsterAttacking = false;
         isMonsterDamaged = false;
         isMonsterAttackCoolDown = false;
-
+        isDetecting = false;
+        isDown = false;
         speedWeight = 3.0f;
-        rotationSpeed = 10.0f;
+        rotationSpeed = 15.0f;
     }
     
     public void MoveToward(Vector3 destination)

@@ -135,6 +135,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterDetection.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\PlayerUIController.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterDown.cs" />
     <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\EquipmentItemSC.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterWandor.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\ItemIconController.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\Inventory.cs" />
+    <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterChase.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\MonsterStateUIController.cs" />

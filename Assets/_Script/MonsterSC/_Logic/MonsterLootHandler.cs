@@ -3,23 +3,19 @@ using UnityEngine;
 
 public class MonsterLootHandler : MonoBehaviour
 {
-    MonsterData monsterData;
-
     List<GameObject> loots;
+    MonsterBlackBoard blackBoard;
 
     private void Start()
     {
         loots = new List<GameObject>();
-        monsterData = transform.parent.GetComponent<MonsterController>().MonsterData;
-        
-        if(monsterData != null)
-        {
-            MakeBasicLoot();
-            MakeRandomLoot();
-        }
+        blackBoard = GetComponentInParent<MonsterBlackBoard>();
+
+        MakeBasicLoot();
+        MakeRandomLoot();
         SetLootRef();
 
-        gameObject.SetActive(false);
+        // gameObject.SetActive(false);
     }
 
     void SetLootRef()
@@ -36,7 +32,7 @@ public class MonsterLootHandler : MonoBehaviour
 
     void MakeBasicLoot()
     {
-        foreach (var loot in monsterData.basicLoot)
+        foreach (var loot in blackBoard.monsterData.basicLoot)
         {
             GameObject instance = SetDroppedProperties(Instantiate(loot.model, transform), loot);
         }
@@ -44,7 +40,7 @@ public class MonsterLootHandler : MonoBehaviour
 
     void MakeRandomLoot()
     {
-        foreach(var loot in monsterData.randomLoot){
+        foreach(var loot in blackBoard.monsterData.randomLoot){
             int randomNumber = Random.Range(0, 100);
             if(randomNumber <= loot.dropRate)
             {
