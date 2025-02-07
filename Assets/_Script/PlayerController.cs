@@ -271,3 +271,8 @@ public class PlayerController : MonoBehaviour
         Destroy(weaponTransform.GetChild(0).gameObject);
     }
 }
+
+//피격에 대한 추가 효과
+public enum AdditiveEffect{
+    
+}
