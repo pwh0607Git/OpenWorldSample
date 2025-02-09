@@ -71,7 +71,6 @@ public class PlayerController : MonoBehaviour
         //transform.position = SpawnPos.position;
     }
 
-
     void Update()
     {
         Move();
@@ -269,6 +268,16 @@ public class PlayerController : MonoBehaviour
     public void CleanEquipment()
     {
         Destroy(weaponTransform.GetChild(0).gameObject);
+    }
+
+    //넉백 데이터 추가
+    public void ApplyKnockBack(Vector3 direction){
+        Debug.Log("Player 넉백!!");
+        controller.Move(direction * 100f *Time.deltaTime);
+    }
+
+    public void StartBossStage(){
+        
     }
 }
 
