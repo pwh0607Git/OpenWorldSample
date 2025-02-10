@@ -9,10 +9,12 @@ public class BossInform{
     public float shortRangeAttackPower;
     public float longRangeAttackPower;
     public float deathTime;
+    public GameObject bossModel;
 }
 
 public class BossManager : MonoBehaviour
 {
+    public List<BossInform> bossList = new List<BossInform>();
     public static BossManager bossManager { get; private set; }
     //전체적인 보스전 관리자.
     private void Awake()
@@ -28,13 +30,17 @@ public class BossManager : MonoBehaviour
         }
     }
 
-    public List<BossInform> bossList = new List<BossInform>();
-
     void Start(){
 
     }
 
-    public BossInform StartBossStage(string bossId){
-        return bossList.Find(boss=>boss.bossId == bossId);
+    public void UpdateBossInform(string bossId, BossInform bossData){
+        Debug.Log("BossData Update!");
+        var updateData = bossList.Find(boss => boss.bossId == bossId);
+        updateData = bossData;
     }
+
+    public BossInform StartBossStage(string bossId){ return bossList.Find(boss=>boss.bossId == bossId); }
+
+
 }

@@ -271,9 +271,9 @@ public class PlayerController : MonoBehaviour
     }
 
     //넉백 데이터 추가
-    public void ApplyKnockBack(Vector3 direction){
+    public void ApplyKnockBack(Vector3 directionAndPower){
         Debug.Log("Player 넉백!!");
-        controller.Move(direction * 100f *Time.deltaTime);
+        controller.Move(directionAndPower * Time.deltaTime);
     }
 
     public void StartBossStage(){
