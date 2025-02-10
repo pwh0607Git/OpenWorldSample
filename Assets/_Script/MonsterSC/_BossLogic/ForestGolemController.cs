@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using UnityEngine;
 
@@ -128,4 +129,43 @@ public class ForestGolemController : Boss
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackOffset, availableDamageZone);
     }
+
+    #region BT
+    [SerializeField] private BTNode rootNode;
+    
+    void InitBT(){
+        rootNode = new Selector(new List<BTNode>{
+            new ConditionNode(()=>isPerformingStage),
+            new Selector(new List<BTNode>{
+                new ConditionNode(OnEnterShortRange),
+                new ActionNode(AttackShortRange),
+                new WaitNode(2f),
+                new ConditionNode(OnEnterLongRange),
+                new ActionNode(AttackLongRange),
+                new WaitNode(2f)
+            }),
+            new ActionNode(Idle)
+        });
+    }
+
+    void Idle(){
+        Debug.Log("Idle 상태...");
+    }
+
+    bool OnEnterShortRange(){
+        float distanceToTarget = Vector3.Distance(target.transform.position, transform.position);
+        return distanceToTarget <= shortAttackRange;
+    }
+    bool OnEnterLongRange(){
+        return true;
+    }
+
+    void AttackShortRange(){
+        animator.SetTrigger("Short-RangeAttack");
+    }
+
+    void AttackLongRange(){
+        animator.SetTrigger("Long-RangeAttack");
+    }
+    #endregion
 }
