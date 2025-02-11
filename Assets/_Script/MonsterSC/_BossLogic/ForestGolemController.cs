@@ -5,13 +5,12 @@ using UnityEngine;
 public class ForestGolemController : Boss
 {    
     public GameObject rockPrefab;
-    [SerializeField] GameObject takenRock;  //현재 손에 쥐고 있는 돌.
+    [SerializeField] GameObject takenRock;              //현재 손에 쥐고 있는 돌.
     public Transform takenRockPosition;
     [SerializeField] GameObject target;
     public bool isPerformingStage;
 
     [SerializeField] bool isAttacking;
-    [SerializeField] float ThrowAttackTime = 2.0f;
     [SerializeField] float timer;
     [SerializeField] Vector3 originalPosition;
 
@@ -24,12 +23,11 @@ public class ForestGolemController : Boss
         TryGetComponent(out controller);
         originalPosition = transform.position;
         timer = 0.0f;
-        animator.SetTrigger("StartStage");
         InitBT();
     }
   
     void StartBossStage(){
-        animator.SetTrigger("Start");
+        animator.SetTrigger("StartStage");
         isPerformingStage = true;
     }
 
@@ -46,6 +44,10 @@ public class ForestGolemController : Boss
         Vector3 direction = (target.transform.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+    }
+
+    void PlayStartAnimation(){
+        animator.SetTrigger("StartStage");
     }
 
     #region Short-Range
@@ -72,35 +74,25 @@ public class ForestGolemController : Boss
     
     public float knockBackPower = 100f;
     void KnockBackTarget(){
-        //넉백 방향 계산하기
         Vector3 direction = (target.transform.position - transform.position).normalized;
         direction.y = 0;                                                                //테스트로 수평으로만 수행하도록 설정.
-        direction += Vector3.up;
+        direction += Vector3.up*2;
         target.GetComponentInChildren<PlayerController>().ApplyKnockBack(direction * knockBackPower);
     }
     #endregion
 
-    int currentPhase = 1;
+    public int currentPhase = 1;
     #region Attack Animaton Event
     public void StartThrowRock(){
-        Debug.Log("돌 만들기");
-        if(currentPhase == 1){
-            takenRock = Instantiate(rockPrefab, takenRockPosition);
-        }
-        else if(currentPhase == 2)
-        {
-
-        }
+        float additiveScale = currentPhase == 1 ? 1f: 5f;
+        takenRock = Instantiate(rockPrefab, takenRockPosition);
+        takenRock.transform.localScale *= additiveScale;
     }
     public void ThrowRock(){
-        if(currentPhase == 1){
-            Debug.Log("돌 던지기!");
-            takenRock.GetComponent<ThrowAbleStone>().Throw((target.transform.position + Random.insideUnitSphere).FlattenY());
-            takenRock.transform.SetParent(null);
-            takenRock = null;
-        }
-        if(currentPhase == 2){
-        }
+        float speed = currentPhase == 1 ? 3f : 1.5f;
+        takenRock.GetComponent<ThrowAbleStone>().Throw((target.transform.position + Random.insideUnitSphere).FlattenY(), speed);
+        takenRock.transform.SetParent(null);
+        takenRock = null;
     }
 
     public void EndAttackEvent(){
@@ -125,29 +117,26 @@ public class ForestGolemController : Boss
 
    void Update()
     {   
-        rootNode.Evaluate();
+        if(isPerformingStage){
+            rootNode.Evaluate();
+        }else{
+            PlayStartAnimation();
+        }
     }
-
-    bool isWaiting = false;
-    public bool testFlag = true;
+    
     void InitBT(){
         rootNode = new Selector(new List<BTNode>{
             new Sequence(new List<BTNode>{
                 new ConditionNode(OnEnterShortRange),
-                new IntervalDebugNode("OnEnterShortRange"),
                 new ActionNode(AttackShortRange),
                 new WaitNode(5f),
             }),
             new Sequence(new List<BTNode>{
                 new ConditionNode(OnEnterLongRange),
-                new IntervalDebugNode("OnEnterLongRange"),
                 new ActionNode(AttackLongRange), 
                 new WaitNode(5f),
             }),
-            new Sequence(new List<BTNode>{
-                new IntervalDebugNode("Idle..."),   
-                new ActionNode(Idle)
-            }),               
+            new ActionNode(Idle),               
         });
     }
 
@@ -160,7 +149,7 @@ public class ForestGolemController : Boss
         return distanceToTarget <= shortAttackRange;
     }
     bool OnEnterLongRange(){
-        return true;            // 어짜피 범위 밖으로 나가면 isPerforming은 false가 되도록 설정한다.
+        return isPerformingStage;            // 어짜피 범위 밖으로 나가면 isPerforming은 false가 되도록 설정한다.
     }
 
     void AttackShortRange(){

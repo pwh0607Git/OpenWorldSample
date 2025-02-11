@@ -41,22 +41,18 @@ public class BossZoneManager : MonoBehaviour
     {
         Debug.Log("BossZoneManage : 보스가 죽었습니다. 다음 단계 진행!");
     }
-
-    void Update(){
-        float distance = Vector3.Distance(PlayerController.player.transform.position, transform.position);
-        
-        if(!isPerformingStage){
-            if(distance <= bossZoneArea){
-                EnterPlayer();
-            }
-        }else{
-            if(distance > bossZoneArea){
-                OutPlayer();
-            }
+    void OnTriggerEnter(Collider other){
+        if(other.gameObject.CompareTag("Player")){
+            EnterPlayer();
         }
-
-        // SetBoss();
     }
+
+    void OnTriggerExit(Collider other){
+        if(other.gameObject.CompareTag("Player")){
+            OutPlayer();
+        }
+    }
+
 
     void EnterPlayer(){
         Debug.Log("Player가 보스 위치에 입장!");

@@ -244,7 +244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &254994283
 Transform:
   m_ObjectHideFlags: 0
@@ -1757,13 +1757,12 @@ MonoBehaviour:
   target: {fileID: 0}
   isPerformingStage: 0
   isAttacking: 0
-  ThrowAttackTime: 3
   timer: 0
   originalPosition: {x: 0, y: 0, z: 0}
   shortAttackRange: 8
   knockBackPower: 100
+  currentPhase: 1
   availableDamageZone: 3
-  testFlag: 0
 --- !u!1 &4598479952257157810
 GameObject:
   m_ObjectHideFlags: 0

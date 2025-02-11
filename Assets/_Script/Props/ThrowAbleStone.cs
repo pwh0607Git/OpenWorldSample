@@ -2,8 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 
 public class ThrowAbleStone : MonoBehaviour
-{    
-    [SerializeField] GameObject target;
+{ 
     [SerializeField] GameObject subEmission;
     [SerializeField] ParticleSystem particle;
     Rigidbody rb;
@@ -17,21 +16,19 @@ public class ThrowAbleStone : MonoBehaviour
         subEmission = GetComponentInChildren<SubEmissionMaker>().gameObject;
         particle.gameObject.SetActive(false);
         subEmission.SetActive(false);
-        target = GameObject.FindWithTag("Player");
         rb = GetComponent<Rigidbody>();
         isTaken = true;
         transform.localPosition = Vector3.zero;
         transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
     }
-
-    [SerializeField] float duration;
+    
     [SerializeField] float maxHeight;
     public Ease easeType;
 
     // Boss의 animation event를 통해 해당 메서드 호출됨
-    public void Throw(Vector3 targetPosition){
+    public void Throw(Vector3 targetPosition, float speed){
         isTaken = false;
-        transform.DOJump(targetPosition, maxHeight, 1, duration).SetEase(easeType);
+        transform.DOJump(targetPosition, maxHeight, 1, speed).SetEase(easeType);
     }
     void OnTriggerEnter(Collider other) {
         if(isTaken) return;     //손에 쥐어진 상태라면 무시.
