@@ -65,7 +65,7 @@ public class MonsterControllerBT : MonoBehaviour
         while(blackBoard == null){
             yield return null;
         }
-        Debug.Log("BT Node Init Complete");
+        
         rootNode = new Selector(new List<BTNode>
         {
             new ConditionNode(() => blackBoard.isDown),

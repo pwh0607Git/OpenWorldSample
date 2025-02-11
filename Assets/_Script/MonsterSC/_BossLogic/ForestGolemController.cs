@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 
 
@@ -9,45 +8,26 @@ public class ForestGolemController : Boss
     [SerializeField] GameObject takenRock;  //현재 손에 쥐고 있는 돌.
     public Transform takenRockPosition;
     [SerializeField] GameObject target;
-    bool isPerformingStage = false;
+    public bool isPerformingStage;
 
     [SerializeField] bool isAttacking;
     [SerializeField] float ThrowAttackTime = 2.0f;
-    [SerializeField] float timer;    
-    private CharacterController controller;
+    [SerializeField] float timer;
     [SerializeField] Vector3 originalPosition;
 
     void Start()
     {
         target = GameObject.FindWithTag("Player");
+        isPerformingStage = false;
         isAttacking = false;
         TryGetComponent(out animator);
+        TryGetComponent(out controller);
         originalPosition = transform.position;
         timer = 0.0f;
-
         animator.SetTrigger("StartStage");
+        InitBT();
     }
-
-   void Update()
-    {   
-        if(Input.GetKeyDown(KeyCode.Space)) Down();
-        if(isPerformingStage) return;
-
-        if(InShortRangeTarget()){
-            if(isAttacking) return;
-            animator.SetTrigger("Short-RangeAttack");
-        }
-
-        if(!isAttacking)
-        {
-            LookAtTarget();
-            timer += Time.deltaTime;
-        }
-        if(timer >= ThrowAttackTime){
-            animator.SetTrigger("Long-RangeAttack");
-        }
-    }
-    
+  
     void StartBossStage(){
         animator.SetTrigger("Start");
         isPerformingStage = true;
@@ -100,17 +80,27 @@ public class ForestGolemController : Boss
     }
     #endregion
 
+    int currentPhase = 1;
     #region Attack Animaton Event
     public void StartThrowRock(){
         Debug.Log("돌 만들기");
-        takenRock = Instantiate(rockPrefab, takenRockPosition);
-    }
+        if(currentPhase == 1){
+            takenRock = Instantiate(rockPrefab, takenRockPosition);
+        }
+        else if(currentPhase == 2)
+        {
 
+        }
+    }
     public void ThrowRock(){
-        Debug.Log("돌 던지기!");
-        takenRock.GetComponent<ThrowAbleStone>().Throw();
-        takenRock.transform.SetParent(null);
-        takenRock = null;
+        if(currentPhase == 1){
+            Debug.Log("돌 던지기!");
+            takenRock.GetComponent<ThrowAbleStone>().Throw((target.transform.position + Random.insideUnitSphere).FlattenY());
+            takenRock.transform.SetParent(null);
+            takenRock = null;
+        }
+        if(currentPhase == 2){
+        }
     }
 
     public void EndAttackEvent(){
@@ -132,19 +122,32 @@ public class ForestGolemController : Boss
 
     #region BT
     [SerializeField] private BTNode rootNode;
-    
+
+   void Update()
+    {   
+        rootNode.Evaluate();
+    }
+
+    bool isWaiting = false;
+    public bool testFlag = true;
     void InitBT(){
         rootNode = new Selector(new List<BTNode>{
-            new ConditionNode(()=>isPerformingStage),
-            new Selector(new List<BTNode>{
+            new Sequence(new List<BTNode>{
                 new ConditionNode(OnEnterShortRange),
+                new IntervalDebugNode("OnEnterShortRange"),
                 new ActionNode(AttackShortRange),
-                new WaitNode(2f),
-                new ConditionNode(OnEnterLongRange),
-                new ActionNode(AttackLongRange),
-                new WaitNode(2f)
+                new WaitNode(5f),
             }),
-            new ActionNode(Idle)
+            new Sequence(new List<BTNode>{
+                new ConditionNode(OnEnterLongRange),
+                new IntervalDebugNode("OnEnterLongRange"),
+                new ActionNode(AttackLongRange), 
+                new WaitNode(5f),
+            }),
+            new Sequence(new List<BTNode>{
+                new IntervalDebugNode("Idle..."),   
+                new ActionNode(Idle)
+            }),               
         });
     }
 
@@ -157,14 +160,16 @@ public class ForestGolemController : Boss
         return distanceToTarget <= shortAttackRange;
     }
     bool OnEnterLongRange(){
-        return true;
+        return true;            // 어짜피 범위 밖으로 나가면 isPerforming은 false가 되도록 설정한다.
     }
 
     void AttackShortRange(){
+        if(isAttacking) return;
         animator.SetTrigger("Short-RangeAttack");
     }
 
     void AttackLongRange(){
+        if(isAttacking) return;
         animator.SetTrigger("Long-RangeAttack");
     }
     #endregion

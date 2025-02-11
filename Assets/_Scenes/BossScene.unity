@@ -244,7 +244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &254994283
 Transform:
   m_ObjectHideFlags: 0
@@ -274,7 +274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSpawningBoss: 0
   isPerformingStage: 0
-  bossZoneArea: 15
+  bossZoneArea: 30
   bossId: Forest-Golem
   stageBossData:
     bossId: 
@@ -1492,7 +1492,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1723444788949726659
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,18 +1751,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7805fe4e97d553a429b3711d16514d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
   rockPrefab: {fileID: 8282782681410941542, guid: 45e4c47a1280217499dd686a7e673732, type: 3}
   takenRock: {fileID: 0}
   takenRockPosition: {fileID: 1228023320570542553}
   target: {fileID: 0}
+  isPerformingStage: 0
   isAttacking: 0
   ThrowAttackTime: 3
   timer: 0
   originalPosition: {x: 0, y: 0, z: 0}
   shortAttackRange: 8
   knockBackPower: 100
-  availableDamageZone: 2.5
+  availableDamageZone: 3
+  testFlag: 0
 --- !u!1 &4598479952257157810
 GameObject:
   m_ObjectHideFlags: 0

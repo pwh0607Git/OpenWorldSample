@@ -29,13 +29,9 @@ public class ThrowAbleStone : MonoBehaviour
     public Ease easeType;
 
     // Boss의 animation event를 통해 해당 메서드 호출됨
-    public void Throw(){
-        //easeType = Sin
-
-        //MaxHeight를 player와의 거리에 비례하기.
-
+    public void Throw(Vector3 targetPosition){
         isTaken = false;
-        transform.DOJump(target.transform.position, maxHeight, 1, duration).SetEase(easeType);
+        transform.DOJump(targetPosition, maxHeight, 1, duration).SetEase(easeType);
     }
     void OnTriggerEnter(Collider other) {
         if(isTaken) return;     //손에 쥐어진 상태라면 무시.
