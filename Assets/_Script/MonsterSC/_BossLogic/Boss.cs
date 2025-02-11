@@ -14,8 +14,9 @@ public class BasicBossState{
 public abstract class Boss : MonoBehaviour
 {
     public static Action OnBossDown;
-    public Animator animator;
-    
+    protected Animator animator;
+    protected CharacterController controller;
+
     #region Down
     protected void Down(){
         animator.SetTrigger("Down");

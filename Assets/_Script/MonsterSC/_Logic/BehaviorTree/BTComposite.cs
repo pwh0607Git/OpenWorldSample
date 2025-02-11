@@ -43,22 +43,42 @@ public class Selector : BTNode
 
 public class Sequence : BTNode
 {
-    private List<BTNode> children;
+    private List<BTNode> nodes;
+    private int currentIndex = 0;  // 현재 실행 중인 노드 인덱스
 
-    public Sequence(List<BTNode> children)
+    public Sequence(List<BTNode> nodes)
     {
-        this.children = children;
+        this.nodes = nodes;
+    }
+
+    public override void OnEnter()
+    {
+        currentIndex = 0;  // 시퀀스 시작 시 첫 번째 노드부터 실행
     }
 
     public override NodeState Evaluate()
     {
-        foreach(var child in children){
-            switch(child.Evaluate()){
-                case NodeState.Failure: return NodeState.Failure;
-                case NodeState.Running: return NodeState.Running;
+        while (currentIndex < nodes.Count)
+        {
+            NodeState result = nodes[currentIndex].Evaluate();
+
+            if (result == NodeState.Running)
+            {
+                return NodeState.Running;  // 현재 노드가 실행 중이면 전체도 Running
             }
+
+            if (result == NodeState.Failure)
+            {
+                currentIndex = 0;  // 실패하면 처음부터 다시 실행
+                return NodeState.Failure;
+            }
+
+            // 성공하면 다음 노드로 이동
+            currentIndex++;
         }
-        return NodeState.Success;                                   // 모든 노드 성공 시 Success 반환
+
+        currentIndex = 0;  // 모든 노드가 성공하면 초기화
+        return NodeState.Success;
     }
 }
 
@@ -83,6 +103,22 @@ public class ActionNode : BTNode
     public ActionNode(Action action)
     {
         this.action = action;
+    }
+
+    public override NodeState Evaluate()
+    {
+        action.Invoke();
+        return NodeState.Success;
+    }
+}
+
+public class IntervalDebugNode : BTNode{
+
+    private Action action;
+
+    public IntervalDebugNode(String str)
+    {
+        this.action = () => Debug.Log($"Test : {str}");
     }
 
     public override NodeState Evaluate()
@@ -130,7 +166,6 @@ public class WaitNode : BTNode
 {
     private float waitTime;
     private float elapsedTime;
-
     public WaitNode(float time)
     {
         this.waitTime = time;
@@ -147,8 +182,15 @@ public class WaitNode : BTNode
 
         if (elapsedTime >= waitTime)
         {
+            elapsedTime= 0f;
             return NodeState.Success; // 대기 완료
         }
+        Debug.Log($"Delaying... {elapsedTime:F2}s / {waitTime}s");
         return NodeState.Running; // 아직 대기 중
+    }
+
+    public override void OnExit()
+    {
+        Debug.Log("대기 종료...");
     }
 }
