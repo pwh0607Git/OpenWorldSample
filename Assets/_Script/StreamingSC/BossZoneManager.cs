@@ -6,41 +6,52 @@ public class BossZoneManager : MonoBehaviour
     // 각각의 씬에 존재하는 보스전 관리자.
     // 캐릭터가 보스전에 입장식 BossManager에게 호출.
     // BossManager는 데이터 관리용으로만 사용
-
-    [SerializeField] bool isSpawningBoss;           // 보스가 소환되어있는 상태인지.
-    [SerializeField] bool isPerformingStage;        // 보스전이 진행중인지...
     [SerializeField] float bossZoneArea = 100f;
     [SerializeField] string bossId;
     [SerializeField] BossInform stageBossData;
-
+    [SerializeField] Boss boss = null;
     public Action action;
     void Start(){
-        stageBossData = BossManager.bossManager.StartBossStage(bossId);       //Character의 보스 관련 데이터 시작
-        isSpawningBoss = false;
-        SetBoss();
+        stageBossData = BossManager.bossManager.StartBossStage(bossId);                     //Character의 보스 관련 데이터 시작
+        boss = null;
+        SpawnBoss();
     }
 
-    void SetBoss(){
-        // if(Time.time - stageBossData.deathTime < 30.0f || isSpawningBoss) return; 
-        GameObject boss = Instantiate(stageBossData.bossModel);
-        isSpawningBoss = true;
-    }
-    private void OnEnable()
-    {
-        // 보스 사망 이벤트 구독
-        Boss.OnBossDown += HandleBossDeath;
+    void SpawnBoss(){
+        // if(Time.time - stageBossData.deathTime < 30.0f || boss != null) return; 
+        boss = Instantiate(stageBossData.bossModel).GetComponent<Boss>();
+        if(boss != null){
+            boss.SubscribeToHpChanged(NotifyCurrentBossHP);
+            boss.SubscribeToBossDown(HandleBossDown);
+        }
     }
 
-    private void OnDisable()
+    private void HandleBossDown()
     {
-        // 구독 해제 (메모리 누수 방지)
-        Boss.OnBossDown -= HandleBossDeath;
+        boss.UnsubscribeFromBossDown(HandleBossDown);
+        stageBossData.deathTime = Time.time;
+        BossManager.bossManager.UpdateBossInform(bossId, stageBossData);
     }
 
-    private void HandleBossDeath()
-    {
-        Debug.Log("BossZoneManage : 보스가 죽었습니다. 다음 단계 진행!");
+    void EnterPlayer(){
+        Debug.Log("Player가 보스 위치에 입장!");
+        boss.StartBossStage();
     }
+
+    void OutPlayer(){
+        Debug.Log("Player가 보스 위치에 퇴장!");
+        boss.EndBossStage();
+    }
+
+    void OnDrawGizmos(){
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(transform.position, bossZoneArea);
+    }
+
+    private void NotifyCurrentBossHP(float percent){
+        Debug.Log("보스가 데미지를 입었다!! UI를 갱신하자!!");
+    }
+
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag("Player")){
             EnterPlayer();
@@ -51,30 +62,5 @@ public class BossZoneManager : MonoBehaviour
         if(other.gameObject.CompareTag("Player")){
             OutPlayer();
         }
-    }
-
-
-    void EnterPlayer(){
-        Debug.Log("Player가 보스 위치에 입장!");
-        isPerformingStage = true;
-    }
-
-    void OutPlayer(){
-        Debug.Log("Player가 보스 위치에 퇴장!");
-        isPerformingStage = false;
-    }
-    void OnDeathBoss(){
-        // 보스가 처치 되었을 경우...
-        stageBossData.deathTime = Time.time;
-        BossManager.bossManager.UpdateBossInform(bossId, stageBossData);
-    }
-
-    void OnDrawGizmos(){
-        Gizmos.color = Color.black;
-        Gizmos.DrawWireSphere(transform.position, bossZoneArea);
-    }
-
-    public void CheckBossState(){
-
     }
 }

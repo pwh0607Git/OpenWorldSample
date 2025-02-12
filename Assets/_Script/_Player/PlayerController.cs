@@ -63,8 +63,8 @@ public class PlayerController : MonoBehaviour
     void InitPlayer()
     {
         myState = new State();
-        TryGetComponent(out controller);
-        TryGetComponent(out animator);
+        controller = GetComponentInChildren<CharacterController>();
+        animator = GetComponentInChildren<Animator>(); 
         currentAnimState = PlayerAnimState.Idle;
         moveSpeed = myState.speed;
 
@@ -77,8 +77,7 @@ public class PlayerController : MonoBehaviour
         AttackHandler();
         UpdateAnim();
     }
-    [SerializeField] Vector3 vel = Vector3.zero;
-  
+
     void Move()
     {
         if (isDamaging || isAttacking) return;
@@ -86,11 +85,8 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 cameraForward = Camera.main.transform.forward;
-        Vector3 cameraRight = Camera.main.transform.right;
-
-        cameraForward.y = 0;
-        cameraRight.y = 0;
+        Vector3 cameraForward = Camera.main.transform.forward.FlattenY();
+        Vector3 cameraRight = Camera.main.transform.right.FlattenY();
 
         Vector3 movement = cameraRight * moveHorizontal + cameraForward * moveVertical;
         movement = Vector3.ClampMagnitude(movement, 1);
