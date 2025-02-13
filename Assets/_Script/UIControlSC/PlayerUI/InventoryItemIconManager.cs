@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class InventoryItemIconManager : MonoBehaviour
 {
@@ -21,7 +19,7 @@ public class InventoryItemIconManager : MonoBehaviour
 
     IEnumerator CreateItemIconCoroutine(ItemData newItemData, InventorySlot emptySlot)
     {
-        while (!PlayerController.myInventory.CheckSlotSize())
+        while (!PlayerController.uiController.CheckSlotSize())
         {
             yield return null;
         }
@@ -34,7 +32,7 @@ public class InventoryItemIconManager : MonoBehaviour
 
         emptySlot.AssignCurrentItem(newItemIcon.gameObject);
 
-        PlayerController.myInventory.SyncUIData();
+        PlayerController.uiController.SyncUIData();
         yield return null;
     }
 
@@ -61,12 +59,12 @@ public class InventoryItemIconManager : MonoBehaviour
             }
             else if (itemData.itemType == ItemType.Equipment && itemData is Equipment equipment)
             {
-                Destroy(item.transform.GetChild(0).gameObject);     //Text »èÁ¦.
+                Destroy(item.transform.GetChild(0).gameObject);     //Text ï¿½ï¿½ï¿½ï¿½.
                 ((EquipmentItemSC)itemDataSC).SetItem(equipment);
             }
             else
             {
-                Debug.LogError("¾Ë ¼ö ¾ø´Â ¾ÆÀÌÅÛ Å¸ÀÔÀÔ´Ï´Ù.");
+                Debug.LogError("ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½Ô´Ï´ï¿½.");
             }
         }
         return itemDataSC;

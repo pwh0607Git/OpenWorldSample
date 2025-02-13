@@ -1,30 +1,6 @@
 using System;
 using UnityEngine;
 
-/*
-    매우 이쁜 코드
-    public class Boss
-    {
-        private event Action<float> OnHpChanged; // ✅ private 이벤트
-
-        public void SubscribeToHpChanged(Action<float> callback)
-        {
-            OnHpChanged += callback;
-        }
-
-        public void UnsubscribeFromHpChanged(Action<float> callback)
-        {
-            OnHpChanged -= callback;
-        }
-
-        public void TakeDamage(float damage)
-        {
-            OnHpChanged?.Invoke(damage);
-        }
-    }
-*/
-
-
 //boss controller
 public abstract class Boss : MonoBehaviour
 {

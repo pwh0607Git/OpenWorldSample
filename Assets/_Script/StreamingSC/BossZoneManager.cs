@@ -10,7 +10,8 @@ public class BossZoneManager : MonoBehaviour
     [SerializeField] string bossId;
     [SerializeField] BossInform stageBossData;
     [SerializeField] Boss boss = null;
-    public Action action;
+
+    private event Action<float> OnHpChanged;
     void Start(){
         stageBossData = BossManager.bossManager.StartBossStage(bossId);                     //Character의 보스 관련 데이터 시작
         boss = null;
@@ -36,11 +37,13 @@ public class BossZoneManager : MonoBehaviour
     void EnterPlayer(){
         Debug.Log("Player가 보스 위치에 입장!");
         boss.StartBossStage();
+        PlayerController.player.StartBossStage();
     }
 
-    void OutPlayer(){
+    void ExitPlayer(){
         Debug.Log("Player가 보스 위치에 퇴장!");
         boss.EndBossStage();
+        PlayerController.player.EndBossStage();
     }
 
     void OnDrawGizmos(){
@@ -50,7 +53,10 @@ public class BossZoneManager : MonoBehaviour
 
     private void NotifyCurrentBossHP(float percent){
         Debug.Log("보스가 데미지를 입었다!! UI를 갱신하자!!");
+        OnHpChanged?.Invoke(percent);
     }
+    public void SubscribeToHpChanged(Action<float> callback) => OnHpChanged += callback;
+    public void UnsubscribeFromHpChanged(Action<float> callback) => OnHpChanged -= callback;
 
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag("Player")){
@@ -60,7 +66,7 @@ public class BossZoneManager : MonoBehaviour
 
     void OnTriggerExit(Collider other){
         if(other.gameObject.CompareTag("Player")){
-            OutPlayer();
+            ExitPlayer();
         }
     }
 }

@@ -135,6 +135,7 @@
     <Compile Include="Assets\_Script\SystemSC\ObjectSpawnInitController.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Temp\_MonsterState\MonsterDetectionObserver.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+    <Compile Include="Assets\_Script\_Player\_UIScript\UIBossState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\_Script\EnvironmentSC\ObjectPooling.cs" />
     <Compile Include="Assets\_Script\StreamingSC\MonsterManager.cs" />
