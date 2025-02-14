@@ -106,7 +106,7 @@ public class State
                 {
                     speed += itemData.value;
                     float duration = 10f;
-                    PlayerController.myBuffManager.OnBuffItem(itemData, duration);
+                    PlayerController.uiController.OnBuffItem(itemData, duration);
                     break;
                 }
         }
@@ -128,8 +128,6 @@ public class PlayerStates : MonoBehaviour
     private Image MP_Image;
 
     [SerializeField] private State myState;
-
-    public Action<GameObject> OnBuffEnd;
 
     private void Start()
     {

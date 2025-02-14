@@ -1,21 +1,48 @@
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class PlayerUIController : MonoBehaviour
 {
+    [Header("UI-Component")]
     public GameObject inventoryWindow;
     public GameObject equipmentWindow;
-
-    //Stack<GameObject> activeWindows;
+    public GameObject bossWindow;
+    
+    public static Inventory myInventory;
+    public static EquipmentWindow myEquipmentWindow;
+    public static UIBossState myBossWindow;
+    public static BuffManager myBuffManager;
+    public static ActionBar myKeyboard;
 
     private void Start()
     {
-        //activeWindows = new Stack<GameObject>(); // ���� �ʱ�ȭ
+        InitUI();
         inventoryWindow.SetActive(false);
         equipmentWindow.SetActive(false);
+        bossWindow.SetActive(false);
     }
 
     private void Update()
     {
+        HandleWindows();
+    }
+
+    void InitUI(){
+        myInventory = FindAnyObjectByType<Inventory>();
+        myEquipmentWindow = FindAnyObjectByType<EquipmentWindow>();
+        myKeyboard = FindAnyObjectByType<ActionBar>();
+        myBuffManager = FindAnyObjectByType<BuffManager>();
+        myBossWindow = FindAnyObjectByType<UIBossState>();
+    }
+
+    public void GetItem(GameObject item){
+        myInventory.GetItem(item);
+    }
+
+    public void OnBuffItem(ItemData itemData, float duration){
+        myBuffManager.OnBuffItem((Consumable)itemData, duration);
+    }
+    void HandleWindows(){
         if (Input.GetKeyDown(KeyCode.I))
         {
             if (inventoryWindow.activeSelf)
@@ -38,12 +65,22 @@ public class PlayerUIController : MonoBehaviour
                 equipmentWindow.SetActive(true);
             }
         }
+    }
+    
+    public bool CheckSlotSize(){
+        return myInventory.CheckSlotSize();
+    }
 
-        /*
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SetWindowsActiveEvent();
-        }
-        */
+    public void SyncUIData(){
+        myInventory.SyncUIData();
+    }
+
+ 
+    public void ShowBossUI(){
+        bossWindow.SetActive(true);
+    }
+
+    public void CloseBossUI(){
+        bossWindow.SetActive(false);
     }
 }

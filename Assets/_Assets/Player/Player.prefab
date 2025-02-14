@@ -1996,7 +1996,8 @@ MonoBehaviour:
   SpawnPos: {fileID: 0}
   maxSlopeAngle: 0
   gravity: 30
-  attackForce: 5
+  vel: {x: 0, y: 0, z: 0}
+  attackForce: 0.5
   attackAbleMonsters: []
   isAttacking: 0
   weaponTransform: {fileID: 2308224215631239213}

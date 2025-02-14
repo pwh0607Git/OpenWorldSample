@@ -1,23 +1,53 @@
 using System;
 using UnityEngine;
 
-public class BasicBossState{
-    public int HP;
-    public float moveSpeed;
-    public BasicBossState(int HP, float moveSpeed){
-        this.HP = HP;
-        this.moveSpeed = moveSpeed;
-    }
-}
-
 //boss controller
 public abstract class Boss : MonoBehaviour
 {
-    public static Action OnBossDown;
     protected Animator animator;
     protected CharacterController controller;
+    
+    protected Vector3 originalPosition;
+    public bool isPerformingStage;
+    public bool isDown;
+    
+    float startStageTime;
+    public void StartBossStage(){
+        animator.SetTrigger("StartStage");
+    }
+
+    public void EndBossStage(){
+        isPerformingStage = false;
+        ReturnOriginalPosition();
+    }
+    
+    public void StartBossAI(){
+        isPerformingStage = true;
+    }
+
+    void ReturnOriginalPosition(){
+        controller.Move(originalPosition * 10f * Time.deltaTime);
+    }
+
+
+    #region TakeDamage
+    private event Action<float> OnHpChanged;
+    int maxHP = 100;
+    int currentHP = 100;
+    public void SubscribeToHpChanged(Action<float> callback) => OnHpChanged += callback;
+    public void UnsubscribeFromHpChanged(Action<float> callback) => OnHpChanged -= callback;
+    public void TakeDamage(int damage){
+        currentHP -= damage;
+        float percent = currentHP / (float) maxHP; 
+        OnHpChanged?.Invoke(percent);
+    }
+    #endregion
 
     #region Down
+    private event Action OnBossDown;
+    public void SubscribeToBossDown(Action callback) => OnBossDown += callback;
+    public void UnsubscribeFromBossDown(Action callback) => OnBossDown -= callback;
+
     protected void Down(){
         animator.SetTrigger("Down");
         OnBossDown?.Invoke();

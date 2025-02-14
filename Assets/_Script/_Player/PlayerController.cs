@@ -11,10 +11,8 @@ public enum PlayerAnimState
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController player { get; private set; }
-    public static Inventory myInventory;
-    public static EquipmentWindow myEquipments;
-    public static ActionBar myKeyboard;
-    public static BuffManager myBuffManager;
+    
+    public static PlayerUIController uiController;
     private static PlayerAttack playerAttack;
     public State myState;
 
@@ -34,10 +32,7 @@ public class PlayerController : MonoBehaviour
 
     void InitUI()
     {
-        myInventory = FindAnyObjectByType<Inventory>();
-        myEquipments = FindAnyObjectByType<EquipmentWindow>();
-        myKeyboard = FindAnyObjectByType<ActionBar>();
-        myBuffManager = FindAnyObjectByType<BuffManager>();
+        uiController = FindAnyObjectByType<PlayerUIController>();
         playerAttack = GetComponentInChildren<PlayerAttack>();
     }
 
@@ -63,8 +58,8 @@ public class PlayerController : MonoBehaviour
     void InitPlayer()
     {
         myState = new State();
-        TryGetComponent(out controller);
-        TryGetComponent(out animator);
+        controller = GetComponentInChildren<CharacterController>();
+        animator = GetComponentInChildren<Animator>(); 
         currentAnimState = PlayerAnimState.Idle;
         moveSpeed = myState.speed;
 
@@ -77,8 +72,7 @@ public class PlayerController : MonoBehaviour
         AttackHandler();
         UpdateAnim();
     }
-    [SerializeField] Vector3 vel = Vector3.zero;
-  
+
     void Move()
     {
         if (isDamaging || isAttacking) return;
@@ -86,11 +80,8 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 cameraForward = Camera.main.transform.forward;
-        Vector3 cameraRight = Camera.main.transform.right;
-
-        cameraForward.y = 0;
-        cameraRight.y = 0;
+        Vector3 cameraForward = Camera.main.transform.forward.FlattenY();
+        Vector3 cameraRight = Camera.main.transform.right.FlattenY();
 
         Vector3 movement = cameraRight * moveHorizontal + cameraForward * moveVertical;
         movement = Vector3.ClampMagnitude(movement, 1);
@@ -197,7 +188,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Item"))
         {
             Destroy(other.gameObject);
-            myInventory.GetItem(other.gameObject);
+            uiController.GetItem(other.gameObject);          //Subscribe 패턴으로 수정.
         }
     }
     [SerializeField] bool isAttacking = false;
@@ -236,7 +227,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool isDamaging = false;
-    private float noDamagingTime = 0.3f;            //0.초간 데미지 받지 않기...
+    [SerializeField] float noDamagingTime = 0.3f;            //0.초간 데미지 받지 않기...
 
     public void PlayerTakeDamage(int damage){
         if(isDamaging) return;
@@ -272,16 +263,17 @@ public class PlayerController : MonoBehaviour
 
     //넉백 데이터 추가
     public void ApplyKnockBack(Vector3 directionAndPower){
-        Debug.Log("Player 넉백!!");
         controller.Move(directionAndPower * Time.deltaTime);
     }
-
+    //UI Text Method
     public void StartBossStage(){
+        uiController.ShowBossUI();
+    }
+    public void EndBossStage(){
+        uiController.CloseBossUI();
+    }
+    
+    public void OnHandleBossStage(){
         
     }
-}
-
-//피격에 대한 추가 효과
-public enum AdditiveEffect{
-    
 }
