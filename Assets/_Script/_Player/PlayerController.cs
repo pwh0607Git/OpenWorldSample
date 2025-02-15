@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     Transform CamDir;
     public Transform SpawnPos;
 
-    private float moveSpeed;
+    public float moveSpeed;
     private CharacterController controller;
     
     private RaycastHit hit;
@@ -57,7 +57,8 @@ public class PlayerController : MonoBehaviour
 
     void InitPlayer()
     {
-        myState = new State();
+        // myState = new State();
+        
         controller = GetComponentInChildren<CharacterController>();
         animator = GetComponentInChildren<Animator>(); 
         currentAnimState = PlayerAnimState.Idle;
