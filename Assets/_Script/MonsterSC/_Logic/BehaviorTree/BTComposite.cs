@@ -185,7 +185,7 @@ public class WaitNode : BTNode
             elapsedTime= 0f;
             return NodeState.Success; // 대기 완료
         }
-        Debug.Log($"Delaying... {elapsedTime:F2}s / {waitTime}s");
+        // Debug.Log($"Delaying... {elapsedTime:F2}s / {waitTime}s");
         return NodeState.Running; // 아직 대기 중
     }
 

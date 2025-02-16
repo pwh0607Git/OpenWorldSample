@@ -109,7 +109,6 @@
     <Compile Include="Assets\_Script\EnvironmentSC\CameraConroller.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\_Script\_Player\PlayerAttack.cs" />
-    <Compile Include="Assets\_Assets\_Prefab\Monster\Boss\AnimationTest.cs" />
     <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\ItemData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />

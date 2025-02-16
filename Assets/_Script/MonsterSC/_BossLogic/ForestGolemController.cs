@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class ForestGolemController : Boss
@@ -21,20 +22,6 @@ public class ForestGolemController : Boss
         float distanceToTarget = Vector3.Distance(target.transform.position, transform.position);
         return distanceToTarget <= shortAttackRange;
     }
-
-    public void Punch(){
-        Vector3 attackOffset = transform.localPosition + Vector3.up * 2.3f + transform.forward * 4 + transform.right * -1f;
-        Collider[] hitTargets = Physics.OverlapSphere(attackOffset, availableDamageZone);
-        foreach(var target in  hitTargets)
-        {
-            if (target.CompareTag("Player"))
-            {
-                Debug.Log("Attack Punch To Player!!!");
-                target.GetComponentInChildren<PlayerController>().PlayerTakeDamage(10);             //TestPower
-                KnockBackTarget();
-            }
-        }
-    }
     
     public float knockBackPower = 100f;
     void KnockBackTarget(){
@@ -47,21 +34,81 @@ public class ForestGolemController : Boss
 
     #region Attack Animaton Event
     public int currentPhase = 1;
+    [SerializeField] int throwingCount = 0;
+    //Attack Throw
     public void StartThrowRock(){
+        StartAttackEvent();
         float additiveScale = currentPhase == 1 ? 1f: 5f;
         
         takenRock = Instantiate(rockPrefab, takenRockPosition);
         takenRock.transform.localScale *= additiveScale;
     }
-    public void ThrowRock(){
+    public void PerformThrowRock(){
         float speed = currentPhase == 1 ? 3f : 1.5f;
         takenRock.GetComponent<ThrowAbleStone>().Throw((target.transform.position + Random.insideUnitSphere).FlattenY(), speed);
         takenRock.transform.SetParent(null);
         takenRock = null;
     }
 
-    public void EndAttackEvent(){
+    public void EndThrowRock(){
+        throwingCount++;
+        EndAttackEvent();
+    }
+
+    [SerializeField] float jumpHeight = 3f;
+    [SerializeField] float jumpDuration = 2f;
+    [SerializeField] float jumpAttackRange = 5f;
+    public void StartJumpAttack(){
+        StartAttackEvent();
+        transform.DOJump(target.transform.position, jumpHeight, 1, jumpDuration);
+        throwingCount = 0;
+    }
+
+    public void PerformJumpAttack(){
+        // 사용할 필요 없어보임.
+    }
+    
+    public void EndJumpAttack(){
+        float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+        if(distanceToTarget <= jumpAttackRange){                    // 나중에  y축간의 거리 연산 조건 추가하기
+            target.GetComponent<PlayerController>().PlayerTakeDamage(10);            
+        }
+        EndAttackEvent();
+    }
+
+    public void StartShortRangeAttack(){
+        StartAttackEvent();
+    }
+
+    public void PerformShortRangeAttack(){
+        Vector3 attackOffset = transform.localPosition + Vector3.up * 2.3f + transform.forward * 4 + transform.right * -1f;
+        Collider[] hitTargets = Physics.OverlapSphere(attackOffset, availableDamageZone);
+        foreach(var target in  hitTargets)
+        {
+            if (target.CompareTag("Player"))
+            {
+                Debug.Log("Attack Punch To Player!!!");
+                target.GetComponentInChildren<PlayerController>().PlayerTakeDamage(10);             //TestPower
+                // KnockBackTarget();
+            }
+        }
+    }
+    public void EndShortRangeAttack(){
+        EndAttackEvent();
+    }
+
+    //점프 어택 실행 조건
+    public bool ConditionJumpAttack(){
+        return ConditionLongRange() && throwingCount >= 1;
+    }
+
+    private void StartAttackEvent() {
+        isAttacking = true;
+        Debug.Log("Attack Start");
+    }
+    private void EndAttackEvent(){
         isAttacking = false;
+        Debug.Log("Attack End");
     }
     #endregion
 
@@ -74,12 +121,12 @@ public class ForestGolemController : Boss
         Vector3 attackOffset = transform.localPosition + Vector3.up * 2.3f + transform.forward * 4 + transform.right * -1f;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackOffset, availableDamageZone);
+
+        //JumpAttackArea
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, jumpAttackRange);
     }
-
-    #region TakeDamage
-
-    #endregion
-
+    
     #region BT
     [SerializeField] private BTNode rootNode;
     void Start()
@@ -107,20 +154,25 @@ public class ForestGolemController : Boss
             rootNode.Evaluate();
         }
     }
-    
     void InitBT(){
         rootNode = new Selector(new List<BTNode>{
             new Sequence(new List<BTNode>{
-                new ConditionNode(OnEnterShortRange),
+                new ConditionNode(ConditionShortRange),
                 new ActionNode(AttackShortRange),
-                new WaitNode(5f),
+                new WaitNode(4f),
             }),
             new Sequence(new List<BTNode>{
-                new ConditionNode(OnEnterLongRange),
+                new ConditionNode(ConditionJumpAttack),
+                new ActionNode(AttackJump),
+                // new ActionNode(AttackShortRange),
+                new WaitNode(4f),
+            }),
+            new Sequence(new List<BTNode>{
+                new ConditionNode(ConditionLongRange),
                 new ActionNode(AttackLongRange), 
                 new WaitNode(5f),
             }),
-            new ActionNode(Idle),               
+            new ActionNode(Idle),          
         });
     }
 
@@ -128,11 +180,11 @@ public class ForestGolemController : Boss
         Debug.Log("Idle 상태...");
     }
 
-    bool OnEnterShortRange(){
+    bool ConditionShortRange(){
         float distanceToTarget = Vector3.Distance(target.transform.position, transform.position);
         return distanceToTarget <= shortAttackRange;
     }
-    bool OnEnterLongRange(){
+    bool ConditionLongRange(){
         return isPerformingStage;                       // 어짜피 범위 밖으로 나가면 isPerforming은 false가 되도록 설정한다.
     }
 
@@ -144,6 +196,11 @@ public class ForestGolemController : Boss
     void AttackLongRange(){
         if(isAttacking) return;
         animator.SetTrigger("Long-RangeAttack");
+    }
+
+    void AttackJump(){
+        if(isAttacking) return;
+        animator.SetTrigger("JumpAttack");
     }
     #endregion
 }

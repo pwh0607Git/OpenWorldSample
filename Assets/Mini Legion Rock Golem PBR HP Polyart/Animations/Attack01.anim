@@ -113856,14 +113856,14 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.5
-    functionName: ThrowRock
+    functionName: EndThrowRock
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 2.6666667
-    functionName: EndAttackEvent
+  - time: 2.6
+    functionName: PerformThrowRock
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

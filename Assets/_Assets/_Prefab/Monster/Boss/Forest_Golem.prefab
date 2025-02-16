@@ -462,17 +462,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7805fe4e97d553a429b3711d16514d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPerformingStage: 0
+  isDown: 0
   rockPrefab: {fileID: 8282782681410941542, guid: 45e4c47a1280217499dd686a7e673732, type: 3}
   takenRock: {fileID: 0}
   takenRockPosition: {fileID: 4325315400491667526}
   target: {fileID: 0}
-  animator: {fileID: 0}
   isAttacking: 0
-  ThrowAttackTime: 3
-  timer: 0
-  originalPosition: {x: 0, y: 0, z: 0}
   shortAttackRange: 8
   knockBackPower: 100
+  currentPhase: 1
+  throwingCount: 0
+  jumpHeight: 2
+  jumpDuration: 2
+  jumpAttackRange: 5
   availableDamageZone: 2.5
 --- !u!143 &4986194199885812429
 CharacterController:
