@@ -1,13 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-//ItemIconController·Î º¯°æ ¿ä¸Á.
+//ItemIconControllerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½.
 public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private RectTransform rectTransform;
@@ -37,8 +31,8 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalParent = transform.parent;
-        rectTransform.SetParent(transform.root);                        // ¾ÆÀÌÅÛÀ» ÃÖ»óÀ§·Î ÀÌµ¿ (canvas)
-        canvasGroup.blocksRaycasts = false;                             // µå·¡±× Áß µå·ÓÀÌ °¡´ÉÇÑÁö ¼³Á¤
+        rectTransform.SetParent(transform.root);                        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ (canvas)
+        canvasGroup.blocksRaycasts = false;                             // ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         currentItemData = GetComponent<ItemDataSC>().GetItem;
     }
 
@@ -63,7 +57,7 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
         if (eventData.pointerEnter != null)
         {
-            //ActionBar¿¡ µé¾î¿Ô´Âµ¥ ÇöÀç ¾ÆÀÌÅÛÀÌ ¼Òºñ ¾ÆÀÌÅÛÀÌ ¾Æ´Ï¸é ¿ø·¡ ÀÚ¸®·Î º¹±Í
+            //ActionBarï¿½ï¿½ ï¿½ï¿½ï¿½Ô´Âµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Òºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if(itemData is Consumable consumableItem && eventData.pointerEnter.tag != "ActionBarSlot")
             {
                 ResetToOriginalSlot();
@@ -71,19 +65,19 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
             {
                 ResetToOriginalSlot();
             }
-            //Àåºñ Ä­¿¡ µé¾î¿Ô´Âµ¥ ÇöÀç ¾ÆÀÌÅÛÀÌ Àåºñ ¾ÆÀÌÅÛÀÌ ¾Æ´Ï¶ó¸é
+            //ï¿½ï¿½ï¿½ Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´Âµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¶ï¿½ï¿½
 
             if (originalParent.tag == "ActionBarSlot")
             {
-                if (eventData.pointerEnter.tag == "ActionBarSlot")                      //ÇÁ¸®¼Â -> ºó ÇÁ¸®¼Â(ÀÌµ¿)
+                if (eventData.pointerEnter.tag == "ActionBarSlot")                      //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ìµï¿½)
                 {
                     TransformItemIcon(eventData.pointerEnter.transform);
                 }
-                else if (eventData.pointerEnter.tag == "InventorySlot")                  //ÇÁ¸®¼Â -> °¡¹æ(°¡¹æ¿¡ ÇØ´ç ¾ÆÀÌÅÛÀÌ Á¸ÀçÇÏ¸é ÇØ´ç ¾ÆÀÌÄÜ »èÁ¦.
+                else if (eventData.pointerEnter.tag == "InventorySlot")                  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½æ¿¡ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
                 {
                     Destroy(gameObject);
                 }
-                else if (eventData.pointerEnter.tag == "Item")                           //ÇÁ¸®¼Â item1 -> ÇÁ¸®¼Â item2 (±³Ã¼)
+                else if (eventData.pointerEnter.tag == "Item")                           //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ item1 -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ item2 (ï¿½ï¿½Ã¼)
                 {
                     if (eventData.pointerEnter.transform.parent.tag == "ActionBarSlot")
                     {
@@ -102,7 +96,7 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
             }
             else if (originalParent.tag == "InventorySlot")
             {
-                if (eventData.pointerEnter.tag == "ActionBarSlot")                      //°¡¹æ -> ÇÁ¸®¼Â (º¹Á¦)
+                if (eventData.pointerEnter.tag == "ActionBarSlot")                      //ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½)
                 {
                     if (isPresetting)
                     {
@@ -114,7 +108,7 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
                         DuplicateItemIcon(eventData.pointerEnter.transform);
                     }
                 }
-                else if (eventData.pointerEnter.tag == "InventorySlot" || eventData.pointerEnter.tag == "EquipmentSlot")                 //°¡¹æ -> ºó °¡¹æ °ø°£(ÀÌµ¿)
+                else if (eventData.pointerEnter.tag == "InventorySlot" || eventData.pointerEnter.tag == "EquipmentSlot")                 //ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½Ìµï¿½)
                 {
                     TransformItemIcon(eventData.pointerEnter.transform);
                     if (eventData.pointerEnter.tag == "EquipmentSlot")
@@ -122,7 +116,7 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
                         itemData.Use();
                     }
                 }
-                else if (eventData.pointerEnter.tag == "Item")                          //°¡¹æ ¼Ó item1 -> °¡¹æ ¼Ó item2 (±³Ã¼)
+                else if (eventData.pointerEnter.tag == "Item")                          //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ item1 -> ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ item2 (ï¿½ï¿½Ã¼)
                 {
                     if (eventData.pointerEnter.transform.parent.tag == "InventorySlot")
                     {
@@ -135,12 +129,12 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
                     }
                     else if (eventData.pointerEnter.transform.parent.tag == "EquipmentSlot")
                     {
-                        //Àåºñ ±³È¯ ±â´É Ãß°¡ÇÏ±â. => Swap ÈÄ ±âÁ¸ µ¥ÀÌÅÍ [Å»Âø], ÀÌÈÄ µ¥ÀÌÅÍ[Âø¿ë]
-                        //½½·Ô¿¡¼­ ÀåÂøÇÏ°í ÀÖ´Â ¾ÆÀÌÅÛ
+                        //ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï±ï¿½. => Swap ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ [Å»ï¿½ï¿½], ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½]
+                        //ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                         Equipment equipedItem = eventData.pointerEnter.GetComponent<EquipmentItemSC>().GetItem as Equipment;
                         equipedItem.Detach();
 
-                        //¹Ù²Ü ¾ÆÀÌÅÛ
+                        //ï¿½Ù²ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                         Equipment newItem = GetComponent<EquipmentItemSC>().GetItem as Equipment;
                         newItem.Use();
 
@@ -167,7 +161,7 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         }
         else
         {
-            if (originalParent.tag == "ActionBarSlot")          //ÇÁ¸®¼Â -> ¿ÏÀüÈ÷ ´Ù¸¥ °ø°£
+            if (originalParent.tag == "ActionBarSlot")          //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½
             {
                 Destroy(gameObject);
             }
@@ -180,7 +174,7 @@ public class ItemContoller : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         originalParent.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
     }
 
-    //µå·¡±× Begin½Ã ÇÒ´ç Á¦°Å, End½Ã ÇÒ´ç.
+    //ï¿½å·¡ï¿½ï¿½ Beginï¿½ï¿½ ï¿½Ò´ï¿½ ï¿½ï¿½ï¿½ï¿½, Endï¿½ï¿½ ï¿½Ò´ï¿½.
     private void TransformItemIcon(Transform slot)
     {
         transform.SetParent(slot.transform); 

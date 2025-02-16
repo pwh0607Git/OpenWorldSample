@@ -94,15 +94,16 @@
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\ActionBar.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterHealth.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\PlayerUI\Presenter\InventoryPresenter.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\DragAndDropSlot.cs" />
     <Compile Include="Assets\_Script\StreamingSC\BossManager.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\PlayerUI\View\InventoryView.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\_Script\ItemSC\SC_Scriptable\Consumable.cs" />
-    <Compile Include="Assets\_Script\UIControlSC\PlayerUI\InventoryIconsController.cs" />
     <Compile Include="Assets\_Script\StreamingSC\StreamingManager.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\BehaviorTree\MonsterWander.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\InventorySlot.cs" />
@@ -158,8 +159,10 @@
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\InventoryItemIconManager.cs" />
     <Compile Include="Assets\_Script\_Player\PlayerController.cs" />
     <Compile Include="Assets\TeKniKo_Free\Power_Ups\Scripts\ObjectBounce.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\PlayerUI\Model\InventoryModel.cs" />
     <Compile Include="Assets\_Script\Props\SubEmission.cs" />
     <Compile Include="Assets\_Script\UIControlSC\PlayerUI\BuffManager.cs" />
+    <Compile Include="Assets\_Script\UIControlSC\PlayerUI\Presenter\PlayerUIPresenter.cs" />
     <Compile Include="Assets\_Script\MoveTest.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
   </ItemGroup>

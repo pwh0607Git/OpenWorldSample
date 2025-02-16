@@ -1,6 +1,3 @@
-using Gentleland.Utils.SteampunkUI;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -15,5 +12,13 @@ public class InventorySlot : DragAndDropSlot
             droppedItem.transform.SetParent(transform);
             droppedItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         }
+    }
+
+    public void SetItem(ItemData item){
+
+    }
+
+    public void ClearSlot(){
+        
     }
 }
