@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
-
 public class InventoryModel
 {
     private List<ItemData> items = new List<ItemData>();
     public int maxSlotSize {get; private set;}
+
+    public event Action<List<ItemData>> OnInventoryUpdated;             // inventory 내 아이템 정보가 갱신되면 실행되는 이벤트.
 
     public InventoryModel(int maxSlotSize){
         this.maxSlotSize = maxSlotSize;

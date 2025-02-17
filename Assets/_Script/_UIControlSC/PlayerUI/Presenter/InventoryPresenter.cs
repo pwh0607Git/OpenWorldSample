@@ -1,6 +1,4 @@
-using UnityEngine;
-
-public class InventoryPresenter : MonoBehaviour
+public class InventoryPresenter
 {
     private InventoryModel model;
     private InventoryView view;
@@ -25,10 +23,6 @@ public class InventoryPresenter : MonoBehaviour
         if (model.AddItem(item))
         {
             view.UpdateInventoryUI(model.GetItemList());
-        }
-        else
-        {
-            Debug.Log("인벤토리 공간 부족");
         }
     }
 
