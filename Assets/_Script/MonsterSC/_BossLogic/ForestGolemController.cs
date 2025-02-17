@@ -8,7 +8,7 @@ public class ForestGolemController : Boss
     [SerializeField] GameObject takenRock;              //현재 손에 쥐고 있는 돌.
     public Transform takenRockPosition;
     [SerializeField] GameObject target;
-    [SerializeField] bool isAttacking;
+
     void LookAtTarget(){
         Vector3 direction = (target.transform.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -57,7 +57,7 @@ public class ForestGolemController : Boss
 
     [SerializeField] float jumpHeight = 3f;
     [SerializeField] float jumpDuration = 2f;
-    [SerializeField] float jumpAttackRange = 5f;
+    [SerializeField] float jumpAttackRange = 8f;
     public void StartJumpAttack(){
         StartAttackEvent();
         transform.DOJump(target.transform.position, jumpHeight, 1, jumpDuration);
@@ -65,14 +65,13 @@ public class ForestGolemController : Boss
     }
 
     public void PerformJumpAttack(){
-        // 사용할 필요 없어보임.
-    }
-    
-    public void EndJumpAttack(){
         float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
         if(distanceToTarget <= jumpAttackRange){                    // 나중에  y축간의 거리 연산 조건 추가하기
             target.GetComponent<PlayerController>().PlayerTakeDamage(10);            
         }
+    }
+    
+    public void EndJumpAttack(){
         EndAttackEvent();
     }
 
@@ -81,7 +80,7 @@ public class ForestGolemController : Boss
     }
 
     public void PerformShortRangeAttack(){
-        Vector3 attackOffset = transform.localPosition + Vector3.up * 2.3f + transform.forward * 4 + transform.right * -1f;
+        Vector3 attackOffset = transform.localPosition + Vector3.up + transform.forward*5f + transform.right/2;
         Collider[] hitTargets = Physics.OverlapSphere(attackOffset, availableDamageZone);
         foreach(var target in  hitTargets)
         {
@@ -99,7 +98,7 @@ public class ForestGolemController : Boss
 
     //점프 어택 실행 조건
     public bool ConditionJumpAttack(){
-        return ConditionLongRange() && throwingCount >= 1;
+        return ConditionLongRange() && throwingCount >= testThrowingCount;
     }
 
     private void StartAttackEvent() {
@@ -118,7 +117,7 @@ public class ForestGolemController : Boss
         Gizmos.DrawWireSphere(transform.position + Vector3.up * 3, shortAttackRange);
         
         //TakeDamageArea
-        Vector3 attackOffset = transform.localPosition + Vector3.up * 2.3f + transform.forward * 4 + transform.right * -1f;
+        Vector3 attackOffset = transform.localPosition + Vector3.up + transform.forward*5f + transform.right/2;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackOffset, availableDamageZone);
 
@@ -155,24 +154,25 @@ public class ForestGolemController : Boss
         }
     }
     void InitBT(){
-        rootNode = new Selector(new List<BTNode>{
-            new Sequence(new List<BTNode>{
-                new ConditionNode(ConditionShortRange),
-                new ActionNode(AttackShortRange),
-                new WaitNode(4f),
+        rootNode = new Sequence(new List<BTNode>{  // 전체에 쿨다운 적용
+            new Selector(new List<BTNode>{
+                new Sequence(new List<BTNode>{
+                    new ConditionNode(ConditionShortRange),
+                    new LookAtTargetNode(transform, target.transform, animator),
+                    new ActionNode(AttackShortRange),
+                }),
+                new Sequence(new List<BTNode>{
+                    new ConditionNode(ConditionJumpAttack),
+                    new ActionNode(AttackJump),
+                }),
+                new Sequence(new List<BTNode>{
+                    new ConditionNode(ConditionLongRange),
+                    new LookAtTargetNode(transform, target.transform, animator),
+                    new ActionNode(AttackLongRange),
+                }),
+                new ActionNode(Idle),
             }),
-            new Sequence(new List<BTNode>{
-                new ConditionNode(ConditionJumpAttack),
-                new ActionNode(AttackJump),
-                // new ActionNode(AttackShortRange),
-                new WaitNode(4f),
-            }),
-            new Sequence(new List<BTNode>{
-                new ConditionNode(ConditionLongRange),
-                new ActionNode(AttackLongRange), 
-                new WaitNode(5f),
-            }),
-            new ActionNode(Idle),          
+            new IntervalNode(5f)  // 공격 후 무조건 3초 대기
         });
     }
 
@@ -184,8 +184,10 @@ public class ForestGolemController : Boss
         float distanceToTarget = Vector3.Distance(target.transform.position, transform.position);
         return distanceToTarget <= shortAttackRange;
     }
+
+    [SerializeField] int testThrowingCount;
     bool ConditionLongRange(){
-        return isPerformingStage;                       // 어짜피 범위 밖으로 나가면 isPerforming은 false가 되도록 설정한다.
+        return isPerformingStage; //&& throwingCount < testThrowingCount;                       // 어짜피 범위 밖으로 나가면 isPerforming은 false가 되도록 설정한다.
     }
 
     void AttackShortRange(){

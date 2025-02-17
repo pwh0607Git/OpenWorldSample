@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class EquipmentSlot : DragAndDropSlot
 {
-    public EquipmentType equipmentType;         //Inspector¸¦ ÅëÇØ Àåºñ Á¾·ù ¼³Á¤
+    public EquipmentType equipmentType;         //Inspectorï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public override void OnDrop(PointerEventData eventData)
     {

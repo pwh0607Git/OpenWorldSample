@@ -162,11 +162,11 @@ public class LookAtTargetNode : BTNode
     }
 }
 
-public class WaitNode : BTNode
+public class IntervalNode : BTNode
 {
     private float waitTime;
     private float elapsedTime;
-    public WaitNode(float time)
+    public IntervalNode(float time)
     {
         this.waitTime = time;
     }

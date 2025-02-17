@@ -8,9 +8,9 @@ public abstract class Boss : MonoBehaviour
     protected CharacterController controller;
     
     protected Vector3 originalPosition;
-    public bool isPerformingStage;
-    public bool isDown;
-    
+    [SerializeField] protected bool isPerformingStage;
+    [SerializeField] protected bool isDown;
+    [SerializeField] protected bool isAttacking;
     float startStageTime;
     public void StartBossStage(){
         animator.SetTrigger("StartStage");
