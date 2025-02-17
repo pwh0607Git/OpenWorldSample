@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -20,7 +17,7 @@ public class ActionBarSlot : DragAndDropSlot
             }
             else
             {
-                Debug.Log("할당 아이템 없음...");
+                Debug.Log("None Item...");
             }
         }
     }

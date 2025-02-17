@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -21,7 +18,6 @@ public class DragAndDropSlot : MonoBehaviour, IDropHandler
         }
     }
 
-    //아이템 유효성 검사
     public virtual bool CheckVaildItem<T>(GameObject item, T? validType = null) where T : struct
     {
         ItemData itemData = item.GetComponent<ItemDataSC>().GetItem;

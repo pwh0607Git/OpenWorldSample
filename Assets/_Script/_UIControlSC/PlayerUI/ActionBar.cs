@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class ActionBar : MonoBehaviour
 {
@@ -26,8 +23,7 @@ public class ActionBar : MonoBehaviour
 
         for (int i = 0; i < maxSlotSize; i++)
         {
-            GameObject slotInstance = Instantiate(slotPrefab);
-            slotInstance.transform.SetParent(slotParent);
+            GameObject slotInstance = Instantiate(slotPrefab, slotParent);
             slotInstance.GetComponent<ActionBarSlot>().SetAssigneKey(keyCodes[i]);
             slots.Add(slotInstance.GetComponent<ActionBarSlot>());
 

@@ -13,6 +13,7 @@ public class InventoryModel
     public bool CheckSlotSize(){
         return items.Count < maxSlotSize;
     }
+    
     public bool AddItem(ItemData item){
         if(items.Count >= maxSlotSize) return false;
         items.Add(item);

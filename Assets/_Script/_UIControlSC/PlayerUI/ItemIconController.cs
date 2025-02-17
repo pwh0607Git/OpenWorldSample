@@ -1,4 +1,3 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -32,8 +31,8 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalParent = transform.parent;
-        rectTransform.SetParent(transform.root);                        // 아이템을 최상위로 이동 (canvas)
-        canvasGroup.blocksRaycasts = false;                             // 드래그 중 드롭이 가능한지 설정
+        rectTransform.SetParent(transform.root);
+        canvasGroup.blocksRaycasts = false;
         currentItemData = GetComponent<ItemDataSC>().GetItem;
     }
 
@@ -51,7 +50,6 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
         canvasGroup.blocksRaycasts = true;
 
-        // 슬롯별 처리
         if (originalParent.GetComponent<DragAndDropSlot>() is InventorySlot)
         {
             if (!HandleInventorySlot(dropTarget, itemData))
@@ -75,8 +73,6 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
                 return;
             }
         }
-
-        // 슬롯 동기화
         dropTarget.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
     }
 
@@ -86,19 +82,14 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
         if (dropSlot == null)
         {
-            //dropTarget 자체에 슬롯이 없으면 부모 계층에서 가져오기
             dropSlot = dropTarget.GetComponentInParent<DragAndDropSlot>();
-
             if (dropSlot == null) return false;
         }
 
         bool hasItem = dropSlot.GetCurrentItem() != null;
 
-        //Inventory 기준
         if (dropSlot is ActionBarSlot actionBarSlot)
         {
-            //Inventory -> ActionBar
-            Debug.Log("Inventory -> ActionBar");
             if (itemData is Consumable consumable && consumable.isPresetting)
             {
                 return false;
@@ -112,48 +103,34 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         {
             if (!hasItem)
             {
-                //Inventory -> Inventory[빈]
-                Debug.Log("Inventory -> Inventory[빈]");
                 TransformItemIcon(dropTarget);
             }
             else
             {
-                //Inventory -> Inventory[아이템이 할당 된 Slot]
-                Debug.Log("Inventory -> Inventory[아이템이 할당 된 Slot]");
-                Transform changeItem = dropTarget.GetComponentInChildren<ItemIconController>().transform;            //아이템 아이콘 컴포넌트를 가지고있는 오브젝트의 Transform 가져오기
-
+                Transform changeItem = dropTarget.GetComponentInChildren<ItemIconController>().transform;
                 SwapItemIcon(transform, changeItem);
             }
         }
         else if (dropSlot is EquipmentSlot equipmentSlot)
         {
-            if (!equipmentSlot.CheckEquipmentItem(gameObject))
-            {
-                Debug.Log($"{gameObject.name}은 장비 아이템이 아닙니다.");
-                return false;
-            }
+            if (!equipmentSlot.CheckEquipmentItem(gameObject)) return false;
 
             if (equipmentSlot.CheckEquipmentItem(gameObject))
             {
-                //빈슬롯 인경우...
                 if (!hasItem)
                 {
-                    Debug.Log("Inventory -> Equipment[빈 슬롯]");
                     TransformItemIcon(dropTarget);
                     itemData.Use();
                 }
                 else
                 {
-                    Debug.Log("Inventory -> Equipment[할당된 슬롯]");
-                    //아이템이 할당되어있는 경우..
                     Equipment equipedItem = dropTarget.GetComponentInChildren<ItemIconController>().GetComponent<EquipmentItemSC>().GetItem as Equipment;
                     equipedItem.Detach();
 
-                    //바꿀 아이템
                     Equipment newItem = GetComponent<EquipmentItemSC>().GetItem as Equipment;
                     newItem.Use();
 
-                    Transform changeItem = dropTarget.GetComponentInChildren<ItemIconController>().transform;            //아이템 아이콘 컴포넌트를 가지고있는 오브젝트의 Transform 가져오기
+                    Transform changeItem = dropTarget.GetComponentInChildren<ItemIconController>().transform;
                     SwapItemIcon(transform, changeItem);
                 }
             }
@@ -169,39 +146,32 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         return true;
     }
 
-    //각각의 슬롯 처리
     private bool HandleActionBarSlot(Transform dropTarget)
     {
         DragAndDropSlot dropSlot = dropTarget.GetComponent<DragAndDropSlot>();
         
         if (dropSlot == null)
         {
-            //dropTarget 자체에 슬롯이 없으면 부모 계층에서 가져오기
             dropSlot = dropTarget.GetComponentInParent<DragAndDropSlot>();
 
             if (dropSlot == null) return false;
         }
 
         bool hasItem = dropSlot.GetCurrentItem() != null;
-        //actionBar 기준
+
         if (dropSlot is ActionBarSlot)
         {
             if(!hasItem)
             {
-                //ActionBar -> ActionBar[빈] : 이동
-                Debug.Log("ActionBar -> ActionBar[빈]");
                 TransformItemIcon(dropTarget);
             }
             else
             {
-                //ActionBar -> ActionBar[아이템이 할당된 슬롯]
-                Debug.Log("ActionBar -> ActionBar[아이템이 할당된 슬롯]");
-                Transform changeItem = dropTarget.GetComponentInChildren<ItemIconController>().transform;            //아이템 아이콘 컴포넌트를 가지고있는 오브젝트의 Transform 가져오기
+                Transform changeItem = dropTarget.GetComponentInChildren<ItemIconController>().transform;            //占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙트占쏙옙 占쏙옙占쏙옙占쏙옙占쌍댐옙 占쏙옙占쏙옙占쏙옙트占쏙옙 Transform 占쏙옙占쏙옙占쏙옙占쏙옙
                 SwapItemIcon(transform, changeItem);
             }
         }else if(dropSlot is InventorySlot)
         {
-            //ActionBar -> Inventory
             Destroy(gameObject);
         }
         else
@@ -217,17 +187,13 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
         if (dropSlot == null)
         {
-            //dropTarget 자체에 슬롯이 없으면 부모 계층에서 가져오기
-            dropSlot = dropTarget.GetComponentInParent<DragAndDropSlot>();
+           dropSlot = dropTarget.GetComponentInParent<DragAndDropSlot>();
 
             if (dropSlot == null) return false;
         }
 
-        //조건
-        //Equipment -> Inventory[빈] : 이동
         if (dropSlot is InventorySlot)
         {
-            // 장비 -> 인벤토리
             if (itemData is Equipment equipment)
             {
                 TransformItemIcon(dropTarget);
@@ -241,14 +207,11 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         return true;
     }
 
-    //드래그 Begin시 할당 제거, End시 할당.
     private void TransformItemIcon(Transform slot)
     {
         transform.SetParent(slot.transform);
     }
 
-    //item1은 현재 드래그한 아이템
-    //item2은 슬롯에 들어있는 아이템
     private void SwapItemIcon(Transform item1, Transform item2)
     {
         item1.SetParent(item2.parent);
@@ -267,8 +230,6 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         iconInstance.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
         newTransform.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
-
-        //기존 아이템은 위치 리셋
         ResetToOriginalSlot();
 
         Consumable itemData = GetComponent<ItemDataSC>().GetItem as Consumable;
@@ -277,7 +238,6 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
     private void ResetToOriginalSlot()
     {
-        Debug.Log($"아이템 위치 리셋");
         transform.SetParent(originalParent);
         originalParent.transform.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
         rectTransform.anchoredPosition = Vector2.zero;
@@ -291,17 +251,14 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
     public DragAndDropSlot GetSlot(Transform dropTarget)
     {
-        //아이템이 할당되어있는 슬롯을 가져오는 메서드.
         DragAndDropSlot slot = dropTarget.GetComponent<DragAndDropSlot>();
 
         if (slot == null)
         {
-            //dropTarget 자체에 슬롯이 없으면 부모 계층에서 가져오기
             slot = dropTarget.GetComponentInParent<DragAndDropSlot>();
 
             if (slot == null) return null;
         }
-
         return slot;
     }
 }

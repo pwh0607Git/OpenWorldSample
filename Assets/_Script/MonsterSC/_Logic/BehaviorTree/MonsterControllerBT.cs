@@ -77,7 +77,7 @@ public class MonsterControllerBT : MonoBehaviour
             {
                 new ConditionNode(()=>blackBoard.isMonsterDamaged),      
                 new ActionNode(health.HandleDamageAnim),
-                new WaitNode(1f),
+                new IntervalNode(1f),
                 new LookAtTargetNode(transform, blackBoard.player, blackBoard.animator),  
                 new ConditionNode(chase.IsTargetInChasingRange),
                 new ActionNode(chase.ChaseTarget),

@@ -420,7 +420,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4060712829002090885}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.8, y: 1.8, z: 1.8}
   m_ConstrainProportionsScale: 0
@@ -464,19 +464,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPerformingStage: 0
   isDown: 0
+  isAttacking: 0
   rockPrefab: {fileID: 8282782681410941542, guid: 45e4c47a1280217499dd686a7e673732, type: 3}
   takenRock: {fileID: 0}
   takenRockPosition: {fileID: 4325315400491667526}
   target: {fileID: 0}
-  isAttacking: 0
   shortAttackRange: 8
   knockBackPower: 100
   currentPhase: 1
   throwingCount: 0
   jumpHeight: 2
   jumpDuration: 2
-  jumpAttackRange: 5
-  availableDamageZone: 2.5
+  jumpAttackRange: 8
+  availableDamageZone: 3
+  testThrowingCount: 1
 --- !u!143 &4986194199885812429
 CharacterController:
   m_ObjectHideFlags: 0
