@@ -13,7 +13,7 @@ public class InventoryModel
     public InventoryModel(int maxSlotSize){
         this.maxSlotSize = maxSlotSize;
         for(int i=0;i<maxSlotSize;i++){
-
+            itemsDictionary.Add(0, null);
         }
     }
 
@@ -36,15 +36,20 @@ public class InventoryModel
     }
 
     public int SearchEmptyIndex(){
-        int index = 0;
+        int index = -1;
         for(int i=0;i<maxSlotSize;i++){
-
+            if(itemsDictionary[i] == null) return i;
         }
         return index;
     }
 
-    public bool IsExistingItem(){
-
+    //아이템의 존재여부.
+    public bool IsExistingItem(ItemData item){
+        for(int i=0;i<maxSlotSize;i++){
+            if(itemsDictionary[i] == null) continue;
+            
+            if(itemsDictionary[i].Equals(item)) return true;
+        }
         return false;
     }
 }
