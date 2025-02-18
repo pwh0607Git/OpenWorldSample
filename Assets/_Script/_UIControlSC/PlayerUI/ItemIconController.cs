@@ -7,7 +7,6 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
     private CanvasGroup canvasGroup;
 
     private Transform originalParent;
-    private ItemData currentItemData;
 
     void Awake()
     {
@@ -30,10 +29,10 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        Debug.Log($"{gameObject.name} Drag Start");
         originalParent = transform.parent;
         rectTransform.SetParent(transform.root);
         canvasGroup.blocksRaycasts = false;
-        currentItemData = GetComponent<ItemDataSC>().GetItem;
     }
 
     public void OnDrag(PointerEventData eventData)

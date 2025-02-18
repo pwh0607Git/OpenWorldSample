@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-//������ �ӹ����� �ڵ�.
 public class ConsumableItemSC : ItemDataSC
 {
     [SerializeField]
@@ -46,7 +45,7 @@ public class ConsumableItemSC : ItemDataSC
             consumableItem.OnConsumableUsed += UpdateCountCallback;
         }
 
-        MapImage();         // ������ ���� �� ������ ����                    // ������ ���� �� ������ ����
+        MapImage();
     }
 
     private void MapImage()

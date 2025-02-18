@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 public class InventoryModel
 {
-    // private List<ItemEntry> items = new List<ItemEntry>();
-    //index[key] : ItemData[value]
     private Dictionary<int, ItemData> itemsDictionary = new Dictionary<int, ItemData>();
     public int maxSlotSize {get; private set;}
 
@@ -54,7 +53,8 @@ public class InventoryModel
 
     public void UpdateModel(List<ItemEntry> items){
         foreach(var entry in items){
-            itemsDictionary.Add(entry.invenIdx, entry.indexItem);
+            // itemsDictionary.Add(entry.invenIdx, entry.indexItem);
+            itemsDictionary[entry.invenIdx] = entry.indexItem;
         }
     }
 }

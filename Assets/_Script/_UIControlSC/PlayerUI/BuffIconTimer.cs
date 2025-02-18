@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +11,7 @@ public class BuffIconTimer : MonoBehaviour
     public GameObject buffTimerImg;
     private Image buffStateBar;
 
-    public Action<GameObject> OnBuffEnd;        // ¹öÇÁ Á¾·á ½Ã ½ÇÇàÇÒ ÄÝ¹é
+    public Action<GameObject> OnBuffEnd;        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¹ï¿½
 
     private void Start()
     {

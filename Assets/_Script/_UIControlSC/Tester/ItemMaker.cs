@@ -22,7 +22,7 @@ public class ItemMaker : MonoBehaviour
         StartCoroutine(NotifyInitTest());   
     }
     IEnumerator NotifyInitTest(){
-        yield return new WaitUntil(() => uiPresenter != null);
+        yield return new WaitForSeconds(0.5f);
         uiPresenter.InitInventory(_serList);
     }
 }
