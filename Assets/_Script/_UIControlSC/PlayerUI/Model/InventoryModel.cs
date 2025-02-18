@@ -5,7 +5,6 @@ public class InventoryModel
     // private List<ItemEntry> items = new List<ItemEntry>();
     //index[key] : ItemData[value]
     private Dictionary<int, ItemData> itemsDictionary = new Dictionary<int, ItemData>();
-    private List<ItemData> items = new List<ItemData>();
     public int maxSlotSize {get; private set;}
 
     public event Action<List<ItemData>> OnInventoryUpdated;             // inventory 내 아이템 정보가 갱신되면 실행되는 이벤트.
@@ -13,12 +12,12 @@ public class InventoryModel
     public InventoryModel(int maxSlotSize){
         this.maxSlotSize = maxSlotSize;
         for(int i=0;i<maxSlotSize;i++){
-            itemsDictionary.Add(0, null);
+            itemsDictionary.Add(i, null);
         }
     }
 
     public bool CheckSlotSize(){
-        return items.Count < maxSlotSize;
+        return itemsDictionary.Count < maxSlotSize;
     }
     
     // 조건 정립
@@ -26,13 +25,13 @@ public class InventoryModel
     // 2. 새로운 아이템인가?
     // 2-1. 빈 인덱스를 찾아 해당 인덱스
     public bool AddItem(ItemData item){
-        if(items.Count >= maxSlotSize) return false;
-        items.Add(item);
+        if(itemsDictionary.Count >= maxSlotSize) return false;
+        itemsDictionary.Add(0,item);            //test용
         return true;
     }
 
-    public List<ItemData> GetItemList(){
-        return new List<ItemData>(items);               //복사본을 전달한다!
+    public Dictionary<int, ItemData> GetItemList(){
+        return new Dictionary<int, ItemData>(itemsDictionary);               //복사본을 전달한다!
     }
 
     public int SearchEmptyIndex(){
@@ -51,5 +50,11 @@ public class InventoryModel
             if(itemsDictionary[i].Equals(item)) return true;
         }
         return false;
+    }
+
+    public void UpdateModel(List<ItemEntry> items){
+        foreach(var entry in items){
+            itemsDictionary.Add(entry.invenIdx, entry.indexItem);
+        }
     }
 }

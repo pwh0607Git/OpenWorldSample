@@ -21,7 +21,6 @@ public class ItemMaker : MonoBehaviour
     {
         StartCoroutine(NotifyInitTest());   
     }
-
     IEnumerator NotifyInitTest(){
         yield return new WaitUntil(() => uiPresenter != null);
         uiPresenter.InitInventory(_serList);
@@ -30,7 +29,6 @@ public class ItemMaker : MonoBehaviour
 
 [Serializable]
 public class ItemEntry{
-    [SerializeField] int invenIdx;
-    [SerializeField] ItemData indexItem;
-    [SerializeField] int itemCount;
+    [SerializeField] public int invenIdx;
+    [SerializeField] public ItemData indexItem;
 }

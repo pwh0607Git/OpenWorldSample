@@ -4,11 +4,10 @@ using UnityEngine;
 public class InventoryView : MonoBehaviour
 {
     public GameObject inventoryWindow;
-    public Transform scrollContent;
-    public GameObject slotPrefab;
+    [SerializeField] Transform scrollContent;
+    [SerializeField] GameObject slotPrefab;
+    [SerializeField] GameObject iconBasePrefab;
     
-    [SerializeField] Transform startPoint, endPoint;
-    [SerializeField] int columns = 4;
     private List<InventorySlot> slots = new List<InventorySlot>();
 
     public void SetActive(bool isActive)
@@ -22,13 +21,22 @@ public class InventoryView : MonoBehaviour
         }
     }
 
-    public void UpdateInventoryUI(List<ItemData> items){
-        for(int i =0 ; i< slots.Count;i++){
-            if(i<items.Count){
-                slots[i].SetItem(items[i]);
-            }else{
-                slots[i].ClearSlot();
-            }
+    public void UpdateView(Dictionary<int, ItemData> items){
+        for(int i=0;i<items.Count; i++){
+            MakeItemIcon(items[i], slots[i]);
+        }    
+    }
+
+    //인덱스에 걸맞는 슬롯에 아이템 추가하기.
+    public void MakeItemIcon(ItemData item, InventorySlot slot){
+        GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
+        
+        if (item.itemType == ItemType.Consumable)
+        {
+            itemIcon.AddComponent<ConsumableItemSC>();
+        }else if(item.itemType == ItemType.Equipment)
+        {
+            itemIcon.AddComponent<EquipmentItemSC>();
         }
     }
 }
