@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 public class InventoryModel
 {
+    // private List<ItemEntry> items = new List<ItemEntry>();
+    //index[key] : ItemData[value]
+    private Dictionary<int, ItemData> itemsDictionary = new Dictionary<int, ItemData>();
     private List<ItemData> items = new List<ItemData>();
     public int maxSlotSize {get; private set;}
 
@@ -9,12 +12,19 @@ public class InventoryModel
 
     public InventoryModel(int maxSlotSize){
         this.maxSlotSize = maxSlotSize;
+        for(int i=0;i<maxSlotSize;i++){
+
+        }
     }
 
     public bool CheckSlotSize(){
         return items.Count < maxSlotSize;
     }
     
+    // 조건 정립
+    // 1. 이미 존재하는 아이템인가?
+    // 2. 새로운 아이템인가?
+    // 2-1. 빈 인덱스를 찾아 해당 인덱스
     public bool AddItem(ItemData item){
         if(items.Count >= maxSlotSize) return false;
         items.Add(item);
@@ -23,5 +33,18 @@ public class InventoryModel
 
     public List<ItemData> GetItemList(){
         return new List<ItemData>(items);               //복사본을 전달한다!
+    }
+
+    public int SearchEmptyIndex(){
+        int index = 0;
+        for(int i=0;i<maxSlotSize;i++){
+
+        }
+        return index;
+    }
+
+    public bool IsExistingItem(){
+
+        return false;
     }
 }

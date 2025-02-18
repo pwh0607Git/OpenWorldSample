@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class InventoryPresenter
 {
     private InventoryModel model;
@@ -29,5 +31,9 @@ public class InventoryPresenter
     public bool CheckSlotSize()
     {
         return model.CheckSlotSize();
+    }
+
+    public void UpdateModel(List<ItemEntry> entries){
+        
     }
 }

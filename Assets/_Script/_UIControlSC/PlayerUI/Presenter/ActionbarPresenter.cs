@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ActionbarPresenter : MonoBehaviour
+public class ActionbarPresenter
 {
     private ActionbarModel model;
     private ActionbarView view;
@@ -17,12 +17,6 @@ public class ActionbarPresenter : MonoBehaviour
             ActionBarSlotComponent slot = new ActionBarSlotComponent(model.keyCodes[i]);
             model.slots.Add(slot);
             view.CreateSlotView(slot);
-
-            // 위치 설정
-            // RectTransform rectTransform = slot.GetComponent<RectTransform>();
-            // rectTransform.sizeDelta = componentSize;
-            // rectTransform.anchoredPosition = new Vector2(startPosition.x + i * (componentSize.x + spacingX), startPosition.y);
-            // rectTransform.localScale = Vector2.one;
         }
     }
 }
