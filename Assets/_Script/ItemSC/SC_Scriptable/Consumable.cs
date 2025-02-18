@@ -13,33 +13,29 @@ public class Consumable : ItemData
 {
     public ConsumableType subType;
     public bool isPresetting { get; set; }
-    private int consumableCount;
+    private int count;
     
     public event Action OnConsumableUsed;
-    public void Init()
-    {
-
-    }
 
     public ItemData GetItemData() => this;
 
     private void OnEnable()
     {
         itemType = ItemType.Consumable;
-        consumableCount = 1;
+        count = 1;
         isPresetting = false;
     }
 
-    public int GetConsumableCount() { return consumableCount; }
+    public int GetConsumableCount() { return count; }
 
     public override void Use()
     {
-        if (consumableCount <= 0)
+        if (count <= 0)
         {
             return;
         }
 
-        consumableCount--;
+        count--;
         State state = PlayerController.player.myState;
         state.UesConsumable(this);
         OnConsumableUsed?.Invoke();
@@ -47,13 +43,13 @@ public class Consumable : ItemData
 
     public void GetThisItem()
     {
-        consumableCount++;
+        count++;
         OnConsumableUsed?.Invoke();
     }
 
     public void ThrowThisItem()
     {
-        consumableCount = 0;
+        count = 0;
         OnConsumableUsed?.Invoke();
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class InventoryPresenter
 {
     private InventoryModel model;
@@ -14,7 +16,7 @@ public class InventoryPresenter
         view.SetActive(isActive);
 
         if(isActive){
-            view.UpdateInventoryUI(model.GetItemList());
+            view.UpdateView(model.GetItemList());
         }
     }
 
@@ -22,12 +24,20 @@ public class InventoryPresenter
     {
         if (model.AddItem(item))
         {
-            view.UpdateInventoryUI(model.GetItemList());
+            view.UpdateView(model.GetItemList());
         }
     }
 
     public bool CheckSlotSize()
     {
         return model.CheckSlotSize();
+    }
+
+    public void UpdateModel(List<ItemEntry> entries){
+        model.UpdateModel(entries);
+        UpdateView();
+    }
+    public void UpdateView(){
+        view.UpdateView(model.GetItemList());
     }
 }
