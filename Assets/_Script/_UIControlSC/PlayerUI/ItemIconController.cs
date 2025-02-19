@@ -45,7 +45,7 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         ItemData itemData = GetComponent<ItemDataSC>().GetItem;
         Transform dropTarget = eventData.pointerEnter?.transform;
 
-        originalParent.GetComponent<DragAndDropSlot>().CleanCurrentItem();
+        originalParent.GetComponent<DragAndDropSlot>().ClearCurrentItem();
 
         canvasGroup.blocksRaycasts = true;
 
@@ -72,6 +72,7 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
                 return;
             }
         }
+        
         dropTarget.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
     }
 
@@ -85,7 +86,7 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
             if (dropSlot == null) return false;
         }
 
-        bool hasItem = dropSlot.GetCurrentItem() != null;
+        bool hasItem = dropSlot.currentItem != null;
 
         if (dropSlot is ActionBarSlot actionBarSlot)
         {
@@ -156,7 +157,7 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
             if (dropSlot == null) return false;
         }
 
-        bool hasItem = dropSlot.GetCurrentItem() != null;
+        bool hasItem = dropSlot.currentItem != null;
 
         if (dropSlot is ActionBarSlot)
         {

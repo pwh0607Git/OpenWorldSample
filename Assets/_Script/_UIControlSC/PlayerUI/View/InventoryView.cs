@@ -1,18 +1,25 @@
+using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
+using System.Collections;
+
 public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public GameObject inventoryWindow;
+    [SerializeField] List<ItemEntry> items;                              // 인스펙터 출력용
+    [Header("UI Component")]
     [SerializeField] Transform scrollContent;
+    public GameObject inventoryWindow;
+    
+    [Header("Prefabs")]
     [SerializeField] GameObject slotPrefab;
     [SerializeField] GameObject iconBasePrefab;
-    
+
     private List<InventorySlot> slots = new List<InventorySlot>();
-    [SerializeField] List<ItemData> items;
     Transform originalParent;
 
+    public event Action<List<ItemEntry>> OnChangedInventoryView;          //inventoryView의 변화 감지 
     void Start()
     {
         originalParent = transform.parent;
@@ -25,28 +32,34 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void CreateSlots(int maxSlotSize){
         for(int i=0;i<maxSlotSize;i++){
             InventorySlot slot = Instantiate(slotPrefab, scrollContent).GetComponent<InventorySlot>();
+            slot.OnChangedItem += ChagedEventHandler;
             slots.Add(slot);
         }
     }
 
+    //index : ItemData
     public void UpdateView(Dictionary<int, ItemData> items){
         foreach(var item in items){
-            if(item.Value != null) this.items.Add(item.Value);
+            if(item.Value != null) this.items.Add(new ItemEntry(item.Key,item.Value,2));
         } 
 
         for(int i=0;i<items.Count; i++){
             if(items[i] != null)
                 MakeItemIcon(items[i], slots[i]);
+            else{
+                slots[i].ClearCurrentItem();
+            }
         }  
         
     }
 
-    //인덱스에 걸맞는 슬롯에 아이템 추가하기.
     public void MakeItemIcon(ItemData item, InventorySlot slot){
         GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
+        slot.AssignCurrentItem(itemIcon);
         AssignComponent(itemIcon,item);
 
     }
+
     private void AssignComponent(GameObject icon, ItemData item){
         if (item.itemType == ItemType.Consumable)
         {
@@ -70,12 +83,29 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             }
         }
     }
+    public void ChagedEventHandler(){
+        //View로 부터 데이터 변화가 발생!
+        StartCoroutine(Coroutine_ChangedEventHandle());
+    }
 
+    IEnumerator Coroutine_ChangedEventHandle(){
+        yield return null;
+        items.Clear();
+        for(int i=0;i<slots.Count;i++){
+            if(slots[i].currentItem == null) continue;
+            ItemEntry entry = new ItemEntry(i, slots[i].currentItem.GetComponent<ItemDataSC>().GetItem, 1);
+            Debug.Log($"{entry.inventoryIdx} : {entry.indexItem}");
+            items.Add(entry);
+        }
+        OnChangedInventoryView?.Invoke(items);
+    }
+
+    #region Event
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalParent = transform.parent;
-        GetComponent<RectTransform>().SetParent(transform.root);                // �������� �ֻ����� �̵� (canvas)
-        GetComponent<CanvasGroup>().blocksRaycasts = false;                     // �巡�� �� ����� �������� ����
+        GetComponent<RectTransform>().SetParent(transform.root);
+        GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -88,4 +118,5 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         GetComponent<CanvasGroup>().blocksRaycasts = true; 
         GetComponent<RectTransform>().SetParent(originalParent);
     }
+    #endregion
 }

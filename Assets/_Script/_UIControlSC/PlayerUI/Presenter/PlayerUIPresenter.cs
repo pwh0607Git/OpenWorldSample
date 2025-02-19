@@ -28,7 +28,7 @@ public class PlayerUIPresenter : MonoBehaviour
     //Test
     public void InitInventory(List<ItemEntry> entries){
         // inventoryPresenter에게 serList에 맞게 InventoryModel을 수정해 줄 것을 요구한다.
-        Debug.Log(" Inventory Init!");
+        Debug.Log("Inventory Init!");
         inventoryPresenter.UpdateModel(entries);
     }
 }
