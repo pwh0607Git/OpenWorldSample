@@ -1122,11 +1122,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebde7c3af6a861149ad3e8a0ab1e0e8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryWindow: {fileID: 362069873}
+  items: []
   scrollContent: {fileID: 589647471}
+  inventoryWindow: {fileID: 362069873}
   slotPrefab: {fileID: 8784414097148152137, guid: 1d9cc13819a3424499eb68002fe1d758, type: 3}
   iconBasePrefab: {fileID: 7679876614145519527, guid: e6ba42578b13a574f83603acde6bb78d, type: 3}
-  items: []
 --- !u!1 &370901854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1490,10 +1490,10 @@ MonoBehaviour:
   mp: {fileID: 11400000, guid: 6fb461691e9ebbf4ab4e879b6149f3d4, type: 2}
   equipment1: {fileID: 11400000, guid: 5289ceab87ed4d7428fdaf2a39b7933c, type: 2}
   _serList:
-  - invenIdx: 1
+  - inventoryIdx: 1
     indexItem: {fileID: 11400000, guid: a0e2f3a0ad6abca40b0755007595c24d, type: 2}
     count: 2
-  - invenIdx: 5
+  - inventoryIdx: 3
     indexItem: {fileID: 11400000, guid: 6fb461691e9ebbf4ab4e879b6149f3d4, type: 2}
     count: 5
   uiPresenter: {fileID: 96044279}

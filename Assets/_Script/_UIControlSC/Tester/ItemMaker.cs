@@ -29,7 +29,13 @@ public class ItemMaker : MonoBehaviour
 
 [Serializable]
 public class ItemEntry{
-    [SerializeField] public int invenIdx;
+    [SerializeField] public int inventoryIdx;
     [SerializeField] public ItemData indexItem;
     [SerializeField] public int count;
+
+    public ItemEntry(int idx, ItemData itemData, int count){
+        this.inventoryIdx = idx;
+        this.indexItem =itemData;
+        this.count = count;
+    }
 }

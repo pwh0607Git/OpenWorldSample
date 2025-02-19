@@ -1,3 +1,4 @@
+using UnityEngine;
 using System.Collections.Generic;
 
 public class InventoryPresenter
@@ -8,6 +9,8 @@ public class InventoryPresenter
     public InventoryPresenter(InventoryModel model, InventoryView view){
         this.model = model;
         this.view = view;
+        model.OnModelChanged += ModelChangeHandler;
+        view.OnChangedInventoryView += ViewChangeHandler;
         view.CreateSlots(model.maxSlotSize);
     }
 
@@ -18,6 +21,18 @@ public class InventoryPresenter
         if(isActive){
             view.UpdateView(model.GetItemList());
         }
+    }
+
+    public void ViewChangeHandler(List<ItemEntry> entries){
+        foreach(ItemEntry entry in entries){
+            Debug.Log($"{entry.inventoryIdx} : {entry.indexItem}");
+        }
+        UpdateModel(entries);
+    }
+
+    public void ModelChangeHandler(){
+        Debug.Log("Model이 변경되었다! View를 변경하러 가자!");
+        view.UpdateView(model.GetItemList());
     }
 
     public void AddItem(ItemData item)
@@ -34,6 +49,7 @@ public class InventoryPresenter
     }
 
     public void UpdateModel(List<ItemEntry> entries){
+        Debug.Log("Inventory Presenter : Update");
         model.UpdateModel(entries);
         UpdateView();
     }

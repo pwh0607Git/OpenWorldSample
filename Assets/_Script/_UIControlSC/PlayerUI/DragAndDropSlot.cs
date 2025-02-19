@@ -1,20 +1,21 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DragAndDropSlot : MonoBehaviour, IDropHandler
 {
-    protected GameObject currentItem;
-
-    public GameObject GetCurrentItem() { return currentItem; }
+    public GameObject currentItem {get; private set;}
+    
+    public event Action OnChangedItem;
 
     public virtual void OnDrop(PointerEventData eventData)
     {
         GameObject droppedItem = eventData.pointerDrag;
-
-        if (droppedItem != null && droppedItem.GetComponent<ItemIconController>() != null)
+        if (droppedItem != null && droppedItem.GetComponent<ItemIconController>() != null && CheckVaildItem<ItemType>(droppedItem))
         {
             droppedItem.transform.SetParent(transform);
             droppedItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            OnChangedItem?.Invoke();
         }
     }
 
@@ -24,11 +25,11 @@ public class DragAndDropSlot : MonoBehaviour, IDropHandler
 
         if (validType.HasValue)
         {
-            return (item != null && itemData != null && itemData.itemType.Equals(validType));
+            return item != null && itemData != null && itemData.itemType.Equals(validType);
         }
         else
         {
-            return (item != null && itemData != null);
+            return item != null && itemData != null;
         }
     }
 
@@ -37,8 +38,9 @@ public class DragAndDropSlot : MonoBehaviour, IDropHandler
         currentItem = item;
     }
 
-    public void CleanCurrentItem()
+    public void ClearCurrentItem()
     {
         currentItem = null;
+        Destroy(transform.GetComponentInChildren<ItemIconController>().gameObject);
     }
 }

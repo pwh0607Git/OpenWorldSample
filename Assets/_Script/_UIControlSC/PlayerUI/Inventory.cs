@@ -71,9 +71,9 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         foreach (InventorySlot slot in slots)
         {
-            if (slot.GetCurrentItem() == null) continue;
+            if (slot.currentItem == null) continue;
 
-            ItemData slotItemData = slot.GetCurrentItem().GetComponent<ItemDataSC>().GetItem;
+            ItemData slotItemData = slot.currentItem.GetComponent<ItemDataSC>().GetItem;
 
             if (slotItemData.itemType == itemType)
             {
