@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CustomInspector;
 using UnityEngine;
 
 public class ItemMaker : MonoBehaviour
@@ -13,6 +14,7 @@ public class ItemMaker : MonoBehaviour
     public ItemData equipment1;
 
     [SerializeField] List<ItemEntry> _serList;
+    [SerializeField] List<ItemData> _newItemList;
 
     [Header("Reference")]
     public PlayerUIPresenter uiPresenter;
@@ -24,6 +26,15 @@ public class ItemMaker : MonoBehaviour
     IEnumerator NotifyInitTest(){
         yield return new WaitForSeconds(0.5f);
         uiPresenter.InitInventory(_serList);
+    }
+
+    [Button("GetItem"), HideField] public bool btn1;
+    public void GetItem(){
+        Debug.Log("Get Item");
+
+        //랜덤으로 아이템 부여
+        int rnd = UnityEngine.Random.Range(0, _newItemList.Count);
+        uiPresenter.GetItem(_newItemList[rnd]);
     }
 }
 

@@ -1496,7 +1496,12 @@ MonoBehaviour:
   - inventoryIdx: 3
     indexItem: {fileID: 11400000, guid: 6fb461691e9ebbf4ab4e879b6149f3d4, type: 2}
     count: 5
+  _newItemList:
+  - {fileID: 11400000, guid: 418a42520f616b342b88699ee38d6e68, type: 2}
+  - {fileID: 11400000, guid: a0e2f3a0ad6abca40b0755007595c24d, type: 2}
+  - {fileID: 11400000, guid: 6fb461691e9ebbf4ab4e879b6149f3d4, type: 2}
   uiPresenter: {fileID: 96044279}
+  btn1: 0
 --- !u!1 &578548443
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,4 +31,8 @@ public class PlayerUIPresenter : MonoBehaviour
         Debug.Log("Inventory Init!");
         inventoryPresenter.UpdateModel(entries);
     }
+
+    public void GetItem(ItemData item){
+        inventoryPresenter.AddItem(item);
+    }
 }

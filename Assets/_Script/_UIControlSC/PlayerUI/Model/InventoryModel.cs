@@ -25,9 +25,13 @@ public class InventoryModel
     // 2. 새로운 아이템인가?
     // 2-1. 빈 인덱스를 찾아 해당 인덱스
     public bool AddItem(ItemData item){
-        if(itemDictionary.Count >= maxSlotSize) return false;
-        itemDictionary.Add(0,item);            //test용
-        return true;
+        // 이미 가지고 있는 아이템인지 확인하기
+        // 이미 가지고 있으면 Count만 증가
+        // 새롭거나 장비 아이템이면 빈슬롯에 데이터 추가
+        Debug.Log($"Model : {item}");
+        bool res = HandleGetItemData(item);
+        
+        return res;
     }
 
     public Dictionary<int, ItemData> GetItemList(){
@@ -42,17 +46,89 @@ public class InventoryModel
         return index;
     }
 
-    //아이템의 존재여부.
-    public bool IsExistingItem(ItemData item){
+    public bool HandleGetItemData(ItemData item){
         for(int i=0;i<maxSlotSize;i++){
             if(itemDictionary[i] == null) continue;
-            
-            if(itemDictionary[i].Equals(item)) return true;
+            ItemData itemInInventory = itemDictionary[i];
+        
+            if (itemInInventory != null)
+            {
+                if (itemDictionary[i] is Consumable consumable)
+                {
+                    if (SearchItemByType<ConsumableType>(itemInInventory.itemType, consumable.subType))
+                    {
+                        consumable.GetThisItem();
+                    }
+                    else
+                    {
+                        if(GetNewItem(itemInInventory)) return true;
+                    }
+                }
+                else if (itemInInventory is Equipment equipment)
+                {
+                    if(GetNewItem(itemInInventory)) return true;
+                }
+            }
+            else
+            {
+                Debug.Log("ItemData is Null...");
+            }
         }
         return false;
     }
 
-    //List<ItemEntry>의 경우에는 외부 DB로 부터의 데이터를 동기화할때만 사용한다.
+    //해당 아이템을 이미 소유하고 있는지.
+    public bool SearchItemByType<T>(ItemType itemType, T? subType = null) where T : struct
+    {
+        foreach (var targetItem in itemDictionary)
+        {
+            if (targetItem.Value == null) continue;
+
+            ItemData item = targetItem.Value;
+
+            if (item.itemType == itemType)
+            {
+                if (subType == null)
+                {
+                    Debug.Log("Search Code : 001");
+                    return true;           //��Ÿ ������
+                }
+
+                if (itemType == ItemType.Consumable && item is Consumable consumable)
+                {
+                    if (EqualityComparer<T>.Default.Equals((T)(object)consumable.subType, subType.Value))
+                    {
+                        Debug.Log($"Search Code : 002 - Found matching item: {consumable.subType}");
+                        return true;
+                    }
+                }
+                else if (itemType == ItemType.Equipment && item is Equipment equipment)
+                {
+                    if (EqualityComparer<T>.Default.Equals((T)(object)equipment.subType, subType.Value))
+                    {
+                        Debug.Log("Search Code : 003");
+                        return true;
+                    }
+                }
+            }
+        }
+        Debug.Log("Search Code : 004");
+        return false;
+    }
+
+    /*
+        1. 해당아이템은 가지고 있던 것인가?
+        2. 새로운 아이템 인가?
+        2-1. 빈 슬롯이 있는가?
+    */
+    bool GetNewItem(ItemData item){
+        int index = SearchEmptyIndex();
+        if(index == -1) return false;            //빈 공간이 없다는 뜻
+        itemDictionary.Add(index,item);            //test용
+        return true;
+    }
+
+    //List<ItemEntry>의 경우에는 외부 DB로 부터의 데이터를 동기화할때만 사용한다. => Serialized로 변경 예정
     public void UpdateModel(List<ItemEntry> items){
         ClearDictionary();
         foreach(var entry in items){
@@ -66,5 +142,6 @@ public class InventoryModel
         for(int i=0;i<maxSlotSize;i++){
             itemDictionary[i] = null;
         }
+        //itemDictionary.Clear()
     }
 }
