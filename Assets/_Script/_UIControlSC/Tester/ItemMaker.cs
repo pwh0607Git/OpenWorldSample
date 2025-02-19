@@ -31,4 +31,5 @@ public class ItemMaker : MonoBehaviour
 public class ItemEntry{
     [SerializeField] public int invenIdx;
     [SerializeField] public ItemData indexItem;
+    [SerializeField] public int count;
 }

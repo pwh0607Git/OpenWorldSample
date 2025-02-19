@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+
 public class InventoryModel
 {
     private Dictionary<int, ItemData> itemsDictionary = new Dictionary<int, ItemData>();

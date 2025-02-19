@@ -10,7 +10,7 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField] GameObject iconBasePrefab;
     
     private List<InventorySlot> slots = new List<InventorySlot>();
-    [SerializeField] List<ItemData> items;
+    [SerializeField] List<ItemData> items;                              // 인스펙터 출력용
     Transform originalParent;
 
     void Start()
@@ -41,12 +41,12 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         
     }
 
-    //인덱스에 걸맞는 슬롯에 아이템 추가하기.
     public void MakeItemIcon(ItemData item, InventorySlot slot){
         GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
         AssignComponent(itemIcon,item);
 
     }
+
     private void AssignComponent(GameObject icon, ItemData item){
         if (item.itemType == ItemType.Consumable)
         {
@@ -71,6 +71,7 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
+    #region Event
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalParent = transform.parent;
@@ -88,4 +89,5 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         GetComponent<CanvasGroup>().blocksRaycasts = true; 
         GetComponent<RectTransform>().SetParent(originalParent);
     }
+    #endregion
 }
