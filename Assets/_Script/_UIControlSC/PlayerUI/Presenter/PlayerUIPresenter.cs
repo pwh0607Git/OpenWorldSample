@@ -7,6 +7,9 @@ public class PlayerUIPresenter : MonoBehaviour
     [Header("MVP - Component")]
     public InventoryView inventoryView;
     private InventoryPresenter inventoryPresenter;
+
+    public ActionbarView actionBarView;
+    private ActionbarPresenter actionbarPresenter; 
     
     [Space(10)]
     [Header("Props")]

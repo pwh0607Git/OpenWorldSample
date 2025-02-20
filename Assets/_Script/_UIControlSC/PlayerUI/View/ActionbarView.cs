@@ -7,8 +7,11 @@ public class ActionbarView : MonoBehaviour
     public GameObject slotPrefab;
     public List<ActionBarSlotComponent> slots = new List<ActionBarSlotComponent>();
 
-    public void CreateSlotView(ActionBarSlotComponent slotModel){
-        GameObject slot = Instantiate(slotPrefab, slotParent);
+    public void CreateSlots(List<KeyCode> codes){
+        for(int i=0;i<codes.Count;i++){
+            GameObject slot = Instantiate(slotPrefab, slotParent);
+        }
+        
     }
 }
 
