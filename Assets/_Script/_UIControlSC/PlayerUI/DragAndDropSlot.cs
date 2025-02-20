@@ -40,9 +40,9 @@ public class DragAndDropSlot : MonoBehaviour, IDropHandler
 
     public void ClearCurrentItem()
     {
-        if(currentItem == null || transform.childCount <= 0 ) return;
-        
-        Destroy(transform.GetComponentInChildren<ItemIconController>().gameObject);
+        if(currentItem == null) return;
+        if(transform.childCount > 0 )
+            Destroy(transform.GetComponentInChildren<ItemIconController>().gameObject);
         currentItem = null;
     }
 }
