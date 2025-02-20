@@ -24,8 +24,8 @@ public class ItemMaker : MonoBehaviour
         StartCoroutine(NotifyInitTest());   
     }
     IEnumerator NotifyInitTest(){
-        yield return new WaitForSeconds(0.5f);
-        uiPresenter.InitInventory(_serList);
+        yield return null;
+        uiPresenter.SerializeInventory(_serList);
     }
 
     [Button("GetItem"), HideField] public bool btn1;
@@ -40,13 +40,11 @@ public class ItemMaker : MonoBehaviour
 
 [Serializable]
 public class ItemEntry{
-    [SerializeField] public int inventoryIdx;
-    [SerializeField] public ItemData indexItem;
-    [SerializeField] public int count;
+    public int inventoryIdx;
+    public ItemData indexItem;
 
-    public ItemEntry(int idx, ItemData itemData, int count){
+    public ItemEntry(int idx, ItemData itemData){
         this.inventoryIdx = idx;
         this.indexItem =itemData;
-        this.count = count;
     }
 }
