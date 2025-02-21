@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,8 +15,12 @@ public class PlayerUIPresenter : MonoBehaviour
     [SerializeField] int maxSlotSize;
     void Start()
     {
-        InventoryModel model = new InventoryModel(maxSlotSize);
-        inventoryPresenter = new InventoryPresenter(model, inventoryView);
+        InventoryModel inventoryModel = new InventoryModel(maxSlotSize);
+        inventoryPresenter = new InventoryPresenter(inventoryModel, inventoryView);
+
+        // StartCoroutine(InitMVP());
+        ActionbarModel actionbarModel = new ActionbarModel();
+        actionbarPresenter = new ActionbarPresenter(actionbarModel, actionBarView);
     }  
 
     void Update()
@@ -28,7 +31,7 @@ public class PlayerUIPresenter : MonoBehaviour
         }
     }
 
-    //Test
+    // 초기화용 코드.
     public void SerializeInventory(List<ItemEntry> entries){
         // inventoryPresenter에게 serList에 맞게 InventoryModel을 수정해 줄 것을 요구한다.
         Debug.Log("Inventory Init!");
@@ -37,5 +40,9 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public void GetItem(ItemData item){
         inventoryPresenter.AddItem(item);
+    }
+
+    public void SerializeActionbar(List<KeyCode> codes){
+        actionbarPresenter.SerializeModel(codes);
     }
 }

@@ -404,6 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryView: {fileID: 362069876}
+  actionBarView: {fileID: 0}
   maxSlotSize: 40
 --- !u!1 &100327037
 GameObject:
@@ -1513,6 +1514,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16686cbeebdd8c846b87f5c7aa675410, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  codes: 6100000062000000630000006400000065000000660000006700000068000000
+  uiPresenter: {fileID: 96044279}
 --- !u!1 &578548443
 GameObject:
   m_ObjectHideFlags: 0
