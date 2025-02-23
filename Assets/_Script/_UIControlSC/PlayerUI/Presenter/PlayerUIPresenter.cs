@@ -42,7 +42,8 @@ public class PlayerUIPresenter : MonoBehaviour
         inventoryPresenter.AddItem(item);
     }
 
-    public void SerializeActionbar(List<KeyCode> codes){
-        actionbarPresenter.SerializeModel(codes);
+    public void SerializeActionbar(List<ActionBarSlotComponent> components){
+        Debug.Log("Actionbar Init!");
+        actionbarPresenter.SerializeModel(components);
     }
 }

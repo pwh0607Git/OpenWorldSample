@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class InventoryModel 
 {
-    // private Dictionary<int, ItemData> items = new Dictionary<int, ItemData>();
     public int maxSlotSize {get; private set;}
     private List<ItemEntry> items;
     public event Action OnModelChanged;             // inventory 내 아이템 정보가 갱신되면 실행되는 이벤트.
@@ -32,8 +31,8 @@ public class InventoryModel
         return res;
     }
 
-    public  List<ItemEntry> GetItemList(){
-        return new  List<ItemEntry>(items);               //복사본을 전달한다!
+    public List<ItemEntry> GetItemList(){
+        return new List<ItemEntry>(items);               //복사본을 전달한다!
     }
 
     public int SearchEmptyIndex(){
@@ -135,6 +134,7 @@ public class InventoryModel
     public void SerializeModel(List<ItemEntry> items){
         Debug.Log($"Inventory Model : Serialize => {items.Count}");
         UpdateModel(items);
+
         OnModelChanged?.Invoke();
     }
     

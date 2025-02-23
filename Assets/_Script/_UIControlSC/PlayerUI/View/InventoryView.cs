@@ -65,7 +65,6 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
         slot.AssignCurrentItem(itemIcon);
         AssignComponent(itemIcon,item);
-
     }
 
     private void AssignComponent(GameObject icon, ItemData item){

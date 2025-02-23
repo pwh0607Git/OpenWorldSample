@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryView: {fileID: 362069876}
-  actionBarView: {fileID: 0}
+  actionBarView: {fileID: 8749128085465436381}
   maxSlotSize: 40
 --- !u!1 &100327037
 GameObject:
@@ -1514,8 +1514,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16686cbeebdd8c846b87f5c7aa675410, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  codes: 6100000062000000630000006400000065000000660000006700000068000000
+  components:
+  - assignedKey: 256
+    assignedItem: {fileID: 11400000, guid: a0e2f3a0ad6abca40b0755007595c24d, type: 2}
+  - assignedKey: 257
+    assignedItem: {fileID: 11400000, guid: 6fb461691e9ebbf4ab4e879b6149f3d4, type: 2}
+  - assignedKey: 258
+    assignedItem: {fileID: 0}
+  - assignedKey: 259
+    assignedItem: {fileID: 0}
+  - assignedKey: 260
+    assignedItem: {fileID: 0}
+  - assignedKey: 261
+    assignedItem: {fileID: 0}
+  - assignedKey: 262
+    assignedItem: {fileID: 0}
+  - assignedKey: 263
+    assignedItem: {fileID: 0}
   uiPresenter: {fileID: 96044279}
+  btn1: 0
 --- !u!1 &578548443
 GameObject:
   m_ObjectHideFlags: 0
@@ -4343,7 +4360,7 @@ GameObject:
   - component: {fileID: 8504054601563337852}
   - component: {fileID: 8504054601563337853}
   m_Layer: 5
-  m_Name: KeyboardSlots
+  m_Name: ActionbarSlots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4610,8 +4627,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b7708b380531a44bfb9663bb445835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotParent: {fileID: 3788156924174120253, guid: 4cd70f5eb6e87ac48877a929716181a2, type: 3}
-  slotPrefab: {fileID: 5146806526516213685}
+  slotParent: {fileID: 8504054601563337852}
+  slotPrefab: {fileID: 7252293692202396646, guid: 4cd70f5eb6e87ac48877a929716181a2, type: 3}
+  currentSlotList: []
+  viewSlots: []
 --- !u!1 &9183067841963083749
 GameObject:
   m_ObjectHideFlags: 0

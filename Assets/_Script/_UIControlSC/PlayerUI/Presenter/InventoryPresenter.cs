@@ -5,14 +5,12 @@ public class InventoryPresenter
 {
     private InventoryModel model;
     private InventoryView view;
-    public bool isCompletedUpdateView;
 
     public InventoryPresenter(InventoryModel model, InventoryView view){
         this.model = model;
         this.view = view;
         model.OnModelChanged += ModelChangeHandler;
         view.OnChangedInventoryView += ViewChangeHandler;
-        isCompletedUpdateView = false;
         view.CreateSlots(model.maxSlotSize);
     }
 

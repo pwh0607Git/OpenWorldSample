@@ -1,14 +1,26 @@
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using CustomInspector;
 using UnityEngine;
 
 public class ActionBarTester : MonoBehaviour
 {
-    public List<KeyCode> codes = new List<KeyCode>{KeyCode.A, KeyCode.B, KeyCode.C, KeyCode.D, KeyCode.E, KeyCode.F, KeyCode.G, KeyCode.H};
-
+    public List<ActionBarSlotComponent> components = new List<ActionBarSlotComponent>();
     public PlayerUIPresenter uiPresenter;
     
+    
+    [Button("SendCodes"), HideField] public bool btn1;
     public void SendCodes(){
-        uiPresenter.SerializeActionbar(codes);
+        uiPresenter.SerializeActionbar(components);
+    }
+}
+
+[Serializable]
+public class ActionBarSlotComponent{
+    public KeyCode assignedKey;
+    public ItemData assignedItem;
+    public ActionBarSlotComponent(KeyCode key){
+        assignedKey = key;
+        assignedItem = null;
     }
 }
