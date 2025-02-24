@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Unity.UI;
+using CustomInspector.Extensions;
+using System.Threading;
+using Unity.VisualScripting;
 public class InventoryItemIconManager : MonoBehaviour
 {
     [SerializeField]
@@ -19,6 +22,7 @@ public class InventoryItemIconManager : MonoBehaviour
 
     IEnumerator CreateItemIconCoroutine(ItemData newItemData, InventorySlot emptySlot)
     {
+        yield return new WaitUntil(()=>PlayerController.uiController.CheckSlotSize() == true);
         while (!PlayerController.uiController.CheckSlotSize())
         {
             yield return null;
@@ -36,37 +40,24 @@ public class InventoryItemIconManager : MonoBehaviour
         yield return null;
     }
 
-    public ItemDataSC AssignItemData(ItemData itemData, InventorySlot emptySlot)
+    public ItemDataHandler AssignItemData(ItemData itemData, InventorySlot emptySlot)
     {
         if (itemData == null) return null;
 
-        GameObject item = Instantiate(iconBasePrefab);
-
+        GameObject itemIcon = Instantiate(iconBasePrefab, emptySlot.transform);
+        ItemDataHandler itemDataHandler;
+        
         if (itemData.itemType == ItemType.Consumable)
         {
-            item.AddComponent<ConsumableItemSC>();
+            ConsumableItemHandler consumableHandler = itemIcon.AddComponent<ConsumableItemHandler>();
+            consumableHandler.Init(itemData);
         }else if(itemData.itemType == ItemType.Equipment)
         {
-            item.AddComponent<EquipmentItemSC>();
+            EquipmentItemHandler equipmentHandler = itemIcon.AddComponent<EquipmentItemHandler>();
+            equipmentHandler.Init(itemData);
         }
-        
-        ItemDataSC itemDataSC = item.GetComponent<ItemDataSC>();
-        if (itemDataSC != null)
-        {
-            if (itemData.itemType == ItemType.Consumable && itemData is Consumable consumable)
-            {
-                ((ConsumableItemSC)itemDataSC).SetItem(consumable);
-            }
-            else if (itemData.itemType == ItemType.Equipment && itemData is Equipment equipment)
-            {
-                Destroy(item.transform.GetChild(0).gameObject);     //Text ����.
-                ((EquipmentItemSC)itemDataSC).SetItem(equipment);
-            }
-            else
-            {
-                Debug.LogError("�� �� ���� ������ Ÿ���Դϴ�.");
-            }
-        }
-        return itemDataSC;
+
+        itemDataHandler = itemIcon.GetComponentInChildren<ItemDataHandler>();
+        return itemDataHandler;
     }
 }

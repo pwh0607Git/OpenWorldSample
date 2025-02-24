@@ -38,6 +38,7 @@ public class Consumable : ItemData
         count--;
         State state = PlayerController.player.myState;
         state.UesConsumable(this);
+        Debug.Log($"아이템 사용!");
         OnConsumableUsed?.Invoke();
     }
 

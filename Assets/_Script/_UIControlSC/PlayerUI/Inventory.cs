@@ -73,7 +73,7 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             if (slot.currentItem == null) continue;
 
-            ItemData slotItemData = slot.currentItem.GetComponent<ItemDataSC>().GetItem;
+            ItemData slotItemData = slot.currentItem.GetComponent<ItemDataHandler>().GetItem;
 
             if (slotItemData.itemType == itemType)
             {

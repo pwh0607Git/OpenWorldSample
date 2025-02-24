@@ -3,28 +3,25 @@ using UnityEngine.EventSystems;
 
 public class ActionBarSlot : DragAndDropSlot
 {
-    private KeyCode assignedKey;
+    [SerializeField] KeyCode assignedKey;
 
-    public void SetAssigneKey(KeyCode assignedKey) { this.assignedKey = assignedKey; }
-
+    public void SetAssigneKey(KeyCode key) { assignedKey = key; }
     public void Update()
     {
-        if (Input.GetKeyDown(assignedKey))
+        if (Input.GetKeyDown(assignedKey) && currentItem != null)
         {
-            if (currentItem != null)
+            UseItem();
+            
+            if (currentItem == null)  // 아이템이 소진되었으면 제거
             {
-                UseItem();
-            }
-            else
-            {
-                Debug.Log("None Item...");
+                ClearCurrentItem();
             }
         }
     }
 
     void UseItem()
     {
-        currentItem.GetComponent<ConsumableItemSC>().GetItem.Use();
+        currentItem.GetComponent<ConsumableItemHandler>().GetItem.Use();
     }
 
     public override void OnDrop(PointerEventData eventData)

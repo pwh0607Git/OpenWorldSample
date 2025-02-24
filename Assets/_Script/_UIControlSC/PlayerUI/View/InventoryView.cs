@@ -67,28 +67,19 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         AssignComponent(itemIcon,item);
     }
 
-    private void AssignComponent(GameObject icon, ItemData item){
-        if (item.itemType == ItemType.Consumable)
+    private void AssignComponent(GameObject icon, ItemData itemData){
+        ItemDataHandler handler = null;
+        if (itemData.itemType == ItemType.Consumable)
         {
-            icon.AddComponent<ConsumableItemSC>();
-        }else if(item.itemType == ItemType.Equipment)
+            handler = icon.AddComponent<ConsumableItemHandler>();
+        }
+        else if(itemData.itemType == ItemType.Equipment)
         {
-            icon.AddComponent<EquipmentItemSC>();
+            handler =  icon.AddComponent<EquipmentItemHandler>();
         }
 
-        ItemDataSC itemDataSC = icon.GetComponent<ItemDataSC>();
-        if (itemDataSC != null)
-        {
-            if (item.itemType == ItemType.Consumable && item is Consumable consumable)
-            {
-                ((ConsumableItemSC)itemDataSC).SetItem(consumable);
-            }
-            else if (item.itemType == ItemType.Equipment && item is Equipment equipment)
-            {
-                Destroy(icon.GetComponentInChildren<TextMeshProUGUI>().gameObject);
-                ((EquipmentItemSC)itemDataSC).SetItem(equipment);
-            }
-        }
+        if(handler == null) return;
+        handler.Init(itemData);
     }
     public void ChagedEventHandler(){
         //View로 부터 데이터 변화가 발생!
@@ -104,7 +95,7 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         itemsView.Clear();
         for(int i=0;i<slots.Count;i++){
             if(slots[i].currentItem == null) continue;
-            ItemData slotItem = slots[i].currentItem.GetComponent<ItemDataSC>().GetItem;
+            ItemData slotItem = slots[i].currentItem.GetComponent<ItemDataHandler>().GetItem;
             ItemEntry entry = new ItemEntry(i, slotItem);
             itemsView.Add(entry);
         }

@@ -2,10 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConsumableItemSC : ItemDataSC
+public class ConsumableItemHandler : ItemDataHandler
 {
-    [SerializeField]
-    private Consumable consumableItem;
+    [SerializeField] Consumable consumableItem;
 
     public override ItemData GetItem => consumableItem;
 
@@ -13,41 +12,32 @@ public class ConsumableItemSC : ItemDataSC
 
     public TextMeshProUGUI consumableCountText;
 
-    private void Start()
-    {
+    public override void Init(ItemData itemData){
+        consumableItem = (Consumable)itemData;
         iconImg = GetComponent<Image>();
         consumableCountText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-
-        if(consumableCountText == null)
-        {
-            Debug.LogWarning("CountText �Ҵ� ����...");
-        }
-
-        UpdateCountCallback();
 
         if (consumableItem != null)
         {
             consumableItem.OnConsumableUsed += UpdateCountCallback;
         }
+        UpdateCountCallback();
+        MapImage();
+        SetCount();
+        //text 매핑도 필요.
     }
-    
-    public void SetItem(Consumable itemData)
+
+    void SetCount(){
+        consumableCountText.text = consumableItem.GetConsumableCount().ToString();
+    }
+
+    void OnDestroy()
     {
         if (consumableItem != null)
         {
             consumableItem.OnConsumableUsed -= UpdateCountCallback;
         }
-
-        consumableItem = itemData;
-
-        if (consumableItem != null)
-        {
-            consumableItem.OnConsumableUsed += UpdateCountCallback;
-        }
-
-        MapImage();
     }
-
     private void MapImage()
     {
         if (iconImg == null)
@@ -55,7 +45,7 @@ public class ConsumableItemSC : ItemDataSC
 
         if (consumableItem != null && iconImg != null)
         {
-            iconImg.sprite = consumableItem.icon;           // ������ ����
+            iconImg.sprite = consumableItem.icon;
         }
     }
 
