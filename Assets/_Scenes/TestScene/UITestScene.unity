@@ -4629,6 +4629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotParent: {fileID: 8504054601563337852}
   slotPrefab: {fileID: 7252293692202396646, guid: 4cd70f5eb6e87ac48877a929716181a2, type: 3}
+  iconBasePrefab: {fileID: 7679876614145519527, guid: e6ba42578b13a574f83603acde6bb78d, type: 3}
   currentSlotList: []
   viewSlots: []
 --- !u!1 &9183067841963083749

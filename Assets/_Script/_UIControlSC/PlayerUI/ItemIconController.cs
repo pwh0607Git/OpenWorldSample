@@ -42,7 +42,7 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        ItemData itemData = GetComponent<ItemDataSC>().GetItem;
+        ItemData itemData = GetComponent<ItemDataHandler>().GetItem;
         Transform dropTarget = eventData.pointerEnter?.transform;
 
         originalParent.GetComponent<DragAndDropSlot>().ClearCurrentItem();
@@ -124,10 +124,10 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
                 }
                 else
                 {
-                    Equipment equipedItem = dropTarget.GetComponentInChildren<ItemIconController>().GetComponent<EquipmentItemSC>().GetItem as Equipment;
+                    Equipment equipedItem = dropTarget.GetComponentInChildren<ItemIconController>().GetComponent<EquipmentItemHandler>().GetItem as Equipment;
                     equipedItem.Detach();
 
-                    Equipment newItem = GetComponent<EquipmentItemSC>().GetItem as Equipment;
+                    Equipment newItem = GetComponent<EquipmentItemHandler>().GetItem as Equipment;
                     newItem.Use();
 
                     Transform changeItem = dropTarget.GetComponentInChildren<ItemIconController>().transform;
@@ -232,7 +232,7 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         newTransform.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
         ResetToOriginalSlot();
 
-        Consumable itemData = GetComponent<ItemDataSC>().GetItem as Consumable;
+        Consumable itemData = GetComponent<ItemDataHandler>().GetItem as Consumable;
         itemData.isPresetting = true;
     }
 
@@ -245,7 +245,7 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
     private void OnDestroy()
     {
-        Consumable itemData = GetComponent<ItemDataSC>().GetItem as Consumable;
+        Consumable itemData = GetComponent<ItemDataHandler>().GetItem as Consumable;
         itemData.isPresetting = false;
     }
 

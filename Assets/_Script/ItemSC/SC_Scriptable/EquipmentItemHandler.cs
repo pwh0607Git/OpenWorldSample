@@ -1,7 +1,8 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EquipmentItemSC : ItemDataSC
+public class EquipmentItemHandler : ItemDataHandler
 {
     [SerializeField]
     private Equipment equipmentItem;
@@ -10,16 +11,12 @@ public class EquipmentItemSC : ItemDataSC
 
     private Image iconImg;
     
-    private void Start()
+    public override void Init(ItemData itemData)
     {
         iconImg = GetComponent<Image>();
-    }
-
-    public void SetItem(Equipment itemData)
-    {
-        equipmentItem = itemData;
-
+        equipmentItem = (Equipment)itemData;
         MapImage();
+        Destroy(GetComponentInChildren<TextMeshProUGUI>().gameObject);          //text는 삭제!
     }
 
     private void MapImage()

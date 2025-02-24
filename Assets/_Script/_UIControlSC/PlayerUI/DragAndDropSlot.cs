@@ -21,7 +21,7 @@ public class DragAndDropSlot : MonoBehaviour, IDropHandler
 
     public virtual bool CheckVaildItem<T>(GameObject item, T? validType = null) where T : struct
     {
-        ItemData itemData = item.GetComponent<ItemDataSC>().GetItem;
+        ItemData itemData = item.GetComponent<ItemDataHandler>().GetItem;
 
         if (validType.HasValue)
         {

@@ -24,7 +24,7 @@ public class ActionBarSlot : DragAndDropSlot
 
     void UseItem()
     {
-        currentItem.GetComponent<ConsumableItemSC>().GetItem.Use();
+        currentItem.GetComponent<ConsumableItemHandler>().GetItem.Use();
     }
 
     public override void OnDrop(PointerEventData eventData)
