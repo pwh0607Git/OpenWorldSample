@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// Chase : 아이콘 이동 로직만 수행
 public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private RectTransform rectTransform;
@@ -19,17 +20,35 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         rectTransform.anchoredPosition = Vector2.zero;
     }
 
+
+    private float clickTimer = 0.0f;
+    private float doubleClickTime = 0.3f;
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (transform.parent.tag == "ActionBarSlot" && eventData.button == PointerEventData.InputButton.Right)
+        DragAndDropSlot slot = transform.GetComponentInParent<DragAndDropSlot>();
+
+        if(slot == null) return;
+        //액션바 슬롯에서 우클릭시, 액션바에 할당 삭제.
+        if (eventData.button == PointerEventData.InputButton.Right && slot is ActionBarSlot)
         {
             Destroy(transform.gameObject);
+        }
+
+        //좌클릭 더블클릭.
+        if(eventData.button == PointerEventData.InputButton.Left){
+            if(Time.time - clickTimer < doubleClickTime){
+                Debug.Log("아이콘 더블 클릭!"); 
+                if(slot is InventorySlot && itemDataHandler.GetItem is Consumable consumable){
+                    //소비아이템 소모
+                    consumable.Use();
+                }
+            }
+            clickTimer = Time.time;
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log($"{gameObject.name} Drag Start");
         originalParent = transform.parent;
         rectTransform.SetParent(transform.root);
         canvasGroup.blocksRaycasts = false;
@@ -42,38 +61,54 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        ItemData itemData = GetComponent<ItemDataHandler>().GetItem;
-        Transform dropTarget = eventData.pointerEnter?.transform;
-
+        DragAndDropSlot targetSlot = eventData.pointerEnter?.GetComponentInParent<DragAndDropSlot>();
         originalParent.GetComponent<DragAndDropSlot>().ClearCurrentItem();
 
-        canvasGroup.blocksRaycasts = true;
+        if(targetSlot == null || !targetSlot.CheckVaildItem<ItemType>(gameObject)){
+            ResetToOriginalSlot();
+            return;
+        }
 
-        if (originalParent.GetComponent<DragAndDropSlot>() is InventorySlot)
+        DragAndDropSlot originalSlot = originalParent.GetComponent<DragAndDropSlot>();
+        originalSlot.ClearCurrentItem();
+
+        if (originalSlot is InventorySlot && targetSlot is ActionBarSlot)
         {
-            if (!HandleInventorySlot(dropTarget, itemData))
-            {
-                ResetToOriginalSlot();
-                return;
+            // 타겟 슬롯에 복사
+
+            // if (!HandleInventorySlot(dropTarget, itemData))
+            // {
+            //     ResetToOriginalSlot();
+            //     return;
+            // }
+        }
+        else if (originalSlot is ActionBarSlot && targetSlot is ActionBarSlot)
+        {
+            if(targetSlot.currentItem != null){
+                // 타겟 Slot에 아이템이 할당되어있으면 Swap
+                targetSlot.SwapItem(this.gameObject);
+            }else{
+                // 없으면 그냥할당. 
+                targetSlot.AssignCurrentItem(this.gameObject);
             }
+            // if (!HandleActionBarSlot(dropTarget)) {
+            //     ResetToOriginalSlot();
+            //     return;
+            // } 
         }
-        else if (originalParent.GetComponent<DragAndDropSlot>() is ActionBarSlot)
-        {
-            if (!HandleActionBarSlot(dropTarget)) {
-                ResetToOriginalSlot();
-                return;
-            } 
+        else{
+
         }
-        else if (originalParent.GetComponent<DragAndDropSlot>() is EquipmentSlot)
-        {
-            if(!HandleEquipmentSlot(dropTarget, itemData))
-            {
-                ResetToOriginalSlot();
-                return;
-            }
-        }
+        // else if (originalParent.GetComponent<DragAndDropSlot>() is EquipmentSlot)
+        // {
+        //     // if(!HandleEquipmentSlot(dropTarget, itemData))
+        //     // {
+        //     //     ResetToOriginalSlot();
+        //     //     return;
+        //     // }
+        // }
         
-        dropTarget.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
+        // dropTarget.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
     }
 
     private bool HandleInventorySlot(Transform dropTarget, ItemData itemData)
@@ -239,8 +274,9 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
     private void ResetToOriginalSlot()
     {
         transform.SetParent(originalParent);
-        originalParent.transform.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
         rectTransform.anchoredPosition = Vector2.zero;
+        canvasGroup.blocksRaycasts = true;
+        // originalParent.transform.GetComponent<DragAndDropSlot>().AssignCurrentItem(gameObject);
     }
 
     private void OnDestroy()

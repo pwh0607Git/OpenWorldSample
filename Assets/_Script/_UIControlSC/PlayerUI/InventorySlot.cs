@@ -1,5 +1,8 @@
+using UnityEngine;
 public class InventorySlot : DragAndDropSlot
 {
-    // public int slotIndex{get; private set;}
-
+    public bool CheckConsumableItem(GameObject item)
+    {
+        return base.CheckVaildItem<ItemType>(item, ItemType.Consumable);
+    }
 }
