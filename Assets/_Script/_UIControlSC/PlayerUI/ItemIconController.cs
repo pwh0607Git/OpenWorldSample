@@ -7,7 +7,7 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
     private ItemDataHandler itemDataHandler;
-    private Transform originalParent;
+    public Transform originalParent{get; private set;}
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -271,7 +271,7 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         itemData.isPresetting = true;
     }
 
-    private void ResetToOriginalSlot()
+    public void ResetToOriginalSlot()
     {
         transform.SetParent(originalParent);
         rectTransform.anchoredPosition = Vector2.zero;
