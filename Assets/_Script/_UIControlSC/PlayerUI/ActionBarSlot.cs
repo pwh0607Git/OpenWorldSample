@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 public class ActionBarSlot : DragAndDropSlot
 {
-    private KeyCode assignedKey;
+    [SerializeField] KeyCode assignedKey;
 
     public void SetAssigneKey(KeyCode assignedKey) { this.assignedKey = assignedKey; }
 

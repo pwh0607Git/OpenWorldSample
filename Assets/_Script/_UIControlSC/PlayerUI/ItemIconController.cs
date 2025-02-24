@@ -5,13 +5,13 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
 {
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
-
+    private ItemDataHandler itemDataHandler;
     private Transform originalParent;
-
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+        itemDataHandler = GetComponent<ItemDataHandler>();
     }
 
     void Start()

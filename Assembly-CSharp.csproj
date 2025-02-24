@@ -150,7 +150,6 @@
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterDetection.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\BossLogic\BossController.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterDown.cs" />
-    <Compile Include="Assets\TestThrower.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterWandor.cs" />
     <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
@@ -171,7 +170,6 @@
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\BuffIconTimer.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\DragAndDropSlot.cs" />
     <Compile Include="Assets\_Script\_Player\PlayerController.cs" />
-    <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\ItemIconController2.cs" />
     <Compile Include="Assets\TeKniKo_Free\Power_Ups\Scripts\ObjectBounce.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\Tester\ItemMaker.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\Presenter\EquipmentPresenter.cs" />
