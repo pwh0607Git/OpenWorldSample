@@ -1,11 +1,18 @@
 using System;
-using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
 
-[Serializable]
-public class State
+public class PlayerStateModel
 {
+    PlayerState playerState;
+    public PlayerStateModel(){
+        this.playerState = null;
+    }
+
+    public void SerializePlayerState(PlayerState playerState){
+        this.playerState = playerState;
+    }
+}
+
+public class PlayerState{
     public int maxHP;
     public int curHP;
     public int maxMP;
@@ -103,40 +110,5 @@ public class State
     public void NotifyStateChange()
     {
         OnStateChanged?.Invoke();
-    }
-}
-
-public class PlayerStates : MonoBehaviour
-{
-    public GameObject HP_Bar;
-    public GameObject MP_Bar;
-
-    private Image HP_Image;
-    private Image MP_Image;
-
-    [SerializeField] private State myState;
-
-    private void Start()
-    {
-        StartCoroutine(Coroutine_InitMyState());
-    }
-
-    IEnumerator Coroutine_InitMyState()
-    {
-        while (myState == null)
-        {
-            myState = PlayerController.player.myState;
-            yield return null;
-        }
-
-        HP_Image = HP_Bar.GetComponent<Image>();
-        MP_Image = MP_Bar.GetComponent<Image>();
-        myState.OnStateChanged += UpdateStateUI;
-    }
-
-    public void UpdateStateUI()
-    {
-        HP_Image.fillAmount = (float)myState.curHP / myState.maxHP;
-        MP_Image.fillAmount = (float)myState.curMP / myState.maxMP;
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using CustomInspector;
 using UnityEngine;
@@ -7,10 +8,14 @@ public class ActionBarTester : MonoBehaviour
 {
     public List<ActionBarSlotComponent> components = new List<ActionBarSlotComponent>();
     public PlayerUIPresenter uiPresenter;
-    
-    
+
+    void Start()
+    {
+        StartCoroutine(SendCodes());
+    }
     [Button("SendCodes"), HideField] public bool btn1;
-    public void SendCodes(){
+    IEnumerator SendCodes(){
+        yield return null;
         uiPresenter.SerializeActionbar(components);
     }
 }
