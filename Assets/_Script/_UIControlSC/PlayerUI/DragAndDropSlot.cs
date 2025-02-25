@@ -12,18 +12,9 @@ public class DragAndDropSlot : MonoBehaviour, IDropHandler
     {
         GameObject droppedItem = eventData.pointerDrag;
 
-        if (droppedItem == null || !CheckVaildItem<ItemType>(droppedItem))
+        if (droppedItem == null)        // || !CheckVaildItem<ItemType>(droppedItem)
             return;
-
-        if(currentItem == null){
-            // 해당 공간에 단순히 할당 하면됨
-        }else{
-            //스왑부분
-        }
-
-        // droppedItem.transform.SetParent(transform);
-        // droppedItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        // OnChangedItem?.Invoke();
+        droppedItem.transform.localPosition = Vector2.zero;
     }
 
     public void AssignCurrentItem(GameObject item){
