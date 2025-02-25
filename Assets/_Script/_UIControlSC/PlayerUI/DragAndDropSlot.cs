@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class DragAndDropSlot : MonoBehaviour, IDropHandler
 {
-    public GameObject currentItem {get; private set;}
+    public GameObject currentItem;
     
     public event Action OnChangedItem;
 
@@ -21,7 +21,9 @@ public class DragAndDropSlot : MonoBehaviour, IDropHandler
         if(item.GetComponentInChildren<ItemDataHandler>() == null) return;
         currentItem = item;
         item.transform.SetParent(transform);
+        item.GetComponent<ItemIconController>().originalSlot = this;
         item.transform.localPosition = Vector2.zero;
+        
         OnChangedItem?.Invoke();
     }
 

@@ -406,6 +406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryView: {fileID: 362069876}
   actionBarView: {fileID: 8749128085465436381}
+  playerStateView: {fileID: 0}
   maxSlotSize: 40
 --- !u!114 &96044280
 MonoBehaviour:
@@ -803,6 +804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentItem: {fileID: 0}
   equipmentType: 3
 --- !u!114 &251941388
 MonoBehaviour:
@@ -1467,8 +1469,9 @@ GameObject:
   - component: {fileID: 568067194}
   - component: {fileID: 568067195}
   - component: {fileID: 568067196}
+  - component: {fileID: 568067197}
   m_Layer: 0
-  m_Name: ItemMaker
+  m_Name: UITester
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1546,6 +1549,18 @@ MonoBehaviour:
     assignedItem: {fileID: 0}
   uiPresenter: {fileID: 96044279}
   btn1: 0
+--- !u!114 &568067197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568067193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f25f906d701fc0841a05979794f08228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &578548443
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,6 +1879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentItem: {fileID: 0}
   equipmentType: 1
 --- !u!114 &752522246
 MonoBehaviour:
@@ -2198,6 +2214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentItem: {fileID: 0}
   equipmentType: 2
 --- !u!114 &987263622
 MonoBehaviour:
@@ -3128,6 +3145,37 @@ Transform:
   - {fileID: 1147206386}
   m_Father: {fileID: 716484625}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1686526931
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1686526932}
+  m_Layer: 0
+  m_Name: ModelViewer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1686526932
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686526931}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1705253073
 GameObject:
   m_ObjectHideFlags: 0
@@ -3500,6 +3548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentItem: {fileID: 0}
   equipmentType: 0
 --- !u!114 &1816651708
 MonoBehaviour:
@@ -3909,8 +3958,8 @@ RectTransform:
   m_Children:
   - {fileID: 362069874}
   - {fileID: 6384059050224663059}
-  - {fileID: 1035583232}
   - {fileID: 162281138794290773}
+  - {fileID: 1035583232}
   m_Father: {fileID: 96044278}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4559,6 +4608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentItem: {fileID: 0}
   equipmentType: 3
 --- !u!222 &1127444994237412207
 CanvasRenderer:
@@ -5506,6 +5556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentItem: {fileID: 0}
   equipmentType: 2
 --- !u!224 &3497042081717008312
 RectTransform:
@@ -7162,6 +7213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentItem: {fileID: 0}
   equipmentType: 1
 --- !u!114 &7058042174980341112
 MonoBehaviour:
@@ -8019,6 +8071,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentItem: {fileID: 0}
   equipmentType: 0
 --- !u!1 &8418770697449544117
 GameObject:
@@ -8106,6 +8159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 162281138794290773}
+  - component: {fileID: 8537735602623295186}
   m_Layer: 5
   m_Name: PlayerStatePart
   m_TagString: Untagged
@@ -8113,6 +8167,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8537735602623295186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8537735602623295185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4aa4f58e070db6449c8ad5992418d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP_Bar: {fileID: 1094156503500283142}
+  MP_Bar: {fileID: 4093536157373618232}
+  p_state:
+    curHP: 0
+    curMP: 0
+    speed: 0
+    defend: 0
+    attack: 0
 --- !u!224 &8636404409561153532
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8542,3 +8616,4 @@ SceneRoots:
   - {fileID: 96044278}
   - {fileID: 100327041}
   - {fileID: 568067194}
+  - {fileID: 1686526932}

@@ -80,7 +80,7 @@ public class Inventory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 if (subType == null)
                 {
                     Debug.Log("Search Code : 001");
-                    return true;           //��Ÿ ������
+                    return true;
                 }
 
                 if (itemType == ItemType.Consumable && slotItemData is Consumable consumable)

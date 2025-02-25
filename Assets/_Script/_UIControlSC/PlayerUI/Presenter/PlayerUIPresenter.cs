@@ -55,6 +55,6 @@ public class PlayerUIPresenter : MonoBehaviour
     }
 
     public void SerializePlayerState(){
-        playerStatePresenter.se
+        // playerStatePresenter.se
     }
 }

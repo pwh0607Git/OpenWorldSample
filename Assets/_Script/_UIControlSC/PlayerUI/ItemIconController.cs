@@ -21,7 +21,6 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         canvasGroup.blocksRaycasts = true;
     }
 
-
     private float clickTimer = 0.0f;
     private float doubleClickTime = 0.3f;
     public void OnPointerClick(PointerEventData eventData)
@@ -51,6 +50,7 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalSlot = transform.GetComponentInParent<DragAndDropSlot>();
+        originalSlot.ClearCurrentItem();
         rectTransform.SetParent(transform.root);
         canvasGroup.blocksRaycasts = false;
     }
@@ -70,14 +70,14 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
         }
         originalSlot.ClearCurrentItem();
 
-        UIEventManager.Instance.HandleItemDrop(this.gameObject.GetComponentInChildren<ItemIconController>(), eventData);
+        UIEventManager.Instance.HandleItemDrop(gameObject.GetComponentInChildren<ItemIconController>(), eventData);
         canvasGroup.blocksRaycasts = true;
     }
 
     public void ResetToOriginalSlot()
     {
         transform.SetParent(originalSlot.transform);
-        rectTransform.anchoredPosition = Vector2.zero;
+        originalSlot.AssignCurrentItem(this.gameObject);
     }
 
     void OnDestroy()
