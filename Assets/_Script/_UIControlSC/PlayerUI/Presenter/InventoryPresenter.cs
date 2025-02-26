@@ -66,4 +66,8 @@ public class InventoryPresenter
         Debug.Log($"Presenter : model itemList Count : {model.GetItemList().Count}");
         view.UpdateView(model.GetItemList());
     }
+
+    public List<ItemEntry> GetList(){
+        return model.GetItemList();
+    }
 }

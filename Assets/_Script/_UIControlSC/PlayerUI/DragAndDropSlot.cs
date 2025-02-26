@@ -6,33 +6,33 @@ public class DragAndDropSlot : MonoBehaviour, IDropHandler
 {
     public GameObject currentItem;
     
-    public event Action OnChangedItem;
+    protected event Action OnChangedItem;
 
-    public virtual void OnDrop(PointerEventData eventData)
+    public void OnDrop(PointerEventData eventData)
     {
         GameObject droppedItem = eventData.pointerDrag;
 
-        if (droppedItem == null)        // || !CheckVaildItem<ItemType>(droppedItem)
+        if (droppedItem == null || !CheckVaildItem<ItemType>(droppedItem)) 
             return;
         droppedItem.transform.localPosition = Vector2.zero;
     }
 
-    public void AssignCurrentItem(GameObject item){
+    public virtual void AssignCurrentItem(GameObject item){
         if(item.GetComponentInChildren<ItemDataHandler>() == null) return;
         currentItem = item;
         item.transform.SetParent(transform);
         item.GetComponent<ItemIconController>().originalSlot = this;
         item.transform.localPosition = Vector2.zero;
-        
-        OnChangedItem?.Invoke();
+        OnChangedItem?.Invoke();      
     }
 
-    public void ClearCurrentItem()
+    public virtual void ClearCurrentItem()
     {
         if(currentItem == null) return;
         if(transform.childCount > 0 )
             Destroy(transform.GetComponentInChildren<ItemIconController>().gameObject);
         currentItem = null;
+
         OnChangedItem?.Invoke();
     }
 
