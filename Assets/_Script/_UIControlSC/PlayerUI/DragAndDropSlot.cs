@@ -2,19 +2,26 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragAndDropSlot : MonoBehaviour, IDropHandler
+public abstract class DragAndDropSlot : MonoBehaviour, IDropHandler
 {
     public GameObject currentItem;
-    
     protected event Action OnChangedItem;
 
     public void OnDrop(PointerEventData eventData)
     {
         GameObject droppedItem = eventData.pointerDrag;
 
-        if (droppedItem == null || !CheckVaildItem<ItemType>(droppedItem)) 
-            return;
-        droppedItem.transform.localPosition = Vector2.zero;
+        if (droppedItem == null || !IsValidItem(droppedItem)) return;
+        HandleItemDrop(droppedItem);
+    }
+
+    protected virtual void HandleItemDrop(GameObject item){
+        if(currentItem == null){
+            AssignCurrentItem(item);
+        }
+        else{
+            SwapItem(item);
+        }
     }
 
     public virtual void AssignCurrentItem(GameObject item){
@@ -46,17 +53,18 @@ public class DragAndDropSlot : MonoBehaviour, IDropHandler
         AssignCurrentItem(newItem);
     }
 
-    public virtual bool CheckVaildItem<T>(GameObject item, T? validType = null) where T : struct
-    {
-        ItemData itemData = item.GetComponent<ItemDataHandler>().GetItem;
+    protected abstract bool IsValidItem(GameObject item);
+    // public virtual bool CheckVaildItem<T>(GameObject item, T? validType = null) where T : struct
+    // {
+    //     ItemData itemData = item.GetComponent<ItemDataHandler>().GetItem;
 
-        if (validType.HasValue)
-        {
-            return item != null && itemData != null && itemData.itemType.Equals(validType);
-        }
-        else
-        {
-            return item != null && itemData != null;
-        }
-    }
+    //     if (validType.HasValue)
+    //     {
+    //         return item != null && itemData != null && itemData.itemType.Equals(validType);
+    //     }
+    //     else
+    //     {
+    //         return item != null && itemData != null;
+    //     }
+    // }
 }

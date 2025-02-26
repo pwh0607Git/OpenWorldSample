@@ -1,13 +1,8 @@
 using UnityEngine;
 public class InventorySlot : DragAndDropSlot
 {
-    public bool CheckConsumableItem(GameObject item)
+    protected override bool IsValidItem(GameObject item)
     {
-        return base.CheckVaildItem<ItemType>(item, ItemType.Consumable);
-    }
-
-    public override void AssignCurrentItem(GameObject item){
-        base.AssignCurrentItem(item);
-        OnChangedItem?.Invoke();
+        return item.GetComponent<ItemDataHandler>() != null;
     }
 }

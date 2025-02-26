@@ -4,17 +4,11 @@ using System.Collections.Generic;
 
 public class InventoryModel 
 {
-    public int maxSlotSize {get; private set;}
     private List<ItemEntry> items;
     public event Action OnModelChanged;             // inventory 내 아이템 정보가 갱신되면 실행되는 이벤트.
 
     public InventoryModel(int maxSlotSize){
-        this.maxSlotSize = maxSlotSize;
         items = new List<ItemEntry>();
-    }
-
-    public bool CheckSlotSize(){
-        return items.Count < maxSlotSize;
     }
     
     // 조건 정립
@@ -37,7 +31,7 @@ public class InventoryModel
 
     public int SearchEmptyIndex(){
         int index = -1;
-        for(int i=0;i<maxSlotSize;i++){
+        for(int i=0;i<items.Count;i++){
             if(items[i] == null) return i;
         }
         return index;

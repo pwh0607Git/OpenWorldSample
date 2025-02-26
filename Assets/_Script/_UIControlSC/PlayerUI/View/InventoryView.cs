@@ -31,7 +31,6 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void CreateSlots(int maxSlotSize){
         for(int i=0;i<maxSlotSize;i++){
             InventorySlot slot = Instantiate(slotPrefab, scrollContent).GetComponent<InventorySlot>();
-            slot.OnChangedItem += ChagedEventHandler;
             slots.Add(slot);
         }
     }
@@ -39,10 +38,9 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     //index : ItemData
     public void UpdateView(List<ItemEntry> items){
         Debug.Log($"Inventory View : 받은 List Count : {items.Count}");
-        this.itemsView = items;
-
         // 엔트리 리스트에 존재하는 아이템에 대해서만 icon을 생성하고 나머지 아이콘들은 모두 제거한다.
         ClearSlotData();
+        this.itemsView = items;
 
         // item : Entry
         foreach(var item in itemsView){

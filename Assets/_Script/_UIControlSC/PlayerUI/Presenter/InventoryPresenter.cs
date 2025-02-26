@@ -11,7 +11,7 @@ public class InventoryPresenter
         this.view = view;
         model.OnModelChanged += ModelChangeHandler;
         view.OnChangedInventoryView += ViewChangeHandler;
-        view.CreateSlots(model.maxSlotSize);
+        view.CreateSlots(40);
     }
 
     public void ToggleInventory(){
@@ -45,12 +45,6 @@ public class InventoryPresenter
             view.UpdateView(model.GetItemList());
         }
     }
-
-    public bool CheckSlotSize()
-    {
-        return model.CheckSlotSize();
-    }
-
     public void UpdateModel(List<ItemEntry> entries){
         Debug.Log("Inventory Presenter : Update");
         model.UpdateModel(entries);         // 이벤트 처리로 수정 예정 

@@ -63,21 +63,32 @@ public class ItemIconController : MonoBehaviour, IPointerClickHandler, IBeginDra
     public void OnEndDrag(PointerEventData eventData)
     {
         DragAndDropSlot targetSlot = eventData.pointerEnter?.GetComponentInParent<DragAndDropSlot>();
-        originalSlot.ClearCurrentItem();
-        if(targetSlot == null || !targetSlot.CheckVaildItem<ItemType>(gameObject)){
+         if (targetSlot == null || (targetSlot is ActionBarSlot && IsItemAlreadyInActionBar())){
             ResetToOriginalSlot();
             return;
         }
         originalSlot.ClearCurrentItem();
-
-        UIEventManager.Instance.HandleItemDrop(gameObject.GetComponentInChildren<ItemIconController>(), eventData);
         canvasGroup.blocksRaycasts = true;
+    }
+
+    private bool IsItemAlreadyInActionBar()
+    {
+        foreach (var slot in FindObjectsOfType<ActionBarSlot>())
+        {
+            if (slot.currentItem != null && slot.currentItem.GetComponent<ItemDataHandler>().GetItem == GetComponent<ItemDataHandler>().GetItem)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void ResetToOriginalSlot()
     {
         transform.SetParent(originalSlot.transform);
         originalSlot.AssignCurrentItem(this.gameObject);
+        transform.localPosition = Vector2.zero;
+        canvasGroup.blocksRaycasts = true;
     }
 
     void OnDestroy()
