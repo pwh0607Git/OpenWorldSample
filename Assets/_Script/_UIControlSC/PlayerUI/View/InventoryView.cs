@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TMPro;
 using System.Collections;
 using CustomInspector;
 
@@ -16,7 +15,6 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [Header("Prefabs")]
     [SerializeField] GameObject slotPrefab;
     [SerializeField] GameObject iconBasePrefab;
-
     private List<InventorySlot> slots = new List<InventorySlot>();
     Transform originalParent;
 
@@ -40,9 +38,7 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     //index : ItemData
     public void UpdateView(List<ItemEntry> items){
-        // itemsView.Clear();
         Debug.Log($"Inventory View : 받은 List Count : {items.Count}");
-        //Debugging
         this.itemsView = items;
 
         // 엔트리 리스트에 존재하는 아이템에 대해서만 icon을 생성하고 나머지 아이콘들은 모두 제거한다.
@@ -88,7 +84,6 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     IEnumerator Coroutine_ChangedEventHandle(){
         yield return null;
-        itemsView.Clear();
         Debug.Log($"Inventory View : Change Event 발생!");
         
         //슬롯 전체를 비교.

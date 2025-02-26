@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,8 @@ public class ActionbarView : MonoBehaviour
     [SerializeField] GameObject slotPrefab;
     [SerializeField] GameObject iconBasePrefab;
 
-    public List<ActionBarSlotComponent> currentSlotList = new List<ActionBarSlotComponent>();
+    [Header("Datas")]
+    public Dictionary<KeyCode, ItemData> slotDictionary = new Dictionary<KeyCode, ItemData>();
     public List<ActionBarSlot> viewSlots = new List<ActionBarSlot>();
     public void SerializeSlots(List<ActionBarSlotComponent> components){
         if(components == null) return;
@@ -20,27 +22,51 @@ public class ActionbarView : MonoBehaviour
     IEnumerator CoroutineSetSlots(List<ActionBarSlotComponent> components){
         yield return null;
         
-        for(int i=0;i<components.Count;i++){
+        // 1. 빈슬롯에 키 값 할당
+        foreach(var c in components){
             ActionBarSlot slot = Instantiate(slotPrefab, slotParent).GetComponentInChildren<ActionBarSlot>();
-            slot.SetAssigneKey(components[i].assignedKey);
-            if(components[i].assignedItem == null) continue;
+            slot.SetAssigneKey(c.assignedKey);
+            slotDictionary[c.assignedKey] = null;
+            slot.OnActionBarUpdated += ChagedEventHandler;
             
-            //components[i].assignedItem = ItemData 이 데이터를 게임 오브젝트로 먼저 생성할 필요가 있음.
-            // 1. 아이템 데이터 추출후, 오브젝트 생성
-            ItemData itemData = components[i].assignedItem;
-            GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
-            //슬롯에 할당.
-            slot.AssignCurrentItem(itemIcon);
+            if(c.assignedItem == null) continue;
 
-            // 2. ItemDataHandler 설정
-            ItemDataHandler handler = null;
-            if(itemData is Consumable){
-                handler = itemIcon.AddComponent<ConsumableItemHandler>();
-            }
-            else if(itemData is Equipment){
-                handler = itemIcon.AddComponent<EquipmentItemHandler>();
-            }
-            handler.Init(itemData);
+            //아이콘 생성
+            GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
+            slot.AssignCurrentItem(itemIcon);
+            AssignComponent(itemIcon, c.assignedItem);
         }
+    }
+
+    private void AssignComponent(GameObject icon, ItemData itemData){
+        ItemDataHandler handler = null;
+        if (itemData.itemType == ItemType.Consumable)
+        {
+            handler = icon.AddComponent<ConsumableItemHandler>();
+        }
+        else if(itemData.itemType == ItemType.Equipment)
+        {
+            handler =  icon.AddComponent<EquipmentItemHandler>();
+        }
+
+        if(handler == null) return;
+        handler.Init(itemData);
+    }
+
+    public void ChagedEventHandler(KeyCode key, GameObject item){
+        ItemDataHandler itemDataHandler = item.GetComponentInChildren<ItemDataHandler>();
+        if(itemDataHandler != null){
+            slotDictionary[key] = itemDataHandler.GetItem;
+        }else{
+            //소비 아이템이 아닌경우...
+        }
+
+        
+    }
+
+    IEnumerator Coroutine_ChangedEventHandle(){
+        yield return null;
+        Debug.Log($"Actionbar View : Change Event 발생!");
+
     }
 }

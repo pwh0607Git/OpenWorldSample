@@ -33,4 +33,8 @@ public class ActionbarPresenter
         Debug.Log($"Action bar Model - Serialize code Count :{components.Count}");
         model.Serialize(components);
     }
+
+    public List<ActionBarSlotComponent> GetList(){
+        return model.GetComponents();
+    }
 }

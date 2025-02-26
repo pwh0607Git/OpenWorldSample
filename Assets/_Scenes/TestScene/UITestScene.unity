@@ -3154,6 +3154,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1686526932}
+  - component: {fileID: 1686526933}
   m_Layer: 0
   m_Name: ModelViewer
   m_TagString: Untagged
@@ -3176,6 +3177,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1686526933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686526931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf92f054de1490c49adb1b0ba1f01d57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btn1: 0
+  btn2: 0
+  playerUIPresenter: {fileID: 96044279}
+  list1: []
+  list2: []
 --- !u!1 &1705253073
 GameObject:
   m_ObjectHideFlags: 0

@@ -57,4 +57,11 @@ public class PlayerUIPresenter : MonoBehaviour
     public void SerializePlayerState(){
         // playerStatePresenter.se
     }
+    public List<ItemEntry> ShowInventoryModel(){
+        return inventoryPresenter.GetList();
+    }
+
+    public List<ActionBarSlotComponent> ShowActionbarModel(){
+        return actionbarPresenter.GetList();
+    }
 }

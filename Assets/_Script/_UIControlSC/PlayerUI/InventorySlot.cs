@@ -5,4 +5,9 @@ public class InventorySlot : DragAndDropSlot
     {
         return base.CheckVaildItem<ItemType>(item, ItemType.Consumable);
     }
+
+    public override void AssignCurrentItem(GameObject item){
+        base.AssignCurrentItem(item);
+        OnChangedItem?.Invoke();
+    }
 }
