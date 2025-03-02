@@ -24,15 +24,15 @@ public class ActionbarView : MonoBehaviour
         // 1. 빈슬롯에 키 값 할당
         foreach(var c in components){
             ActionBarSlot slot = Instantiate(slotPrefab, slotParent).GetComponentInChildren<ActionBarSlot>();
-            slot.SetAssigneKey(c.assignedKey);
+            // slot.SetAssigneKey(c.assignedKey);
             slotDictionary[c.assignedKey] = null;
-            slot.OnActionBarUpdated += ChagedEventHandler;
+            // slot.OnActionBarUpdated += ChagedEventHandler;
             
             if(c.assignedItem == null) continue;
 
             //아이콘 생성
             GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
-            slot.AssignCurrentItem(itemIcon);
+            slot.SetItem(itemIcon);
             AssignComponent(itemIcon, c.assignedItem);
         }
     }
@@ -66,6 +66,5 @@ public class ActionbarView : MonoBehaviour
     IEnumerator Coroutine_ChangedEventHandle(){
         yield return null;
         Debug.Log($"Actionbar View : Change Event 발생!");
-
     }
 }

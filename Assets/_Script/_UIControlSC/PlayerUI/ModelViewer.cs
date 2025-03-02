@@ -6,7 +6,7 @@ public class ModelViewer : MonoBehaviour
 {
     public PlayerUIPresenter playerUIPresenter;
 
-    [SerializeField] List<ItemEntry> InventoryList;
+    [SerializeField] List<SlotData<int>> InventoryList;
     [Button("ShowInventoryModel"), HideField] public bool btn2;
     [Space(20)]
     [SerializeField] List<ActionBarSlotComponent> ActionBarList;
@@ -14,7 +14,12 @@ public class ModelViewer : MonoBehaviour
     [Button("ShowActionbarModel"), HideField] public bool btn1;
  
     void ShowInventoryModel(){
-        InventoryList = playerUIPresenter.ShowInventoryModel();
+        Dictionary<int, ItemData> dic = playerUIPresenter.GetInventoryModel();
+        InventoryList.Clear();
+        foreach(var item in dic){
+            if(item.Value == null) continue;
+            InventoryList.Add(new SlotData<int>(item.Key, item.Value));
+        }
     }
     
     void ShowActionbarModel(){

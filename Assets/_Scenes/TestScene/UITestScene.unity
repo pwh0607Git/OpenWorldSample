@@ -804,8 +804,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 0}
-  equipmentType: 3
 --- !u!114 &251941388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1508,10 +1506,10 @@ MonoBehaviour:
   mp: {fileID: 11400000, guid: 6fb461691e9ebbf4ab4e879b6149f3d4, type: 2}
   equipment1: {fileID: 11400000, guid: 5289ceab87ed4d7428fdaf2a39b7933c, type: 2}
   _serList:
-  - inventoryIdx: 1
-    indexItem: {fileID: 11400000, guid: a0e2f3a0ad6abca40b0755007595c24d, type: 2}
-  - inventoryIdx: 3
-    indexItem: {fileID: 11400000, guid: 6fb461691e9ebbf4ab4e879b6149f3d4, type: 2}
+  - index: 1
+    item: {fileID: 11400000, guid: a0e2f3a0ad6abca40b0755007595c24d, type: 2}
+  - index: 5
+    item: {fileID: 11400000, guid: 6fb461691e9ebbf4ab4e879b6149f3d4, type: 2}
   _newItemList:
   - {fileID: 11400000, guid: 418a42520f616b342b88699ee38d6e68, type: 2}
   - {fileID: 11400000, guid: a0e2f3a0ad6abca40b0755007595c24d, type: 2}
@@ -1879,8 +1877,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 0}
-  equipmentType: 1
 --- !u!114 &752522246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2214,8 +2210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 0}
-  equipmentType: 2
 --- !u!114 &987263622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3189,11 +3183,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf92f054de1490c49adb1b0ba1f01d57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btn1: 0
-  btn2: 0
   playerUIPresenter: {fileID: 96044279}
-  list1: []
-  list2: []
+  InventoryList: []
+  btn2: 0
+  ActionBarList: []
+  btn1: 0
 --- !u!1 &1705253073
 GameObject:
   m_ObjectHideFlags: 0
@@ -3566,8 +3560,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 0}
-  equipmentType: 0
 --- !u!114 &1816651708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4626,8 +4618,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 0}
-  equipmentType: 3
 --- !u!222 &1127444994237412207
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5496,6 +5486,7 @@ MonoBehaviour:
   scrollContent: {fileID: 4418124113198643406}
   slots: []
   maxSlotSize: 40
+  inventoryItemIconManager: {fileID: 0}
   originalParent: {fileID: 0}
 --- !u!1 &3314624064942447274
 GameObject:
@@ -5574,8 +5565,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 0}
-  equipmentType: 2
 --- !u!224 &3497042081717008312
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7231,8 +7220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 0}
-  equipmentType: 1
 --- !u!114 &7058042174980341112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8089,8 +8076,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb5c3761e31e2148baee207747823ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 0}
-  equipmentType: 0
 --- !u!1 &8418770697449544117
 GameObject:
   m_ObjectHideFlags: 0
@@ -8363,7 +8348,6 @@ MonoBehaviour:
   slotParent: {fileID: 8504054601563337852}
   slotPrefab: {fileID: 7252293692202396646, guid: 4cd70f5eb6e87ac48877a929716181a2, type: 3}
   iconBasePrefab: {fileID: 7679876614145519527, guid: e6ba42578b13a574f83603acde6bb78d, type: 3}
-  currentSlotList: []
   viewSlots: []
 --- !u!114 &8789230930797230079
 MonoBehaviour:

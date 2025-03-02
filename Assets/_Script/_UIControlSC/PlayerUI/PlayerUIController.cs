@@ -7,7 +7,7 @@ public class PlayerUIController : MonoBehaviour
     public GameObject equipmentWindow;
     public GameObject bossWindow;
     
-    public static Inventory myInventory;
+    // public static Inventory myInventory;
     public static EquipmentWindow myEquipmentWindow;
     public static UIBossState myBossWindow;
     public static BuffManager myBuffManager;
@@ -27,7 +27,7 @@ public class PlayerUIController : MonoBehaviour
     }
 
     void InitUI(){
-        myInventory = FindAnyObjectByType<Inventory>();
+        // myInventory = FindAnyObjectByType<Inventory>();
         myEquipmentWindow = FindAnyObjectByType<EquipmentWindow>();
         myKeyboard = FindAnyObjectByType<ActionBar>();
         myBuffManager = FindAnyObjectByType<BuffManager>();
@@ -35,7 +35,7 @@ public class PlayerUIController : MonoBehaviour
     }
 
     public void GetItem(GameObject item){
-        myInventory.GetItem(item);
+        // myInventory.GetItem(item);
     }
 
     public void OnBuffItem(ItemData itemData, float duration){
@@ -66,13 +66,13 @@ public class PlayerUIController : MonoBehaviour
         }
     }
     
-    public bool CheckSlotSize(){
-        return myInventory.CheckSlotSize();
-    }
+    // public bool CheckSlotSize(){
+    //     return myInventory.CheckSlotSize();
+    // }
 
-    public void SyncUIData(){
-        myInventory.SyncUIData();
-    }
+    // public void SyncUIData(){
+    //     myInventory.SyncUIData();
+    // }
 
  
     public void ShowBossUI(){

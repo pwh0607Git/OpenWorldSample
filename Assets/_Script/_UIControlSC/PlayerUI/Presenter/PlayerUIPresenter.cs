@@ -39,10 +39,10 @@ public class PlayerUIPresenter : MonoBehaviour
     }
 
     // 초기화용 코드.
-    public void SerializeInventory(List<ItemEntry> entries){
+    public void SerializeInventory(List<SlotData<int>> datas){
         // inventoryPresenter에게 serList에 맞게 InventoryModel을 수정해 줄 것을 요구한다.
         Debug.Log("Inventory Init!");
-        inventoryPresenter.SerializeModel(entries);
+        inventoryPresenter.InitModel(datas);
     }
 
     public void GetItem(ItemData item){
@@ -57,7 +57,7 @@ public class PlayerUIPresenter : MonoBehaviour
     public void SerializePlayerState(){
         // playerStatePresenter.se
     }
-    public List<ItemEntry> ShowInventoryModel(){
+    public Dictionary<int, ItemData> GetInventoryModel(){
         return inventoryPresenter.GetList();
     }
 

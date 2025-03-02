@@ -7,7 +7,7 @@ using CustomInspector;
 
 public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField, ReadOnly] List<ItemEntry> itemsView;                              // 인스펙터 출력용
+    [SerializeField, ReadOnly] List<SlotData<int>> itemsView;                              // 인스펙터 출력용
     [Header("UI Component")]
     [SerializeField] Transform scrollContent;
     public GameObject inventoryWindow;
@@ -18,7 +18,7 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private List<InventorySlot> slots = new List<InventorySlot>();
     Transform originalParent;
 
-    public event Action<List<ItemEntry>> OnChangedInventoryView;          //inventoryView의 변화 감지 
+    public event Action<List<SlotData<int>>> OnChangedInventoryView;          //inventoryView의 변화 감지 
     void Start()
     {
         originalParent = transform.parent;
@@ -31,33 +31,41 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void CreateSlots(int maxSlotSize){
         for(int i=0;i<maxSlotSize;i++){
             InventorySlot slot = Instantiate(slotPrefab, scrollContent).GetComponent<InventorySlot>();
+            slot.index = i;
             slots.Add(slot);
         }
     }
 
-    //index : ItemData
-    public void UpdateView(List<ItemEntry> items){
+    public void UpdateView(Dictionary<int, ItemData> items){
         Debug.Log($"Inventory View : 받은 List Count : {items.Count}");
         // 엔트리 리스트에 존재하는 아이템에 대해서만 icon을 생성하고 나머지 아이콘들은 모두 제거한다.
         ClearSlotData();
-        this.itemsView = items;
+        UpdateViewInspector(items);
 
         // item : Entry
         foreach(var item in itemsView){
-            if(item.indexItem == null) continue;
-            SetItemIcon(item.indexItem,slots[item.inventoryIdx]);
+            if(item.item == null) continue;
+            SetItemIcon(item.item, slots[item.slotKey]);
+        }
+    }
+
+    private void UpdateViewInspector(Dictionary<int, ItemData> items){
+        itemsView.Clear();
+        foreach(var item in items){
+            if(item.Value == null) continue;
+            itemsView.Add(new SlotData<int>(item.Key, item.Value));
         }
     }
 
     private void ClearSlotData(){
         foreach(var slot in slots){
-            slot.ClearCurrentItem();
+            slot.ClearSlot();
         }
     }
 
     private void SetItemIcon(ItemData item, InventorySlot slot){
         GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
-        slot.AssignCurrentItem(itemIcon);
+        slot.SetItem(itemIcon);
         AssignComponent(itemIcon,item);
     }
 
@@ -87,10 +95,10 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         //슬롯 전체를 비교.
         itemsView.Clear();
         for(int i=0;i<slots.Count;i++){
-            if(slots[i].currentItem == null) continue;
-            ItemData slotItem = slots[i].currentItem.GetComponent<ItemDataHandler>().GetItem;
-            ItemEntry entry = new ItemEntry(i, slotItem);
-            itemsView.Add(entry);
+            if(slots[i].GetItem() == null) continue;
+            ItemData slotItem = slots[i].GetItem().GetComponent<ItemDataHandler>().GetItem;
+            SlotData<int> data = new SlotData<int>(i, slotItem);
+            itemsView.Add(data);
         }
         OnChangedInventoryView?.Invoke(itemsView);
     }

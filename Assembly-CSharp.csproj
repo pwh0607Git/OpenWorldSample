@@ -86,7 +86,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\_Script\StreamingSC\BossZoneManager.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterBlackBoard.cs" />
-    <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\Inventory.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\EquipmentSlot.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\MonsterController.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\PlayerRenderCameraController.cs" />
@@ -162,7 +161,6 @@
     <Compile Include="Assets\_Script\MonsterSC\_Logic\MonsterStateUIController.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\Presenter\PlayerUIPresenter.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\ItemIconController.cs" />
-    <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\InventoryItemIconManager.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\Model\InventoryModel.cs" />
     <Compile Include="Assets\_Script\StreamingSC\SectorMonsterSpawner.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\TEST_MonsterSpawner.cs" />
@@ -171,6 +169,7 @@
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\DragAndDropSlot.cs" />
     <Compile Include="Assets\_Script\_Player\PlayerController.cs" />
     <Compile Include="Assets\TeKniKo_Free\Power_Ups\Scripts\ObjectBounce.cs" />
+    <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\UIItemEventHandler.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\Tester\ItemMaker.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\Presenter\EquipmentPresenter.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\View\EquipmentView.cs" />

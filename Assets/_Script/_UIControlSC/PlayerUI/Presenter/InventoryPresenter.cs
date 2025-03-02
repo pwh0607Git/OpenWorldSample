@@ -10,7 +10,6 @@ public class InventoryPresenter
         this.model = model;
         this.view = view;
         model.OnModelChanged += ModelChangeHandler;
-        view.OnChangedInventoryView += ViewChangeHandler;
         view.CreateSlots(40);
     }
 
@@ -23,15 +22,6 @@ public class InventoryPresenter
         }
     }
 
-    //View에서 변화가 일어났을 때...
-    public void ViewChangeHandler(List<ItemEntry> entries){
-        foreach(ItemEntry entry in entries){
-            Debug.Log($"{entry.inventoryIdx} : {entry.indexItem}");
-        }
-        Debug.Log("View가 변경되었다! Model을 Update하러 가자!");
-        UpdateModel(entries);
-    }
-    
     //Model에서의 데이터 변화가 일어 났을 때...
     public void ModelChangeHandler(){
         Debug.Log("Model이 변경되었다! View를 Update하러 가자!");
@@ -45,14 +35,16 @@ public class InventoryPresenter
             view.UpdateView(model.GetItemList());
         }
     }
-    public void UpdateModel(List<ItemEntry> entries){
+    
+    //인벤토리 데이터 받기.
+    public void UpdateModel(SlotData<int> data){
         Debug.Log("Inventory Presenter : Update");
-        model.UpdateModel(entries);         // 이벤트 처리로 수정 예정 
+        model.UpdateModel(data);         // 이벤트 처리로 수정 예정 
     }
 
-    public void SerializeModel(List<ItemEntry> entries){
+    public void InitModel(List<SlotData<int>> datas){
         Debug.Log("Inventory Presenter : Serialize");
-        model.SerializeModel(entries);
+        model.InitModel(datas);
     }
 
     //icon이동으로는 UpdateView 발생 X 모델의 변화만 발생하도록
@@ -61,7 +53,11 @@ public class InventoryPresenter
         view.UpdateView(model.GetItemList());
     }
 
-    public List<ItemEntry> GetList(){
+    public void UpdateSlot(SlotData<int> slot){
+        model.UpdateModel(slot);
+    }
+
+    public Dictionary<int, ItemData> GetList(){
         return model.GetItemList();
     }
 }

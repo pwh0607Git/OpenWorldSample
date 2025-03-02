@@ -24,7 +24,7 @@ public class ActionBar : MonoBehaviour
         for (int i = 0; i < maxSlotSize; i++)
         {
             GameObject slotInstance = Instantiate(slotPrefab, slotParent);
-            slotInstance.GetComponent<ActionBarSlot>().SetAssigneKey(keyCodes[i]);
+            // slotInstance.GetComponent<ActionBarSlot>().SetAssigneKey(keyCodes[i]);
             slots.Add(slotInstance.GetComponent<ActionBarSlot>());
 
             RectTransform rectTransform = slotInstance.GetComponent<RectTransform>();

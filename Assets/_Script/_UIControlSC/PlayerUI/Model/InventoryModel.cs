@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 public class InventoryModel 
 {
-    private List<ItemEntry> items;
+    private Dictionary<int, ItemData?> items= new Dictionary<int, ItemData?>();
     public event Action OnModelChanged;             // inventory 내 아이템 정보가 갱신되면 실행되는 이벤트.
 
     public InventoryModel(int maxSlotSize){
-        items = new List<ItemEntry>();
+        for(int idx = 0; idx < maxSlotSize; idx++){
+            items[idx] = null;
+        }
     }
     
     // 조건 정립
@@ -25,25 +27,26 @@ public class InventoryModel
         return res;
     }
 
-    public List<ItemEntry> GetItemList(){
-        return new List<ItemEntry>(items);               //복사본을 전달한다!
+    public Dictionary<int, ItemData?> GetItemList(){
+        return new Dictionary<int, ItemData?>(items);               //복사본을 전달한다!
     }
 
     public int SearchEmptyIndex(){
         int index = -1;
-        for(int i=0;i<items.Count;i++){
-            if(items[i] == null) return i;
+        foreach(var item in items){
+            if(item.Value == null) return item.Key;
         }
         return index;
     }
 
+    // 새로운 아이템을 얻었을 때.
     public bool HandleGetItemData(ItemData getItem){
         foreach(var item in this.items){
-            ItemData itemInInventory = item.indexItem;
+            ItemData itemInInventory = item.Value;
         
             if (itemInInventory != null)
             {
-                if (item.indexItem is Consumable consumable)
+                if (item.Value is Consumable consumable)
                 {
                     if (SearchItemByType<ConsumableType>(itemInInventory.itemType, consumable.subType))
                     {
@@ -73,16 +76,16 @@ public class InventoryModel
     {
         foreach (var targetItem in items)
         {
-            if (targetItem.indexItem == null) continue;
+            if (targetItem.Value == null) continue;
 
-            ItemData item = targetItem.indexItem;
+            ItemData item = targetItem.Value;
 
             if (item.itemType == itemType)
             {
                 if (subType == null)
                 {
                     Debug.Log("Search Code : 001");
-                    return true;           //��Ÿ ������
+                    return true;
                 }
 
                 if (itemType == ItemType.Consumable && item is Consumable consumable)
@@ -115,24 +118,22 @@ public class InventoryModel
     bool GetNewItem(ItemData item){
         int index = SearchEmptyIndex();
         if(index == -1) return false;            //빈 공간이 없다는 뜻
-        items.Add(new ItemEntry(index, item));            //test용
+        items[index] = item;
         return true;
     }
 
     //List<ItemEntry>의 경우에는 외부 DB로 부터의 데이터를 동기화할때만 사용한다. => Serialized로 변경 예정
-    public void UpdateModel(List<ItemEntry> items){
+    public void UpdateModel(SlotData<int> item){            //index : itemData
         Debug.Log("Inventory Model : Update");
-        this.items = items;
+        
     }
 
-    public void SerializeModel(List<ItemEntry> items){
-        Debug.Log($"Inventory Model : Serialize => {items.Count}");
-        UpdateModel(items);
-
+    // init으로 수정예정
+    public void InitModel(List<SlotData<int>> itemList){
+        Debug.Log($"Inventory Model : Serialize => {itemList.Count}");
+        foreach(SlotData<int> item in itemList){
+            items[item.slotKey] = item.item; 
+        }
         OnModelChanged?.Invoke();
     }
-    
-    // List<ItemEntry> MakePacket(){
-
-    // }
 }

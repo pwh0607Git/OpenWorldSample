@@ -12,7 +12,7 @@ public class UIEventManager : MonoBehaviour
 
     // 아이템 아이콘, 타겟 슬롯, 이벤트 종류    
     // target이 아이콘일 가능성을 염두해두고 target slot을 따로 추출한다.
-    // (드래그한 아이콘, 이동 할 슬롯)
+    // (드래그한 아이콘, 이벤트가 발생한 슬롯)
     public void HandleItemDrop(ItemIconController itemIcon, PointerEventData eventData){
         DragAndDropSlot originalSlot = itemIcon.originalSlot;
         DragAndDropSlot targetSlot = eventData.pointerEnter?.GetComponentInParent<DragAndDropSlot>();
@@ -66,7 +66,7 @@ public class UIEventManager : MonoBehaviour
     private void MoveIcon(ItemIconController icon, DragAndDropSlot targetSlot){
         Debug.Log("Move Icons");
         icon.transform.SetParent(targetSlot.transform);
-        targetSlot.AssignCurrentItem(icon.gameObject);
+        targetSlot.SetItem(icon.gameObject);
     }
 
     private void SwapIcon(ItemIconController icon, DragAndDropSlot originalSlot, DragAndDropSlot targetSlot){
@@ -74,10 +74,10 @@ public class UIEventManager : MonoBehaviour
         Debug.Log("Swap Icons");
         ItemIconController icon2 = targetSlot.GetComponentInChildren<ItemIconController>();
         icon2.transform.SetParent(originalSlot.transform);
-        originalSlot.AssignCurrentItem(icon2.gameObject);
+        originalSlot.SetItem(icon2.gameObject);
         
         icon.transform.SetParent(targetSlot.transform);
-        targetSlot.AssignCurrentItem(icon.gameObject);
+        targetSlot.SetItem(icon.gameObject);
     }
 
     private void DuplicateIcon(ItemIconController icon, DragAndDropSlot targetSlot){
@@ -89,7 +89,7 @@ public class UIEventManager : MonoBehaviour
             if(tmpIcon != null) Destroy(tmpIcon.gameObject);
         
             ItemIconController duplicateItem = Instantiate(icon, targetSlot.transform);
-            targetSlot.AssignCurrentItem(duplicateItem.gameObject);
+            targetSlot.SetItem(duplicateItem.gameObject);
             consumable.isPresetting = true;
         }
         icon.ResetToOriginalSlot();

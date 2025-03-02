@@ -13,7 +13,7 @@ public class ItemMaker : MonoBehaviour
     [Header("Equipment")]
     public ItemData equipment1;
 
-    [SerializeField] List<ItemEntry> _serList;
+    [SerializeField] List<SlotData<int>> _serList;
     [SerializeField] List<ItemData> _newItemList;
 
     [Header("Reference")]
@@ -39,12 +39,14 @@ public class ItemMaker : MonoBehaviour
 }
 
 [Serializable]
-public class ItemEntry{
-    public int inventoryIdx;
-    public ItemData indexItem;
+public class SlotData<T>
+{
+    public T slotKey;   // InventorySlot: int, ActionBarSlot: KeyCode
+    public ItemData item;
 
-    public ItemEntry(int idx, ItemData itemData){
-        this.inventoryIdx = idx;
-        this.indexItem =itemData;
+    public SlotData(T slotKey, ItemData item)
+    {
+        this.slotKey = slotKey;
+        this.item = item;
     }
 }
