@@ -15,7 +15,9 @@ public class ModelViewer : MonoBehaviour
  
     void ShowInventoryModel(){
         Dictionary<int, ItemData> dic = playerUIPresenter.GetInventoryModel();
+        Debug.Log($"Show! Inventory {dic.Count}");
         InventoryList.Clear();
+
         foreach(var item in dic){
             if(item.Value == null) continue;
             InventoryList.Add(new SlotData<int>(item.Key, item.Value));

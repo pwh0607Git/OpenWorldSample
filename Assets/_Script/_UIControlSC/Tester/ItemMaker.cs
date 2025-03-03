@@ -25,7 +25,7 @@ public class ItemMaker : MonoBehaviour
     }
     IEnumerator NotifyInitTest(){
         yield return null;
-        uiPresenter.SerializeInventory(_serList);
+        uiPresenter.InitInventory(_serList);
     }
 
     [Button("GetItem"), HideField] public bool btn1;

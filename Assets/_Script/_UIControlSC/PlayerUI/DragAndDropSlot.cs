@@ -1,21 +1,26 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public abstract class DragAndDropSlot : MonoBehaviour, IDropHandler
 {
-    private GameObject assignedItem;
+    protected GameObject assignedItem;
     public void OnDrop(PointerEventData eventData){
         GameObject droppedItem = eventData.pointerDrag;
         UIItemEventHandler.OnChangedSlot(this, droppedItem);
     }
-
-    public void SetItem(GameObject item){
+    public virtual void SetItem(GameObject item)
+    {
         assignedItem = item;
         item.transform.SetParent(transform);
         item.transform.localPosition = Vector2.zero;
     }
-    public void ClearSlot(){
+
+    public virtual void ClearSlot()
+    {
+        ItemIconController iconController = GetComponentInChildren<ItemIconController>();
+        
+        if (iconController != null)
+            Destroy(iconController.gameObject);
         assignedItem = null;
     }
     public GameObject GetItem(){

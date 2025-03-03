@@ -7,7 +7,7 @@ using CustomInspector;
 
 public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField, ReadOnly] List<SlotData<int>> itemsView;                              // 인스펙터 출력용
+    [Space(10)]
     [Header("UI Component")]
     [SerializeField] Transform scrollContent;
     public GameObject inventoryWindow;
@@ -18,17 +18,20 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private List<InventorySlot> slots = new List<InventorySlot>();
     Transform originalParent;
 
-    public event Action<List<SlotData<int>>> OnChangedInventoryView;          //inventoryView의 변화 감지 
-    void Start()
-    {
+    [HorizontalLine("CurrentInventory"), HideField] public bool l1;
+    [SerializeField, ReadOnly] List<SlotData<int>> itemsView;                              // 인스펙터 출력용
+    [HorizontalLine(""), HideField] public bool l2;
+
+    public event Action<SlotData<int>> OnViewUpdated;          //inventoryView의 변화 감지 
+    void Start(){
         originalParent = transform.parent;
     }
-    public void SetActive(bool isActive)
-    {
+
+    public void SetActive(bool isActive){
         inventoryWindow.SetActive(isActive);
     }
     
-    public void CreateSlots(int maxSlotSize){
+    public void InitSlots(int maxSlotSize){
         for(int i=0;i<maxSlotSize;i++){
             InventorySlot slot = Instantiate(slotPrefab, scrollContent).GetComponent<InventorySlot>();
             slot.index = i;
@@ -36,13 +39,18 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
+    public void EnableSlotEvents()
+    {
+        foreach (var slot in slots)
+        {
+            slot.OnSlotUpdated += ChagedEventHandler;
+        }
+    }
+
     public void UpdateView(Dictionary<int, ItemData> items){
-        Debug.Log($"Inventory View : 받은 List Count : {items.Count}");
-        // 엔트리 리스트에 존재하는 아이템에 대해서만 icon을 생성하고 나머지 아이콘들은 모두 제거한다.
         ClearSlotData();
         UpdateViewInspector(items);
 
-        // item : Entry
         foreach(var item in itemsView){
             if(item.item == null) continue;
             SetItemIcon(item.item, slots[item.slotKey]);
@@ -66,41 +74,34 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private void SetItemIcon(ItemData item, InventorySlot slot){
         GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
         slot.SetItem(itemIcon);
-        AssignComponent(itemIcon,item);
+        AssignComponent(itemIcon, item);
     }
 
     private void AssignComponent(GameObject icon, ItemData itemData){
         ItemDataHandler handler = null;
-        if (itemData.itemType == ItemType.Consumable)
-        {
-            handler = icon.AddComponent<ConsumableItemHandler>();
-        }
-        else if(itemData.itemType == ItemType.Equipment)
-        {
-            handler =  icon.AddComponent<EquipmentItemHandler>();
-        }
+
+        if (itemData.itemType == ItemType.Consumable) handler = icon.AddComponent<ConsumableItemHandler>();
+        else if(itemData.itemType == ItemType.Equipment) handler =  icon.AddComponent<EquipmentItemHandler>();
 
         if(handler == null) return;
         handler.Init(itemData);
     }
-    public void ChagedEventHandler(){
-        //View로 부터 데이터 변화가 발생!
-        StartCoroutine(Coroutine_ChangedEventHandle());
+    
+    public void ChagedEventHandler(SlotData<int> data){
+        StartCoroutine(Coroutine_ChangedEventHandle(data));
     }
 
-    IEnumerator Coroutine_ChangedEventHandle(){
+    IEnumerator Coroutine_ChangedEventHandle(SlotData<int> data){
         yield return null;
-        Debug.Log($"Inventory View : Change Event 발생!");
-        
-        //슬롯 전체를 비교.
         itemsView.Clear();
         for(int i=0;i<slots.Count;i++){
             if(slots[i].GetItem() == null) continue;
             ItemData slotItem = slots[i].GetItem().GetComponent<ItemDataHandler>().GetItem;
-            SlotData<int> data = new SlotData<int>(i, slotItem);
-            itemsView.Add(data);
+            SlotData<int> viewData = new SlotData<int>(i, slotItem);
+            itemsView.Add(viewData);
         }
-        OnChangedInventoryView?.Invoke(itemsView);
+
+        OnViewUpdated?.Invoke(data);
     }
 
     #region Event

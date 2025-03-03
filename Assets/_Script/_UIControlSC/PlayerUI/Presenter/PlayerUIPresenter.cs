@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
 
 public class PlayerUIPresenter : MonoBehaviour
 {
@@ -22,7 +21,6 @@ public class PlayerUIPresenter : MonoBehaviour
         InventoryModel inventoryModel = new InventoryModel(maxSlotSize);
         inventoryPresenter = new InventoryPresenter(inventoryModel, inventoryView);
 
-        // StartCoroutine(InitMVP());
         ActionbarModel actionbarModel = new ActionbarModel();
         actionbarPresenter = new ActionbarPresenter(actionbarModel, actionBarView);
     
@@ -39,9 +37,8 @@ public class PlayerUIPresenter : MonoBehaviour
     }
 
     // 초기화용 코드.
-    public void SerializeInventory(List<SlotData<int>> datas){
-        // inventoryPresenter에게 serList에 맞게 InventoryModel을 수정해 줄 것을 요구한다.
-        Debug.Log("Inventory Init!");
+    public void InitInventory(List<SlotData<int>> datas){
+        Debug.Log($"Inventory Init! datasCount : {datas}");
         inventoryPresenter.InitModel(datas);
     }
 
