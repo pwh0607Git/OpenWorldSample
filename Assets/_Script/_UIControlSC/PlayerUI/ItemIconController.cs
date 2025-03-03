@@ -13,6 +13,7 @@ public class ItemIconController : MonoBehaviour, IBeginDragHandler, IDragHandler
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         itemDataHandler = GetComponent<ItemDataHandler>();
+        canvasGroup.blocksRaycasts = true;
     }
 
     public void OnBeginDrag(PointerEventData eventData) {

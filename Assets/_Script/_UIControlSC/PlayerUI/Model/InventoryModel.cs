@@ -21,7 +21,7 @@ public class InventoryModel
     }
 
     public bool AddItem(ItemData item){
-        Debug.Log($"Model : {item}");
+        Debug.Log($"Model : AddItem - {item}");
         bool res = HandleGetItemData(item);
         OnModelUpdated?.Invoke();
         return res;

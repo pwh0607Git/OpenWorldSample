@@ -10,7 +10,7 @@ public class InventoryPresenter
         this.model = model;
         this.view = view;
         view.OnViewUpdated += UpdateModelDataFromView;
-        model.OnModelUpdated += UpdateView;
+        model.OnModelUpdated += UpdateViewFromModel;
         view.InitSlots(40);
     }
 
@@ -38,12 +38,13 @@ public class InventoryPresenter
         view.EnableSlotEvents();
     }
 
-    public void UpdateView(){
+    public void UpdateViewFromModel(){
         Debug.Log($"Presenter : model itemList Count : {model.GetItemList().Count}");
         view.UpdateView(model.GetItemList());
     }
 
-    public void UpdateModelDataFromView(SlotData<int> slot) => model.UpdateModelDataFromView(slot);
-
+    public void UpdateModelDataFromView(SlotData<int> slot){
+        model.UpdateModelDataFromView(slot);
+    } 
     public Dictionary<int, ItemData> GetList() => model.GetItemList();
 }

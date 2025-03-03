@@ -43,6 +43,7 @@ public class PlayerUIPresenter : MonoBehaviour
     }
 
     public void GetItem(ItemData item){
+        Debug.Log($"PlayUIPresenter : GetItem - {item}");
         inventoryPresenter.AddItem(item);
     }
 

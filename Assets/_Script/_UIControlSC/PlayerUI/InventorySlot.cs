@@ -11,16 +11,23 @@ public class InventorySlot : DragAndDropSlot, IDropHandler
         return base.CheckVaildItem(item);
     }
 
-    public override void SetItem(GameObject item)
+    #region UIITemEventHandler R 
+    public override void SetItem(GameObject item, bool f = false)
     {
         base.SetItem(item);
+        
         ItemData itemData = assignedItem.GetComponentInChildren<ItemDataHandler>()?.GetItem;
+        if(!f) return;
         OnSlotUpdated?.Invoke(new SlotData<int>(index, itemData));
     }
 
-    public override void ClearSlot()
+    public override void ClearSlot(bool f = false)
     {
         base.ClearSlot();
+        
+        if(!f) return;
         OnSlotUpdated?.Invoke(new SlotData<int>(index, null));
+        
     }
+    #endregion
 }

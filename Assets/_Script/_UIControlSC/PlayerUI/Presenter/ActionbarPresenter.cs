@@ -9,12 +9,6 @@ public class ActionbarPresenter
     public ActionbarPresenter(ActionbarModel model, ActionbarView view){
         this.model = model;
         this.view = view;
-        
-        if (this.view == null)
-        {
-            Debug.LogWarning("ActionbarPresenter: View is null! Make sure it is properly initialized.");
-        }
-
         model.OnModelChanged += ModelChangeHandler;
     }
 

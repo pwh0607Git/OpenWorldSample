@@ -8,14 +8,14 @@ public abstract class DragAndDropSlot : MonoBehaviour, IDropHandler
         GameObject droppedItem = eventData.pointerDrag;
         UIItemEventHandler.OnChangedSlot(this, droppedItem);
     }
-    public virtual void SetItem(GameObject item)
+    public virtual void SetItem(GameObject item, bool f = false)
     {
         assignedItem = item;
         item.transform.SetParent(transform);
         item.transform.localPosition = Vector2.zero;
     }
 
-    public virtual void ClearSlot()
+    public virtual void ClearSlot(bool f = false)
     {
         ItemIconController iconController = GetComponentInChildren<ItemIconController>();
         

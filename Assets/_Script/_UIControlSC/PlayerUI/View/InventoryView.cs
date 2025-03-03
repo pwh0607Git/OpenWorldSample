@@ -60,7 +60,7 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private void UpdateViewInspector(Dictionary<int, ItemData> items){
         itemsView.Clear();
         foreach(var item in items){
-            if(item.Value == null) continue;
+            // if(item.Value == null) continue;
             itemsView.Add(new SlotData<int>(item.Key, item.Value));
         }
     }
