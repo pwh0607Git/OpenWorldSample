@@ -5,25 +5,30 @@ using UnityEngine;
 public class ActionbarModel 
 {
     public int maxSlotSize {get; private set;}
-    private List<ActionBarSlotComponent> components;
-    public event Action OnModelChanged;             // inventory 내 아이템 정보가 갱신되면 실행되는 이벤트.
+    private Dictionary<KeyCode, ItemData> slotDatas = new Dictionary<KeyCode, ItemData>();
+    public event Action OnModelUpdated;             // inventory 내 아이템 정보가 갱신되면 실행되는 이벤트.
 
     public ActionbarModel()
     {
         this.maxSlotSize = maxSlotSize;
-        components = new List<ActionBarSlotComponent>();
+    }
+    public void InitModel(List<SlotData<KeyCode>> slotDatas){
+        // UpdateModel(components);
+        foreach(var data in slotDatas){
+            UpdateModel(data);
+        }
+        OnModelUpdated?.Invoke();
+    }
+    public Dictionary<KeyCode, ItemData> GetSlotDatas() => new Dictionary<KeyCode, ItemData>(slotDatas);
+
+    public void UpdateModel(SlotData<KeyCode> data){
+        // Debug.Log($"code : {data.slotKey} : {data.item}");
+        slotDatas[data.slotKey] = data.item;
     }
 
-    public List<ActionBarSlotComponent> GetComponents(){
-        return new List<ActionBarSlotComponent>(components);
-    }
-    public void UpdateModel(List<ActionBarSlotComponent> components){
-        Debug.Log($"Inventory Model : Serialize => {components.Count}");
-        this.components = components;
-    }
-    
-    public void Serialize(List<ActionBarSlotComponent> components){
-        UpdateModel(components);
-        OnModelChanged?.Invoke();
-    }
+    public void UpdateModelDataFromView(SlotData<KeyCode> data)
+    {
+        Debug.Log($"Inventory Model : 슬롯 {data.slotKey} 업데이트");
+        slotDatas[data.slotKey] = data.item;
+    }   
 }

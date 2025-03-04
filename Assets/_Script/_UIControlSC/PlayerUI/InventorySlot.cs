@@ -4,8 +4,9 @@ using System;
 
 public class InventorySlot : DragAndDropSlot, IDropHandler
 {
-    public event Action<SlotData<int>> OnSlotUpdated;
     public int index;
+    public event Action<SlotData<int>> OnSlotUpdated;
+    
     public override bool CheckVaildItem(GameObject item)
     {
         return base.CheckVaildItem(item);
@@ -16,8 +17,8 @@ public class InventorySlot : DragAndDropSlot, IDropHandler
     {
         base.SetItem(item);
         
-        ItemData itemData = assignedItem.GetComponentInChildren<ItemDataHandler>()?.GetItem;
         if(!f) return;
+        ItemData itemData = assignedItem.GetComponentInChildren<ItemDataHandler>()?.GetItem;
         OnSlotUpdated?.Invoke(new SlotData<int>(index, itemData));
     }
 

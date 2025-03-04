@@ -1531,22 +1531,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   components:
-  - assignedKey: 256
-    assignedItem: {fileID: 0}
-  - assignedKey: 257
-    assignedItem: {fileID: 0}
-  - assignedKey: 258
-    assignedItem: {fileID: 0}
-  - assignedKey: 259
-    assignedItem: {fileID: 0}
-  - assignedKey: 260
-    assignedItem: {fileID: 0}
-  - assignedKey: 261
-    assignedItem: {fileID: 0}
-  - assignedKey: 262
-    assignedItem: {fileID: 0}
-  - assignedKey: 263
-    assignedItem: {fileID: 0}
+  - slotKey: 256
+    item: {fileID: 11400000, guid: 418a42520f616b342b88699ee38d6e68, type: 2}
+  - slotKey: 257
+    item: {fileID: 0}
+  - slotKey: 258
+    item: {fileID: 0}
+  - slotKey: 259
+    item: {fileID: 0}
+  - slotKey: 260
+    item: {fileID: 0}
+  - slotKey: 261
+    item: {fileID: 0}
+  - slotKey: 262
+    item: {fileID: 0}
+  - slotKey: 263
+    item: {fileID: 0}
   uiPresenter: {fileID: 96044279}
   btn1: 0
 --- !u!114 &568067197
@@ -8339,7 +8339,10 @@ MonoBehaviour:
   slotParent: {fileID: 8504054601563337852}
   slotPrefab: {fileID: 7252293692202396646, guid: 4cd70f5eb6e87ac48877a929716181a2, type: 3}
   iconBasePrefab: {fileID: 7679876614145519527, guid: e6ba42578b13a574f83603acde6bb78d, type: 3}
-  viewSlots: []
+  slots: []
+  l1: 0
+  actionbarView: []
+  l2: 0
 --- !u!114 &8789230930797230079
 MonoBehaviour:
   m_ObjectHideFlags: 0

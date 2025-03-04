@@ -36,30 +36,39 @@ public class PlayerUIPresenter : MonoBehaviour
         }
     }
 
-    // 초기화용 코드.
+    #region Inventory
     public void InitInventory(List<SlotData<int>> datas){
         Debug.Log($"Inventory Init! datasCount : {datas}");
         inventoryPresenter.InitModel(datas);
     }
-
     public void GetItem(ItemData item){
         Debug.Log($"PlayUIPresenter : GetItem - {item}");
         inventoryPresenter.AddItem(item);
     }
+    #endregion
 
-    public void SerializeActionbar(List<ActionBarSlotComponent> components){
+
+    #region Actionbar
+    public void InitActionbar(List<SlotData<KeyCode>> components){
         Debug.Log("Actionbar Init!");
-        actionbarPresenter.SerializeModel(components);
+        actionbarPresenter.InitModel(components);
     }
-
+    #endregion
+    
+    
+    #region State
     public void SerializePlayerState(){
         // playerStatePresenter.se
     }
+    #endregion
+    
+    #region Tester
     public Dictionary<int, ItemData> GetInventoryModel(){
         return inventoryPresenter.GetList();
     }
 
-    public List<ActionBarSlotComponent> ShowActionbarModel(){
+    public Dictionary<KeyCode, ItemData> GetActionbarModel(){
         return actionbarPresenter.GetList();
     }
+    #endregion
 }

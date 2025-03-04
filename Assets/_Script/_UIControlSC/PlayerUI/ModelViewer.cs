@@ -9,7 +9,7 @@ public class ModelViewer : MonoBehaviour
     [SerializeField] List<SlotData<int>> InventoryList;
     [Button("ShowInventoryModel"), HideField] public bool btn2;
     [Space(20)]
-    [SerializeField] List<ActionBarSlotComponent> ActionBarList;
+    [SerializeField] List<SlotData<KeyCode>> ActionBarList;
  
     [Button("ShowActionbarModel"), HideField] public bool btn1;
  
@@ -24,6 +24,11 @@ public class ModelViewer : MonoBehaviour
     }
     
     void ShowActionbarModel(){
-        ActionBarList = playerUIPresenter.ShowActionbarModel();
+        Dictionary<KeyCode, ItemData> dic = playerUIPresenter.GetActionbarModel();
+        ActionBarList.Clear();
+
+        foreach(var data in dic){
+            ActionBarList.Add(new SlotData<KeyCode>(data.Key, data.Value));
+        }
     }
 }

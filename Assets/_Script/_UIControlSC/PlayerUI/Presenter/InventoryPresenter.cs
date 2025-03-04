@@ -46,5 +46,8 @@ public class InventoryPresenter
     public void UpdateModelDataFromView(SlotData<int> slot){
         model.UpdateModelDataFromView(slot);
     } 
+
+    #region Inspector Caller
     public Dictionary<int, ItemData> GetList() => model.GetItemList();
+    #endregion
 }
