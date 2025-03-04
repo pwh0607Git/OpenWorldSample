@@ -11,6 +11,7 @@ public class InventoryModel
         for(int idx = 0; idx < maxSlotSize; idx++){
             items[idx] = null;
         }
+        OnModelUpdated?.Invoke();           // 0-0-0
     }
     public void InitModel(List<SlotData<int>> itemList){
         Debug.Log($"Inventory Model : Init => {itemList.Count}");

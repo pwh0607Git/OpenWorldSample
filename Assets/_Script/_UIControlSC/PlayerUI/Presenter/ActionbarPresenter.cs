@@ -9,26 +9,28 @@ public class ActionbarPresenter
     public ActionbarPresenter(ActionbarModel model, ActionbarView view){
         this.model = model;
         this.view = view;
-        model.OnModelChanged += ModelChangeHandler;
-    }
-
-    //view에 표기하기 !!!
-    void ModelChangeHandler(){
-        Debug.Log($"Action bar Model - InitView code Count :{model.GetComponents().Count}");
-        if (view == null)
-        {
-            Debug.LogWarning("ModelChangeHandler: view is null!");
-        }
-        view.SerializeSlots(model.GetComponents());
+        view.OnViewUpdated += UpdateModelDataFromView;
+        model.OnModelUpdated += UpdateViewFromModel;
     }
 
     // 다음 진행.
-    public void SerializeModel(List<ActionBarSlotComponent> components){
-        Debug.Log($"Action bar Model - Serialize code Count :{components.Count}");
-        model.Serialize(components);
+    public void InitModel(List<SlotData<KeyCode>> slotDatas){
+        Debug.Log($"Actionbar Presenter - Init bar code : {slotDatas.Count}");
+        model.InitModel(slotDatas);
     }
 
-    public List<ActionBarSlotComponent> GetList(){
-        return model.GetComponents();
+    // Model -> View
+    public void UpdateViewFromModel(){
+        Debug.Log($"Actionbar Presenter : model Key Code : {model.GetSlotDatas().Count}");
+        view.UpdateView(model.GetSlotDatas());
     }
+
+    // View -> Model
+    public void UpdateModelDataFromView(SlotData<KeyCode> slot){
+        model.UpdateModelDataFromView(slot);
+    } 
+
+    #region Inspector Caller
+    public Dictionary<KeyCode, ItemData> GetList() => model.GetSlotDatas();
+    #endregion
 }
