@@ -9,11 +9,19 @@ public class PlayerStatePresenter : MonoBehaviour
         this.model = model;
         this.view = view;
 
-        model.OnModelChanged += ModelChangeHandler;
+        model.OnStateUpdated += ModelChangeHandler;
     }
 
     public void ModelChangeHandler(){
         Debug.Log("Model이 변경되었다! View를 Update하러 가자!");
         view.UpdateView(model.GetState());
+    }
+
+    public void UseItem(Consumable consumable){
+
+    }
+
+    public void EquipItem(Equipment equipment){
+
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerStateModel
 {
     private PlayerState p_state;
-    public event Action OnModelChanged; 
+    public event Action OnStateUpdated;
     public PlayerStateModel(){
         p_state = new PlayerState();
     }
@@ -13,7 +13,7 @@ public class PlayerStateModel
      
     public void UpdateModel(PlayerState state){
         p_state = state;
-        OnModelChanged?.Invoke();
+        OnStateUpdated?.Invoke();
     }
 }
 
@@ -28,9 +28,9 @@ public class PlayerState{
     public float defend;
     public float attack;
 
-    public event Action OnStateChanged;
+    public event Action OnStateUpdated;
 
-public void EquipItem(Equipment item) {
+    public void EquipItem(Equipment item) {
         switch (item.subType) {
             case EquipmentType.Head: defend += item.value; break;
             case EquipmentType.Weapon: attack += item.value; break;
@@ -63,5 +63,5 @@ public void EquipItem(Equipment item) {
         NotifyStateChange();
     }
 
-    private void NotifyStateChange() => OnStateChanged?.Invoke();
+    private void NotifyStateChange() => OnStateUpdated?.Invoke();
 }

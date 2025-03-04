@@ -21,12 +21,14 @@ public class ActionbarPresenter
 
     // Model -> View
     public void UpdateViewFromModel(){
-        Debug.Log($"Actionbar Presenter : model Key Code : {model.GetSlotDatas().Count}");
+        Debug.Log($"Actionbar Presenter : Update View");
         view.UpdateView(model.GetSlotDatas());
     }
 
     // View -> Model
     public void UpdateModelDataFromView(SlotData<KeyCode> slot){
+        
+        Debug.Log($"Actionbar Presenter : Update Model {slot.slotKey} : {slot.item}");
         model.UpdateModelDataFromView(slot);
     } 
 

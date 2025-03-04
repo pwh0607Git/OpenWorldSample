@@ -23,19 +23,6 @@ public class ActionbarView : MonoBehaviour
     
     public event Action<SlotData<KeyCode>> OnViewUpdated;  
 
-    //먼저 빈슬롯으로 생성.
-    public void InitSlots(Dictionary<KeyCode, ItemData> slotDatas){
-        foreach(var data in slotDatas){
-            ActionBarSlot slot = CreateSlot(data.Key);
-            if(data.Value == null) continue;
-
-            SetItemIcon(data.Value, slot);
-        }
-        
-        UpdateViewInspector(slotDatas);
-        EnableSlotEvents();
-    }
-
     private void UpdateViewInspector(Dictionary<KeyCode, ItemData> datas){
         actionbarView.Clear();
         foreach(var data in datas){
@@ -52,9 +39,9 @@ public class ActionbarView : MonoBehaviour
         }
         
         UpdateViewInspector(slotDatas);
+        EnableSlotEvents();
     }
 
-    // 빈 슬롯 생성.
     ActionBarSlot CreateSlot(KeyCode key){
         ActionBarSlot slot = Instantiate(slotPrefab, slotParent).GetComponent<ActionBarSlot>();
         slots.Add(slot);
@@ -78,6 +65,7 @@ public class ActionbarView : MonoBehaviour
     IEnumerator Coroutine_ChangedEventHandle(SlotData<KeyCode> data){
         yield return null;
         actionbarView.Clear();
+        Debug.Log($"Actionbar Veiw Update : {data.slotKey} : {data.item}");
         foreach( var slot in slots){
             if(slot.GetItem() == null) continue;
             ItemData slotItem = slot.GetItem().GetComponent<ItemDataHandler>().GetItem;
@@ -88,11 +76,6 @@ public class ActionbarView : MonoBehaviour
         }
 
         OnViewUpdated?.Invoke(data);
-    }
-    private void ClearSlotData(){
-        foreach(var slot in slots){
-            slot.ClearSlot();
-        }
     }
 
     private void SetItemIcon(ItemData item, ActionBarSlot slot){

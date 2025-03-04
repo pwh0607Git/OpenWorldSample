@@ -15,8 +15,9 @@ public class ActionBarSlot : DragAndDropSlot{
     public override void SetItem(GameObject item, bool f = false)
     {
         base.SetItem(item);
-
+        
         if(!f) return;
+        Debug.Log("Slot Set Item...");
         ItemData itemData = item.GetComponentInChildren<ItemDataHandler>()?.GetItem;
         OnSlotUpdated?.Invoke(new SlotData<KeyCode>(assignedKey, itemData));
     }
@@ -26,6 +27,7 @@ public class ActionBarSlot : DragAndDropSlot{
         base.ClearSlot();
 
         if(!f) return;
+        Debug.Log("Slot Clear Item...");
         OnSlotUpdated?.Invoke(new SlotData<KeyCode>(assignedKey, null));
     }
     #endregion

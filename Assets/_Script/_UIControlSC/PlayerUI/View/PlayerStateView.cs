@@ -18,7 +18,7 @@ public class PlayerStateView : MonoBehaviour
     }
     IEnumerator Start(){
         yield return new WaitUntil(() => p_state != null);
-        p_state.OnStateChanged += UpdateStateUI;
+        p_state.OnStateUpdated += UpdateStateUI;
     }
 
     public void UpdateStateUI()

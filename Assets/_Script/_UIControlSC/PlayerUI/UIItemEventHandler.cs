@@ -73,10 +73,10 @@ public class UIItemEventHandler : MonoBehaviour
     static void DuplicateIcon(DragAndDropSlot targetSlot, GameObject item){
         Debug.Log("아이콘 Duplicate");
         GameObject newIcon = Instantiate(item, targetSlot.transform);
-        targetSlot.SetItem(newIcon,true);
-        
         // 드래그한 아이템 아이콘은 원위치
         item.GetComponentInChildren<ItemIconController>().ResetToOriginalSlot();
+        
+        targetSlot.SetItem(newIcon,true);
     }
 
     static void DestroyIcon(GameObject item){

@@ -22,7 +22,6 @@ public class ActionbarModel
     public Dictionary<KeyCode, ItemData> GetSlotDatas() => new Dictionary<KeyCode, ItemData>(slotDatas);
 
     public void UpdateModel(SlotData<KeyCode> data){
-        // Debug.Log($"code : {data.slotKey} : {data.item}");
         slotDatas[data.slotKey] = data.item;
     }
 
