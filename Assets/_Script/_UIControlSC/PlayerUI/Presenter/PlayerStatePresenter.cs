@@ -9,7 +9,7 @@ public class PlayerStatePresenter : MonoBehaviour
         this.model = model;
         this.view = view;
 
-        model.OnStateUpdated += ModelChangeHandler;
+        model.OnModelUpdated += ModelChangeHandler;
     }
 
     public void ModelChangeHandler(){

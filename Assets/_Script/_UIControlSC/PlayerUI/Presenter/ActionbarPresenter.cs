@@ -27,7 +27,6 @@ public class ActionbarPresenter
 
     // View -> Model
     public void UpdateModelDataFromView(SlotData<KeyCode> slot){
-        
         Debug.Log($"Actionbar Presenter : Update Model {slot.slotKey} : {slot.item}");
         model.UpdateModelDataFromView(slot);
     } 

@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerStateModel
 {
     private PlayerState p_state;
-    public event Action OnStateUpdated;
+    public event Action OnModelUpdated;
     public PlayerStateModel(){
         p_state = new PlayerState();
     }
@@ -13,7 +13,7 @@ public class PlayerStateModel
      
     public void UpdateModel(PlayerState state){
         p_state = state;
-        OnStateUpdated?.Invoke();
+        OnModelUpdated?.Invoke();
     }
 }
 

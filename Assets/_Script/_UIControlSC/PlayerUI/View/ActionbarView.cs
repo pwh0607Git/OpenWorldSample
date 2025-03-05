@@ -18,16 +18,16 @@ public class ActionbarView : MonoBehaviour
     public List<ActionBarSlot> slots = new List<ActionBarSlot>();
     
     [HorizontalLine("CurrentInventory"), HideField] public bool l1;
-    [SerializeField, ReadOnly] List<SlotData<KeyCode>> actionbarView;                              // 인스펙터 출력용
+    [SerializeField, ReadOnly] List<SlotData<KeyCode>> inspectorView;                              // 인스펙터 출력용
     [HorizontalLine(""), HideField] public bool l2;
     
     public event Action<SlotData<KeyCode>> OnViewUpdated;  
 
     private void UpdateViewInspector(Dictionary<KeyCode, ItemData> datas){
-        actionbarView.Clear();
+        inspectorView.Clear();
         foreach(var data in datas){
             if(data.Value == null) continue;
-            actionbarView.Add(new SlotData<KeyCode>(data.Key, data.Value));
+            inspectorView.Add(new SlotData<KeyCode>(data.Key, data.Value));
         }
     }
     public void UpdateView(Dictionary<KeyCode, ItemData> slotDatas){
@@ -64,7 +64,7 @@ public class ActionbarView : MonoBehaviour
     // // 변경된 데이터
     IEnumerator Coroutine_ChangedEventHandle(SlotData<KeyCode> data){
         yield return null;
-        actionbarView.Clear();
+        inspectorView.Clear();
         Debug.Log($"Actionbar Veiw Update : {data.slotKey} : {data.item}");
         foreach( var slot in slots){
             if(slot.GetItem() == null) continue;
@@ -72,7 +72,7 @@ public class ActionbarView : MonoBehaviour
             KeyCode key = slot.assignedKey;
 
             SlotData<KeyCode> viewData = new SlotData<KeyCode>(key, slotItem);
-            actionbarView.Add(viewData);
+            inspectorView.Add(viewData);
         }
 
         OnViewUpdated?.Invoke(data);
