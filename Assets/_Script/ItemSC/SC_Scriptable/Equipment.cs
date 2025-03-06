@@ -8,8 +8,8 @@ public enum EquipmentType
     Foot                           
 }
 
-[CreateAssetMenu(fileName = "Equipment", menuName = "Items/Equipment")]
-public class Equipment : ItemData
+[CreateAssetMenu(fileName = "EquipmentData", menuName = "Items/Equipment")]
+public class EquipmentData : ItemData
 {
     public EquipmentType subType;
 
@@ -21,9 +21,5 @@ public class Equipment : ItemData
     private void OnEnable()
     {
         itemType = ItemType.Equipment;
-    }
-
-    public override void Use(){
-        // 슬롯에서 값 처리하기.
     }
 }

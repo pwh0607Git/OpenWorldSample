@@ -16,21 +16,10 @@ public class PlayerStateView : MonoBehaviour
         HP_Image = HP_Bar.GetComponentInChildren<Image>();
         MP_Image = MP_Bar.GetComponentInChildren<Image>();
     }
-    IEnumerator Start(){
-        yield return new WaitUntil(() => p_state != null);
-        p_state.OnStateUpdated += UpdateStateUI;
-    }
-
-    public void UpdateStateUI()
-    {
-        if (p_state == null) return;
-        HP_Image.fillAmount = (float)p_state.curHP / p_state.maxHP;
-        MP_Image.fillAmount = (float)p_state.curMP / p_state.maxMP;
-    }
 
     public void UpdateView(PlayerState state){
-        if (state == null) return;
         p_state = state;
-        UpdateStateUI();
+        HP_Image.fillAmount = (float)state.currentHp / state.maxHp;
+        MP_Image.fillAmount = (float)state.currentHp / state.maxHp;
     }
 }

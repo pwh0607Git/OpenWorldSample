@@ -7,7 +7,7 @@ public enum ItemType
     ETC
 }
 
-[CreateAssetMenu(fileName = "Item Data", menuName = "Scriptable Object/Item Data")]
+[CreateAssetMenu(fileName = "ItemData", menuName = "Scriptable Object/Item Data")]
 public abstract class ItemData : ScriptableObject
 {
     [Header("Information")]
@@ -19,6 +19,4 @@ public abstract class ItemData : ScriptableObject
     [Header("Visual")]
     public Sprite icon;
     public GameObject model;
-
-    public abstract void Use();
 }
