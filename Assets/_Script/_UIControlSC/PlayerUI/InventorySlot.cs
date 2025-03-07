@@ -7,19 +7,19 @@ public class InventorySlot : DragAndDropSlot, IDropHandler
     public int index;
     public event Action<SlotData<int>> OnSlotUpdated;
     
-    public override bool CheckVaildItem(GameObject item)
+    public override bool CheckVaildItem(GameObject itemIcon)
     {
-        return base.CheckVaildItem(item);
+        return base.CheckVaildItem(itemIcon);
     }
 
     #region UIITemEventHandler R 
-    public override void SetItem(GameObject item, bool f = false)
+    public override void SetItem(GameObject itemIcon, bool f = false)
     {
-        base.SetItem(item);
+        base.SetItem(itemIcon);
         
         if(!f) return;
-        ItemData itemData = assignedItem.GetComponentInChildren<ItemDataHandler>()?.GetItem;
-        OnSlotUpdated?.Invoke(new SlotData<int>(index, itemData));
+        Item item = assignedItem.GetComponentInChildren<Item>();
+        OnSlotUpdated?.Invoke(new SlotData<int>(index, item));
     }
 
     public override void ClearSlot(bool f = false)

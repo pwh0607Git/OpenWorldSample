@@ -17,63 +17,63 @@ public class State
 
     public Action OnStateChanged;
 
-    public void EquipItem(Equipment item)
+    public void EquipItem(EquipmentData itemData)
     {
-        switch (item.subType)
+        switch (itemData.subType)
         {
             case EquipmentType.Head:
                 {
-                    defend += item.value;
+                    defend += itemData.value;
                     break;
                 }
             case EquipmentType.Weapon:
                 {
-                    attack += item.value;
+                    attack += itemData.value;
                     break;
                 }
             case EquipmentType.Cloth:
                 {
-                    maxHP += (int)item.value;
+                    maxHP += (int)itemData.value;
                     break;
                 }
             case EquipmentType.Foot:
                 {
-                    defend += item.value;
+                    defend += itemData.value;
                     break;
                 }
         }
         NotifyStateChange();
     }
 
-    public void DetachItem(Equipment item)
+    public void DetachItem(EquipmentData itemData)
     {
-        switch (item.subType)
+        switch (itemData.subType)
         {
             case EquipmentType.Head:
             {
-                defend -= item.value;
+                defend -= itemData.value;
                 break;
             }
             case EquipmentType.Weapon:
             {
-                attack -= item.value;
+                attack -= itemData.value;
                 break;
             }
             case EquipmentType.Cloth:
             {
-                maxHP -= (int)item.value;
+                maxHP -= (int)itemData.value;
                 break;
             }
             case EquipmentType.Foot:
             {
-                speed -= item.value;
+                speed -= itemData.value;
                 break;
             }
         }
         NotifyStateChange();
     }
 
-    public void UesConsumable(Consumable itemData)
+    public void UesConsumable(ConsumableData itemData)
     {
         switch (itemData.subType)
         {

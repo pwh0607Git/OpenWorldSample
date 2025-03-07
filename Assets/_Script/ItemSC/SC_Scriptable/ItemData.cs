@@ -7,7 +7,7 @@ public enum ItemType
     ETC
 }
 
-[CreateAssetMenu(fileName = "Item Data", menuName = "Scriptable Object/Item Data")]
+[CreateAssetMenu(fileName = "ItemData", menuName = "Scriptable Object/Item Data")]
 public abstract class ItemData : ScriptableObject
 {
     [Header("Information")]
@@ -19,6 +19,32 @@ public abstract class ItemData : ScriptableObject
     [Header("Visual")]
     public Sprite icon;
     public GameObject model;
+}
 
-    public abstract void Use();
+public enum ConsumableType
+{
+    HP,
+    MP,
+    SpeedUp
+}
+
+[CreateAssetMenu(fileName = "ConsumableData", menuName = "Items/Consumable")]
+public class ConsumableData : ItemData
+{
+    public ConsumableType subType;
+}
+
+public enum EquipmentType
+{
+    Head,                           
+    Weapon,                         
+    Cloth,                        
+    Foot                           
+}
+
+[CreateAssetMenu(fileName = "EquipmentData", menuName = "Items/Equipment")]
+public class EquipmentData : ItemData
+{
+    public EquipmentType subType;
+    public State stateAddtive;
 }

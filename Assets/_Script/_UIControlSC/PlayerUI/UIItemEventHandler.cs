@@ -13,14 +13,14 @@ public class UIItemEventHandler : MonoBehaviour
         Debug.Log("슬롯 이벤트 발생!");
         if(slot == null || item == null) return;
         
-        DragAndDropSlot originalSlot = item.GetComponentInParent<ItemIconController>().originalSlot;
+        DragAndDropSlot originalSlot = item.GetComponentInParent<ItemIcon>().originalSlot;
         DragAndDropSlot targetSlot = slot;
-        ItemData itemData = item.GetComponentInChildren<ItemDataHandler>().GetItem;
+        ItemData itemData = item.GetComponentInChildren<ItemData>().GetItem;
 
         // 이벤트가 발생한 슬롯, 슬롯에 들어온 아이템
         if(!targetSlot.CheckVaildItem(item)){
             Debug.Log("event 1");
-            item.GetComponentInChildren<ItemIconController>().ResetToOriginalSlot();   
+            item.GetComponentInChildren<ItemIcon>().ResetToOriginalSlot();   
             return;   
         }
 
@@ -31,10 +31,10 @@ public class UIItemEventHandler : MonoBehaviour
                 if(targetSlot is InventorySlot) MoveIcon(targetSlot, item);
                 else if(targetSlot is ActionBarSlot)
                 {
-                    bool isPresetting = ((Consumable)itemData).isPresetting;
-                    if(isPresetting) item.GetComponent<ItemIconController>().ResetToOriginalSlot(); 
+                    bool isPresetting = ((ConsumableData)itemData).isPresetting;
+                    if(isPresetting) item.GetComponent<ItemIcon>().ResetToOriginalSlot(); 
                     else {
-                        ((Consumable)itemData).isPresetting = true;
+                        ((ConsumableData)itemData).isPresetting = true;
                         DuplicateIcon(targetSlot, item);
                     }
                 }
@@ -55,7 +55,7 @@ public class UIItemEventHandler : MonoBehaviour
 
     static void MoveIcon(DragAndDropSlot targetSlot, GameObject item){
         Debug.Log("아이콘 Move");
-        DragAndDropSlot originalslot = item.GetComponentInChildren<ItemIconController>().originalSlot;
+        DragAndDropSlot originalslot = item.GetComponentInChildren<ItemIcon>().originalSlot;
 
         originalslot.ClearSlot(true);
         targetSlot.SetItem(item, true);
@@ -63,7 +63,7 @@ public class UIItemEventHandler : MonoBehaviour
 
     static void SwapIcon(DragAndDropSlot targetSlot, GameObject item){
         Debug.Log("아이콘 Swap");
-        DragAndDropSlot originalSlot = item.GetComponentInChildren<ItemIconController>().originalSlot;
+        DragAndDropSlot originalSlot = item.GetComponentInChildren<ItemIcon>().originalSlot;
         GameObject originalItem = targetSlot.GetItem();
 
         originalSlot.SetItem(originalItem, true);
@@ -74,16 +74,16 @@ public class UIItemEventHandler : MonoBehaviour
         Debug.Log("아이콘 Duplicate");
         GameObject newIcon = Instantiate(item, targetSlot.transform);
         // 드래그한 아이템 아이콘은 원위치
-        item.GetComponentInChildren<ItemIconController>().ResetToOriginalSlot();
+        item.GetComponentInChildren<ItemIcon>().ResetToOriginalSlot();
         
         targetSlot.SetItem(newIcon,true);
     }
 
     static void DestroyIcon(GameObject item){
         ItemData itemData = item.GetComponentInChildren<ItemDataHandler>().GetItem;
-        item.GetComponentInChildren<ItemIconController>().originalSlot.ClearSlot(true);
+        item.GetComponentInChildren<ItemIcon>().originalSlot.ClearSlot(true);
         
-        if(itemData != null && itemData is Consumable consumable){
+        if(itemData != null && itemData is ConsumableData consumable){
             consumable.isPresetting = false;
         }
 

@@ -15,19 +15,19 @@ public class ActionbarPresenter
 
     // 다음 진행.
     public void InitModel(List<SlotData<KeyCode>> slotDatas){
-        Debug.Log($"Actionbar Presenter - Init bar code : {slotDatas.Count}");
+        Debug.Log($"{GetType()} - Init bar code : {slotDatas.Count}");
         model.InitModel(slotDatas);
     }
 
     // Model -> View
     public void UpdateViewFromModel(){
-        Debug.Log($"Actionbar Presenter : Update View");
+        Debug.Log($"{GetType()} - Update View");
         view.UpdateView(model.GetSlotDatas());
     }
 
     // View -> Model
     public void UpdateModelDataFromView(SlotData<KeyCode> slot){
-        Debug.Log($"Actionbar Presenter : Update Model {slot.slotKey} : {slot.item}");
+        Debug.Log($"{GetType()} - Update Model {slot.slotKey} : {slot.item}");
         model.UpdateModelDataFromView(slot);
     } 
 

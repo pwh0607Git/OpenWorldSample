@@ -17,51 +17,27 @@ public class PlayerStateModel
     }
 }
 
-[Serializable]
 public class PlayerState{
-    public int maxHP {get; private set;}
-    public int curHP;
-    public int maxMP {get; private set;}
-    public int curMP;
+    public int maxHp {get; private set;}
+    public int maxMp {get; private set;}
 
-    public float speed;
-    public float defend;
-    public float attack;
+    public int currentHp {get; private set;}
+    public int currentMp {get; private set;}
 
-    public event Action OnStateUpdated;
-
-    public void EquipItem(Equipment item) {
-        switch (item.subType) {
-            case EquipmentType.Head: defend += item.value; break;
-            case EquipmentType.Weapon: attack += item.value; break;
-            case EquipmentType.Cloth: maxHP += (int)item.value; break;
-            case EquipmentType.Foot: defend += item.value; break;
-        }
-        NotifyStateChange();
+    public PlayerState(int maxHp = 100, int maxMp = 50)
+    {
+        this.maxHp = maxHp;
+        this.maxMp = maxMp;
+        this.currentHp = maxHp;
+        this.currentMp = maxMp;
     }
-
-    public void DetachItem(Equipment item) {
-        switch (item.subType) {
-            case EquipmentType.Head: defend -= item.value; break;
-            case EquipmentType.Weapon: attack -= item.value; break;
-            case EquipmentType.Cloth: maxHP -= (int)item.value; break;
-            case EquipmentType.Foot: speed -= item.value; break;
-        }
-        NotifyStateChange();
+    public void Heal(int amount)
+    {
+        currentHp = Mathf.Clamp(currentHp + amount, 0, maxHp);
     }
-
-    public void UseConsumable(Consumable itemData) {
-        switch (itemData.subType) {
-            case ConsumableType.HP: curHP = Mathf.Min(curHP + (int)itemData.value, maxHP); break;
-            case ConsumableType.MP: curMP = Mathf.Min(curMP + (int)itemData.value, maxMP); break;
-            case ConsumableType.SpeedUp:
-                speed += itemData.value;
-                float duration = 10f;
-                PlayerController.uiController.OnBuffItem(itemData, duration);
-                break;
-        }
-        NotifyStateChange();
+    
+    public void RestoreMana(int amount)
+    {
+        currentMp = Mathf.Clamp(currentMp + amount, 0, maxMp);
     }
-
-    private void NotifyStateChange() => OnStateUpdated?.Invoke();
 }
