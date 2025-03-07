@@ -7,14 +7,14 @@ using UnityEngine;
 public class ItemMaker : MonoBehaviour
 {
     [Header("Consumable")]
-    public ItemData hp;
-    public ItemData mp;
+    public Item hpPotion;
+    public Item mpPotion;
 
     [Header("Equipment")]
-    public ItemData equipment1;
+    public Item equipment1;
 
     [SerializeField] List<SlotData<int>> _serList;
-    [SerializeField] List<ItemData> _newItemList;
+    [SerializeField] List<Item> _newItemList;
 
     [Header("Reference")]
     public PlayerUIPresenter uiPresenter;
@@ -42,9 +42,9 @@ public class ItemMaker : MonoBehaviour
 public class SlotData<T>
 {
     public T slotKey;   // InventorySlot: int, ActionBarSlot: KeyCode
-    public ItemData item;
+    public Item item;
 
-    public SlotData(T slotKey, ItemData item)
+    public SlotData(T slotKey, Item item)
     {
         this.slotKey = slotKey;
         this.item = item;

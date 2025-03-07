@@ -34,7 +34,7 @@ public class BuffManager : MonoBehaviour
         }
     }
 
-    public void OnBuffItem(Consumable itemData, float duration)
+    public void OnBuffItem(ConsumableData itemData, float duration)
     {
         GameObject existingBuff = CheckExistingBuff(itemData.icon);
         if (existingBuff != null)

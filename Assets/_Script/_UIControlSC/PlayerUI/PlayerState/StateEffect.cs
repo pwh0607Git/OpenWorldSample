@@ -18,3 +18,16 @@ public class ManaRestoreEffect : IStateEffect
     
     public void Apply(PlayerState state) => state.RestoreMana(amount);
 }
+
+public static class EffectFactory
+{
+    public static IStateEffect CreateEffect(ConsumableType type, float value)
+    {
+        return type switch
+        {
+            ConsumableType.HP => new HealEffect((int)value),
+            ConsumableType.MP => new ManaRestoreEffect((int)value),
+            _ => null
+        };
+    }
+}

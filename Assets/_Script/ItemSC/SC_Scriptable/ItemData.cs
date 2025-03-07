@@ -20,3 +20,31 @@ public abstract class ItemData : ScriptableObject
     public Sprite icon;
     public GameObject model;
 }
+
+public enum ConsumableType
+{
+    HP,
+    MP,
+    SpeedUp
+}
+
+[CreateAssetMenu(fileName = "ConsumableData", menuName = "Items/Consumable")]
+public class ConsumableData : ItemData
+{
+    public ConsumableType subType;
+}
+
+public enum EquipmentType
+{
+    Head,                           
+    Weapon,                         
+    Cloth,                        
+    Foot                           
+}
+
+[CreateAssetMenu(fileName = "EquipmentData", menuName = "Items/Equipment")]
+public class EquipmentData : ItemData
+{
+    public EquipmentType subType;
+    public State stateAddtive;
+}

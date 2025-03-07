@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public abstract class ItemDataHandler : MonoBehaviour
+public abstract class ItemHandler : MonoBehaviour
 {
-    public abstract ItemData GetItem { get; }
+    public abstract ItemData GetData { get; }
     public abstract void Init(ItemData itemData);
+    public abstract void Use();
 }
