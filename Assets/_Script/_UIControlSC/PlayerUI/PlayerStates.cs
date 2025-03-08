@@ -89,11 +89,11 @@ public class State
                     if (curMP >= maxMP) curMP = maxMP;
                     break;
                 }
-            case ConsumableType.SpeedUp:
+            case ConsumableType.Attackup:
                 {
                     speed += itemData.value;
                     float duration = 10f;
-                    PlayerController.uiController.OnBuffItem(itemData, duration);
+                    // PlayerController.uiController.OnBuffItem(itemData, duration);
                     break;
                 }
         }

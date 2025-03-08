@@ -2,15 +2,14 @@ using System;
 
 public abstract class Item
 {
-    protected ItemData data;
-
-    public ItemData GetData { get; }
-    public int Count { get; set; }
+    public ItemData data{get;}
+    
+    public int count { get; protected set; }
 
     protected Item(ItemData data, int count = 1)
     {
         this.data = data;
-        this.Count = count;
+        this.count = count;
     }
 
     public abstract void Use(PlayerState state);
@@ -22,8 +21,8 @@ public class Consumable : Item
     public event Action OnConsumableUsed;
     public override void Use(PlayerState state)
     {
-        if (Count <= 0) return;
-        Count--;
+        if (count <= 0) return;
+        count--;
         IStateEffect effect = EffectFactory.CreateEffect(((ConsumableData)data).subType, data.value);
         effect?.Apply(state);
     }
@@ -32,15 +31,19 @@ public class Consumable : Item
     {
         OnConsumableUsed += callback;
     }
+
+    public void GetThisItem(){
+        count++;
+    }
 }
 
 public class Equipment : Item {
     public Equipment(EquipmentData data, int count = 1) :base(data,count){ }
     public override void Use(PlayerState state)
     {
-        if (Count <= 0) return;
-        Count--;
-        IStateEffect effect = EffectFactory.CreateEffect(((ConsumableData)data).subType, data.value);
-        effect?.Apply(state);
+        // if (Count <= 0) return;
+        // Count--;
+        // IStateEffect effect = EffectFactory.CreateEffect(((ConsumableData)data).subType, data.value);
+        // effect?.Apply(state);
     }
 }

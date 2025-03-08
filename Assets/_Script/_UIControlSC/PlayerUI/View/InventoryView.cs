@@ -47,21 +47,29 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    public void UpdateView(Dictionary<int, ItemData> items){
+    //==============================================================================//
+    // ******************************************************************************
+
+    // 인스턴스에서 count를 가지고 있다!!!!!!!!!!!!!!!!!!!
+    
+    // ******************************************************************************    
+    //==============================================================================//
+    
+    public void UpdateView(Dictionary<int, Item> items){
         ClearSlotData();
         UpdateViewInspector(items);
 
-        foreach(var item in itemsView){
-            if(item.item == null) continue;
-            SetItemIcon(item.item, slots[item.slotKey]);
+        foreach(var data in itemsView){
+            if(data.itemData == null) continue;
+            SetItemIcon(ItemFactory.CreateItem(data.itemData, data.count), slots[data.slotKey]);
         }
     }
 
-    private void UpdateViewInspector(Dictionary<int, ItemData> items){
+    private void UpdateViewInspector(Dictionary<int, Item> items){
         itemsView.Clear();
         foreach(var item in items){
             // if(item.Value == null) continue;
-            itemsView.Add(new SlotData<int>(item.Key, item.Value));
+            itemsView.Add(new SlotData<int>(item.Key, item.Value.data));
         }
     }
 
@@ -71,20 +79,14 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    private void SetItemIcon(ItemData item, InventorySlot slot){
-        GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
-        slot.SetItem(itemIcon);
+    private void SetItemIcon(Item item, InventorySlot slot){
+        ItemIcon itemIcon = Instantiate(iconBasePrefab, slot.transform).GetComponentInChildren<ItemIcon>();
+        slot.SetItem(itemIcon.gameObject);
         AssignComponent(itemIcon, item);
     }
 
-    private void AssignComponent(GameObject icon, ItemData itemData){
-        ItemDataHandler handler = null;
-
-        if (itemData.itemType == ItemType.Consumable) handler = icon.AddComponent<ConsumableItemHandler>();
-        else if(itemData.itemType == ItemType.Equipment) handler =  icon.AddComponent<EquipmentItemHandler>();
-
-        if(handler == null) return;
-        handler.Init(itemData);
+    private void AssignComponent(ItemIcon icon, Item item){
+        icon.Initialize(item);
     }
     
     public void ChagedEventHandler(SlotData<int> data){
@@ -96,8 +98,8 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         itemsView.Clear();
         for(int i=0;i<slots.Count;i++){
             if(slots[i].GetItem() == null) continue;
-            ItemData slotItem = slots[i].GetItem().GetComponent<ItemDataHandler>().GetItem;
-            SlotData<int> viewData = new SlotData<int>(i, slotItem);
+            Item slotItem = slots[i].GetItem().GetComponent<ItemIcon>().item;
+            SlotData<int> viewData = new SlotData<int>(i, slotItem.data, slotItem.count);
             itemsView.Add(viewData);
         }
 

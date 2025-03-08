@@ -14,21 +14,21 @@ public class ModelViewer : MonoBehaviour
     [Button("ShowActionbarModel"), HideField] public bool btn1;
  
     void ShowInventoryModel(){
-        Dictionary<int, ItemData> dic = playerUIPresenter.GetInventoryModel();
+        Dictionary<int, Item> dic = playerUIPresenter.GetInventoryModel();
         InventoryList.Clear();
 
         foreach(var item in dic){
             if(item.Value == null) continue;
-            InventoryList.Add(new SlotData<int>(item.Key, item.Value));
+            InventoryList.Add(new SlotData<int>(item.Key, item.Value.data));
         }
     }
     
     void ShowActionbarModel(){
-        Dictionary<KeyCode, ItemData> dic = playerUIPresenter.GetActionbarModel();
+        Dictionary<KeyCode, Item> dic = playerUIPresenter.GetActionbarModel();
         ActionBarList.Clear();
 
         foreach(var data in dic){
-            ActionBarList.Add(new SlotData<KeyCode>(data.Key, data.Value));
+            ActionBarList.Add(new SlotData<KeyCode>(data.Key, data.Value.data));
         }
     }
 }

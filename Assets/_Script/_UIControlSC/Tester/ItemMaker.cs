@@ -14,7 +14,7 @@ public class ItemMaker : MonoBehaviour
     public Item equipment1;
 
     [SerializeField] List<SlotData<int>> _serList;
-    [SerializeField] List<Item> _newItemList;
+    [SerializeField] List<ItemData> _newItemList;
 
     [Header("Reference")]
     public PlayerUIPresenter uiPresenter;
@@ -42,11 +42,12 @@ public class ItemMaker : MonoBehaviour
 public class SlotData<T>
 {
     public T slotKey;   // InventorySlot: int, ActionBarSlot: KeyCode
-    public Item item;
-
-    public SlotData(T slotKey, Item item)
+    public ItemData itemData;
+    public int count;
+    public SlotData(T slotKey, ItemData itemData, int count = 1)
     {
         this.slotKey = slotKey;
-        this.item = item;
+        this.itemData = itemData;
+        this.count = count;
     }
 }

@@ -23,9 +23,9 @@ public class EquipmentPresenter
     }
 
     public void UpdateModelDataFromView(SlotData<EquipmentType> slot){
-        Debug.Log($"Equipment Presenter : Update Model {slot.slotKey} : {slot.item}");
+        Debug.Log($"Equipment Presenter : Update Model {slot.slotKey} : {slot.itemData}");
         equipmentModel.UpdateModelDataFromView(slot);
     } 
     
-    public Dictionary<EquipmentType, ItemData> GetList() => equipmentModel.GetEquipmentItems();
+    public Dictionary<EquipmentType, Item> GetList() => equipmentModel.GetEquipmentItems();
 }

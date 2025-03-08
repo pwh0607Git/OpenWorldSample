@@ -5,7 +5,7 @@ using UnityEngine;
 public class ActionbarModel 
 {
     public int maxSlotSize {get; private set;}
-    private Dictionary<KeyCode, ItemData> slotDatas = new Dictionary<KeyCode, ItemData>();
+    private Dictionary<KeyCode, Item> slotDatas = new Dictionary<KeyCode, Item>();
     public event Action OnModelUpdated;             // inventory 내 아이템 정보가 갱신되면 실행되는 이벤트.
 
     public ActionbarModel()
@@ -19,15 +19,15 @@ public class ActionbarModel
         }
         OnModelUpdated?.Invoke();
     }
-    public Dictionary<KeyCode, ItemData> GetSlotDatas() => new Dictionary<KeyCode, ItemData>(slotDatas);
+    public Dictionary<KeyCode, Item> GetSlotDatas() => new Dictionary<KeyCode, Item>(slotDatas);
 
     public void UpdateModel(SlotData<KeyCode> data){
-        slotDatas[data.slotKey] = data.item;
+        slotDatas[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
     }
 
     public void UpdateModelDataFromView(SlotData<KeyCode> data)
     {
         Debug.Log($"Inventory Model : 슬롯 {data.slotKey} 업데이트");
-        slotDatas[data.slotKey] = data.item;
+        slotDatas[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
     }   
 }

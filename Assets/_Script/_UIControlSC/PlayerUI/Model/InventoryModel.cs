@@ -4,31 +4,50 @@ using System.Collections.Generic;
 
 public class InventoryModel 
 {
-    private Dictionary<int, ItemData> items = new Dictionary<int, ItemData>();
+    private Dictionary<int, Item> items = new Dictionary<int, Item>();
     public event Action OnModelUpdated; 
 
+    public Dictionary<int, Item> GetItemList() => new Dictionary<int, Item>(items);
     public InventoryModel(int maxSlotSize){
         for(int idx = 0; idx < maxSlotSize; idx++){
             items[idx] = null;
         }
-        OnModelUpdated?.Invoke();           // 0-0-0
+        OnModelUpdated?.Invoke();          
     }
-    public void InitModel(List<SlotData<int>> itemList){
-        Debug.Log($"Inventory Model : Init => {itemList.Count}");
-        foreach(SlotData<int> item in itemList){
-            items[item.slotKey] = item.item; 
+
+    public void InitModel(List<SlotData<int>> slotDataList){
+        Debug.Log($"Inventory Model : Init => {slotDataList.Count}");
+        foreach(SlotData<int> data in slotDataList){
+            items[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
         }
+        // OnModelUpdated?.Invoke();
+    }
+
+    // 먹은 아이템.
+    public bool AddItem(ItemData itemData)
+    {
+        Item existingItem = FindExistingItem(itemData);
         
+        if (existingItem != null && existingItem is Consumable consumable)
+        {
+            consumable.GetThisItem();
+            OnModelUpdated?.Invoke();
+            return true;
+        }
+
+        return AddNewItem(itemData);
     }
 
-    public bool AddItem(ItemData item){
-        Debug.Log($"Model : AddItem - {item}");
-        bool res = HandleGetItemData(item);
+    private bool AddNewItem(ItemData data)
+    {
+        int index = SearchEmptyIndex();
+        if (index == -1) return false;
+
+        items[index] = ItemFactory.CreateItem(data);
         OnModelUpdated?.Invoke();
-        return res;
+        return true;
     }
 
-    public Dictionary<int, ItemData> GetItemList() => new Dictionary<int, ItemData>(items);
 
     public int SearchEmptyIndex(){
         int index = -1;
@@ -38,74 +57,35 @@ public class InventoryModel
         return index;
     }
 
-    // 아이템을 얻었을 때.
-    public bool HandleGetItemData(ItemData getItem){
-        Debug.Log($"{getItem} 데이터 처리...");
-        // 먼저 해당 아이템이 어떤 아이템인지 확인하기
-        if(getItem is Consumable consumable){
-            //가지고 있는 아이템인지 확인하기
-            bool isExsiting = SearchItemByType<ConsumableType>(getItem.itemType, consumable.subType);
-            if(isExsiting){
-                consumable.GetThisItem();
-                return true;
-            }else{
-                return GetNewItem(getItem);
-            }
-        }else if(getItem is Equipment equipment){
-            return GetNewItem(getItem);         //그냥 새로운 슬롯에 할당하기.
-        }
-        return false;
-    }
-
-    public bool SearchItemByType<T>(ItemType itemType, T? subType = null) where T : struct
+    private Item FindExistingItem(ItemData newItem)
     {
-        foreach (var targetItem in items)
+        foreach (var item in items.Values)
         {
-            if (targetItem.Value == null) continue;
+            // 올바르지 못한 아이템이거나, 둘이 다른 아이템이면 넘어가기
+            if (item == null) continue;
 
-            ItemData item = targetItem.Value;
-
-            if (item.itemType == itemType)
+            if (newItem is ConsumableData consumable1 && item.data is ConsumableData consumable2)
             {
-                if (subType == null)
+                if (consumable1.subType == consumable2.subType)
                 {
-                    Debug.Log("Search Code : 001");
-                    return true;
+                    return item;
                 }
-
-                if (itemType == ItemType.Consumable && item is Consumable consumable)
+            }
+            else if (newItem is EquipmentData equipment1 && item.data is EquipmentData equipment2)
+            {
+                if (equipment1.subType == equipment2.subType)
                 {
-                    if (EqualityComparer<T>.Default.Equals((T)(object)consumable.subType, subType.Value))
-                    {
-                        Debug.Log($"Search Code : 002 - Found matching item: {consumable.subType}");
-                        return true;
-                    }
-                }
-                else if (itemType == ItemType.Equipment && item is Equipment equipment)
-                {
-                    if (EqualityComparer<T>.Default.Equals((T)(object)equipment.subType, subType.Value))
-                    {
-                        Debug.Log("Search Code : 003");
-                        return true;
-                    }
+                    return item;
                 }
             }
         }
-        Debug.Log("Search Code : 004");
-        return false;
-    }
-
-    bool GetNewItem(ItemData item){
-        int index = SearchEmptyIndex();
-        if(index == -1) return false;           
-        items[index] = item;
-        return true;
+        return null;
     }
 
     // 뷰로부터 같은 데이터 이므로 뷰를 갱신하는 호출은 수행하지 않는다.
-    public void UpdateModelDataFromView(SlotData<int> item)
+    public void UpdateModelDataFromView(SlotData<int> data)
     {
-        Debug.Log($"Inventory Model : 슬롯 {item.slotKey} 업데이트");
-        items[item.slotKey] = item.item;
+        Debug.Log($"Inventory Model : 슬롯 {data.slotKey} 업데이트");
+        items[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
     }
 }

@@ -23,9 +23,9 @@ public class InventoryPresenter
         }
     }
 
-    public void AddItem(ItemData item)
+    public void AddItem(ItemData itemData)
     {
-        model.AddItem(item);
+        model.AddItem(itemData);
     }
     
 
@@ -48,6 +48,6 @@ public class InventoryPresenter
     } 
 
     #region Inspector Caller
-    public Dictionary<int, ItemData> GetList() => model.GetItemList();
+    public Dictionary<int, Item> GetList() => model.GetItemList();
     #endregion
 }

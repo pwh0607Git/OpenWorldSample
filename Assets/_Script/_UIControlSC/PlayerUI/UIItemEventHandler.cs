@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UIItemEventHandler : MonoBehaviour
 {
     public static UIItemEventHandler Instance { get; private set; }
-    
+    private static List<ConsumableData> actionbarConponents = new();
+
     private void Awake(){
         if(Instance == null) Instance = this;
         else Destroy(gameObject);
@@ -15,26 +17,24 @@ public class UIItemEventHandler : MonoBehaviour
         
         DragAndDropSlot originalSlot = item.GetComponentInParent<ItemIcon>().originalSlot;
         DragAndDropSlot targetSlot = slot;
-        ItemData itemData = item.GetComponentInChildren<ItemData>().GetItem;
+        ItemData itemData = item.GetComponentInChildren<Item>().data;
 
-        // 이벤트가 발생한 슬롯, 슬롯에 들어온 아이템
         if(!targetSlot.CheckVaildItem(item)){
             Debug.Log("event 1");
             item.GetComponentInChildren<ItemIcon>().ResetToOriginalSlot();   
             return;   
         }
 
-        //유효한 아이템 인경우.
         if(targetSlot.GetItem() == null){
             Debug.Log("event 2");
             if(originalSlot is InventorySlot){
                 if(targetSlot is InventorySlot) MoveIcon(targetSlot, item);
                 else if(targetSlot is ActionBarSlot)
                 {
-                    bool isPresetting = ((ConsumableData)itemData).isPresetting;
-                    if(isPresetting) item.GetComponent<ItemIcon>().ResetToOriginalSlot(); 
+                    ConsumableData consumableData = (ConsumableData)itemData;
+                    if(IsItemInActionBar(consumableData)) item.GetComponent<ItemIcon>().ResetToOriginalSlot(); 
                     else {
-                        ((ConsumableData)itemData).isPresetting = true;
+                        RegisterActionBarItem(consumableData);
                         DuplicateIcon(targetSlot, item);
                     }
                 }
@@ -80,14 +80,31 @@ public class UIItemEventHandler : MonoBehaviour
     }
 
     static void DestroyIcon(GameObject item){
-        ItemData itemData = item.GetComponentInChildren<ItemDataHandler>().GetItem;
+        ItemData itemData = item.GetComponentInChildren<Item>().data;
         item.GetComponentInChildren<ItemIcon>().originalSlot.ClearSlot(true);
         
         if(itemData != null && itemData is ConsumableData consumable){
-            consumable.isPresetting = false;
+            UnregisterActionBarItem(consumable);
         }
-
         Destroy(item);
+    }
 
+    private static void RegisterActionBarItem(ConsumableData data)
+    {
+        if(!IsItemInActionBar(data))
+            actionbarConponents.Add(data);
+    }
+
+    private static void UnregisterActionBarItem(ConsumableData data)
+    {
+        actionbarConponents.Remove(data);
+    }
+
+    private static  bool IsItemInActionBar(ConsumableData data)
+    {
+        return actionbarConponents.Contains(data);
     }
 }
+
+
+// ItemData[고정 데이터] -> Item[ 동적 데이터 처리 ] -> ItemIconController[아이콘 ui 상호작용.cs]

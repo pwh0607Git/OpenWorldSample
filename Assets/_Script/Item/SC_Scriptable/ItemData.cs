@@ -13,8 +13,7 @@ public abstract class ItemData : ScriptableObject
     [Header("Information")]
     public string itemName;
     public string description;
-    public float value;        
-    public ItemType itemType;      
+    public float value;  
 
     [Header("Visual")]
     public Sprite icon;
@@ -25,10 +24,10 @@ public enum ConsumableType
 {
     HP,
     MP,
-    SpeedUp
+    Attackup
 }
 
-[CreateAssetMenu(fileName = "ConsumableData", menuName = "Items/Consumable")]
+[CreateAssetMenu(fileName = "ConsumableData", menuName = "Items/ConsumableData")]
 public class ConsumableData : ItemData
 {
     public ConsumableType subType;
@@ -42,7 +41,7 @@ public enum EquipmentType
     Foot                           
 }
 
-[CreateAssetMenu(fileName = "EquipmentData", menuName = "Items/Equipment")]
+[CreateAssetMenu(fileName = "EquipmentData", menuName = "Items/EquipmentData")]
 public class EquipmentData : ItemData
 {
     public EquipmentType subType;

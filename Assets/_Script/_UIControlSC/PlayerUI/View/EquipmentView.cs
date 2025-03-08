@@ -29,7 +29,7 @@ public class EquipmentView : MonoBehaviour
         }
     }
 
-    public void UpdateView(Dictionary<EquipmentType, ItemData> slotDatas){
+    public void UpdateView(Dictionary<EquipmentType, Item> slotDatas){
         foreach(var data in slotDatas){
             EquipmentSlot slot = CreateSlot(data.Key);
             if(data.Value == null) continue;
@@ -41,11 +41,11 @@ public class EquipmentView : MonoBehaviour
         EnableSlotEvents();
     }
 
-    private void UpdateViewInspector(Dictionary<EquipmentType, ItemData> datas){
+    private void UpdateViewInspector(Dictionary<EquipmentType, Item> slotDatas){
         inspectorView.Clear();
-        foreach(var data in datas){
+        foreach(var data in slotDatas){
             if(data.Value == null) continue;
-            inspectorView.Add(new SlotData<EquipmentType>(data.Key, data.Value));
+            inspectorView.Add(new SlotData<EquipmentType>(data.Key, data.Value.data));
         }
     }
 
@@ -64,13 +64,13 @@ public class EquipmentView : MonoBehaviour
     IEnumerator Coroutine_ChangedEventHandle(SlotData<EquipmentType> data){
         yield return null;
         inspectorView.Clear();
-        Debug.Log($"Equipment View Update : {data.slotKey} : {data.item}");
+        Debug.Log($"Equipment View Update : {data.slotKey} : {data.itemData}");
         foreach( var slot in slots){
             if(slot.GetItem() == null) continue;
-            ItemData slotItem = slot.GetItem().GetComponent<ItemDataHandler>().GetItem;
+            Item slotItem = slot.GetItem().GetComponent<ItemIcon>().item;
             EquipmentType type = slot.type;
 
-            SlotData<EquipmentType> viewData = new SlotData<EquipmentType>(type, slotItem);
+            SlotData<EquipmentType> viewData = new SlotData<EquipmentType>(type, slotItem.data);
             inspectorView.Add(viewData);
         }
 

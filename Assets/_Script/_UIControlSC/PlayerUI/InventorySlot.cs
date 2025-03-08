@@ -19,7 +19,7 @@ public class InventorySlot : DragAndDropSlot, IDropHandler
         
         if(!f) return;
         Item item = assignedItem.GetComponentInChildren<Item>();
-        OnSlotUpdated?.Invoke(new SlotData<int>(index, item));
+        OnSlotUpdated?.Invoke(new SlotData<int>(index, item.data));
     }
 
     public override void ClearSlot(bool f = false)

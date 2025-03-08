@@ -7,14 +7,14 @@ public class EquipmentSlot : DragAndDropSlot
     
     public event Action<SlotData<EquipmentType>> OnSlotUpdated;
     
-    public override void SetItem(GameObject item, bool f = false)
+    public override void SetItem(GameObject ItemIcon, bool f = false)
     {
-        base.SetItem(item);
+        base.SetItem(ItemIcon);
         
         if(!f) return;
         Debug.Log("Slot Set Item...");
-        ItemData itemData = item.GetComponentInChildren<ItemDataHandler>()?.GetItem;
-        OnSlotUpdated?.Invoke(new SlotData<EquipmentType>(type, itemData));
+        Item item = ItemIcon.GetComponentInChildren<Item>();
+        OnSlotUpdated?.Invoke(new SlotData<EquipmentType>(type, item.data, item.count));
     }
 
     public override void ClearSlot(bool f = false)
@@ -26,12 +26,12 @@ public class EquipmentSlot : DragAndDropSlot
         OnSlotUpdated?.Invoke(new SlotData<EquipmentType>(type, null));
     }
     
-    public override bool CheckVaildItem(GameObject item){
-        ItemData itemData = item.GetComponentInChildren<ItemDataHandler>().GetItem;
-        if(itemData == null) return false;
+    public override bool CheckVaildItem(GameObject itemIcon){
+        Item item = itemIcon.GetComponent<ItemIcon>().item;
+        if(item == null) return false;
 
-        if(itemData is Equipment equipment){
-            if(equipment.subType != type) return false;
+        if(item.data is EquipmentData data){
+            if(data.subType != type) return false;
         }
         return true;
     }

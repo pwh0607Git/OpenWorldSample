@@ -27,11 +27,11 @@ public class ActionbarPresenter
 
     // View -> Model
     public void UpdateModelDataFromView(SlotData<KeyCode> slot){
-        Debug.Log($"{GetType()} - Update Model {slot.slotKey} : {slot.item}");
+        Debug.Log($"{GetType()} - Update Model {slot.slotKey} : {slot.itemData}");
         model.UpdateModelDataFromView(slot);
     } 
 
     #region Inspector Caller
-    public Dictionary<KeyCode, ItemData> GetList() => model.GetSlotDatas();
+    public Dictionary<KeyCode, Item> GetList() => model.GetSlotDatas();
     #endregion
 }

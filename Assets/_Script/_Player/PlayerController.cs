@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController player { get; private set; }
     
-    public static PlayerUIController uiController;
+    public static PlayerUIPresenter ui;
+    // public static PlayerUIController uiController;
     private static PlayerAttack playerAttack;
     public State myState;
 
@@ -32,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     void InitUI()
     {
-        uiController = FindAnyObjectByType<PlayerUIController>();
+        // uiController = FindAnyObjectByType<PlayerUIController>();
         playerAttack = GetComponentInChildren<PlayerAttack>();
     }
 
@@ -189,7 +190,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Item"))
         {
             Destroy(other.gameObject);
-            uiController.GetItem(other.gameObject);          //Subscribe 패턴으로 수정.
+            // uiController.GetItem(other.gameObject);          //Subscribe 패턴으로 수정.
         }
     }
     [SerializeField] bool isAttacking = false;
@@ -268,10 +269,10 @@ public class PlayerController : MonoBehaviour
     }
     //UI Text Method
     public void StartBossStage(){
-        uiController.ShowBossUI();
+        // uiController.ShowBossUI();
     }
     public void EndBossStage(){
-        uiController.CloseBossUI();
+        // uiController.CloseBossUI();
     }
     
     public void OnHandleBossStage(){

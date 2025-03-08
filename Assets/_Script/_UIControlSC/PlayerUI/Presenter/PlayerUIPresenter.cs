@@ -63,11 +63,11 @@ public class PlayerUIPresenter : MonoBehaviour
     #endregion
     
     #region Tester
-    public Dictionary<int, ItemData> GetInventoryModel(){
+    public Dictionary<int, Item> GetInventoryModel(){
         return inventoryPresenter.GetList();
     }
 
-    public Dictionary<KeyCode, ItemData> GetActionbarModel(){
+    public Dictionary<KeyCode, Item> GetActionbarModel(){
         return actionbarPresenter.GetList();
     }
     #endregion

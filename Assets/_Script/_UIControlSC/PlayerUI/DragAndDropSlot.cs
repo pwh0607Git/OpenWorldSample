@@ -17,7 +17,7 @@ public abstract class DragAndDropSlot : MonoBehaviour, IDropHandler
 
     public virtual void ClearSlot(bool f = false)
     {
-        ItemIconController iconController = GetComponentInChildren<ItemIconController>();
+        ItemIcon iconController = GetComponentInChildren<ItemIcon>();
         
         if (iconController != null)
             Destroy(iconController.gameObject);
@@ -27,7 +27,7 @@ public abstract class DragAndDropSlot : MonoBehaviour, IDropHandler
         return assignedItem;
     }
     public virtual bool CheckVaildItem(GameObject item){
-        ItemData itemData = item.GetComponentInChildren<ItemDataHandler>().GetItem;
+        ItemData itemData = item.GetComponentInChildren<Item>().data;
         return itemData != null;
     }
 }

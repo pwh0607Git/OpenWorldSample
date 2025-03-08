@@ -23,14 +23,14 @@ public class ActionbarView : MonoBehaviour
     
     public event Action<SlotData<KeyCode>> OnViewUpdated;  
 
-    private void UpdateViewInspector(Dictionary<KeyCode, ItemData> datas){
+    private void UpdateViewInspector(Dictionary<KeyCode, Item> datas){
         inspectorView.Clear();
         foreach(var data in datas){
             if(data.Value == null) continue;
-            inspectorView.Add(new SlotData<KeyCode>(data.Key, data.Value));
+            inspectorView.Add(new SlotData<KeyCode>(data.Key, data.Value.data));
         }
     }
-    public void UpdateView(Dictionary<KeyCode, ItemData> slotDatas){
+    public void UpdateView(Dictionary<KeyCode, Item> slotDatas){
         foreach(var data in slotDatas){
             ActionBarSlot slot = CreateSlot(data.Key);
             if(data.Value == null) continue;
@@ -65,37 +65,27 @@ public class ActionbarView : MonoBehaviour
     IEnumerator Coroutine_ChangedEventHandle(SlotData<KeyCode> data){
         yield return null;
         inspectorView.Clear();
-        Debug.Log($"Actionbar Veiw Update : {data.slotKey} : {data.item}");
+        Debug.Log($"Actionbar Veiw Update : {data.slotKey} : {data.itemData}");
         foreach( var slot in slots){
             if(slot.GetItem() == null) continue;
-            ItemData slotItem = slot.GetItem().GetComponent<ItemDataHandler>().GetItem;
+            Item slotItem = slot.GetItem().GetComponent<ItemIcon>().item;
             KeyCode key = slot.assignedKey;
 
-            SlotData<KeyCode> viewData = new SlotData<KeyCode>(key, slotItem);
+            SlotData<KeyCode> viewData = new SlotData<KeyCode>(key, slotItem.data);
             inspectorView.Add(viewData);
         }
 
         OnViewUpdated?.Invoke(data);
     }
 
-    private void SetItemIcon(ItemData item, ActionBarSlot slot){
-        GameObject itemIcon = Instantiate(iconBasePrefab, slot.transform);
-        slot.SetItem(itemIcon);
+    private void SetItemIcon(Item item, ActionBarSlot slot){
+        ItemIcon itemIcon = Instantiate(iconBasePrefab, slot.transform).GetComponent<ItemIcon>();
+        slot.SetItem(itemIcon.gameObject);
         AssignComponent(itemIcon, item);
     }
 
-    private void AssignComponent(GameObject icon, ItemData itemData){
-        ItemDataHandler handler = null;
-        if (itemData.itemType == ItemType.Consumable)
-        {
-            handler = icon.AddComponent<ConsumableItemHandler>();
-        }
-        else if(itemData.itemType == ItemType.Equipment)
-        {
-            handler =  icon.AddComponent<EquipmentItemHandler>();
-        }
-
-        if(handler == null) return;
-        handler.Init(itemData);
+    // icon에 컴포넌트 할당.
+    private void AssignComponent(ItemIcon icon, Item item){
+        icon.Initialize(item);
     }
 }
