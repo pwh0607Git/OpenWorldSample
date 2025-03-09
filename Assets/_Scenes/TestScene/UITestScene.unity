@@ -300,8 +300,8 @@ GameObject:
   - component: {fileID: 96044277}
   - component: {fileID: 96044276}
   - component: {fileID: 96044275}
-  - component: {fileID: 96044279}
   - component: {fileID: 96044280}
+  - component: {fileID: 96044279}
   m_Layer: 5
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -417,9 +417,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 96044273}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81f2416582c757643a6215b4d2dc9888, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d728d526810d5144a6036d9630e5091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  iconPrefab: {fileID: 7679876614145519527, guid: e6ba42578b13a574f83603acde6bb78d, type: 3}
 --- !u!1 &100327037
 GameObject:
   m_ObjectHideFlags: 0
@@ -1280,8 +1281,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 568067194}
   - {fileID: 1686526932}
+  - {fileID: 568067194}
   - {fileID: 1858148677}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1541,14 +1542,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _serList:
   - slotKey: 1
-    itemData: {fileID: 11400000, guid: 45108b92f65faff42bba916f580b7b0e, type: 2}
-    count: 1
+    itemData: {fileID: 11400000, guid: 1b13b89a7020de845b547774d5a979db, type: 2}
+    count: 4
   - slotKey: 3
-    itemData: {fileID: 11400000, guid: 3c27de27c09d38a46a072575b89a578d, type: 2}
-    count: 1
+    itemData: {fileID: 11400000, guid: 7143745374ef0bc4a8e696013dc66cf5, type: 2}
+    count: 6
   _newItemList:
-  - {fileID: 11400000, guid: e076a2295627a3941885425054638dd3, type: 2}
-  - {fileID: 11400000, guid: 3c27de27c09d38a46a072575b89a578d, type: 2}
+  - {fileID: 11400000, guid: dd297adf10f593f4aa6fa40c97f32c27, type: 2}
+  - {fileID: 11400000, guid: 1b13b89a7020de845b547774d5a979db, type: 2}
   uiPresenter: {fileID: 96044279}
   btn1: 0
 --- !u!114 &568067196
@@ -1558,34 +1559,34 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 568067193}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16686cbeebdd8c846b87f5c7aa675410, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   components:
-  - slotKey: 256
+  - slotKey: 282
+    itemData: {fileID: 11400000, guid: 7143745374ef0bc4a8e696013dc66cf5, type: 2}
+    count: 0
+  - slotKey: 283
     itemData: {fileID: 0}
     count: 0
-  - slotKey: 257
+  - slotKey: 284
     itemData: {fileID: 0}
     count: 0
-  - slotKey: 258
+  - slotKey: 285
     itemData: {fileID: 0}
     count: 0
-  - slotKey: 259
+  - slotKey: 286
     itemData: {fileID: 0}
     count: 0
-  - slotKey: 260
+  - slotKey: 287
     itemData: {fileID: 0}
     count: 0
-  - slotKey: 261
+  - slotKey: 288
     itemData: {fileID: 0}
     count: 0
-  - slotKey: 262
-    itemData: {fileID: 0}
-    count: 0
-  - slotKey: 263
+  - slotKey: 289
     itemData: {fileID: 0}
     count: 0
   uiPresenter: {fileID: 96044279}
@@ -2367,9 +2368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9845547590ee647b2c79dc2277567f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equipmentSlotContent: {fileID: 0}
-  slots: []
-  originalParent: {fileID: 0}
 --- !u!224 &1035583232
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5353,11 +5351,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ae20e675b874749a397059b21ebe06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSlotSize: 8
-  slotPrefab: {fileID: 7252293692202396646, guid: 4cd70f5eb6e87ac48877a929716181a2, type: 3}
-  slots: []
-  slotParent: {fileID: 4737417027762052554}
-  keyCodes: 310000003200000033000000340000001a0100001b0100001c0100001d010000
 --- !u!222 &2492278151724667922
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6684,9 +6677,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525dee0d1319c2a44a7cf805167467b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryWindow: {fileID: 3688472253168225908}
-  equipmentWindow: {fileID: 6615602592247657813}
-  bossWindow: {fileID: 0}
 --- !u!1 &5595329372581131837
 GameObject:
   m_ObjectHideFlags: 0
@@ -7451,9 +7441,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9845547590ee647b2c79dc2277567f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equipmentSlotContent: {fileID: 0}
-  slots: []
-  originalParent: {fileID: 0}
 --- !u!224 &7311412489932376304
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8252,7 +8239,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &8537735602623295186
 MonoBehaviour:
   m_ObjectHideFlags: 0

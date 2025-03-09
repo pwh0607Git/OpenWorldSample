@@ -4,22 +4,29 @@ using System;
 public class ActionBarSlot : DragAndDropSlot{
     public KeyCode assignedKey;
     public event Action<SlotData<KeyCode>> OnSlotUpdated;
-
     public override bool CheckVaildItem(GameObject itemIcon){
-        Item itemData = itemIcon.GetComponentInChildren<Item>();
-        if(itemData == null) return false;
-        return itemData is Consumable consumable;
+        Item item = itemIcon.GetComponentInChildren<ItemIcon>().item;
+        if(item == null) return false;
+        return item is Consumable;
     }
-    
+
+    void Update()
+    {
+        if(Input.GetKeyDown(assignedKey)){
+            if(assignedItem == null) return;
+            assignedItem.GetComponent<ItemIcon>().item.Use(null);
+        }
+    }
+
     #region UIITemEventHandler R 
     public override void SetItem(GameObject itemIcon, bool f = false)
     {
         base.SetItem(itemIcon);
         
         if(!f) return;
-        Debug.Log("Slot Set Item...");
-        Item item = itemIcon.GetComponentInChildren<Item>();
-        OnSlotUpdated?.Invoke(new SlotData<KeyCode>(assignedKey, item.data));
+        Debug.Log("Set Actionbar item...");
+        Item item = itemIcon.GetComponent<ItemIcon>().item;
+        OnSlotUpdated?.Invoke(new SlotData<KeyCode>(assignedKey, item.data, item.count));
     }
 
     public override void ClearSlot(bool f = false)

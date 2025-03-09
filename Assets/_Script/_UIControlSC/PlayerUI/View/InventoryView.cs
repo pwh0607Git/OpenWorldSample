@@ -35,15 +35,8 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         for(int i=0;i<maxSlotSize;i++){
             InventorySlot slot = Instantiate(slotPrefab, scrollContent).GetComponent<InventorySlot>();
             slot.index = i;
-            slots.Add(slot);
-        }
-    }
-
-    public void EnableSlotEvents()
-    {
-        foreach (var slot in slots)
-        {
             slot.OnSlotUpdated += ChagedEventHandler;
+            slots.Add(slot);
         }
     }
 
@@ -57,19 +50,12 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     
     public void UpdateView(Dictionary<int, Item> items){
         ClearSlotData();
-        UpdateViewInspector(items);
+        Debug.Log($"Inventory View : Update View!");
+        // UpdateViewInspector(items);
 
-        foreach(var data in itemsView){
-            if(data.itemData == null) continue;
-            SetItemIcon(ItemFactory.CreateItem(data.itemData, data.count), slots[data.slotKey]);
-        }
-    }
-
-    private void UpdateViewInspector(Dictionary<int, Item> items){
-        itemsView.Clear();
         foreach(var item in items){
-            // if(item.Value == null) continue;
-            itemsView.Add(new SlotData<int>(item.Key, item.Value.data));
+            if(item.Value == null) continue;
+            SetItemIcon(item.Value, slots[item.Key]);
         }
     }
 
@@ -79,31 +65,27 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    private void SetItemIcon(Item item, InventorySlot slot){
-        ItemIcon itemIcon = Instantiate(iconBasePrefab, slot.transform).GetComponentInChildren<ItemIcon>();
-        slot.SetItem(itemIcon.gameObject);
-        AssignComponent(itemIcon, item);
-    }
-
-    private void AssignComponent(ItemIcon icon, Item item){
-        icon.Initialize(item);
-    }
-    
-    public void ChagedEventHandler(SlotData<int> data){
-        StartCoroutine(Coroutine_ChangedEventHandle(data));
-    }
-
     IEnumerator Coroutine_ChangedEventHandle(SlotData<int> data){
         yield return null;
+        OnViewUpdated?.Invoke(data);
+
+        //인스펙터 갱신
         itemsView.Clear();
         for(int i=0;i<slots.Count;i++){
             if(slots[i].GetItem() == null) continue;
             Item slotItem = slots[i].GetItem().GetComponent<ItemIcon>().item;
+            
             SlotData<int> viewData = new SlotData<int>(i, slotItem.data, slotItem.count);
             itemsView.Add(viewData);
         }
-
-        OnViewUpdated?.Invoke(data);
+    }
+    private void SetItemIcon(Item item, InventorySlot slot){
+        ItemIcon itemIcon = UIIconFactory.Instance.CreateItemIcon(item);
+        slot.SetItem(itemIcon.gameObject);
+    }
+    
+    public void ChagedEventHandler(SlotData<int> data){
+        StartCoroutine(Coroutine_ChangedEventHandle(data));
     }
 
     #region Event
@@ -123,6 +105,17 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         GetComponent<CanvasGroup>().blocksRaycasts = true; 
         GetComponent<RectTransform>().SetParent(originalParent);
+    }
+    #endregion
+
+    #region Inspector View
+        
+    private void UpdateViewInspector(Dictionary<int, Item> items){
+        itemsView.Clear();
+        foreach(var item in items){
+            if(item.Value == null) continue;
+            itemsView.Add(new SlotData<int>(item.Key, item.Value.data));
+        }
     }
     #endregion
 }

@@ -9,26 +9,25 @@ public class ActionbarPresenter
     public ActionbarPresenter(ActionbarModel model, ActionbarView view){
         this.model = model;
         this.view = view;
-        view.OnViewUpdated += UpdateModelDataFromView;
-        model.OnModelUpdated += UpdateViewFromModel;
+        view.OnViewUpdated += UpdateModel;
+        model.OnModelUpdated += UpdateView;
     }
 
     // 다음 진행.
-    public void InitModel(List<SlotData<KeyCode>> slotDatas){
+    public void InitModel(Dictionary<KeyCode, Item> slotDatas)
+    {
         Debug.Log($"{GetType()} - Init bar code : {slotDatas.Count}");
         model.InitModel(slotDatas);
     }
 
-    // Model -> View
-    public void UpdateViewFromModel(){
+    public void UpdateView(){
         Debug.Log($"{GetType()} - Update View");
         view.UpdateView(model.GetSlotDatas());
     }
 
-    // View -> Model
-    public void UpdateModelDataFromView(SlotData<KeyCode> slot){
+    public void UpdateModel(SlotData<KeyCode> slot){
         Debug.Log($"{GetType()} - Update Model {slot.slotKey} : {slot.itemData}");
-        model.UpdateModelDataFromView(slot);
+        model.UpdateModel(slot);
     } 
 
     #region Inspector Caller

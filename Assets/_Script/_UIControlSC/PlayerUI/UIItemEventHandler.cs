@@ -11,45 +11,45 @@ public class UIItemEventHandler : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public static void OnChangedSlot(DragAndDropSlot slot, GameObject item){
+    public static void OnChangedSlot(DragAndDropSlot slot, GameObject itemIcon){
         Debug.Log("슬롯 이벤트 발생!");
-        if(slot == null || item == null) return;
+        if(slot == null || itemIcon == null) return;
         
-        DragAndDropSlot originalSlot = item.GetComponentInParent<ItemIcon>().originalSlot;
+        DragAndDropSlot originalSlot = itemIcon.GetComponentInParent<ItemIcon>().originalSlot;
         DragAndDropSlot targetSlot = slot;
-        ItemData itemData = item.GetComponentInChildren<Item>().data;
+        ItemData itemData = itemIcon.GetComponentInChildren<ItemIcon>().item.data;
 
-        if(!targetSlot.CheckVaildItem(item)){
+        if(!targetSlot.CheckVaildItem(itemIcon)){
             Debug.Log("event 1");
-            item.GetComponentInChildren<ItemIcon>().ResetToOriginalSlot();   
+            itemIcon.GetComponentInChildren<ItemIcon>().ResetToOriginalSlot();   
             return;   
         }
 
         if(targetSlot.GetItem() == null){
             Debug.Log("event 2");
             if(originalSlot is InventorySlot){
-                if(targetSlot is InventorySlot) MoveIcon(targetSlot, item);
+                if(targetSlot is InventorySlot) MoveIcon(targetSlot, itemIcon);
                 else if(targetSlot is ActionBarSlot)
                 {
                     ConsumableData consumableData = (ConsumableData)itemData;
-                    if(IsItemInActionBar(consumableData)) item.GetComponent<ItemIcon>().ResetToOriginalSlot(); 
+                    if(IsItemInActionBar(consumableData)) itemIcon.GetComponent<ItemIcon>().ResetToOriginalSlot(); 
                     else {
                         RegisterActionBarItem(consumableData);
-                        DuplicateIcon(targetSlot, item);
+                        DuplicateIcon(targetSlot, itemIcon);
                     }
                 }
             }
             else if(originalSlot is ActionBarSlot){
                 if(targetSlot is InventorySlot){
-                    DestroyIcon(item);
+                    DestroyIcon(itemIcon);
                 }
                 else if(targetSlot is ActionBarSlot){
-                    MoveIcon(targetSlot, item);
+                    MoveIcon(targetSlot, itemIcon);
                 }
             }
         }else{
             Debug.Log("event 3");
-            if(originalSlot.GetType() == targetSlot.GetType() || (originalSlot is InventorySlot && targetSlot is EquipmentSlot) || (originalSlot is EquipmentSlot && targetSlot is InventorySlot)) SwapIcon(slot, item);
+            if(originalSlot.GetType() == targetSlot.GetType() || (originalSlot is InventorySlot && targetSlot is EquipmentSlot) || (originalSlot is EquipmentSlot && targetSlot is InventorySlot)) SwapIcon(slot, itemIcon);
         }
     }
 
@@ -70,13 +70,18 @@ public class UIItemEventHandler : MonoBehaviour
         targetSlot.SetItem(item, true);
     }
 
-    static void DuplicateIcon(DragAndDropSlot targetSlot, GameObject item){
+    static void DuplicateIcon(DragAndDropSlot targetSlot, GameObject originalIcon){
         Debug.Log("아이콘 Duplicate");
-        GameObject newIcon = Instantiate(item, targetSlot.transform);
-        // 드래그한 아이템 아이콘은 원위치
-        item.GetComponentInChildren<ItemIcon>().ResetToOriginalSlot();
+        ItemIcon targetIcon = originalIcon.GetComponent<ItemIcon>();
+        ItemIcon newIcon = UIIconFactory.Instance.CreateItemIcon(targetIcon.item);// Instantiate(originalIcon, targetSlot.transform).GetComponent<ItemIcon>();
         
-        targetSlot.SetItem(newIcon,true);
+        if (originalIcon.GetComponentInChildren<ItemIcon>().item is Consumable consumable)
+        {
+            consumable.SubscribeToUseEvent(newIcon.UpdateIcon);
+        }
+
+        originalIcon.GetComponentInChildren<ItemIcon>().ResetToOriginalSlot();
+        targetSlot.SetItem(newIcon.gameObject, true);
     }
 
     static void DestroyIcon(GameObject item){

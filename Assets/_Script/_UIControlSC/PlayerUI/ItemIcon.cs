@@ -1,5 +1,6 @@
 using CustomInspector;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 {
     [HorizontalLine("Icon Data"), HideField] public bool s1; 
     public DragAndDropSlot originalSlot;
-    public Item item {get; private set;}
+    public Item item { get; private set; }
     [HorizontalLine(""), HideField] public bool e1;
     [Space(10)]
     [HorizontalLine("UI Conponent"), HideField] public bool s2; 
@@ -29,26 +30,31 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     }
 
     public void Initialize(Item item){
+        Debug.Log($"Item Instance 초기화!");
         this.item = item;
-        if (item is Consumable consumable)
-            consumable.SubscribeToUseEvent(UpdateUI);
+        if(iconImage.sprite != null) return;
 
-        SetItemIcon();
-        UpdateUI();
-    }
-
-    private void SetItemIcon()
-    {
-        if (item != null && item.data.icon != null)
-        {
-            iconImage.sprite = item.data.icon;  // 아이템 데이터의 아이콘 적용
+        if (item is Consumable consumable){
+            consumable.SubscribeToUseEvent(UpdateIcon);
+            Debug.Log($"Subscribed to {item.data.name} | Count: {item.count}");
         }
+        SetIconImage();
+        UpdateIcon();
     }
 
-    public void UpdateUI()
+    private void SetIconImage()
     {
-        if (item != null)
-            itemCount.text = item.count.ToString();
+        if (item != null && item.data.icon != null) iconImage.sprite = item.data.icon;              // 아이템 데이터의 아이콘 적용
+    }
+
+    public void UpdateIcon()
+    {
+        if(item.count <= 0){
+            Destroy(gameObject);
+            transform.GetComponentInParent<DragAndDropSlot>().ClearSlot(true);          //true를 보내어 model을 갱신할 것.
+        }
+        // slot에 데이터 clear하기.
+        if (item != null) itemCount.text = item.count.ToString();
     }
     
     public void OnBeginDrag(PointerEventData eventData) {

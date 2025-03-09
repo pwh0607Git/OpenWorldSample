@@ -4,11 +4,12 @@ using System.Collections.Generic;
 
 public class InventoryModel 
 {
-    private Dictionary<int, Item> items = new Dictionary<int, Item>();
+    private Dictionary<int, Item> items = new();
     public event Action OnModelUpdated; 
 
     public Dictionary<int, Item> GetItemList() => new Dictionary<int, Item>(items);
-    public InventoryModel(int maxSlotSize){
+    
+    public InventoryModel(int maxSlotSize = 40){
         for(int idx = 0; idx < maxSlotSize; idx++){
             items[idx] = null;
         }
@@ -17,10 +18,16 @@ public class InventoryModel
 
     public void InitModel(List<SlotData<int>> slotDataList){
         Debug.Log($"Inventory Model : Init => {slotDataList.Count}");
-        foreach(SlotData<int> data in slotDataList){
-            items[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
+        foreach(var data in slotDataList){
+            UpdateModel(data);
         }
-        // OnModelUpdated?.Invoke();
+        OnModelUpdated?.Invoke();
+    }
+
+    // 뷰로부터 같은 데이터 이므로 뷰를 갱신하는 호출은 수행하지 않는다.
+    public void UpdateModel(SlotData<int> data)
+    {
+        items[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
     }
 
     // 먹은 아이템.
@@ -57,7 +64,7 @@ public class InventoryModel
         return index;
     }
 
-    private Item FindExistingItem(ItemData newItem)
+    public Item FindExistingItem(ItemData newItem)
     {
         foreach (var item in items.Values)
         {
@@ -80,12 +87,5 @@ public class InventoryModel
             }
         }
         return null;
-    }
-
-    // 뷰로부터 같은 데이터 이므로 뷰를 갱신하는 호출은 수행하지 않는다.
-    public void UpdateModelDataFromView(SlotData<int> data)
-    {
-        Debug.Log($"Inventory Model : 슬롯 {data.slotKey} 업데이트");
-        items[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
     }
 }

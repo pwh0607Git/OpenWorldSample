@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: a48ae1e8209e7794982d39b4cccc3945, type: 3}
   m_Name: Potion_hp
-  m_EditorClassIdentifier: Assembly-CSharp::ConsumableData
-  itemName: Potion Red
-  description: Red
+  m_EditorClassIdentifier: 
+  itemName: Red Potion
+  description: Potion
   value: 30
   icon: {fileID: 21300000, guid: 40591bfc896615d46b132f70304353ed, type: 3}
-  model: {fileID: 7162748861593786302, guid: d634a06eded730d4fbd4d12983933f00, type: 3}
+  model: {fileID: 8750965566074464243, guid: d41b49cd30332d74a8ad7e49945f1de7, type: 3}
   subType: 0

@@ -273,7 +273,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3450856832016330416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,8 +303,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f4fc77b9f5de344aa548cdd0b3f8b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blackBoard: {fileID: 0}
   monsterName: {fileID: 892729437023820973}
-  curHPText: {fileID: 892729437023820973}
   HP_Bar: {fileID: 9152544549954145650}
   damageTextPrefab: {fileID: 1595454239287047810}
   damageTextTransform: {fileID: 3234274309337067473}

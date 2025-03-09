@@ -44,7 +44,7 @@ public class SlotData<T>
     public T slotKey;   // InventorySlot: int, ActionBarSlot: KeyCode
     public ItemData itemData;
     public int count;
-    public SlotData(T slotKey, ItemData itemData, int count = 1)
+    public SlotData(T slotKey, ItemData itemData = null, int count = 1)
     {
         this.slotKey = slotKey;
         this.itemData = itemData;

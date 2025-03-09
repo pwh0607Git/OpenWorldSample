@@ -18,8 +18,9 @@ public class InventorySlot : DragAndDropSlot, IDropHandler
         base.SetItem(itemIcon);
         
         if(!f) return;
-        Item item = assignedItem.GetComponentInChildren<Item>();
-        OnSlotUpdated?.Invoke(new SlotData<int>(index, item.data));
+        Debug.Log("Set Inventory item...");
+        Item item = assignedItem.GetComponent<ItemIcon>().item;
+        OnSlotUpdated?.Invoke(new SlotData<int>(index, item.data, item.count));
     }
 
     public override void ClearSlot(bool f = false)
@@ -27,6 +28,8 @@ public class InventorySlot : DragAndDropSlot, IDropHandler
         base.ClearSlot();
         
         if(!f) return;
+        
+        Debug.Log("Clear Inventory item...");
         OnSlotUpdated?.Invoke(new SlotData<int>(index, null));
         
     }

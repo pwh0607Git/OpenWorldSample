@@ -236,3 +236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79772af3912b24e4cb85df5905cddd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  s1: 0
+  originalSlot: {fileID: 0}
+  e1: 0
+  s2: 0
+  itemCount: {fileID: 332780236373339581}
+  e2: 0

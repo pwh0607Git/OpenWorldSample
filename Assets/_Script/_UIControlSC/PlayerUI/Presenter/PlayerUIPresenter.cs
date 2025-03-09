@@ -49,16 +49,21 @@ public class PlayerUIPresenter : MonoBehaviour
 
 
     #region Actionbar
-    public void InitActionbar(List<SlotData<KeyCode>> components){
+    public void InitActionbar(List<SlotData<KeyCode>> slotDatas){
         Debug.Log("Actionbar Init!");
-        actionbarPresenter.InitModel(components);
+        Dictionary<KeyCode, Item> datas = new();
+        foreach(var data in slotDatas){
+            if(data.itemData == null) datas[data.slotKey] = null;
+            else datas[data.slotKey] = inventoryPresenter.GetItemInstance(data.itemData);
+        }
+        actionbarPresenter.InitModel(datas);
     }
     #endregion
     
     
     #region State
     public void SerializePlayerState(){
-        // playerStatePresenter.se
+        
     }
     #endregion
     

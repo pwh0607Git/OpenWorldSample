@@ -27,7 +27,7 @@ public abstract class DragAndDropSlot : MonoBehaviour, IDropHandler
         return assignedItem;
     }
     public virtual bool CheckVaildItem(GameObject item){
-        ItemData itemData = item.GetComponentInChildren<Item>().data;
+        ItemData itemData = item.GetComponentInChildren<ItemIcon>().item.data;
         return itemData != null;
     }
 }
