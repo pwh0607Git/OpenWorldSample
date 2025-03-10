@@ -5,6 +5,7 @@ public class UIItemEventHandler : MonoBehaviour
 {
     public static UIItemEventHandler Instance { get; private set; }
     private static List<ConsumableData> actionbarConponents = new();
+    [SerializeField] ItemInfoPopup itemPopup;
 
     private void Awake(){
         if(Instance == null) Instance = this;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public PlayerStateView playerStateView;
     private PlayerStatePresenter playerStatePresenter;
+
+    [SerializeField] ItemInfoPopup popup;
 
     [Space(10)]
     [Header("Initial Data")]
@@ -74,6 +77,18 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public Dictionary<KeyCode, Item> GetActionbarModel(){
         return actionbarPresenter.GetList();
+    }
+    #endregion
+
+
+    #region Icon Event
+    public void ShowItemPopUp(ItemData itemData){
+        popup.gameObject.SetActive(true);
+        popup.SetItemData(itemData);
+    }
+
+    public void HideItemPopUp(){
+        popup.gameObject.SetActive(false);
     }
     #endregion
 }

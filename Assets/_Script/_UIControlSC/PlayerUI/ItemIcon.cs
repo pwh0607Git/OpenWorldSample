@@ -1,25 +1,25 @@
+using System.Collections;
 using CustomInspector;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //IPointerClickHandler,
-public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [HorizontalLine("Icon Data"), HideField] public bool s1; 
     public DragAndDropSlot originalSlot;
     public Item item { get; private set; }
     [HorizontalLine(""), HideField] public bool e1;
     [Space(10)]
-    [HorizontalLine("UI Conponent"), HideField] public bool s2; 
+    [HorizontalLine("UI Component"), HideField] public bool s2;
+    [SerializeField] PlayerUIPresenter presenter; 
     private RectTransform rectTransform;
-    private Image iconImage;  // 아이콘 이미지 추가
+    private Image iconImage;                        // 아이콘 이미지 추가
     [SerializeField] TextMeshProUGUI itemCount;
     private CanvasGroup canvasGroup;
     [HorizontalLine(""), HideField] public bool e2;
-
 
     void Awake()
     {
@@ -27,6 +27,12 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         canvasGroup = GetComponent<CanvasGroup>();
         iconImage = GetComponent<Image>();
         canvasGroup.blocksRaycasts = true;
+    }
+
+    IEnumerator Start()
+    {
+        yield return new WaitUntil(() => GetComponentInParent<PlayerUIPresenter>() != null);
+        presenter = GetComponentInParent<PlayerUIPresenter>();
     }
 
     public void Initialize(Item item){
@@ -53,7 +59,7 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             Destroy(gameObject);
             transform.GetComponentInParent<DragAndDropSlot>().ClearSlot(true);          //true를 보내어 model을 갱신할 것.
         }
-        // slot에 데이터 clear하기.
+
         if (item != null) itemCount.text = item.count.ToString();
     }
     
@@ -71,6 +77,17 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = true;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log($"Item Hover : {item.data}");
+        presenter.ShowItemPopUp(item.data);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        presenter.HideItemPopUp();
     }
 
     public void ResetToOriginalSlot(){
