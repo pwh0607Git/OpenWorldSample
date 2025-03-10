@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class PlayerStateView : MonoBehaviour
 {
-    
     [SerializeField] GameObject HP_Bar;
     [SerializeField] GameObject MP_Bar;
     private Image HP_Image;
@@ -19,7 +18,8 @@ public class PlayerStateView : MonoBehaviour
 
     public void UpdateView(PlayerState state){
         p_state = state;
+        Debug.Log($"{state.currentHp} / {state.maxHp}");
         HP_Image.fillAmount = (float)state.currentHp / state.maxHp;
-        MP_Image.fillAmount = (float)state.currentHp / state.maxHp;
+        MP_Image.fillAmount = (float)state.currentMp / state.maxMp;
     }
 }

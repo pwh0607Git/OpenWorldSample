@@ -407,7 +407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryView: {fileID: 362069876}
   actionBarView: {fileID: 8749128085465436381}
-  playerStateView: {fileID: 0}
+  playerStateView: {fileID: 8537735602623295186}
   popup: {fileID: 554964262}
   maxSlotSize: 40
 --- !u!114 &96044280
@@ -1904,6 +1904,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f25f906d701fc0841a05979794f08228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
+  uiPresenter: {fileID: 0}
+  btn1: 0
 --- !u!1 &578548443
 GameObject:
   m_ObjectHideFlags: 0
@@ -4406,6 +4409,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f25f906d701fc0841a05979794f08228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
+  uiPresenter: {fileID: 96044279}
+  btn1: 0
 --- !u!1 &1883645783
 GameObject:
   m_ObjectHideFlags: 0
@@ -6432,8 +6438,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4aa4f58e070db6449c8ad5992418d46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP_Bar: {fileID: 1094156503500283142}
-  MP_Bar: {fileID: 4093536157373618232}
+  HP_Bar: {fileID: 6109174081498291688}
+  MP_Bar: {fileID: 52358437673108654}
 --- !u!224 &8636404409561153532
 RectTransform:
   m_ObjectHideFlags: 0

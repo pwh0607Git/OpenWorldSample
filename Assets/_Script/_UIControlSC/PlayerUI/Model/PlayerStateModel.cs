@@ -9,6 +9,10 @@ public class PlayerStateModel
         p_state = new PlayerState();
     }
 
+    public PlayerStateModel(PlayerState state){
+        this.p_state = state;
+    }
+
     public PlayerState GetState() => p_state;
      
     public void UpdateModel(PlayerState state){
@@ -39,5 +43,9 @@ public class PlayerState{
     public void RestoreMana(int amount)
     {
         currentMp = Mathf.Clamp(currentMp + amount, 0, maxMp);
+    }
+
+    public void TakeDamage(int damage){
+        currentHp-= damage;
     }
 }

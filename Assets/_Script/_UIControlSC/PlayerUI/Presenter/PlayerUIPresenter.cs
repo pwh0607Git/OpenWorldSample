@@ -68,6 +68,10 @@ public class PlayerUIPresenter : MonoBehaviour
     public void SerializePlayerState(){
         
     }
+
+    public void TakeDamage(int damage){
+        playerStatePresenter.TakeDamage(damage);
+    }
     #endregion
     
     #region Tester
