@@ -7,13 +7,11 @@ public class EquipmentPresenter
     public EquipmentModel equipmentModel;
     public EquipmentView view;
 
-    public EquipmentPresenter(PlayerStateModel stateModel, EquipmentModel equipmentModel, EquipmentView view){
-        this.stateModel = stateModel;
+    public EquipmentPresenter(EquipmentModel equipmentModel, EquipmentView view){
         this.equipmentModel = equipmentModel;
         this.view = view;
         
         view.OnViewUpdated += UpdateModelDataFromView;
-        stateModel.OnModelUpdated += UpdateViewFromModel;
         equipmentModel.OnModelUpdated += UpdateViewFromModel;
     }
 

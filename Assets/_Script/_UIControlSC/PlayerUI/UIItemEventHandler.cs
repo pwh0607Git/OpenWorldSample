@@ -38,6 +38,12 @@ public class UIItemEventHandler : MonoBehaviour
                         RegisterActionBarItem(consumableData);
                         DuplicateIcon(targetSlot, itemIcon);
                     }
+                }else if(targetSlot is EquipmentSlot){
+                    EquipmentData equipmentData = (EquipmentData)itemData;
+
+                    //슬롯에 아이템이 있는지 없는지 확인하기
+                    if(slot.GetItem() == null) MoveIcon(slot, itemIcon);
+                    else SwapIcon(slot, itemIcon);
                 }
             }
             else if(originalSlot is ActionBarSlot){

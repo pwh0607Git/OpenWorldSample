@@ -6,11 +6,6 @@ public class InventorySlot : DragAndDropSlot, IDropHandler
 {
     public int index;
     public event Action<SlotData<int>> OnSlotUpdated;
-    
-    public override bool CheckVaildItem(GameObject itemIcon)
-    {
-        return base.CheckVaildItem(itemIcon);
-    }
 
     #region UIITemEventHandler R 
     public override void SetItem(GameObject itemIcon, bool f = false)
@@ -34,4 +29,9 @@ public class InventorySlot : DragAndDropSlot, IDropHandler
         
     }
     #endregion
+    
+    public override bool CheckVaildItem(GameObject itemIcon)
+    {
+        return base.CheckVaildItem(itemIcon);
+    }
 }

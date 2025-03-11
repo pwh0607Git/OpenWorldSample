@@ -7,14 +7,14 @@ public class EquipmentSlot : DragAndDropSlot
     
     public event Action<SlotData<EquipmentType>> OnSlotUpdated;
     
-    public override void SetItem(GameObject ItemIcon, bool f = false)
+    public override void SetItem(GameObject itemIcon, bool f = false)
     {
-        base.SetItem(ItemIcon);
+        base.SetItem(itemIcon);
         
         if(!f) return;
         Debug.Log("Slot Set Item...");
-        Item item = ItemIcon.GetComponentInChildren<Item>();
-        OnSlotUpdated?.Invoke(new SlotData<EquipmentType>(type, item.data, item.count));
+        Item item = itemIcon.GetComponent<ItemIcon>().item;
+        OnSlotUpdated?.Invoke(new SlotData<EquipmentType>(type, item.data));
     }
 
     public override void ClearSlot(bool f = false)
