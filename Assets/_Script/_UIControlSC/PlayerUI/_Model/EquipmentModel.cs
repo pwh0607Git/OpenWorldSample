@@ -9,7 +9,7 @@ public class EquipmentModel : MonoBehaviour
 
     public event Action OnModelUpdated;
     public EquipmentModel(){
-
+        
     }
     public void InitModel(List<SlotData<EquipmentType>> slotDatas){
         // UpdateModel(components);

@@ -11,12 +11,14 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [Header("UI Component")]
     [SerializeField] Transform scrollContent;
     public GameObject inventoryWindow;
+
+    Transform originalParent;
     
+    [Space(10)]
     [Header("Prefabs")]
     [SerializeField] GameObject slotPrefab;
     [SerializeField] GameObject iconBasePrefab;
     private List<InventorySlot> slots = new List<InventorySlot>();
-    Transform originalParent;
 
     [HorizontalLine("CurrentInventory"), HideField] public bool l1;
     [SerializeField, ReadOnly] List<SlotData<int>> itemsView;                              // 인스펙터 출력용

@@ -5,15 +5,20 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using CustomInspector;
 
-public class EquipmentView : MonoBehaviour
+public class EquipmentView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public Transform slotParent;
+    [Space(10)]
+    [Header("UI Component")]
+    [SerializeField] Transform slotParent;
+    public GameObject EquipmentWindow;
+    Transform originalParent;
 
+    [Space(10)]
     [Header("Prefabs")]
     [SerializeField] GameObject slotPrefab;
     [SerializeField] GameObject iconBasePrefab;
-    public Dictionary<EquipmentType, ItemData> slotDictionary = new Dictionary<EquipmentType, ItemData>();
     public List<EquipmentSlot> slots = new List<EquipmentSlot>();
+    public Dictionary<EquipmentType, ItemData> slotDictionary = new Dictionary<EquipmentType, ItemData>();
 
     [HorizontalLine("CurrentInventory"), HideField] public bool l1;
     [SerializeField, ReadOnly] List<SlotData<EquipmentType>> inspectorView;                              // 인스펙터 출력용
@@ -21,39 +26,33 @@ public class EquipmentView : MonoBehaviour
 
     public event Action<SlotData<EquipmentType>> OnViewUpdated;  
 
-    public void EnableSlotEvents()
-    {
-        foreach (var slot in slots)
-        {
-            slot.OnSlotUpdated += ChagedEventHandler;
-        }
+    void Start(){
+        originalParent = transform.parent;
     }
+
 
     public void UpdateView(Dictionary<EquipmentType, Item> slotDatas){
         foreach(var data in slotDatas){
             EquipmentSlot slot = CreateSlot(data.Key);
             if(data.Value == null) continue;
 
-            // SetItemIcon(data.Value, slot);
+            SetItemIcon(data.Value, slot);
         }
         
         UpdateViewInspector(slotDatas);
-        EnableSlotEvents();
-    }
-
-    private void UpdateViewInspector(Dictionary<EquipmentType, Item> slotDatas){
-        inspectorView.Clear();
-        foreach(var data in slotDatas){
-            if(data.Value == null) continue;
-            inspectorView.Add(new SlotData<EquipmentType>(data.Key, data.Value.data));
-        }
     }
 
     EquipmentSlot CreateSlot(EquipmentType type){
         EquipmentSlot slot = Instantiate(slotPrefab, slotParent).GetComponent<EquipmentSlot>();
         slots.Add(slot);
         slot.type = type;
+        slot.OnSlotUpdated += ChagedEventHandler;
         return slot;
+    }
+
+    private void SetItemIcon(Item item, EquipmentSlot slot){
+        ItemIcon itemIcon = UIIconFactory.Instance.CreateItemIcon(item);
+        slot.SetItem(itemIcon.gameObject);
     }
 
     public void ChagedEventHandler(SlotData<EquipmentType> data){
@@ -75,5 +74,34 @@ public class EquipmentView : MonoBehaviour
         }
 
         OnViewUpdated?.Invoke(data);
+    }
+
+    #region Event
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        originalParent = transform.parent;
+        GetComponent<RectTransform>().SetParent(transform.root);
+        GetComponent<CanvasGroup>().blocksRaycasts = false;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        GetComponent<RectTransform>().anchoredPosition += eventData.delta / transform.root.GetComponent<Canvas>().scaleFactor;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        GetComponent<CanvasGroup>().blocksRaycasts = true; 
+        GetComponent<RectTransform>().SetParent(originalParent);
+    }
+    #endregion
+
+    
+    private void UpdateViewInspector(Dictionary<EquipmentType, Item> slotDatas){
+        inspectorView.Clear();
+        foreach(var data in slotDatas){
+            if(data.Value == null) continue;
+            inspectorView.Add(new SlotData<EquipmentType>(data.Key, data.Value.data));
+        }
     }
 }
