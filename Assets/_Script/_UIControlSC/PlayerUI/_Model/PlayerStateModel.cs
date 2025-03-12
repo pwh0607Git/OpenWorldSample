@@ -1,84 +1,121 @@
 using System;
-using JetBrains.Annotations;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class PlayerStateModel
 {
-    private PlayerState original_state;
-    private PlayerState p_state;
+    PlayerState p_state;
     public event Action OnModelUpdated;
     public PlayerStateModel(){
-        original_state = new PlayerState();
+        p_state = new PlayerState();
     }
 
     public PlayerStateModel(PlayerState state){
-        original_state = state;
+        p_state = state;
     }
 
-    public PlayerState GetState() => original_state;
-     
-    public void UpdateModel(PlayerState newState){
-        p_state = newState;
-        OnModelUpdated?.Invoke();
+    public PlayerState GetState() => p_state;
+
+    public void TakeDamage(int damage){
+        p_state.ApplyDamage(damage);
+    }
+
+    public void EquipItem(Equipment equipment){
+        EquipmentData data = equipment.data as EquipmentData;
+        p_state.ApplyBonus(data.state);
+    }
+
+    public void UnequipItem(Equipment equipment){
+        EquipmentData data = equipment.data as EquipmentData;
+        p_state.RemoveBonus(data.state);
+    }
+
+}
+
+[Serializable]
+public class State{
+    public int hp;
+    public int mp;
+    public int attack;
+    public int defend;
+    public float speed;
+
+    public State(int hp = 0, int mp = 0, int attack = 0, int defend = 0, float speed = 0){
+        this.hp = hp;
+        this.mp = mp;
+        this.attack = attack;
+        this.defend = defend;
+        this.speed = speed;
+    }
+
+    public State(State state){
+        this.hp = state.hp;
+        this.mp = state.mp;
+        this.attack = state.attack;
+        this.defend = state.defend;
+        this.speed = state.speed;
+    }
+
+    public static State operator +(State a, State b)
+    {
+        return new State(
+            a.hp + b.hp,
+            a.mp + b.mp,
+            a.attack + b.attack,
+            a.defend + b.defend,
+            a.speed + b.speed
+        );
+    }
+
+    public static State operator -(State a, State b)
+    {
+        return new State(
+            Mathf.Clamp(a.hp - b.hp, 0, a.hp - b.hp),
+            Mathf.Clamp(a.mp - b.mp, 0, a.mp - b.mp),
+            Mathf.Clamp(a.attack - b.attack, 0, a.attack - b.attack),
+            Mathf.Clamp(a.defend - b.defend, 0, a.defend - b.defend),
+            Mathf.Clamp(a.speed - b.speed, 0, a.speed - b.speed)
+        );
     }
 }
 
 public class PlayerState{
-    public int maxHp {get; private set;}
-    public int maxMp {get; private set;}
+    public State base_State {get; private set;}
+    public State bonus_State{get; private set;}
+    public State state => base_State + bonus_State;
 
     public int currentHp {get; private set;}
     public int currentMp {get; private set;}
 
-    //Combat
-    public int attack {get; private set;}
-    public int defend {get; private set;}
-    public float speed {get; private set;}
-
-    public PlayerState(int maxHp = 100, int maxMp = 50)
+    public PlayerState()
     {
-        this.maxHp = maxHp;
-        this.maxMp = maxMp;
-        this.currentHp = maxHp;
-        this.currentMp = maxMp;
+        base_State = new State(100, 50, 10, 10, 30f);
+        bonus_State = new State();
     }
+
     public void Heal(int amount)
     {
-        currentHp = Mathf.Clamp(currentHp + amount, 0, maxHp);
+        currentHp = Mathf.Clamp(currentHp + amount, 0, base_State.hp + bonus_State.hp);
     }
     
     public void RestoreMana(int amount)
     {
-        currentMp = Mathf.Clamp(currentMp + amount, 0, maxMp);
+        currentMp = Mathf.Clamp(currentMp + amount, 0, base_State.mp);
     }
 
-    public void TakeDamage(int damage){
-        currentHp-= damage;
+    public void ApplyDamage(int damage){
+        currentHp -= damage;
     }
 
-    public PlayerState EquipItem(Equipment item){
-        PlayerState newState = this;
-
-        PlayerState add = ((EquipmentData)item.data).stateAddtive;
-
-        newState.maxHp += add.maxHp;
-        newState.attack += add.attack;
-        newState.defend += add.defend;
-        newState.speed *= add.speed;             //speed는 곱연산!
-
-        return newState;
+    public void CostMp(int cost){
+        currentMp -= cost;
     }
 
-    public PlayerState DetachItem(Equipment item){
-        PlayerState newState = this;
+    public void ApplyBonus(State bonusState){
+        bonus_State += bonusState;
+    }
 
-        PlayerState add = ((EquipmentData)item.data).stateAddtive;
-
-        newState.maxHp -= add.maxHp;
-        newState.attack -= add.attack;
-        newState.defend -= add.defend;
-        newState.speed /= add.speed;             //speed는 곱연산!
-
-        return newState;
+    public void RemoveBonus(State bonusState){
+        bonus_State -= bonusState;
     }   
 }
