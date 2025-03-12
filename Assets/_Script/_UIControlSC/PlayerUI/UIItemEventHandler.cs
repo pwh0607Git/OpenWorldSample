@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -80,13 +81,7 @@ public class UIItemEventHandler : MonoBehaviour
     static void DuplicateIcon(DragAndDropSlot targetSlot, GameObject originalIcon){
         Debug.Log("아이콘 Duplicate");
         ItemIcon targetIcon = originalIcon.GetComponent<ItemIcon>();
-        ItemIcon newIcon = UIIconFactory.Instance.CreateItemIcon(targetIcon.item);// Instantiate(originalIcon, targetSlot.transform).GetComponent<ItemIcon>();
-        
-        if (originalIcon.GetComponentInChildren<ItemIcon>().item is Consumable consumable)
-        {
-            consumable.SubscribeToUseEvent(newIcon.UpdateIcon);
-        }
-
+        ItemIcon newIcon = UIIconFactory.Instance.CreateItemIcon(targetIcon.item);
         originalIcon.GetComponentInChildren<ItemIcon>().ResetToOriginalSlot();
         targetSlot.SetItem(newIcon.gameObject, true);
     }
@@ -118,5 +113,21 @@ public class UIItemEventHandler : MonoBehaviour
     }
 }
 
+public class ItemUsedManager : MonoBehaviour{
+    public static ItemUsedManager Instance { get; private set; }
 
-// ItemData[고정 데이터] -> Item[ 동적 데이터 처리 ] -> ItemIconController[아이콘 ui 상호작용.cs]
+    public event Action<IStateEffect> OnItemUsed;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void UseItem(Item item){
+        //아이템 효과 결정.
+        if(item == null || item is not Consumable) return;
+        
+        IStateEffect effect = EffectFactory.CreateEffect((Consumable)item);
+        OnItemUsed?.Invoke(effect);
+    }
+}

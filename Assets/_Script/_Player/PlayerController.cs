@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour
     public static PlayerUIPresenter ui;
     // public static PlayerUIController uiController;
     private static PlayerAttack playerAttack;
-    public State myState;
 
     private void Awake()
     {
@@ -63,7 +62,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponentInChildren<CharacterController>();
         animator = GetComponentInChildren<Animator>(); 
         currentAnimState = PlayerAnimState.Idle;
-        moveSpeed = myState.speed;
+        // moveSpeed = myState.speed;
 
         //transform.position = SpawnPos.position;
     }
@@ -204,7 +203,7 @@ public class PlayerController : MonoBehaviour
             MonsterControllerBT monsterScript = monster.GetComponent<MonsterControllerBT>();
             if (monsterScript != null)
             {
-                monsterScript.TakeDamage((int)myState.attack);
+                // monsterScript.TakeDamage((int)myState.attack);
             }
         }
     }
@@ -218,7 +217,7 @@ public class PlayerController : MonoBehaviour
             MonsterControllerBT monsterScript = monster.GetComponent<MonsterControllerBT>();
             if (monsterScript != null)
             {
-                monsterScript.TakeDamage((int)myState.attack);
+                // monsterScript.TakeDamage((int)myState.attack);
             }
         }
     }
@@ -234,9 +233,9 @@ public class PlayerController : MonoBehaviour
     public void PlayerTakeDamage(int damage){
         if(isDamaging) return;
 
-        myState.curHP -= damage;
+        // myState.curHP -= damage;
         animator.SetTrigger("Damaged");
-        myState.NotifyStateChange();
+        // myState.NotifyStateChange();
         StartCoroutine(Coroutine_NoDamage());
     }
 

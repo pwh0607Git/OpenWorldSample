@@ -12,8 +12,6 @@ public abstract class Item
         this.data = data;
         this.count = count;
     }
-
-    public abstract void Use(PlayerState state);
 }
 
 [Serializable]
@@ -21,21 +19,12 @@ public class Consumable : Item
 {
     public Consumable(ConsumableData data, int count = 1) : base(data, count) { }
     public event Action OnConsumableUsed;
-    public override void Use(PlayerState state)
+    public void Use()
     {
         if (count <= 0) return;
         count--;
-        
-        OnConsumableUsed?.Invoke();
-        //test
-        if(state == null) return;
-        IStateEffect effect = EffectFactory.CreateEffect(((ConsumableData)data).subType, data.value);
-        effect?.Apply(state);
-    }
 
-    public void SubscribeToUseEvent(Action callback)
-    {
-        OnConsumableUsed += callback;
+        ItemUsedManager.Instance.UseItem(this);
     }
 
     public void GetThisItem(){
@@ -46,11 +35,4 @@ public class Consumable : Item
 [Serializable]
 public class Equipment : Item {
     public Equipment(EquipmentData data, int count = 1) :base(data,count){ }
-    public override void Use(PlayerState state)
-    {
-        // if (Count <= 0) return;
-        // Count--;
-        // IStateEffect effect = EffectFactory.CreateEffect(((ConsumableData)data).subType, data.value);
-        // effect?.Apply(state);
-    }
 }

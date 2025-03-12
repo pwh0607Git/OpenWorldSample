@@ -29,6 +29,8 @@ public class PlayerUIPresenter : MonoBehaviour
     
         PlayerStateModel playerStateModel = new PlayerStateModel();
         playerStatePresenter = new PlayerStatePresenter(playerStateModel, playerStateView);
+
+        ItemUsedManager.Instance.OnItemUsed += ApplyEffect;
     }  
 
     void Update()
@@ -83,6 +85,11 @@ public class PlayerUIPresenter : MonoBehaviour
         return actionbarPresenter.GetList();
     }
     #endregion
+
+    public void ApplyEffect(IStateEffect effect){
+        Debug.Log($"Effect : {effect} 적용하기!");
+
+    }
 
 
     #region Icon Event

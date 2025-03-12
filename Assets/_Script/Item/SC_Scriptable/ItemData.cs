@@ -13,7 +13,6 @@ public abstract class ItemData : ScriptableObject
     [Header("Information")]
     public string itemName;
     public string description;
-    public float value;
 
     [Header("Visual")]
     public Sprite icon;

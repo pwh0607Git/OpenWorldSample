@@ -28,7 +28,6 @@ public class UIIconFactory : MonoBehaviour
     public ItemIcon CreateItemIcon(Item item){
         ItemIcon icon = Instantiate(iconPrefab).GetComponent<ItemIcon>();
         icon.Initialize(item);
-        if (item is Consumable consumable) consumable.SubscribeToUseEvent(icon.UpdateIcon);
         
         return icon;
     }

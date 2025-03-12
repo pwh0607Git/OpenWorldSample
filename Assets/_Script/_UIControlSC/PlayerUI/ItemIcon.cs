@@ -39,11 +39,7 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         Debug.Log($"Item Instance 초기화!");
         this.item = item;
         if(iconImage.sprite != null) return;
-
-        if (item is Consumable consumable){
-            consumable.SubscribeToUseEvent(UpdateIcon);
-            Debug.Log($"Subscribed to {item.data.name} | Count: {item.count}");
-        }
+        
         SetIconImage();
         UpdateIcon();
     }

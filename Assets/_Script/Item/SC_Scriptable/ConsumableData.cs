@@ -11,5 +11,6 @@ public enum ConsumableType
 public class ConsumableData : ItemData
 {
     public ConsumableType subType;
+    public float value;
 }
 

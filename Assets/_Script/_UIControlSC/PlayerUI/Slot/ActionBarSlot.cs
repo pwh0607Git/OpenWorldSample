@@ -14,7 +14,8 @@ public class ActionBarSlot : DragAndDropSlot{
     {
         if(Input.GetKeyDown(assignedKey)){
             if(assignedItem == null) return;
-            assignedItem.GetComponent<ItemIcon>().item.Use(null);
+
+            if(assignedItem.GetComponent<ItemIcon>().item is Consumable consumable) consumable.Use();
         }
     }
 

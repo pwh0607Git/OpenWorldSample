@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerStatePresenter
@@ -17,8 +18,8 @@ public class PlayerStatePresenter
         view.UpdateView(model.GetState());
     }
 
-    public void UseItem(Item item){
-        item.Use(model.GetState());
+    public void ApplyEffect(IStateEffect effect){
+    // model.ApplyEffect(effect);
     }
 
     public void EquipItem(Equipment equipment){
