@@ -12,5 +12,5 @@ public enum EquipmentType
 public class EquipmentData : ItemData
 {
     public EquipmentType subType;
-    public PlayerState stateAddtive;
+    public State state;
 }

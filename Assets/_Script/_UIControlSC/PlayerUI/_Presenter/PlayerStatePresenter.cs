@@ -21,20 +21,17 @@ public class PlayerStatePresenter
         item.Use(model.GetState());
     }
 
-    public void EquipItem(EquipmentData data){
-        Debug.Log($"[{data.name}] 장착 !!");
-        //장착할 아이템의 스탯 값을 model에서 가산.
+    public void EquipItem(Equipment equipment){
+        Debug.Log($"[{equipment}] 장착 !!");
+        model.EquipItem(equipment);
     }
 
-    public void DetachItem(EquipmentData data){
-        Debug.Log($"[{data.name}] 해제 !!");
-        //장착할 아이템의 스탯 값을 model에서 가감.
+    public void UnequipItem(Equipment equipment){    
+        Debug.Log($"[{equipment}] 해제 !!");
+        model.EquipItem(equipment);
     }
 
     public void TakeDamage(int damage){
-        PlayerState state = model.GetState();
-        state.TakeDamage(damage);
-        Debug.Log($"CurrentHp : {state.currentHp}");
-        model.UpdateModel(state);
+        model.TakeDamage(damage);
     }
 }

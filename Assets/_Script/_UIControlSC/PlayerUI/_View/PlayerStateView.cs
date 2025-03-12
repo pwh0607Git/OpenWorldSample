@@ -8,7 +8,6 @@ public class PlayerStateView : MonoBehaviour
     [SerializeField] GameObject MP_Bar;
     private Image HP_Image;
     private Image MP_Image;
-    [SerializeField] PlayerState p_state;
 
     void Awake()
     {
@@ -16,10 +15,9 @@ public class PlayerStateView : MonoBehaviour
         MP_Image = MP_Bar.GetComponentInChildren<Image>();
     }
 
-    public void UpdateView(PlayerState state){
-        p_state = state;
-        Debug.Log($"{state.currentHp} / {state.maxHp}");
-        HP_Image.fillAmount = (float)state.currentHp / state.maxHp;
-        MP_Image.fillAmount = (float)state.currentMp / state.maxMp;
+    public void UpdateView(PlayerState p_state){
+        Debug.Log($"{p_state.currentHp} / {p_state.state.hp}");
+        HP_Image.fillAmount = (float)p_state.currentHp / p_state.state.hp;
+        MP_Image.fillAmount = (float)p_state.currentMp / p_state.state.mp;
     }
 }
