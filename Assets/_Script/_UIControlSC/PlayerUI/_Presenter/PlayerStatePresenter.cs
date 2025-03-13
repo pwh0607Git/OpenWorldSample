@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerStatePresenter
@@ -19,7 +18,7 @@ public class PlayerStatePresenter
     }
 
     public void ApplyEffect(IStateEffect effect){
-    // model.ApplyEffect(effect);
+        model.ApplyEffect(effect);
     }
 
     public void EquipItem(Equipment equipment){
@@ -30,9 +29,5 @@ public class PlayerStatePresenter
     public void UnequipItem(Equipment equipment){    
         Debug.Log($"[{equipment}] 해제 !!");
         model.EquipItem(equipment);
-    }
-
-    public void TakeDamage(int damage){
-        model.TakeDamage(damage);
     }
 }

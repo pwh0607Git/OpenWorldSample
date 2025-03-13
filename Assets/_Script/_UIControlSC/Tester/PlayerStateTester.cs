@@ -14,6 +14,7 @@ public class PlayerStateTester : MonoBehaviour
     [Button("DamageTester"), HideField] public bool btn1;
 
     public void DamageTester(){
-        uiPresenter.TakeDamage(damage);
+        IStateEffect effect = EffectFactory.CreateEffect(EffectType.Damage, 10);
+        uiPresenter.ApplyEffect(effect);
     }
 }

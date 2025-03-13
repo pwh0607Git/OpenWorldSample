@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,7 +19,7 @@ public class PlayerUIPresenter : MonoBehaviour
     [Space(10)]
     [Header("Initial Data")]
     [SerializeField] int maxSlotSize;
-    void Start()
+    IEnumerator Start()
     {
         InventoryModel inventoryModel = new InventoryModel(maxSlotSize);
         inventoryPresenter = new InventoryPresenter(inventoryModel, inventoryView);
@@ -30,6 +30,8 @@ public class PlayerUIPresenter : MonoBehaviour
         PlayerStateModel playerStateModel = new PlayerStateModel();
         playerStatePresenter = new PlayerStatePresenter(playerStateModel, playerStateView);
 
+        //item 효과 적용 옵저버.
+        yield return new WaitUntil(() => ItemUsedManager.Instance != null);
         ItemUsedManager.Instance.OnItemUsed += ApplyEffect;
     }  
 
@@ -71,9 +73,6 @@ public class PlayerUIPresenter : MonoBehaviour
         
     }
 
-    public void TakeDamage(int damage){
-        playerStatePresenter.TakeDamage(damage);
-    }
     #endregion
     
     #region Tester
@@ -88,7 +87,7 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public void ApplyEffect(IStateEffect effect){
         Debug.Log($"Effect : {effect} 적용하기!");
-
+        playerStatePresenter.ApplyEffect(effect);
     }
 
 

@@ -1,23 +1,25 @@
-using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerStateView : MonoBehaviour
 {
-    [SerializeField] GameObject HP_Bar;
-    [SerializeField] GameObject MP_Bar;
-    private Image HP_Image;
-    private Image MP_Image;
+    [SerializeField] GameObject hp_Bar;
+    [SerializeField] GameObject mp_Bar;
+    [SerializeField] private TextMeshProUGUI level;
+    private Image hp_Image;
+    private Image mp_Image;
 
     void Awake()
     {
-        HP_Image = HP_Bar.GetComponentInChildren<Image>();
-        MP_Image = MP_Bar.GetComponentInChildren<Image>();
+        hp_Image = hp_Bar.GetComponentInChildren<Image>();
+        mp_Image = mp_Bar.GetComponentInChildren<Image>();
     }
 
     public void UpdateView(PlayerState p_state){
         Debug.Log($"{p_state.currentHp} / {p_state.state.hp}");
-        HP_Image.fillAmount = (float)p_state.currentHp / p_state.state.hp;
-        MP_Image.fillAmount = (float)p_state.currentMp / p_state.state.mp;
+        hp_Image.fillAmount = (float)p_state.currentHp / p_state.state.hp;
+        mp_Image.fillAmount = (float)p_state.currentMp / p_state.state.mp;
+        level.text = p_state.level.ToString();
     }
 }
