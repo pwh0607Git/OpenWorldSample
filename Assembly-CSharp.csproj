@@ -142,6 +142,7 @@
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterAttack.cs" />
     <Compile Include="Assets\_Script\Item\Item\Item.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
+    <Compile Include="Assets\_Script\ScriptableSC\InitDatas\EquipmentSlotData.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterDetection.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\BossLogic\BossController.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterDown.cs" />
