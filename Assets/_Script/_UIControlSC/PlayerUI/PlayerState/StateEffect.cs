@@ -19,14 +19,14 @@ public class ManaRestoreEffect : IStateEffect
     public void Apply(PlayerState state) => state.RestoreMana(amount);
 }
 
-// public class DamageEffect : IStateEffect
-// {
-//     private int damage;
+public class DamageEffect : IStateEffect
+{
+    private int damage;
     
-//     public DamageEffect(int damage) => this.damage = damage;
+    public DamageEffect(int damage) => this.damage = damage;
     
-//     public void Apply(PlayerState state) => state.TakeDamage(damage);
-// }
+    public void Apply(PlayerState state) => state.ApplyDamage(damage);
+}
 
 // public class StunEffect : IStateEffect
 // {
@@ -59,9 +59,9 @@ public static class EffectFactory
         };
     }
 
-    public static IStateEffect CreateEffect(EffectType type){
+    public static IStateEffect CreateEffect(EffectType type, int value){
         return type switch{
-            // EffectType.Damage => new 
+            EffectType.Damage => new DamageEffect(value),
             _ => null
         };
     }

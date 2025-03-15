@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using UnityEditor.Rendering.Toon;
 using UnityEngine;
 
 public class PlayerStateModel
@@ -16,21 +17,74 @@ public class PlayerStateModel
 
     public PlayerState GetState() => p_state;
 
-    public void TakeDamage(int damage){
-        p_state.ApplyDamage(damage);
-    }
-
     public void EquipItem(Equipment equipment){
         EquipmentData data = equipment.data as EquipmentData;
         p_state.ApplyBonus(data.state);
+        OnModelUpdated?.Invoke();
     }
 
     public void UnequipItem(Equipment equipment){
         EquipmentData data = equipment.data as EquipmentData;
         p_state.RemoveBonus(data.state);
+        OnModelUpdated?.Invoke();
     }
 
+    public void ApplyEffect(IStateEffect effect){
+        Debug.Log($"StateModel : {effect} 적용!");
+        effect.Apply(p_state);
+        OnModelUpdated?.Invoke();
+    }
 }
+
+public class PlayerState{
+    public State base_State {get; private set;}
+    public State bonus_State{get; private set;}
+    public State state => base_State + bonus_State;
+
+    public int currentHp {get; private set;}
+    public int currentMp {get; private set;}
+    public int level {get; private set;}
+
+    public PlayerState()
+    {
+        base_State = new State(100, 50, 10, 10, 30f);
+        bonus_State = new State();
+        currentHp = state.hp;
+        currentMp = state.mp;
+        level = 1;
+    }
+
+    public void Heal(int amount)
+    {
+        currentHp = Mathf.Clamp(currentHp + amount, 0, base_State.hp + bonus_State.hp);
+    }
+    
+    public void RestoreMana(int amount)
+    {
+        currentMp = Mathf.Clamp(currentMp + amount, 0, base_State.mp);
+    }
+
+    public void ApplyDamage(int damage){
+        currentHp -= damage;
+    }
+
+    public void CostMp(int cost){
+        currentMp -= cost;
+    }
+
+    public void ApplyBonus(State bonusState){
+        bonus_State += bonusState;
+    }
+
+    public void RemoveBonus(State bonusState){
+        bonus_State -= bonusState;
+    }   
+
+    public void LevelUp(){
+        level++;
+    }
+}
+
 
 [Serializable]
 public class State{
@@ -77,45 +131,4 @@ public class State{
             Mathf.Clamp(a.speed - b.speed, 0, a.speed - b.speed)
         );
     }
-}
-
-public class PlayerState{
-    public State base_State {get; private set;}
-    public State bonus_State{get; private set;}
-    public State state => base_State + bonus_State;
-
-    public int currentHp {get; private set;}
-    public int currentMp {get; private set;}
-
-    public PlayerState()
-    {
-        base_State = new State(100, 50, 10, 10, 30f);
-        bonus_State = new State();
-    }
-
-    public void Heal(int amount)
-    {
-        currentHp = Mathf.Clamp(currentHp + amount, 0, base_State.hp + bonus_State.hp);
-    }
-    
-    public void RestoreMana(int amount)
-    {
-        currentMp = Mathf.Clamp(currentMp + amount, 0, base_State.mp);
-    }
-
-    public void ApplyDamage(int damage){
-        currentHp -= damage;
-    }
-
-    public void CostMp(int cost){
-        currentMp -= cost;
-    }
-
-    public void ApplyBonus(State bonusState){
-        bonus_State += bonusState;
-    }
-
-    public void RemoveBonus(State bonusState){
-        bonus_State -= bonusState;
-    }   
 }
