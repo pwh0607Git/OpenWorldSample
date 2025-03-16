@@ -1,16 +1,14 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections;
 using CustomInspector;
+using System;
 
-public class EquipmentView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class EquipmentView : MonoBehaviour
 {
+    
     [Space(10)]
     [Header("UI Component")]
-    [SerializeField] Transform slotParent;
-    public GameObject EquipmentWindow;
     Transform originalParent;
 
     [Space(10)]
@@ -30,7 +28,6 @@ public class EquipmentView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         originalParent = transform.parent;
     }
 
-
     public void UpdateView(Dictionary<EquipmentType, Item> slotDatas){
         foreach(var data in slotDatas){
             EquipmentSlot slot = CreateSlot(data.Key);
@@ -43,7 +40,7 @@ public class EquipmentView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
 
     EquipmentSlot CreateSlot(EquipmentType type){
-        EquipmentSlot slot = Instantiate(slotPrefab, slotParent).GetComponent<EquipmentSlot>();
+        EquipmentSlot slot = Instantiate(slotPrefab, originalParent).GetComponent<EquipmentSlot>();
         slots.Add(slot);
         slot.type = type;
         slot.OnSlotUpdated += ChagedEventHandler;
@@ -75,27 +72,6 @@ public class EquipmentView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         OnViewUpdated?.Invoke(data);
     }
-
-    #region Event
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        originalParent = transform.parent;
-        GetComponent<RectTransform>().SetParent(transform.root);
-        GetComponent<CanvasGroup>().blocksRaycasts = false;
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        GetComponent<RectTransform>().anchoredPosition += eventData.delta / transform.root.GetComponent<Canvas>().scaleFactor;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        GetComponent<CanvasGroup>().blocksRaycasts = true; 
-        GetComponent<RectTransform>().SetParent(originalParent);
-    }
-    #endregion
-
     
     private void UpdateViewInspector(Dictionary<EquipmentType, Item> slotDatas){
         inspectorView.Clear();

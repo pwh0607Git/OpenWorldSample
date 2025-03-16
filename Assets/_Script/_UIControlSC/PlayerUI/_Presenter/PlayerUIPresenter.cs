@@ -11,14 +11,20 @@ public class PlayerUIPresenter : MonoBehaviour
     public ActionbarView actionBarView;
     private ActionbarPresenter actionbarPresenter; 
 
-    public PlayerStateView playerStateView;
-    private PlayerStatePresenter playerStatePresenter;
+    public PlayerDataView playerDataView;           // Right Component
+    public PlayerHealthbarView playerHealthbarView;
+    private PlayerDataPresenter playerDataPresenter;
+    
+    public EquipmentView equipmentView;             // Left Component
+    private EquipmentPresenter equipmentPresenter;
 
     [SerializeField] ItemInfoPopup popup;
 
     [Space(10)]
     [Header("Initial Data")]
     [SerializeField] int maxSlotSize;
+    private object playerStatePresenter;
+
     IEnumerator Start()
     {
         InventoryModel inventoryModel = new InventoryModel(maxSlotSize);
@@ -27,9 +33,14 @@ public class PlayerUIPresenter : MonoBehaviour
         ActionbarModel actionbarModel = new ActionbarModel();
         actionbarPresenter = new ActionbarPresenter(actionbarModel, actionBarView);
     
+        //PlayerData
         PlayerStateModel playerStateModel = new PlayerStateModel();
-        playerStatePresenter = new PlayerStatePresenter(playerStateModel, playerStateView);
-
+        playerDataPresenter = new PlayerDataPresenter(playerStateModel, playerDataView, playerHealthbarView);
+        
+        //Equipment
+        EquipmentModel equipmentModel = new EquipmentModel();
+        equipmentPresenter = new EquipmentPresenter(equipmentModel, playerStateModel, equipmentView);
+        
         //item 효과 적용 옵저버.
         yield return new WaitUntil(() => ItemUsedManager.Instance != null);
         ItemUsedManager.Instance.OnItemUsed += ApplyEffect;
@@ -87,9 +98,8 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public void ApplyEffect(IStateEffect effect){
         Debug.Log($"Effect : {effect} 적용하기!");
-        playerStatePresenter.ApplyEffect(effect);
+        // playerStatePresenter.ApplyEffect(effect);
     }
-
 
     #region Icon Event
     public void ShowItemPopUp(ItemData itemData){

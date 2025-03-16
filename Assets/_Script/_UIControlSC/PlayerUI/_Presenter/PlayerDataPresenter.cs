@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class PlayerStatePresenter
+public class PlayerDataPresenter
 {
     private PlayerStateModel model;
-    private PlayerStateView view;
+    private PlayerDataView dataView;
+    private PlayerHealthbarView healthbarView;
 
-    public PlayerStatePresenter(PlayerStateModel model, PlayerStateView view){
+    public PlayerDataPresenter(PlayerStateModel model, PlayerDataView dataView, PlayerHealthbarView healthbarView){
         this.model = model;
-        this.view = view;
-
+        this.dataView = dataView;
+        this.healthbarView = healthbarView;
+        
         model.OnModelUpdated += ModelChangeHandler;
     }
 
     public void ModelChangeHandler(){
         Debug.Log($"{GetType()} : Model이 변경되었다! View를 Update하러 가자!");
-        view.UpdateView(model.GetState());
+        dataView.UpdatePlayerDataView(model.GetState());
+        healthbarView.UpdateView(model.GetState());
     }
 
     public void ApplyEffect(IStateEffect effect){

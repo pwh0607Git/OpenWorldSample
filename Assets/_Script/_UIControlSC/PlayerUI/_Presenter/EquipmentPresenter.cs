@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class EquipmentPresenter
 {
-    public PlayerStateModel stateModel;
+    public PlayerStateModel playerStateModel;
     public EquipmentModel equipmentModel;
     public EquipmentView view;
 
-    public EquipmentPresenter(EquipmentModel equipmentModel, EquipmentView view){
+    public EquipmentPresenter(EquipmentModel equipmentModel, PlayerStateModel playerStateModel, EquipmentView view){
         this.equipmentModel = equipmentModel;
+        this.playerStateModel = playerStateModel;
         this.view = view;
         
         view.OnViewUpdated += UpdateModelDataFromView;

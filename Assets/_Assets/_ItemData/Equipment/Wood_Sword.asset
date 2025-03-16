@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dcacbd3103ff7f343aab65b0b7c79b3a, type: 3}
-  m_Name: Sword
+  m_Name: Wood_Sword
   m_EditorClassIdentifier: 
   itemName: Wood Sword
   description: Sword
-  icon: {fileID: 21300000, guid: af88e637281e9a548aa31d1cb76a0486, type: 3}
+  icon: {fileID: 21300000, guid: 3d06fbdf805e0374e958702c932339a0, type: 3}
   model: {fileID: 0}
   subType: 1
   state:

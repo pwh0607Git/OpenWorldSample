@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using System.Collections;
 using CustomInspector;
 
-public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventoryView : MonoBehaviour
 {
     [Space(10)]
     [Header("UI Component")]
@@ -89,26 +88,6 @@ public class InventoryView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void ChagedEventHandler(SlotData<int> data){
         StartCoroutine(Coroutine_ChangedEventHandle(data));
     }
-
-    #region Event
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        originalParent = transform.parent;
-        GetComponent<RectTransform>().SetParent(transform.root);
-        GetComponent<CanvasGroup>().blocksRaycasts = false;
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        GetComponent<RectTransform>().anchoredPosition += eventData.delta / transform.root.GetComponent<Canvas>().scaleFactor;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        GetComponent<CanvasGroup>().blocksRaycasts = true; 
-        GetComponent<RectTransform>().SetParent(originalParent);
-    }
-    #endregion
 
     #region Inspector View
         
