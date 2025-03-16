@@ -1,12 +1,19 @@
 using UnityEngine;
 using System;
+using TMPro;
 
 public class EquipmentSlot : DragAndDropSlot
 {
-    public EquipmentType type;
+    public EquipmentType type{get; private set;}
+    private Action<SlotData<EquipmentType>> OnSlotUpdated;
     
-    public event Action<SlotData<EquipmentType>> OnSlotUpdated;
-    
+    public void InitSlotDate(EquipmentType type, Action<SlotData<EquipmentType>> action){
+        this.type = type;
+        GetComponentInChildren<TextMeshProUGUI>().text = type.ToString();
+
+        OnSlotUpdated += action;
+    }
+
     public override void SetItem(GameObject itemIcon, bool f = false)
     {
         base.SetItem(itemIcon);

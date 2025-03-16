@@ -26,6 +26,13 @@ public class EquipmentView : MonoBehaviour
 
     void Start(){
         originalParent = transform.parent;
+        InitSlot();
+    }
+
+    public void InitSlot(){
+        foreach(EquipmentType type in Enum.GetValues(typeof(EquipmentType))){
+            CreateSlot(type);
+        }
     }
 
     public void UpdateView(Dictionary<EquipmentType, Item> slotDatas){
@@ -40,10 +47,9 @@ public class EquipmentView : MonoBehaviour
     }
 
     EquipmentSlot CreateSlot(EquipmentType type){
-        EquipmentSlot slot = Instantiate(slotPrefab, originalParent).GetComponent<EquipmentSlot>();
+        EquipmentSlot slot = Instantiate(slotPrefab, transform).GetComponent<EquipmentSlot>();
+        slot.InitSlotDate(type, ChagedEventHandler);
         slots.Add(slot);
-        slot.type = type;
-        slot.OnSlotUpdated += ChagedEventHandler;
         return slot;
     }
 
