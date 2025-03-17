@@ -676,9 +676,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryView: {fileID: 362069876}
   actionBarView: {fileID: 8749128085465436381}
-  playerDataView: {fileID: 0}
+  playerDataView: {fileID: 502358273}
   playerHealthbarView: {fileID: 8537735602623295186}
-  equipmentView: {fileID: 0}
+  equipmentView: {fileID: 1107190821}
   popup: {fileID: 554964262}
   maxSlotSize: 40
 --- !u!114 &96044280

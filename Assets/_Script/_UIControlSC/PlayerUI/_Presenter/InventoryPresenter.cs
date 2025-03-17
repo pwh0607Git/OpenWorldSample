@@ -6,6 +6,9 @@ public class InventoryPresenter
     private InventoryModel model;
     private InventoryView view;
 
+    //View가 비활성화 된 상태일 때 저장하는 코드.
+    private List<SlotData<int>> pendingUpdates = new List<SlotData<int>>();
+
     public InventoryPresenter(InventoryModel model, InventoryView view){
         this.model = model;
         this.view = view;
@@ -22,7 +25,15 @@ public class InventoryPresenter
     
     public void UpdateView(){
         Debug.Log($"Presenter : model itemList Count : {model.GetItemList().Count}");
-        view.UpdateView(model.GetItemList());
+
+        if(!view.gameObject.activeSelf){
+            pendingUpdates.Clear();
+            foreach(var item in model.GetItemList()){
+                pendingUpdates.Add(new SlotData<int>(item.Key, item.Value.data, item.Value.count));
+            }
+        }else{
+            view.UpdateView(model.GetItemList());
+        }
     }
 
     public void UpdateModel(SlotData<int> slot){
@@ -38,6 +49,13 @@ public class InventoryPresenter
         view.SetActive(isActive);
 
         if(isActive){
+            // View 활성화 시 대기 중이던 변경 사항을 반영
+            foreach (var update in pendingUpdates)
+            {
+                model.UpdateModel(update);
+            }
+            pendingUpdates.Clear(); // 적용 후 리스트 초기화
+
             view.UpdateView(model.GetItemList());
         }
     }
