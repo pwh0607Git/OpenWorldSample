@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using Palmmedia.ReportGenerator.Core.Parser.Analysis;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerUIPresenter : MonoBehaviour
@@ -11,7 +14,7 @@ public class PlayerUIPresenter : MonoBehaviour
     public ActionbarView actionBarView;
     private ActionbarPresenter actionbarPresenter; 
 
-    public PlayerDataView playerDataView;           // Right Component
+    public PlayerStateView playerStateView;           // Right Component
     public PlayerHealthbarView playerHealthbarView;
     private PlayerDataPresenter playerDataPresenter;
     
@@ -35,10 +38,10 @@ public class PlayerUIPresenter : MonoBehaviour
     
         //PlayerData
         PlayerStateModel playerStateModel = new PlayerStateModel();
-        playerDataPresenter = new PlayerDataPresenter(playerStateModel, playerDataView, playerHealthbarView);
-        
         //Equipment
         EquipmentModel equipmentModel = new EquipmentModel();
+        
+        playerDataPresenter = new PlayerDataPresenter(playerStateModel, playerStateView, playerHealthbarView);
         equipmentPresenter = new EquipmentPresenter(equipmentModel, playerStateModel, equipmentView);
         
         //item 효과 적용 옵저버.
@@ -49,9 +52,9 @@ public class PlayerUIPresenter : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
-        {
             inventoryPresenter.ToggleInventory();
-        }
+        if(Input.GetKeyDown(KeyCode.E))
+            playerDataPresenter.TogglePlayerDataView();
     }
 
     #region Inventory
@@ -64,7 +67,6 @@ public class PlayerUIPresenter : MonoBehaviour
         inventoryPresenter.AddItem(item);
     }
     #endregion
-
 
     #region Actionbar
     public void InitActionbar(List<SlotData<KeyCode>> slotDatas){
@@ -80,9 +82,6 @@ public class PlayerUIPresenter : MonoBehaviour
     
     
     #region State
-    public void SerializePlayerState(){
-        
-    }
 
     #endregion
     
@@ -98,7 +97,7 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public void ApplyEffect(IStateEffect effect){
         Debug.Log($"Effect : {effect} 적용하기!");
-        // playerStatePresenter.ApplyEffect(effect);
+        // playerStatePresenter.ApplyEffect(effect);/
     }
 
     #region Icon Event
@@ -109,6 +108,30 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public void HideItemPopUp(){
         popup.gameObject.SetActive(false);
+    }
+    #endregion
+
+    #region Equipments
+    public void InitEquipment(List<SlotData<EquipmentType>> datas){
+        List<Equipment> es = new List<Equipment>();
+
+        foreach(var data in datas){
+            Equipment item = new Equipment((EquipmentData)data.itemData);
+            es.Add(item);
+        }
+
+        StartCoroutine(TestFunc(es));
+        StartCoroutine(TestFunc2());
+    }
+
+    IEnumerator TestFunc(List<Equipment> es){
+        yield return new WaitUntil(() => playerDataPresenter != null);
+        playerDataPresenter.SerializeModel(es);
+    }
+
+    IEnumerator TestFunc2(){        
+        yield return new WaitUntil(() => equipmentPresenter != null);
+        equipmentPresenter.UpdateViewFromModel();
     }
     #endregion
 }

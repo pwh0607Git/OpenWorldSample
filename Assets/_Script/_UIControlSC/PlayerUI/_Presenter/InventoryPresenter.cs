@@ -44,10 +44,13 @@ public class InventoryPresenter
     {
         model.AddItem(itemData);
     }
-    public void ToggleInventory(){
-        bool isActive = !view.inventoryWindow.activeSelf;
-        view.SetActive(isActive);
 
+    public void ToggleInventory(){
+        WindowController window = view.GetComponentInParent<WindowController>();
+
+        bool isActive = !window.gameObject.activeSelf;
+        window.gameObject.SetActive(isActive);
+        
         if(isActive){
             // View 활성화 시 대기 중이던 변경 사항을 반영
             foreach (var update in pendingUpdates)

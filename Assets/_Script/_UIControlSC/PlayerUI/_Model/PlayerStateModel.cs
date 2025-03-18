@@ -1,6 +1,4 @@
 using System;
-using System.Security.Cryptography;
-using UnityEditor.Rendering.Toon;
 using UnityEngine;
 
 public class PlayerStateModel
@@ -16,7 +14,7 @@ public class PlayerStateModel
     }
 
     public PlayerState GetState() => p_state;
-
+    
     public void EquipItem(Equipment equipment){
         EquipmentData data = equipment.data as EquipmentData;
         p_state.ApplyBonus(data.state);
