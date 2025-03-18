@@ -6,7 +6,7 @@ using System.Collections;
 using CustomInspector;
 using TMPro;
 
-public class PlayerDataView : MonoBehaviour
+public class PlayerStateView : MonoBehaviour
 {
     #region PlayerData
     [SerializeField] TextMeshProUGUI tmp_MaxHp;
@@ -16,7 +16,7 @@ public class PlayerDataView : MonoBehaviour
     
     [SerializeField] TextMeshProUGUI tmp_Speed;
     
-    public void UpdatePlayerDataView(PlayerState p_state){
+    public void UpdatePlayerStateView(PlayerState p_state){
         tmp_MaxHp.text = p_state.state.hp.ToString();
         tmp_MaxMp.text = p_state.state.mp.ToString();
         tmp_Attack.text = p_state.state.attack.ToString();
