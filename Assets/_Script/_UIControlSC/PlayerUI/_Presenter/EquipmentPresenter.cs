@@ -1,19 +1,18 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EquipmentPresenter
 {
-    public PlayerStateModel playerStateModel;
-    public EquipmentModel equipmentModel;
+    public EquipmentModel model;
     public EquipmentView view;
 
-    public EquipmentPresenter(EquipmentModel equipmentModel, PlayerStateModel playerStateModel, EquipmentView view){
-        this.equipmentModel = equipmentModel;
-        this.playerStateModel = playerStateModel;
+    public EquipmentPresenter(EquipmentModel model, PlayerStateModel playerStateModel, EquipmentView view){
+        this.model = model;
         this.view = view;
         
         view.OnViewUpdated += UpdateModelDataFromView;
-        equipmentModel.OnModelUpdated += UpdateViewFromModel;
+        model.OnModelUpdated += UpdateViewFromModel;
     }
 
     public void UpdateViewFromModel(){
@@ -23,8 +22,15 @@ public class EquipmentPresenter
 
     public void UpdateModelDataFromView(SlotData<EquipmentType> slot){
         Debug.Log($"Equipment Presenter : Update Model {slot.slotKey} : {slot.itemData}");
-        equipmentModel.UpdateModelDataFromView(slot);
+        model.UpdateModelDataFromView(slot);
     } 
+
+    public void SerializeModel(List<SlotData<EquipmentType>> datas){
+        // 모델을 초기화 후 view를 갱신.
+        model.SerializeModel(datas);
+    }
     
-    public Dictionary<EquipmentType, Item> GetList() => equipmentModel.GetEquipmentItems();
+    public Dictionary<EquipmentType, Item> GetList() => model.GetEquipmentItems();
 }
+
+// Slot Data<EquipmentType>로 통일!!

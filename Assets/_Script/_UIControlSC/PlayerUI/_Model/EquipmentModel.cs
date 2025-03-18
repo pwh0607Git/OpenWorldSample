@@ -8,11 +8,9 @@ public class EquipmentModel : MonoBehaviour
     private Dictionary<EquipmentType, Item> equipedItems = new Dictionary<EquipmentType, Item>();
 
     public event Action OnModelUpdated;
-    public EquipmentModel(){
-            
-    }
+    public EquipmentModel(){ }
 
-    public void InitModel(List<SlotData<EquipmentType>> slotDatas){
+    public void SerializeModel(List<SlotData<EquipmentType>> slotDatas){
         // UpdateModel(components);
         foreach(var data in slotDatas){
             UpdateModel(data);

@@ -28,10 +28,11 @@ public class PlayerDataPresenter
         healthbarView.UpdateView(model.GetState());
     }
 
-    public void SerializeModel(List<Equipment> equipments){
+    public void SerializeModel(List<SlotData<EquipmentType>> datas){
         Debug.Log($"PlayerDataPresenter : SerializeModel");
-        foreach(var equipment in equipments){
-            EquipItem(equipment);
+        foreach(var equipment in datas){
+            Equipment item = ItemFactory.CreateItem(equipment.itemData) as Equipment;
+            EquipItem(item);
         }
     }
 

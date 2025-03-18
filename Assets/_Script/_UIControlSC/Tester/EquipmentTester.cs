@@ -15,6 +15,6 @@ public class EquipmentTester : MonoBehaviour
     }
 
     public void SendEquipmentData(){
-        uiPresenter.InitEquipment(datas);
+        uiPresenter.SerializeEquipment(datas);
     }
 }

@@ -37,7 +37,7 @@ public class EquipmentView : MonoBehaviour
 
     public void UpdateView(Dictionary<EquipmentType, Item> slotDatas){
         foreach(var data in slotDatas){
-            EquipmentSlot slot = CreateSlot(data.Key);
+            EquipmentSlot slot = slots.Find(s => s.type == data.Key);
             if(data.Value == null) continue;
 
             SetItemIcon(data.Value, slot);

@@ -20,10 +20,11 @@ public class UIItemEventHandler : MonoBehaviour
         DragAndDropSlot originalSlot = itemIcon.GetComponentInParent<ItemIcon>().originalSlot;
         DragAndDropSlot targetSlot = slot;
         ItemData itemData = itemIcon.GetComponentInChildren<ItemIcon>().item.data;
+        ItemIcon icon = itemIcon.GetComponentInChildren<ItemIcon>();
 
         if(!targetSlot.CheckVaildItem(itemIcon)){
             Debug.Log("event 1");
-            itemIcon.GetComponentInChildren<ItemIcon>().ResetToOriginalSlot();   
+            icon.ResetToOriginalSlot();   
             return;   
         }
 
@@ -34,7 +35,7 @@ public class UIItemEventHandler : MonoBehaviour
                 else if(targetSlot is ActionBarSlot)
                 {
                     ConsumableData consumableData = (ConsumableData)itemData;
-                    if(IsItemInActionBar(consumableData)) itemIcon.GetComponent<ItemIcon>().ResetToOriginalSlot(); 
+                    if(IsItemInActionBar(consumableData)) icon.ResetToOriginalSlot(); 
                     else {
                         RegisterActionBarItem(consumableData);
                         DuplicateIcon(targetSlot, itemIcon);
@@ -53,6 +54,11 @@ public class UIItemEventHandler : MonoBehaviour
                 }
                 else if(targetSlot is ActionBarSlot){
                     MoveIcon(targetSlot, itemIcon);
+                }
+            }else if(originalSlot is EquipmentSlot){
+                if(targetSlot is InventorySlot){
+                    if(slot.GetItem() == null) MoveIcon(slot, itemIcon);
+                    else icon.ResetToOriginalSlot();
                 }
             }
         }else{

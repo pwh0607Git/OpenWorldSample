@@ -112,26 +112,20 @@ public class PlayerUIPresenter : MonoBehaviour
     #endregion
 
     #region Equipments
-    public void InitEquipment(List<SlotData<EquipmentType>> datas){
+    public void SerializeEquipment(List<SlotData<EquipmentType>> datas){
         List<Equipment> es = new List<Equipment>();
 
-        foreach(var data in datas){
-            Equipment item = new Equipment((EquipmentData)data.itemData);
-            es.Add(item);
-        }
 
-        StartCoroutine(TestFunc(es));
-        StartCoroutine(TestFunc2());
+        StartCoroutine(InitPlayerData(datas));
     }
 
-    IEnumerator TestFunc(List<Equipment> es){
-        yield return new WaitUntil(() => playerDataPresenter != null);
-        playerDataPresenter.SerializeModel(es);
-    }
-
-    IEnumerator TestFunc2(){        
+    IEnumerator InitPlayerData(List<SlotData<EquipmentType>> datas){
         yield return new WaitUntil(() => equipmentPresenter != null);
-        equipmentPresenter.UpdateViewFromModel();
+        equipmentPresenter.SerializeModel(datas);
+
+        yield return new WaitUntil(() => playerDataPresenter != null);
+        playerDataPresenter.SerializeModel(datas);
+        
     }
     #endregion
 }
