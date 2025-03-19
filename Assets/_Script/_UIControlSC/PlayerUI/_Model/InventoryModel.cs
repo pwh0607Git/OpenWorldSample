@@ -27,7 +27,7 @@ public class InventoryModel
     // 뷰로부터 같은 데이터 이므로 뷰를 갱신하는 호출은 수행하지 않는다.
     public void UpdateModel(SlotData<int> data)
     {
-        items[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
+        items[data.slotKey] = data.item;
     }
 
     // 먹은 아이템.

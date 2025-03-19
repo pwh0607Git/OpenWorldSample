@@ -36,7 +36,6 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     }
 
     public void Initialize(Item item){
-        Debug.Log($"Item Instance 초기화!");
         this.item = item;
         if(iconImage.sprite != null) return;
         

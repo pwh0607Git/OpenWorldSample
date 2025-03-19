@@ -26,7 +26,7 @@ public class ActionbarPresenter
     }
 
     public void UpdateModel(SlotData<KeyCode> slot){
-        Debug.Log($"{GetType()} - Update Model {slot.slotKey} : {slot.itemData}");
+        Debug.Log($"{GetType()} - Update Model {slot.slotKey} : {slot.item}");
         model.UpdateModel(slot);
     } 
 

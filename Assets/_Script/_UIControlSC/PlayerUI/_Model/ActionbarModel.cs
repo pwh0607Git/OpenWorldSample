@@ -22,6 +22,6 @@ public class ActionbarModel
 
     public void UpdateModel(SlotData<KeyCode> data){
         Debug.Log("Model Update...");
-        slotDatas[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
+        slotDatas[data.slotKey] = data.item;
     }
 }

@@ -13,7 +13,7 @@ public class ItemMaker : MonoBehaviour
     [Header("Equipment")]
     public Item equipment1;
 
-    [SerializeField] List<SlotData<int>> _serList;
+    [SerializeField] List<SerializeItemData<int>> _serList;
     [SerializeField] List<ItemData> _newItemList;
 
     [Header("Reference")]
@@ -25,7 +25,12 @@ public class ItemMaker : MonoBehaviour
     }
     IEnumerator NotifyInitTest(){
         yield return null;
-        uiPresenter.InitInventory(_serList);
+        List<SlotData<int>> itemList = new();
+        foreach(var data in _serList){
+            Item item = ItemFactory.CreateItem(data.item, data.count);
+            itemList.Add(new SlotData<int>(data.slotKey, item, data.count));
+        }
+        uiPresenter.InitInventory(itemList);
     }
 
     [Button("GetItem"), HideField] public bool btn1;
@@ -42,12 +47,25 @@ public class ItemMaker : MonoBehaviour
 public class SlotData<T>
 {
     public T slotKey;   // InventorySlot: int, ActionBarSlot: KeyCode
-    public ItemData itemData;
+    public Item item;
     public int count;
-    public SlotData(T slotKey, ItemData itemData = null, int count = 1)
+    public SlotData(T slotKey, Item item = null, int count = 1)
     {
         this.slotKey = slotKey;
-        this.itemData = itemData;
+        this.item = item;
+        this.count = count;
+    }
+}
+
+[Serializable]
+public class SerializeItemData<T>{
+    public T slotKey;   // InventorySlot: int, ActionBarSlot: KeyCode
+    public ItemData item;
+    public int count;
+    public SerializeItemData(T slotKey, ItemData item = null, int count = 1)
+    {
+        this.slotKey = slotKey;
+        this.item = item;
         this.count = count;
     }
 }

@@ -68,7 +68,7 @@ public class InventoryView : MonoBehaviour
             if(slots[i].GetItem() == null) continue;
             Item slotItem = slots[i].GetItem().GetComponent<ItemIcon>().item;
             
-            SlotData<int> viewData = new SlotData<int>(i, slotItem.data, slotItem.count);
+            SlotData<int> viewData = new SlotData<int>(i, slotItem, slotItem.count);
             itemsView.Add(viewData);
         }
     }
@@ -87,7 +87,7 @@ public class InventoryView : MonoBehaviour
         itemsView.Clear();
         foreach(var item in items){
             if(item.Value == null) continue;
-            itemsView.Add(new SlotData<int>(item.Key, item.Value.data));
+            itemsView.Add(new SlotData<int>(item.Key, item.Value));
         }
     }
     #endregion

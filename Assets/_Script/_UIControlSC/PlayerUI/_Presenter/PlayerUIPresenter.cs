@@ -13,10 +13,11 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public ActionbarView actionBarView;
     private ActionbarPresenter actionbarPresenter; 
+    private PlayerDataPresenter playerDataPresenter;
 
     public PlayerStateView playerStateView;           // Right Component
     public PlayerHealthbarView playerHealthbarView;
-    private PlayerDataPresenter playerDataPresenter;
+    private PlayerStatePresenter playerStatePresenter;
     
     public EquipmentView equipmentView;             // Left Component
     private EquipmentPresenter equipmentPresenter;
@@ -26,7 +27,6 @@ public class PlayerUIPresenter : MonoBehaviour
     [Space(10)]
     [Header("Initial Data")]
     [SerializeField] int maxSlotSize;
-    private object playerStatePresenter;
 
     IEnumerator Start()
     {
@@ -38,11 +38,14 @@ public class PlayerUIPresenter : MonoBehaviour
     
         //PlayerData
         PlayerStateModel playerStateModel = new PlayerStateModel();
+        playerStatePresenter = new PlayerStatePresenter(playerStateModel, playerStateView, playerHealthbarView);
+        
         //Equipment
         EquipmentModel equipmentModel = new EquipmentModel();
-        
-        playerDataPresenter = new PlayerDataPresenter(playerStateModel, playerStateView, playerHealthbarView);
         equipmentPresenter = new EquipmentPresenter(equipmentModel, playerStateModel, equipmentView);
+        
+        yield return new WaitUntil(() => equipmentPresenter != null && playerStatePresenter != null);
+        playerDataPresenter = new PlayerDataPresenter(playerStatePresenter, equipmentPresenter);
         
         //item 효과 적용 옵저버.
         yield return new WaitUntil(() => ItemUsedManager.Instance != null);
@@ -73,8 +76,8 @@ public class PlayerUIPresenter : MonoBehaviour
         Debug.Log("Actionbar Init!");
         Dictionary<KeyCode, Item> datas = new();
         foreach(var data in slotDatas){
-            if(data.itemData == null) datas[data.slotKey] = null;
-            else datas[data.slotKey] = inventoryPresenter.GetItemInstance(data.itemData);
+            if(data.item == null) datas[data.slotKey] = null;
+            else datas[data.slotKey] = inventoryPresenter.GetItemInstance(data.item.data);
         }
         actionbarPresenter.InitModel(datas);
     }
@@ -120,12 +123,8 @@ public class PlayerUIPresenter : MonoBehaviour
     }
 
     IEnumerator InitPlayerData(List<SlotData<EquipmentType>> datas){
-        yield return new WaitUntil(() => equipmentPresenter != null);
-        equipmentPresenter.SerializeModel(datas);
-
         yield return new WaitUntil(() => playerDataPresenter != null);
-        playerDataPresenter.SerializeModel(datas);
-        
+        playerDataPresenter.SerializePlayerData(datas);
     }
     #endregion
 }
