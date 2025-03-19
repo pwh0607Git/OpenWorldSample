@@ -56,13 +56,13 @@ public class ActionbarView : MonoBehaviour
         OnViewUpdated?.Invoke(data);
 
         inspectorView.Clear();
-        Debug.Log($"Actionbar Veiw Update : {data.slotKey} : {data.itemData}");
+        Debug.Log($"Actionbar Veiw Update : {data.slotKey} : {data.item}");
         foreach(var slot in slots){
             if(slot.GetItem() == null) continue;
             Item slotItem = slot.GetItem().GetComponent<ItemIcon>().item;
             KeyCode key = slot.assignedKey;
 
-            SlotData<KeyCode> viewData = new SlotData<KeyCode>(key, slotItem.data);
+            SlotData<KeyCode> viewData = new SlotData<KeyCode>(key, slotItem);
             inspectorView.Add(viewData);
         }
     }
@@ -80,7 +80,7 @@ public class ActionbarView : MonoBehaviour
                 inspectorView.Add(new SlotData<KeyCode>(data.Key));    
             }
             else{
-                inspectorView.Add(new SlotData<KeyCode>(data.Key, data.Value.data, data.Value.count));
+                inspectorView.Add(new SlotData<KeyCode>(data.Key, data.Value, data.Value.count));
             }
         }
     }

@@ -19,13 +19,13 @@ public class EquipmentModel : MonoBehaviour
     }
 
     public void UpdateModel(SlotData<EquipmentType> data){
-        equipedItems[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
+        equipedItems[data.slotKey] = data.item;
     }
 
     public void UpdateModelDataFromView(SlotData<EquipmentType> data)
     {
         Debug.Log($"Inventory Model : 슬롯 {data.slotKey} 업데이트");
-        equipedItems[data.slotKey] = ItemFactory.CreateItem(data.itemData, data.count);
+        equipedItems[data.slotKey] = data.item;
     }   
 
     public Dictionary<EquipmentType, Item> GetEquipmentItems() =>  new Dictionary<EquipmentType, Item>(equipedItems);

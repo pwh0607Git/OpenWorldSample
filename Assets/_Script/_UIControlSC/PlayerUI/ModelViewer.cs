@@ -19,7 +19,7 @@ public class ModelViewer : MonoBehaviour
 
         foreach(var item in dic){
             if(item.Value == null) continue;
-            InventoryList.Add(new SlotData<int>(item.Key, item.Value.data, item.Value.count));
+            InventoryList.Add(new SlotData<int>(item.Key, item.Value, item.Value.count));
         }
     }
     
@@ -32,7 +32,7 @@ public class ModelViewer : MonoBehaviour
                 ActionBarList.Add(new SlotData<KeyCode>(data.Key));    
             }
             else{
-                ActionBarList.Add(new SlotData<KeyCode>(data.Key, data.Value.data, data.Value.count));
+                ActionBarList.Add(new SlotData<KeyCode>(data.Key, data.Value, data.Value.count));
             }
         }
     }

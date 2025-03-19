@@ -27,7 +27,7 @@ public class ActionBarSlot : DragAndDropSlot{
         if(!f) return;
         Debug.Log("Set Actionbar item...");
         Item item = itemIcon.GetComponent<ItemIcon>().item;
-        OnSlotUpdated?.Invoke(new SlotData<KeyCode>(assignedKey, item.data, item.count));
+        OnSlotUpdated?.Invoke(new SlotData<KeyCode>(assignedKey, item, item.count));
     }
 
     public override void ClearSlot(bool f = false)

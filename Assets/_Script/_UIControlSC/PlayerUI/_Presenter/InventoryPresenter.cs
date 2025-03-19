@@ -29,7 +29,7 @@ public class InventoryPresenter
         if(!view.gameObject.activeSelf){
             pendingUpdates.Clear();
             foreach(var item in model.GetItemList()){
-                pendingUpdates.Add(new SlotData<int>(item.Key, item.Value.data, item.Value.count));
+                pendingUpdates.Add(new SlotData<int>(item.Key, item.Value, item.Value.count));
             }
         }else{
             view.UpdateView(model.GetItemList());

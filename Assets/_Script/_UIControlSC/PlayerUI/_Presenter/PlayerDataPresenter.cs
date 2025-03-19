@@ -3,52 +3,47 @@ using UnityEngine;
 
 public class PlayerDataPresenter
 {
-    private PlayerStateModel model;
+    private PlayerStateModel stateModel;
     private PlayerStateView stateView;
     private PlayerHealthbarView healthbarView;
     private PlayerState currentPlayerState;
 
-    public PlayerDataPresenter(PlayerStateModel model, PlayerStateView stateView, PlayerHealthbarView healthbarView){
-        this.model = model;
-        this.stateView = stateView;
-        this.healthbarView = healthbarView;
+    private PlayerStatePresenter playerStatePresenter;
+    private EquipmentPresenter equipmentPresenter;
+    
+    //변동 방향성 
+    // model -> view
+    // view -> model
 
-        model.OnModelUpdated += ModelChangeHandler;
+    // PlayerDataPresenter 는 Equipment와 PlayerState를 동기화하는 역할을 수행한다.
+    public PlayerDataPresenter(PlayerStatePresenter playerStatePresenter, EquipmentPresenter equipmentPresenter){
+        this.playerStatePresenter = playerStatePresenter;
+        this.equipmentPresenter = equipmentPresenter;
+
+        equipmentPresenter.OnItemEquiped += ApplyEquipItem;
+        equipmentPresenter.OnItemUnEquiped += ApplyUnEquipItem;
     }
 
-    public void ModelChangeHandler(){
-        Debug.Log($"{GetType()} : Mode  l이 변경되었다! View를 Update하러 가자!");
-
-        if(stateView.gameObject.activeSelf){
-            stateView.UpdatePlayerStateView(model.GetState());
-        }else{
-            currentPlayerState = model.GetState();
-        }
-        
-        healthbarView.UpdateView(model.GetState());
-    }
-
-    public void SerializeModel(List<SlotData<EquipmentType>> datas){
+    public void SerializePlayerData(List<SlotData<EquipmentType>> datas){
         Debug.Log($"PlayerDataPresenter : SerializeModel");
-        foreach(var equipment in datas){
-            Equipment item = ItemFactory.CreateItem(equipment.itemData) as Equipment;
-            EquipItem(item);
-        }
+        playerStatePresenter.SerializeModel(datas);
+        equipmentPresenter.SerializeModel(datas);
     }
 
+    //State 갱신
+    #region State 갱신
     public void ApplyEffect(IStateEffect effect){
-        model.ApplyEffect(effect);
+        playerStatePresenter.ApplyEffect(effect);
     }
 
-    public void EquipItem(Equipment equipment){
-        Debug.Log($"[{equipment}] 장착 !!");
-        model.EquipItem(equipment);
+    public void ApplyEquipItem(Equipment equipment){
+        playerStatePresenter.EquipItem(equipment);
     }
 
-    public void UnequipItem(Equipment equipment){    
-        Debug.Log($"[{equipment}] 해제 !!");
-        model.EquipItem(equipment);
+    public void ApplyUnEquipItem(Equipment equipment){
+        playerStatePresenter.UnEquipItem(equipment);
     }
+    #endregion
 
     public void TogglePlayerDataView(){
         WindowController window = stateView.GetComponentInParent<WindowController>();

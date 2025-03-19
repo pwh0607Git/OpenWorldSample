@@ -2035,13 +2035,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _serList:
   - slotKey: 1
-    itemData: {fileID: 11400000, guid: 1b13b89a7020de845b547774d5a979db, type: 2}
+    item: {fileID: 11400000, guid: 1b13b89a7020de845b547774d5a979db, type: 2}
     count: 4
   - slotKey: 3
-    itemData: {fileID: 11400000, guid: 7143745374ef0bc4a8e696013dc66cf5, type: 2}
+    item: {fileID: 0}
     count: 6
   - slotKey: 6
-    itemData: {fileID: 11400000, guid: ab072173109c6c64fa9a3bd53a9e0222, type: 2}
+    item: {fileID: 11400000, guid: 7143745374ef0bc4a8e696013dc66cf5, type: 2}
+    count: 1
+  - slotKey: 10
+    item: {fileID: 11400000, guid: ab072173109c6c64fa9a3bd53a9e0222, type: 2}
     count: 1
   _newItemList:
   - {fileID: 11400000, guid: dd297adf10f593f4aa6fa40c97f32c27, type: 2}
@@ -2062,31 +2065,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - slotKey: 282
-    itemData: {fileID: 11400000, guid: 7143745374ef0bc4a8e696013dc66cf5, type: 2}
+    item: {fileID: 11400000, guid: 1b13b89a7020de845b547774d5a979db, type: 2}
     count: 0
   - slotKey: 283
-    itemData: {fileID: 0}
+    item: {fileID: 11400000, guid: 7143745374ef0bc4a8e696013dc66cf5, type: 2}
     count: 0
   - slotKey: 284
-    itemData: {fileID: 0}
+    item: {fileID: 0}
     count: 0
   - slotKey: 285
-    itemData: {fileID: 0}
+    item: {fileID: 0}
     count: 0
   - slotKey: 286
-    itemData: {fileID: 0}
+    item: {fileID: 0}
     count: 0
   - slotKey: 287
-    itemData: {fileID: 0}
+    item: {fileID: 0}
     count: 0
   - slotKey: 288
-    itemData: {fileID: 0}
+    item: {fileID: 0}
     count: 0
   - slotKey: 289
-    itemData: {fileID: 0}
+    item: {fileID: 0}
     count: 0
   uiPresenter: {fileID: 96044279}
-  btn1: 0
 --- !u!114 &568067197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4441,10 +4443,10 @@ MonoBehaviour:
   uiPresenter: {fileID: 96044279}
   datas:
   - slotKey: 0
-    itemData: {fileID: 11400000, guid: c81a9492b7665554aa2fabd7fc592e67, type: 2}
+    item: {fileID: 11400000, guid: c81a9492b7665554aa2fabd7fc592e67, type: 2}
     count: 1
   - slotKey: 1
-    itemData: {fileID: 11400000, guid: 50d62234026546f439781ebfce14ab54, type: 2}
+    item: {fileID: 11400000, guid: 50d62234026546f439781ebfce14ab54, type: 2}
     count: 1
 --- !u!1 &1740367961
 GameObject:

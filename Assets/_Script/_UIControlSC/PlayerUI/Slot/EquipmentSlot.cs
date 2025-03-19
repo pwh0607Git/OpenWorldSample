@@ -21,7 +21,7 @@ public class EquipmentSlot : DragAndDropSlot
         if(!f) return;
         Debug.Log("Slot Set Item...");
         Item item = itemIcon.GetComponent<ItemIcon>().item;
-        OnSlotUpdated?.Invoke(new SlotData<EquipmentType>(type, item.data));
+        OnSlotUpdated?.Invoke(new SlotData<EquipmentType>(type, item));
     }
 
     public override void ClearSlot(bool f = false)
