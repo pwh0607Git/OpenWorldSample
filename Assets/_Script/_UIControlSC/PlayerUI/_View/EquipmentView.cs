@@ -36,6 +36,7 @@ public class EquipmentView : MonoBehaviour
     }
 
     public void SerializeView(List<SlotData<EquipmentType>> slotDatas){
+        Debug.Log($"data count : {slotDatas.Count}");
         foreach(var data in slotDatas){
             EquipmentSlot slot = slots.Find(s => s.type == data.slotKey);
             if(data.item == null) continue;
@@ -64,16 +65,16 @@ public class EquipmentView : MonoBehaviour
     // // 변경된 데이터
     IEnumerator Coroutine_ChangedEventHandle(SlotData<EquipmentType> data){
         yield return null;
-        inspectorView.Clear();
-        Debug.Log($"Equipment View Update : {data.slotKey} : {data.item}");
-        foreach( var slot in slots){
-            if(slot.GetItem() == null) continue;
-            Item slotItem = slot.GetItem().GetComponent<ItemIcon>().item;
-            EquipmentType type = slot.type;
+        // inspectorView.Clear();
+        // Debug.Log($"Equipment View Update : {data.slotKey} : {data.item}");
+        // foreach( var slot in slots){
+        //     if(slot.GetItem() == null) continue;
+        //     Item slotItem = slot.GetItem().GetComponent<ItemIcon>().item;
+        //     EquipmentType type = slot.type;
 
-            SlotData<EquipmentType> viewData = new SlotData<EquipmentType>(type, slotItem);
-            inspectorView.Add(viewData);
-        }
+        //     SlotData<EquipmentType> viewData = new SlotData<EquipmentType>(type, slotItem);
+        //     inspectorView.Add(viewData);
+        // }
 
         OnViewUpdated?.Invoke(data);
     }

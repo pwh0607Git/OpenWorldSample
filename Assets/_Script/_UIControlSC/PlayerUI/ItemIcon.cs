@@ -76,7 +76,6 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log($"Item Hover : {item.data}");
         presenter.ShowItemPopUp(item.data);
     }
 

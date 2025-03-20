@@ -40,22 +40,18 @@ public class PlayerStatePresenter : MonoBehaviour
         model.ApplyEffect(effect);
     }
 
+    public void ApplyEquipment(Equipment pre, Equipment cur){
+        Debug.Log("장비 장착 처리하기@");
+        if(pre != null) UnEquipItem(pre);
+        if(cur != null) EquipItem(cur);
+    }
+
     public void EquipItem(Equipment equipment){
         Debug.Log($"[{equipment}] 장착 !!");
         model.EquipItem(equipment);
     }
 
-    public void UnEquipItem(Equipment equipment){    
-        Debug.Log($"[{equipment}] 해제 !!");
-        model.UnequipItem(equipment);
-    }
-
-    public void TogglePlayerDataView(){
-        WindowController window = stateView.GetComponentInParent<WindowController>();
-
-        bool isActive = !window.gameObject.activeSelf;
-        window.gameObject.SetActive(isActive);
-        
-        if(isActive) stateView.UpdatePlayerStateView(currentPlayerState);
+    public void UnEquipItem(Equipment equipment){
+        model.UnEquipItem(equipment);
     }
 }

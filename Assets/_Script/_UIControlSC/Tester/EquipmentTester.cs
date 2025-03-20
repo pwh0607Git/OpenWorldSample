@@ -12,7 +12,7 @@ public class EquipmentTester : MonoBehaviour
 
     void Start()
     {
-        SendEquipmentData();
+        StartCoroutine(SendEquipmentData());
     }
 
     IEnumerator SendEquipmentData(){
@@ -22,6 +22,8 @@ public class EquipmentTester : MonoBehaviour
             Item item = ItemFactory.CreateItem(data.item, data.count);
             itemList.Add(new SlotData<EquipmentType>(data.slotKey, item, data.count));
         }
+
+        Debug.Log($"itemList Serialize : {itemList.Count}");
         uiPresenter.SerializeEquipment(itemList);
     }
 }

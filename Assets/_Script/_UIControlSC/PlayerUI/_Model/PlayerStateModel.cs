@@ -9,21 +9,19 @@ public class PlayerStateModel
         p_state = new PlayerState();
     }
 
-    public PlayerStateModel(PlayerState state){
-        p_state = state;
-    }
-
     public PlayerState GetState() => p_state;
     
     public void EquipItem(Equipment equipment){
         EquipmentData data = equipment.data as EquipmentData;
         p_state.ApplyBonus(data.state);
+        Debug.Log($"{equipment} 장착");
         OnModelUpdated?.Invoke();
     }
 
-    public void UnequipItem(Equipment equipment){
+    public void UnEquipItem(Equipment equipment){
         EquipmentData data = equipment.data as EquipmentData;
         p_state.RemoveBonus(data.state);
+        Debug.Log($"{equipment} 탈착");
         OnModelUpdated?.Invoke();
     }
 

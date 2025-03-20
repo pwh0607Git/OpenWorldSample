@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class PlayerDataPresenter
 {
-    private PlayerStateModel stateModel;
     private PlayerStateView stateView;
-    private PlayerHealthbarView healthbarView;
     private PlayerState currentPlayerState;
 
     private PlayerStatePresenter playerStatePresenter;
@@ -20,8 +18,7 @@ public class PlayerDataPresenter
         this.playerStatePresenter = playerStatePresenter;
         this.equipmentPresenter = equipmentPresenter;
 
-        equipmentPresenter.OnItemEquiped += ApplyEquipItem;
-        equipmentPresenter.OnItemUnEquiped += ApplyUnEquipItem;
+        equipmentPresenter.OnEquipmentChanged += ApplyEquipmentState;
     }
 
     public void SerializePlayerData(List<SlotData<EquipmentType>> datas){
@@ -32,17 +29,15 @@ public class PlayerDataPresenter
 
     //State 갱신
     #region State 갱신
+    private void ApplyEquipmentState(Equipment pre, Equipment cur){
+        Debug.Log("ApplyEquipmentState");
+        playerStatePresenter.ApplyEquipment(pre, cur);
+    }
+
     public void ApplyEffect(IStateEffect effect){
         playerStatePresenter.ApplyEffect(effect);
     }
 
-    public void ApplyEquipItem(Equipment equipment){
-        playerStatePresenter.EquipItem(equipment);
-    }
-
-    public void ApplyUnEquipItem(Equipment equipment){
-        playerStatePresenter.UnEquipItem(equipment);
-    }
     #endregion
 
     public void TogglePlayerDataView(){

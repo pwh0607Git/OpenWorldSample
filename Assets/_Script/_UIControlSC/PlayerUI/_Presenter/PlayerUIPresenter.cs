@@ -1,8 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using Palmmedia.ReportGenerator.Core.Parser.Analysis;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerUIPresenter : MonoBehaviour
@@ -15,11 +12,11 @@ public class PlayerUIPresenter : MonoBehaviour
     private ActionbarPresenter actionbarPresenter; 
     private PlayerDataPresenter playerDataPresenter;
 
-    public PlayerStateView playerStateView;           // Right Component
+    public PlayerStateView playerStateView;                 // Right Component
     public PlayerHealthbarView playerHealthbarView;
     private PlayerStatePresenter playerStatePresenter;
     
-    public EquipmentView equipmentView;             // Left Component
+    public EquipmentView equipmentView;                     // Left Component
     private EquipmentPresenter equipmentPresenter;
 
     [SerializeField] ItemInfoPopup popup;
@@ -39,12 +36,11 @@ public class PlayerUIPresenter : MonoBehaviour
         //PlayerData
         PlayerStateModel playerStateModel = new PlayerStateModel();
         playerStatePresenter = new PlayerStatePresenter(playerStateModel, playerStateView, playerHealthbarView);
-        
+
         //Equipment
         EquipmentModel equipmentModel = new EquipmentModel();
         equipmentPresenter = new EquipmentPresenter(equipmentModel, playerStateModel, equipmentView);
         
-        yield return new WaitUntil(() => equipmentPresenter != null && playerStatePresenter != null);
         playerDataPresenter = new PlayerDataPresenter(playerStatePresenter, equipmentPresenter);
         
         //item 효과 적용 옵저버.
@@ -117,13 +113,13 @@ public class PlayerUIPresenter : MonoBehaviour
     #region Equipments
     public void SerializeEquipment(List<SlotData<EquipmentType>> datas){
         List<Equipment> es = new List<Equipment>();
-
-
         StartCoroutine(InitPlayerData(datas));
     }
 
     IEnumerator InitPlayerData(List<SlotData<EquipmentType>> datas){
+        Debug.Log($"playerDataPresenter : {playerDataPresenter}");
         yield return new WaitUntil(() => playerDataPresenter != null);
+        Debug.Log("InitPlayerData");
         playerDataPresenter.SerializePlayerData(datas);
     }
     #endregion
