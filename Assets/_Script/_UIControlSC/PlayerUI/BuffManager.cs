@@ -1,15 +1,17 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class BuffManager : MonoBehaviour
 {
-    public List<GameObject> activeBuff;
+    public List<BuffIconTimer> activeBuffIcons;
 
     public GameObject testBuffPrefab;
 
-    public Action OnOffBuffChanged;
+    public UnityAction OnBuffEnd;
+    public UnityAction OnBuffStart;
+    
 
     private void Start()
     {
@@ -24,7 +26,7 @@ public class BuffManager : MonoBehaviour
         int padding = 5;
         int i = 0;
 
-        foreach(var buffIcon in activeBuff)
+        foreach(var buffIcon in activeBuffIcons)
         {
             RectTransform rectTransform = buffIcon.GetComponent<RectTransform>();
             rectTransform.sizeDelta = componentSize;
@@ -36,49 +38,32 @@ public class BuffManager : MonoBehaviour
 
     public void OnBuffItem(ConsumableData itemData, float duration)
     {
-        GameObject existingBuff = CheckExistingBuff(itemData.icon);
+        BuffIconTimer existingBuff = CheckExistingBuff(itemData.icon);
         if (existingBuff != null)
         {
-            BuffIconTimer timer = existingBuff.GetComponent<BuffIconTimer>();
-            timer.StartTimer(duration);
+            existingBuff.StartTimer(duration);
 
             return;
         }
 
-        GameObject newBuff = Instantiate(testBuffPrefab);
-        newBuff.GetComponent<Image>().sprite = itemData.icon;
-        newBuff.transform.SetParent(transform);
-        activeBuff.Add(newBuff);
-
-        BuffIconTimer newTimer = newBuff.GetComponent<BuffIconTimer>();
-        if (newTimer != null)
-        {
-            newTimer.OnBuffEnd = OffBuffCallback;
-        }
-
-        newTimer.StartTimer(duration);
+        BuffIconTimer newBuff = Instantiate(testBuffPrefab, transform).GetComponent<BuffIconTimer>().InitBuff(itemjData);
+        activeBuffIcons.Add(newBuff);
+        if (newBuff != null) newBuff.OnBuffEnd = OnBuffEndCallback;
 
         SortIcons();
     }
 
-    public void OnBuffSkill()
+    public void OnBuffEndCallback(BuffIconTimer buffEffect)
     {
-
-    }
-
-    public void OffBuffCallback(GameObject buffEffect)
-    {
-        activeBuff.Remove(buffEffect);
+        activeBuffIcons.Remove(buffEffect);
         SortIcons();
     }
 
-    public GameObject CheckExistingBuff(Sprite buffIcon)
+    public BuffIconTimer CheckExistingBuff(Sprite buffIcon)
     {
-        foreach (var buff in activeBuff)
-        {
-            BuffIconTimer timer = buff.GetComponent<BuffIconTimer>();
-            
-            if(timer.GetComponent<Image>().sprite == buffIcon)
+        foreach (var buff in activeBuffIcons)
+        {   
+            if(buff.GetComponent<Image>().sprite == buffIcon)
             {
                 return buff;
             }

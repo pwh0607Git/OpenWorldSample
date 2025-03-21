@@ -2,16 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIItemEventHandler : MonoBehaviour
+public class UIItemEventHandler : BehaviourSingleton<UIItemEventHandler>
 {
-    public static UIItemEventHandler Instance { get; private set; }
+    protected override bool IsDontDestroy() => true;
+    
     private static List<ConsumableData> actionbarConponents = new();
     [SerializeField] ItemInfoPopup itemPopup;
-
-    private void Awake(){
-        if(Instance == null) Instance = this;
-        else Destroy(gameObject);
-    }
 
     public static void OnChangedSlot(DragAndDropSlot slot, GameObject itemIcon){
         Debug.Log("슬롯 이벤트 발생!");
@@ -119,15 +115,11 @@ public class UIItemEventHandler : MonoBehaviour
     }
 }
 
-public class ItemUsedManager : MonoBehaviour{
-    public static ItemUsedManager Instance { get; private set; }
+public class ItemUsedManager : BehaviourSingleton<ItemUsedManager>{
+
+    protected override bool IsDontDestroy() => true;
 
     public event Action<IStateEffect> OnItemUsed;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     public void UseItem(Item item){
         //아이템 효과 결정.
@@ -135,5 +127,10 @@ public class ItemUsedManager : MonoBehaviour{
         
         IStateEffect effect = EffectFactory.CreateEffect((Consumable)item);
         OnItemUsed?.Invoke(effect);
+    }
+
+    public void UseBuffItem(Item item){
+        BuffConsumableData data = item.data as BuffConsumableData;
+        Debug.Log($"버프 아이템 사용! {data.duration} - {data.value}");
     }
 }

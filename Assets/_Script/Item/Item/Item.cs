@@ -3,7 +3,7 @@ using System;
 [Serializable]
 public abstract class Item
 {
-    public ItemData data{get;}
+    public virtual ItemData data{get;}
     
     public int count { get; protected set; }
 
@@ -17,13 +17,17 @@ public abstract class Item
 [Serializable]
 public class Consumable : Item
 {
+    public override ItemData data => data as ConsumableData;
     public Consumable(ConsumableData data, int count = 1) : base(data, count) { }
-    public event Action OnConsumableUsed;
     public void Use()
     {
         if (count <= 0) return;
         count--;
 
+        if(data is BuffConsumableData){
+            ItemUsedManager.Instance.UseBuffItem(this);
+            return;
+        }
         ItemUsedManager.Instance.UseItem(this);
     }
 
@@ -34,5 +38,6 @@ public class Consumable : Item
 
 [Serializable]
 public class Equipment : Item {
+    public override ItemData data => data as EquipmentData;
     public Equipment(EquipmentData data, int count = 1) :base(data,count){ }
 }
