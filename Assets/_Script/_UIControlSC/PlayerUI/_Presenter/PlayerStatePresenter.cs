@@ -25,7 +25,7 @@ public class PlayerStatePresenter : MonoBehaviour
             currentPlayerState = model.GetState();
         }
         
-        healthbarView.UpdateView(model.GetState());
+        healthbarView.UpdateHealthbar(model.GetState());
     }
 
     public void SerializeModel(List<SlotData<EquipmentType>> datas){

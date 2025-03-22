@@ -9,13 +9,19 @@ public class BuffIconTimer : MonoBehaviour
     private bool timerRunning;
 
     public GameObject buffTimerImg;
-    private Image buffStateBar;
+    private Image buffDurationBar;
 
-    public Action<GameObject> OnBuffEnd;        // ���� ���� �� ������ �ݹ�
+
+    public Action<BuffIconTimer> OnBuffEnd; 
 
     private void Start()
     {
-        buffStateBar = buffTimerImg.GetComponent<Image>();
+        buffDurationBar = buffTimerImg.GetComponent<Image>();
+    }
+
+    public void InitBuff(ItemData data){
+        GetComponent<Image>().sprite = data.icon;
+        StartTimer(((BuffConsumableData)data).duration);
     }
 
     public void StartTimer(float duration)
@@ -38,11 +44,11 @@ public class BuffIconTimer : MonoBehaviour
 
     private void UpdateBuffState()
     {
-        buffStateBar.fillAmount = curTime / duration;
+        buffDurationBar.fillAmount = curTime / duration;
     }
 
     private void OnDestroy()
     {
-        OnBuffEnd?.Invoke(gameObject);
+        OnBuffEnd?.Invoke(this);
     }
 }

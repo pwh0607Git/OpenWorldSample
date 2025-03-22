@@ -40,8 +40,11 @@ public class DamageEffect : IStateEffect
 public class AttackUpBuffEffect : IStateEffect
 {
     private float amount;
-    public AttackUpBuffEffect(float amount) => this.amount = amount;
-    
+    private float duration;
+    public AttackUpBuffEffect(float amount, float duration){
+        this.amount = amount;
+        this.duration = duration;
+    }
     public void Apply(PlayerState state) => state.ApplyBonus(new State());          //수정 부분.
 }
 
@@ -54,7 +57,7 @@ public static class EffectFactory
         {
             ConsumableType.HP => new HealEffect((int)data.value),
             ConsumableType.MP => new ManaRestoreEffect((int)data.value),
-            ConsumableType.Attackup => new AttackUpBuffEffect(data.value),
+            ConsumableType.Attackup => new AttackUpBuffEffect(data.value, ((BuffConsumableData)data).duration),
             _ => null
         };
     }

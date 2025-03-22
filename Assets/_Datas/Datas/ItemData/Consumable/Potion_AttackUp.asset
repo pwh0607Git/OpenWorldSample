@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a48ae1e8209e7794982d39b4cccc3945, type: 3}
-  m_Name: Potion_attack
+  m_Script: {fileID: 11500000, guid: c8b5ed4f95701524a91f3aeab4ce0c6f, type: 3}
+  m_Name: Potion_AttackUp
   m_EditorClassIdentifier: 
-  itemName: Yello Potion
-  description: Potion
-  value: 10
+  itemName: Yellow Potion
+  description: Attack up Buff Potion
   icon: {fileID: 21300000, guid: ab070fe17266e9d4fbe897af68624f88, type: 3}
   model: {fileID: 834515513267351657, guid: bf39dad96329d2e4f8eee51a092a8560, type: 3}
   subType: 2
+  value: 10
+  duration: 30

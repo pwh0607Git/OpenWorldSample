@@ -96,7 +96,7 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public void ApplyEffect(IStateEffect effect){
         Debug.Log($"Effect : {effect} 적용하기!");
-        // playerStatePresenter.ApplyEffect(effect);/
+        playerStatePresenter.ApplyEffect(effect);
     }
 
     #region Icon Event

@@ -2046,6 +2046,9 @@ MonoBehaviour:
   - slotKey: 10
     item: {fileID: 11400000, guid: ab072173109c6c64fa9a3bd53a9e0222, type: 2}
     count: 1
+  - slotKey: 11
+    item: {fileID: 11400000, guid: 87d510eb6c0034740a9ebd1706867031, type: 2}
+    count: 2
   _newItemList:
   - {fileID: 11400000, guid: dd297adf10f593f4aa6fa40c97f32c27, type: 2}
   - {fileID: 11400000, guid: 1b13b89a7020de845b547774d5a979db, type: 2}
