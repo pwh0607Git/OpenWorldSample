@@ -16,7 +16,7 @@ public class PlayerHealthbarView : MonoBehaviour
     }
 
     //Icon만 갱신...
-    public void UpdateBuffPart(){
-
+    public void UpdateBuffPart(IStateEffect effect){
+        
     }
 }

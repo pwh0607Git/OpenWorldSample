@@ -14,6 +14,7 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public PlayerStateView playerStateView;                 // Right Component
     public PlayerHealthbarView playerHealthbarView;
+    public BuffStateView buffStateView;
     private PlayerStatePresenter playerStatePresenter;
     
     public EquipmentView equipmentView;                     // Left Component
@@ -33,17 +34,13 @@ public class PlayerUIPresenter : MonoBehaviour
         ActionbarModel actionbarModel = new ActionbarModel();
         actionbarPresenter = new ActionbarPresenter(actionbarModel, actionBarView);
     
-        //PlayerData
         PlayerStateModel playerStateModel = new PlayerStateModel();
-        playerStatePresenter = new PlayerStatePresenter(playerStateModel, playerStateView, playerHealthbarView);
+        playerStatePresenter = new PlayerStatePresenter(playerStateModel, playerStateView, playerHealthbarView, buffStateView);
 
-        //Equipment
         EquipmentModel equipmentModel = new EquipmentModel();
         equipmentPresenter = new EquipmentPresenter(equipmentModel, playerStateModel, equipmentView);
-        
         playerDataPresenter = new PlayerDataPresenter(playerStatePresenter, equipmentPresenter);
         
-        //item 효과 적용 옵저버.
         yield return new WaitUntil(() => ItemUsedManager.Instance != null);
         ItemUsedManager.Instance.OnItemUsed += ApplyEffect;
     }  
@@ -58,18 +55,15 @@ public class PlayerUIPresenter : MonoBehaviour
 
     #region Inventory
     public void InitInventory(List<SlotData<int>> datas){
-        Debug.Log($"Inventory Init! datasCount : {datas}");
         inventoryPresenter.InitModel(datas);
     }
     public void GetItem(ItemData item){
-        Debug.Log($"PlayUIPresenter : GetItem - {item}");
         inventoryPresenter.AddItem(item);
     }
     #endregion
 
     #region Actionbar
     public void InitActionbar(List<SlotData<KeyCode>> slotDatas){
-        Debug.Log("Actionbar Init!");
         Dictionary<KeyCode, Item> datas = new();
         foreach(var data in slotDatas){
             if(data.item == null) datas[data.slotKey] = null;
@@ -77,11 +71,6 @@ public class PlayerUIPresenter : MonoBehaviour
         }
         actionbarPresenter.InitModel(datas);
     }
-    #endregion
-    
-    
-    #region State
-
     #endregion
     
     #region Tester
@@ -95,7 +84,6 @@ public class PlayerUIPresenter : MonoBehaviour
     #endregion
 
     public void ApplyEffect(IStateEffect effect){
-        Debug.Log($"Effect : {effect} 적용하기!");
         playerStatePresenter.ApplyEffect(effect);
     }
 
@@ -117,9 +105,7 @@ public class PlayerUIPresenter : MonoBehaviour
     }
 
     IEnumerator InitPlayerData(List<SlotData<EquipmentType>> datas){
-        Debug.Log($"playerDataPresenter : {playerDataPresenter}");
         yield return new WaitUntil(() => playerDataPresenter != null);
-        Debug.Log("InitPlayerData");
         playerDataPresenter.SerializePlayerData(datas);
     }
     #endregion

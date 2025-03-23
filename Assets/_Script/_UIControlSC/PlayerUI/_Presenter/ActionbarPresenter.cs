@@ -16,17 +16,14 @@ public class ActionbarPresenter
     // 다음 진행.
     public void InitModel(Dictionary<KeyCode, Item> slotDatas)
     {
-        Debug.Log($"{GetType()} - Init bar code : {slotDatas.Count}");
         model.InitModel(slotDatas);
     }
 
     public void UpdateView(){
-        Debug.Log($"{GetType()} - Update View");
         view.UpdateView(model.GetSlotDatas());
     }
 
     public void UpdateModel(SlotData<KeyCode> slot){
-        Debug.Log($"{GetType()} - Update Model {slot.slotKey} : {slot.item}");
         model.UpdateModel(slot);
     } 
 

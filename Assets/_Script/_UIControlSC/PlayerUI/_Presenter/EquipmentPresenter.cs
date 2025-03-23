@@ -21,8 +21,6 @@ public class EquipmentPresenter
     }
 
     public void SerializeModel(List<SlotData<EquipmentType>> datas){
-        // 모델을 초기화 후 view를 갱신.
-        Debug.Log($"EquipmentPresenter : {datas.Count}");
         model.SerializeModel(datas);
         view.SerializeView(datas);
     }

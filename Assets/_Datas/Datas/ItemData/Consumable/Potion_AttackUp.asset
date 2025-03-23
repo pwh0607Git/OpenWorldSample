@@ -18,4 +18,4 @@ MonoBehaviour:
   model: {fileID: 834515513267351657, guid: bf39dad96329d2e4f8eee51a092a8560, type: 3}
   subType: 2
   value: 10
-  duration: 30
+  duration: 5

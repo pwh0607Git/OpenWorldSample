@@ -128,9 +128,4 @@ public class ItemUsedManager : BehaviourSingleton<ItemUsedManager>{
         IStateEffect effect = EffectFactory.CreateEffect((Consumable)item);
         OnItemUsed?.Invoke(effect);
     }
-
-    public void UseBuffItem(Item item){
-        BuffConsumableData data = item.data as BuffConsumableData;
-        Debug.Log($"버프 아이템 사용! {data.duration} - {data.value}");
-    }
 }

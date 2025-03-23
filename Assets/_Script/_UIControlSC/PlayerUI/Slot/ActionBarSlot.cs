@@ -25,8 +25,10 @@ public class ActionBarSlot : DragAndDropSlot{
         base.SetItem(itemIcon);
         
         if(!f) return;
-        Debug.Log("Set Actionbar item...");
-        Item item = itemIcon.GetComponent<ItemIcon>().item;
+        ItemIcon icon = itemIcon.GetComponent<ItemIcon>();
+        icon.OnItemDestroyed += ClearSlot;
+        Item item = icon.item;
+
         OnSlotUpdated?.Invoke(new SlotData<KeyCode>(assignedKey, item, item.count));
     }
 
@@ -35,7 +37,6 @@ public class ActionBarSlot : DragAndDropSlot{
         base.ClearSlot();
 
         if(!f) return;
-        Debug.Log("Slot Clear Item...");
         OnSlotUpdated?.Invoke(new SlotData<KeyCode>(assignedKey, null));
     }
     #endregion

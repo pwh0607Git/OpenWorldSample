@@ -24,12 +24,10 @@ public class ActionbarView : MonoBehaviour
 
     public void UpdateView(Dictionary<KeyCode, Item> slotDatas){
         foreach(var data in slotDatas){
-            // 해당 슬롯은 KeyCode 데이터만 가지고 있다.
             ActionBarSlot slot = CreateSlot(data.Key);
             if(data.Value == null) continue;
             SetItemIcon(data.Value, slot);
         }
-        // UpdateViewInspector(slotDatas);
     }
 
     private void ClearSlotData(){
@@ -49,8 +47,6 @@ public class ActionbarView : MonoBehaviour
     public void ChagedEventHandler(SlotData<KeyCode> data){
         StartCoroutine(Coroutine_ChangedEventHandle(data));
     }
-
-    // 변경된 데이터
     IEnumerator Coroutine_ChangedEventHandle(SlotData<KeyCode> data){
         yield return null;
         OnViewUpdated?.Invoke(data);

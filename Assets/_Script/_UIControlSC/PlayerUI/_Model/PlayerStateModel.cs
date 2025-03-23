@@ -14,20 +14,22 @@ public class PlayerStateModel
     public void EquipItem(Equipment equipment){
         EquipmentData data = equipment.data as EquipmentData;
         p_state.ApplyBonus(data.state);
-        Debug.Log($"{equipment} 장착");
         OnModelUpdated?.Invoke();
     }
 
     public void UnEquipItem(Equipment equipment){
         EquipmentData data = equipment.data as EquipmentData;
         p_state.RemoveBonus(data.state);
-        Debug.Log($"{equipment} 탈착");
         OnModelUpdated?.Invoke();
     }
 
     public void ApplyEffect(IStateEffect effect){
-        Debug.Log($"StateModel : {effect} 적용!");
         effect.Apply(p_state);
+        OnModelUpdated?.Invoke();
+    }
+
+    public void RemoveEffect(IStateEffect effect){
+        effect.Remove(p_state);
         OnModelUpdated?.Invoke();
     }
 }

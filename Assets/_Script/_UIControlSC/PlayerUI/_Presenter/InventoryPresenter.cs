@@ -19,13 +19,10 @@ public class InventoryPresenter
     
     public void InitModel(List<SlotData<int>> datas)
     {
-        Debug.Log("Inventory Presenter : Init");
         model.InitModel(datas);
     }
     
     public void UpdateView(){
-        Debug.Log($"Presenter : model itemList Count : {model.GetItemList().Count}");
-
         if(!view.gameObject.activeSelf){
             pendingUpdates.Clear();
             foreach(var item in model.GetItemList()){
@@ -52,13 +49,9 @@ public class InventoryPresenter
         window.gameObject.SetActive(isActive);
         
         if(isActive){
-            // View 활성화 시 대기 중이던 변경 사항을 반영
-            foreach (var update in pendingUpdates)
-            {
-                model.UpdateModel(update);
-            }
-            pendingUpdates.Clear(); // 적용 후 리스트 초기화
-
+            foreach (var update in pendingUpdates) model.UpdateModel(update);
+            
+            pendingUpdates.Clear(); 
             view.UpdateView(model.GetItemList());
         }
     }

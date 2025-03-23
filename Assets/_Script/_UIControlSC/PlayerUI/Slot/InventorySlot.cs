@@ -13,7 +13,6 @@ public class InventorySlot : DragAndDropSlot, IDropHandler
         base.SetItem(itemIcon);
         
         if(!f) return;
-        Debug.Log("Set Inventory item...");
         Item item = assignedItem.GetComponent<ItemIcon>().item;
         OnSlotUpdated?.Invoke(new SlotData<int>(index, item, item.count));
     }
@@ -23,10 +22,7 @@ public class InventorySlot : DragAndDropSlot, IDropHandler
         base.ClearSlot();
         
         if(!f) return;
-        
-        Debug.Log("Clear Inventory item...");
         OnSlotUpdated?.Invoke(new SlotData<int>(index, null));
-        
     }
     #endregion
     

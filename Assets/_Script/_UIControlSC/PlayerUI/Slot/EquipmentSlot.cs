@@ -19,7 +19,6 @@ public class EquipmentSlot : DragAndDropSlot
         base.SetItem(itemIcon);
         
         if(!f) return;
-        Debug.Log("Slot Set Item...");
         Item item = itemIcon.GetComponent<ItemIcon>().item;
         OnSlotUpdated?.Invoke(new SlotData<EquipmentType>(type, item));
     }
@@ -29,7 +28,6 @@ public class EquipmentSlot : DragAndDropSlot
         base.ClearSlot();
 
         if(!f) return;
-        Debug.Log("Slot Clear Item...");
         OnSlotUpdated?.Invoke(new SlotData<EquipmentType>(type, null));
     }
     
@@ -37,9 +35,7 @@ public class EquipmentSlot : DragAndDropSlot
         Item item = itemIcon.GetComponent<ItemIcon>().item;
         if(item == null) return false;
 
-        if(item.data is EquipmentData data){
-            if(data.subType != type) return false;
-        }
+        if(item.data is EquipmentData data && data.subType != type) return false;
         return true;
     }
 }

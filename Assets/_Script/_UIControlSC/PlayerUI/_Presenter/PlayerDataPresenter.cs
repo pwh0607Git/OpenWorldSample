@@ -37,7 +37,6 @@ public class PlayerDataPresenter
     public void ApplyEffect(IStateEffect effect){
         playerStatePresenter.ApplyEffect(effect);
     }
-
     #endregion
 
     public void TogglePlayerDataView(){
