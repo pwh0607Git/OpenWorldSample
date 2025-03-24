@@ -22,7 +22,6 @@ public class PlayerDataPresenter
     }
 
     public void SerializePlayerData(List<SlotData<EquipmentType>> datas){
-        Debug.Log($"PlayerDataPresenter : SerializeModel");
         playerStatePresenter.SerializeModel(datas);
         equipmentPresenter.SerializeModel(datas);
     }
@@ -30,7 +29,6 @@ public class PlayerDataPresenter
     //State 갱신
     #region State 갱신
     private void ApplyEquipmentState(Equipment pre, Equipment cur){
-        Debug.Log("ApplyEquipmentState");
         playerStatePresenter.ApplyEquipment(pre, cur);
     }
 

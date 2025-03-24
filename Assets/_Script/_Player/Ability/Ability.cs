@@ -17,7 +17,7 @@ public abstract class Ability{
     public virtual void FixedUpdate() { }
 }
 
-public abstract class Ability<T> : Ability where T : AbilityData{
+public abstract class Ability<T> : Ability where T : class{
     public T data;
     protected PlayerController1 player;
     public Ability(T data, PlayerController1 player){

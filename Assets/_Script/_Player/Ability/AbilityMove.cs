@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AbilityMove : Ability<AbilityMoveData>
+public class AbilityMove : Ability<PlayerState>
 {
     float horz, vert;
     private float _velocity;
@@ -10,10 +10,10 @@ public class AbilityMove : Ability<AbilityMoveData>
     private RaycastHit hit;
     public float maxSlopeAngle = 45f;
     public float gravity = 30f;
-    public AbilityMove(AbilityMoveData data, PlayerController1 player) : base(data, player)
+    public AbilityMove(PlayerState data, PlayerController1 player) : base(data, player)
     {
         camTransform = Camera.main.transform; 
-        _velocity = data.rotatePerSec; 
+        _velocity = data.state.speed;               //임시로 움직임 스피드. 
     }
 
     public override void FixedUpdate()
@@ -85,6 +85,6 @@ public class AbilityMove : Ability<AbilityMoveData>
     }
 
     private void Move(){
-        player.controller.Move(direction * data.movePerSec * Time.deltaTime);
+        player.controller.Move(direction * data.state.speed * Time.deltaTime);
     }
 }
