@@ -28,7 +28,7 @@ public class ForestGolemController : Boss
         Vector3 direction = (target.transform.position - transform.position).normalized;
         direction.y = 0;                                                                            //테스트로 수평으로만 수행하도록 설정.
         direction += Vector3.up*2;
-        target.GetComponentInChildren<PlayerController>().ApplyKnockBack(direction * knockBackPower);
+        // target.GetComponentInChildren<PlayerController>().ApplyKnockBack(direction * knockBackPower);
     }
     #endregion
 

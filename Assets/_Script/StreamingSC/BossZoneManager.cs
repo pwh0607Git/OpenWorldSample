@@ -37,13 +37,13 @@ public class BossZoneManager : MonoBehaviour
     void EnterPlayer(){
         Debug.Log("Player가 보스 위치에 입장!");
         boss.StartBossStage();
-        PlayerController.player.StartBossStage();
+        // PlayerController.player.StartBossStage();
     }
 
     void ExitPlayer(){
         Debug.Log("Player가 보스 위치에 퇴장!");
         boss.EndBossStage();
-        PlayerController.player.EndBossStage();
+        // PlayerController.player.EndBossStage();
     }
 
     void OnDrawGizmos(){
