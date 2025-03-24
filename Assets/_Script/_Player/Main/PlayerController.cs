@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     public static PlayerController player { get; private set; }
     
     public static PlayerUIPresenter ui;
-    // public static PlayerUIController uiController;
     private static PlayerAttack playerAttack;
 
     private void Awake()
@@ -32,7 +31,6 @@ public class PlayerController : MonoBehaviour
 
     void InitUI()
     {
-        // uiController = FindAnyObjectByType<PlayerUIController>();
         playerAttack = GetComponentInChildren<PlayerAttack>();
     }
 
@@ -155,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
     void AttackHandler()
     {
-        //if (weaponTransform.childCount == 0) return;            //무기 미장착시 무시하기.
+        // if (weaponTransform.childCount == 0) return;            //무기 미장착시 무시하기.
         UpdateAttackableMonsterList();
         if (isAttacking)
         {
@@ -260,21 +258,5 @@ public class PlayerController : MonoBehaviour
     public void CleanEquipment()
     {
         Destroy(weaponTransform.GetChild(0).gameObject);
-    }
-
-    //넉백 데이터 추가
-    public void ApplyKnockBack(Vector3 directionAndPower){
-        controller.Move(directionAndPower * Time.deltaTime);
-    }
-    //UI Text Method
-    public void StartBossStage(){
-        // uiController.ShowBossUI();
-    }
-    public void EndBossStage(){
-        // uiController.CloseBossUI();
-    }
-    
-    public void OnHandleBossStage(){
-        
     }
 }
