@@ -27,6 +27,8 @@ public class PlayerStatePresenter : MonoBehaviour
         healthbarView.UpdateHealthbar(model.GetState());
     }
 
+    public PlayerState GetPlayerState() => model.GetState();
+
     public void UpdateBuff(IStateEffect effect){
         healthbarView.UpdateBuffPart(effect);
     }

@@ -11,6 +11,7 @@ public enum AbilityFlag
     Attack = 1 << 3,    // 1000
 }
 
+[Serializable]
 public abstract class Ability{
     public virtual void Activate() { }
     public virtual void Deactivate() { }

@@ -6,9 +6,9 @@ using System.Linq;
 public class AbilityController : MonoBehaviour
 {
     [Space(20), ReadOnly] public AbilityFlag flags = AbilityFlag.None;
-    List<Ability> abilities = new();
+    public List<Ability> abilities = new();
     private readonly Dictionary<AbilityFlag, Ability> actives = new Dictionary<AbilityFlag, Ability>();
-
+    
     private void FixedUpdate()
     {
         foreach( var a in actives.ToList()){
@@ -19,6 +19,7 @@ public class AbilityController : MonoBehaviour
     public void Add(AbilityFlag flag, Ability ability, bool immediate = false){
         if (!actives.ContainsKey(flag))
         {
+            abilities.Add(ability);
             actives[flag] = ability;
         }
     }
@@ -26,6 +27,7 @@ public class AbilityController : MonoBehaviour
     public void Remove(AbilityFlag flag, Ability ability){
         if (actives.ContainsKey(flag))
         {
+            abilities.Remove(ability);
             actives.Remove(flag);
         }
     }
@@ -38,5 +40,9 @@ public class AbilityController : MonoBehaviour
     public void Deactivate(AbilityFlag flag){
         if(!actives.ContainsKey(flag)) return;
         actives[flag].Deactivate();
+    }
+
+    public void UpdatePlayerState(PlayerState p_state){
+        // 나중에...
     }
 }
