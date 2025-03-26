@@ -7,8 +7,10 @@ public enum AbilityFlag
     None = 0,
     Move = 1 << 0,      // 0001
     Jump = 1 << 1,      // 0010
-    Dodge = 1 << 2,     // 0100
-    Attack = 1 << 3,    // 1000
+    Attack = 1 << 2,    // 0100
+    Damaged = 1 << 3,
+    Dodge = 1 << 4,     // 0001, 0000
+
 }
 
 [Serializable]

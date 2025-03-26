@@ -76,6 +76,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\_Script\_Player\Ability\AbilityAttack.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_View\PlayerHealthbarView.cs" />
+    <Compile Include="Assets\_Script\_Player\Ability\AbilityDamaged.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Temp\_MonsterState\MonsterControllerFromState.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\_Script\Props\IThrowAble.cs" />
+    <Compile Include="Assets\_Script\_Player\Logic\AnimationEventListener.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Temp\_MonsterState\MonsterDetectionObserver.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -157,6 +159,7 @@
     <Compile Include="Assets\_Script\MonsterSC\_Logic\BossLogic\BossController.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterDown.cs" />
     <Compile Include="Assets\_Script\_Player\Main\PlayerController.cs" />
+    <Compile Include="Assets\_Script\System\AbilityFactory.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_Presenter\PlayerStatePresenter.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterWandor.cs" />
@@ -179,6 +182,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\BuffIconTimer.cs" />
     <Compile Include="Assets\TeKniKo_Free\Power_Ups\Scripts\ObjectBounce.cs" />
+    <Compile Include="Assets\_Script\Utility\AbilityExtension.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\Popup\ItemInfoPopup.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\Slot\DragAndDropSlot.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\Tester\ItemMaker.cs" />

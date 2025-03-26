@@ -7,6 +7,7 @@ public class AbilityController : MonoBehaviour
 {
     [Space(20), ReadOnly] public AbilityFlag flags = AbilityFlag.None;
     public List<Ability> abilities = new();
+    public List<string> flagg = new();
     private readonly Dictionary<AbilityFlag, Ability> actives = new Dictionary<AbilityFlag, Ability>();
     
     private void FixedUpdate()
@@ -19,15 +20,20 @@ public class AbilityController : MonoBehaviour
     public void Add(AbilityFlag flag, Ability ability, bool immediate = false){
         if (!actives.ContainsKey(flag))
         {
+            flagg.Add(flag.ToString());
+            flags |= flag;
+            // flags.Add(flag, null);    
             abilities.Add(ability);
             actives[flag] = ability;
         }
     }
 
-    public void Remove(AbilityFlag flag, Ability ability){
+    public void Remove(AbilityFlag flag /*, Ability ability*/){
         if (actives.ContainsKey(flag))
         {
-            abilities.Remove(ability);
+            flagg.Remove(flag.ToString());
+            flags.Remove(flag, null);
+            abilities.Remove(actives[flag]);
             actives.Remove(flag);
         }
     }
