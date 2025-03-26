@@ -81,12 +81,12 @@ public static class EffectFactory
         };
     }
 
-    // public static IStateEffect CreateEffect(EffectType type, int value){
-    //     return type switch{
-    //         EffectType.Damage => new DamageEffect(value),
-    //         _ => null
-    //     };
-    // }
+    public static IStateEffect CreateEffect(EffectType type, int value){
+        return type switch{
+            EffectType.Damage => new DamageEffect(new EffectData(value, 0, null)),
+            _ => null
+        };
+    }
 }
 
 [Serializable]

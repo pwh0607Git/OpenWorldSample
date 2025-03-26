@@ -1,24 +1,10 @@
 using UnityEngine;
 
-public class UIIconFactory : MonoBehaviour
+public class UIIconFactory : BehaviourSingleton<UIIconFactory>
 {
     [Header("Icon Prefab")]
     [SerializeField] private GameObject iconPrefab;
-
-    public static UIIconFactory Instance { get; private set; }
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
+    protected override bool IsDontDestroy() => false;
     public ItemIcon CreateItemIcon(ItemData data, int count){
         ItemIcon icon = Instantiate(iconPrefab).GetComponent<ItemIcon>();
         icon.Initialize(ItemFactory.CreateItem(data, count));

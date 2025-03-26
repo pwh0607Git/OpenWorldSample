@@ -28,6 +28,7 @@ public abstract class BehaviourSingleton<T> : MonoBehaviour where T : MonoBehavi
             return;
         }
 
+        //한번 실행되면 씬이 바뀌어도 없어지지 않는가?
         if(IsDontDestroy()) 
             DontDestroyOnLoad(gameObject);
     }

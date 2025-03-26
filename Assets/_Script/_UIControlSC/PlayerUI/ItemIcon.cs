@@ -56,7 +56,6 @@ public class ItemIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void UpdateIcon()
     {
-        Debug.Log("업데이트 아이콘 정보");
         if(item.count <= 0){
             Destroy(gameObject);
             transform.GetComponentInParent<DragAndDropSlot>().ClearSlot(true);          //true를 보내어 model을 갱신할 것.

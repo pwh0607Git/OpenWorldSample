@@ -12,12 +12,12 @@ public class PlayerUIPresenter : MonoBehaviour
     private ActionbarPresenter actionbarPresenter; 
     private PlayerDataPresenter playerDataPresenter;
 
-    public PlayerStateView playerStateView;                 // Right Component
+    public PlayerStateView playerStateView;
     public PlayerHealthbarView playerHealthbarView;
     public BuffStateView buffStateView;
     private PlayerStatePresenter playerStatePresenter;
     
-    public EquipmentView equipmentView;                     // Left Component
+    public EquipmentView equipmentView;
     private EquipmentPresenter equipmentPresenter;
 
     [SerializeField] ItemInfoPopup popup;
@@ -80,6 +80,10 @@ public class PlayerUIPresenter : MonoBehaviour
 
     public Dictionary<KeyCode, Item> GetActionbarModel(){
         return actionbarPresenter.GetList();
+    }
+    
+    public PlayerState GetPlayerState(){
+        return playerStatePresenter.GetPlayerState();
     }
     #endregion
 
