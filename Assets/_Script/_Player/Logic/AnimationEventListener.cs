@@ -5,6 +5,7 @@ public class AnimationEventListener : MonoBehaviour
 {
     public UnityAction<bool> OnPerformedAttack;
     public UnityAction<bool> OnPerformedDamaged;
+    public UnityAction<bool> OnPerformedDodged;
     public UnityAction OnPerformedRunning;
 
     public void AttackStart(){
@@ -22,5 +23,12 @@ public class AnimationEventListener : MonoBehaviour
     public void DamagedEnd(){
         OnPerformedDamaged?.Invoke(false);
     }
-    
+
+    public void DodgeStart(){
+        OnPerformedDodged?.Invoke(true);
+    }
+
+    public void DodgeEnd(){
+        OnPerformedDodged?.Invoke(true);
+    }
 }
