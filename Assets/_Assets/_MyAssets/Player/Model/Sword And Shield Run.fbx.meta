@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4955064829ee922498f3579dbbf648cb
+guid: 33698a828da8fd64b9e22db8dd9f18eb
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -44,11 +44,11 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
@@ -528,18 +528,18 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: Idle(Clone)
+    - name: Model(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: model_LOD1
-      parentName: Idle(Clone)
+      parentName: Model(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -6.123234e-17, y: 1, z: 6.123234e-17, w: -3.7493994e-33}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:Hips
-      parentName: Idle(Clone)
+      parentName: Model(Clone)
       position: {x: 0.0030476428, y: 0.49805793, z: 0.012109355}
       rotation: {x: -6.123234e-17, y: -2.220446e-16, z: 6.123234e-17, w: 1}
       scale: {x: 1.0000002, y: 0.99999994, z: 1.0000001}

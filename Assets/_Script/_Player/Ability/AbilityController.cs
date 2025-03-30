@@ -5,11 +5,14 @@ using System.Linq;
 
 public class AbilityController : MonoBehaviour
 {
-    [Space(20), ReadOnly] public AbilityFlag flags = AbilityFlag.None;
-    public List<Ability> abilities = new();
+    [Header("Inspector Check")]
     public List<string> flagg = new();
+
+    [Space(20), ReadOnly] public AbilityFlag flags = AbilityFlag.None;
+    [Space(20), ReadOnly] public AbilityFlag currentFlag = AbilityFlag.None;
+    public List<Ability> abilities = new();
     private readonly Dictionary<AbilityFlag, Ability> actives = new Dictionary<AbilityFlag, Ability>();
-    
+
     private void FixedUpdate()
     {
         foreach( var a in actives.ToList()){

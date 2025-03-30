@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 [Flags]
 public enum AbilityFlag
@@ -20,11 +19,11 @@ public abstract class Ability{
     public virtual void FixedUpdate() { }
 }
 
-
 public abstract class Ability<T> : Ability where T : class{
     public T data;
     protected PlayerController1 player;
-    public Ability(T data, PlayerController1 player){
+
+    public Ability(T data, PlayerController1 player, float cooldown = 0f){
         this.data = data;
         this.player = player;
     }

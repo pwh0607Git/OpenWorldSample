@@ -8,6 +8,10 @@ public class AbilityDamaged : Ability<PlayerState>
 
     public void TakeDamage(){
         //애니메이션 만 수행.
-        player.animator?.CrossFadeInFixedTime("JUMPUP", 0.6f, 0, 0f);
+        PlayAnimation();
+    }
+
+    private void PlayAnimation(){
+        player.animator.CrossFadeInFixedTime("TakeDamage", 0.02f, 0, 0f);
     }
 }

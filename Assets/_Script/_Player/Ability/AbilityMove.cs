@@ -3,7 +3,7 @@ using UnityEngine;
 public class AbilityMove : Ability<PlayerState>
 {
     float horz, vert;
-    private float _velocity;
+ 
     private Transform camTransform;
     private Vector3 direction;
 
@@ -13,14 +13,14 @@ public class AbilityMove : Ability<PlayerState>
     public AbilityMove(PlayerState data, PlayerController1 player) : base(data, player)
     {
         camTransform = Camera.main.transform; 
-        _velocity = data.state.speed;               //임시로 움직임 스피드. 
     }
 
     public override void FixedUpdate()
     {
         InputKeyboard();
-        Rotate();
+        // Rotate();
         Move();
+        PlayAnimation();
     }
 
     public override void Activate()
@@ -36,24 +36,24 @@ public class AbilityMove : Ability<PlayerState>
     private void InputKeyboard(){
         horz = Input.GetAxis("Horizontal");
         vert = Input.GetAxis("Vertical");
-        
+
         Vector3 cameraForward = camTransform.forward.FlattenY();
         Vector3 cameraRight = camTransform.right.FlattenY();
 
         Vector3 movement = cameraRight * horz + cameraForward * vert;
-        // direction = Vector3.ClampMagnitude(movement, 1);
+        direction = Vector3.ClampMagnitude(movement, 1);
         direction = movement.normalized;
 
         bool isOnSlope = CheckSlope();
         Vector3 adjustedMovement = isOnSlope ? AdjustDirectionToSlope(movement) : movement;
-
+        
         if (player.isGrounded)
         {
             direction.y = -1;
             if (!isOnSlope) direction.y -= gravity * Time.deltaTime;
         }
         else direction.y -= gravity * Time.deltaTime;
-
+        
         direction.x = adjustedMovement.x;
         direction.z = adjustedMovement.z;
     }
@@ -85,6 +85,12 @@ public class AbilityMove : Ability<PlayerState>
     }
 
     private void Move(){
-        player.controller.Move(direction * data.state.speed * Time.deltaTime);
+        player.controller.Move(direction * 2f * Time.deltaTime);          // data.state.speed 
+    }
+
+    private void PlayAnimation(){
+        float currentSpeed = Mathf.Clamp01(player.controller.velocity.magnitude);
+        float speed = Mathf.Lerp(player.animator.GetFloat("MOVESPEED"), currentSpeed, Time.deltaTime * 10f);
+        player.animator.SetFloat("MOVESPEED", speed);
     }
 }

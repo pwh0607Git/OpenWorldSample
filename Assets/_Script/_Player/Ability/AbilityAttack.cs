@@ -20,7 +20,7 @@ public class AbilityAttack : Ability<PlayerState>
     void PerformAttack(){
         if (Time.time - lastAttackTime < attackCoolDown) return;
         Debug.Log("Attack!");
-
+        PlayAnimation();
         if(attackableMonsters.Count <= 0) return;
 
         foreach (var monster in attackableMonsters)
@@ -32,5 +32,9 @@ public class AbilityAttack : Ability<PlayerState>
 
     void UpdateAttackableMonsters(HashSet<GameObject> monsters){
         attackableMonsters = monsters;
+    }
+
+    private void PlayAnimation(){
+        player.animator.CrossFadeInFixedTime("SLASH1", 0.02f, 0, 0f);
     }
 }
