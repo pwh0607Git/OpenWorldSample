@@ -4435,7 +4435,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: b9918ff4e2973364e80b8f26ebf45453, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -7057,8 +7057,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855cf6cbbd9704d4fae54181f4f95da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flags: 0
   flagg: []
+  flags: 0
+  currentFlag: 0
 --- !u!114 &6736321106943809680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7075,6 +7076,8 @@ MonoBehaviour:
   abilityController: {fileID: 0}
   animator: {fileID: 0}
   initialAbilities: -1
+  staticDatas: []
+  currentActivatedAbilities: 0
   isGrounded: 0
 --- !u!143 &6736321106943809681
 CharacterController:

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController1 : MonoBehaviour
 {
-    // public PlayerUIPresenter uIPresenter;
+    public PlayerUIPresenter uIPresenter;
     [ReadOnly] public CharacterController controller;
     [ReadOnly] public AbilityController abilityController;
     [ReadOnly] public Animator animator;   
@@ -23,7 +23,7 @@ public class PlayerController1 : MonoBehaviour
         TryGetComponent(out abilityController);
         TryGetComponent(out eventListener);
 
-        // uIPresenter = GetComponentInChildren<PlayerUIPresenter>();
+        uIPresenter = GetComponentInChildren<PlayerUIPresenter>();
         attackArea = GetComponentInChildren<AttackArea>();
     }
 
@@ -39,6 +39,10 @@ public class PlayerController1 : MonoBehaviour
     void SetAbilityFlag(AbilityFlag flag, bool immediate){
         if(immediate) currentActivatedAbilities.Add(flag, null);
         else currentActivatedAbilities.Remove(flag, null);
+
+        if(flag == AbilityFlag.Attack && !immediate){
+            
+        }
     }
 
     void SetAbilities(){

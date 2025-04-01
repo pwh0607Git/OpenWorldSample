@@ -3,10 +3,17 @@ using DG.Tweening;
 
 public class AbilityDodge : Ability<AbilityDodgeData>
 {
-    public AbilityDodge(AbilityDodgeData data, PlayerController1 player) : base(data, player){ }
-    public override void FixedUpdate(){
-
+    float duration;
+    public AbilityDodge(AbilityDodgeData data, PlayerController1 player) : base(data, player){ 
+        duration = GetAnimationClipLength("Dodge");
     }
+
+    private float GetAnimationClipLength(string clipName){
+        foreach (AnimationClip clip in player.animator.runtimeAnimatorController.animationClips){
+            if (clip.name == clipName) return clip.length; 
+        }
+        return 0.3f; // 기본값 (애니메이션을 못 찾았을 경우)
+}
 
     public override void Activate()
     {
@@ -24,9 +31,7 @@ public class AbilityDodge : Ability<AbilityDodgeData>
         Vector3 targetPosition = player.transform.position + direction * 1f; // 1유닛 전진
         
         PlayAnimation();    
-        player.transform.DOJump(targetPosition, 1f, 1, 1f)
-        .SetEase(Ease.OutQuad)
-        .OnComplete(() => Debug.Log("회피 완료!"));
+        player.transform.DOJump(targetPosition, 0.5f, 1, duration/2).SetEase(Ease.Unset);
     }
     
     private void PlayAnimation(){

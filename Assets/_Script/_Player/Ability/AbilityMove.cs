@@ -9,7 +9,6 @@ public class AbilityMove : Ability<PlayerState>
 
     private RaycastHit hit;
     public float maxSlopeAngle = 45f;
-    public float gravity = 30f;
     public AbilityMove(PlayerState data, PlayerController1 player) : base(data, player)
     {
         camTransform = Camera.main.transform; 
@@ -18,7 +17,7 @@ public class AbilityMove : Ability<PlayerState>
     public override void FixedUpdate()
     {
         InputKeyboard();
-        // Rotate();
+        Rotate();
         Move();
         PlayAnimation();
     }
@@ -48,12 +47,7 @@ public class AbilityMove : Ability<PlayerState>
         Vector3 adjustedMovement = isOnSlope ? AdjustDirectionToSlope(movement) : movement;
         
         if (player.isGrounded)
-        {
-            direction.y = -1;
-            if (!isOnSlope) direction.y -= gravity * Time.deltaTime;
-        }
-        else direction.y -= gravity * Time.deltaTime;
-        
+            direction.y = 0;
         direction.x = adjustedMovement.x;
         direction.z = adjustedMovement.z;
     }
@@ -80,7 +74,10 @@ public class AbilityMove : Ability<PlayerState>
     private void Rotate(){
         if (direction == Vector3.zero) return;
         
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        Vector3 flatDirection = new Vector3(direction.x, 0, direction.z);
+        if (flatDirection == Vector3.zero) return;  // 회전할 방향이 없으면 리턴
+
+        Quaternion targetRotation = Quaternion.LookRotation(flatDirection);
         player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * 10f);
     }
 

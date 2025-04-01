@@ -15,6 +15,7 @@ public class AbilityAttack : Ability<PlayerState>
     public override void Activate()
     {
         PerformAttack();
+        player.abilityController.Deactivate(AbilityFlag.Move);
     }
     
     void PerformAttack(){
