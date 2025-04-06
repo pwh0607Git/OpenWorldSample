@@ -14,23 +14,17 @@ public class AbilityMove : Ability<PlayerState>
         camTransform = Camera.main.transform; 
     }
 
-    public override void FixedUpdate()
-    {
+    public override void Update(){
+        if(player.currentActivatedAbilities != AbilityFlag.Move) return;
         InputKeyboard();
         Rotate();
         Move();
         PlayAnimation();
     }
 
-    public override void Activate()
-    {
-        base.Activate();
-    }
+    public override void Activate(){ }
 
-    public override void Deactivate()
-    {
-        base.Deactivate();
-    }
+    public override void Deactivate() { }
 
     private void InputKeyboard(){
         horz = Input.GetAxis("Horizontal");
@@ -46,8 +40,8 @@ public class AbilityMove : Ability<PlayerState>
         bool isOnSlope = CheckSlope();
         Vector3 adjustedMovement = isOnSlope ? AdjustDirectionToSlope(movement) : movement;
         
-        if (player.isGrounded)
-            direction.y = 0;
+        if (player.isGrounded) direction.y = 0;
+
         direction.x = adjustedMovement.x;
         direction.z = adjustedMovement.z;
     }
@@ -87,7 +81,7 @@ public class AbilityMove : Ability<PlayerState>
 
     private void PlayAnimation(){
         float currentSpeed = Mathf.Clamp01(player.controller.velocity.magnitude);
-        float speed = Mathf.Lerp(player.animator.GetFloat("MOVESPEED"), currentSpeed, Time.deltaTime * 10f);
+        float speed = Mathf.Lerp(player.animator.GetFloat("MOVESPEED"), currentSpeed, Time.deltaTime * 5f);
         player.animator.SetFloat("MOVESPEED", speed);
     }
 }

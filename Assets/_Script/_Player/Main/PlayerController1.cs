@@ -10,10 +10,9 @@ public class PlayerController1 : MonoBehaviour
     [ReadOnly] public Animator animator;   
     private AttackArea attackArea;
     private AnimationEventListener eventListener;
-    [SerializeField] AbilityFlag initialAbilities;
     [SerializeField] List<AbilityData> staticDatas;
 
-    [SerializeField] AbilityFlag currentActivatedAbilities;
+    [SerializeField] public AbilityFlag currentActivatedAbilities;
     [ReadOnly] public bool isGrounded;
 
     void Awake()
@@ -29,20 +28,16 @@ public class PlayerController1 : MonoBehaviour
 
     void Start()
     {
+        currentActivatedAbilities = AbilityFlag.Move;
         SetAbilities();
-        eventListener.OnPerformedAttack += SetAbilityFlag;
-        eventListener.OnPerformedDamaged += SetAbilityFlag;
-        eventListener.OnPerformedDodged += SetAbilityFlag;
-    
+        // eventListener.OnPerformedAttack += SetAbilityFlag;
+        // eventListener.OnPerformedDamaged += SetAbilityFlag;
+        // eventListener.OnPerformedDodged += SetAbilityFlag;
     }
 
-    void SetAbilityFlag(AbilityFlag flag, bool immediate){
+    void SetAbilityFlag(AbilityFlag flag, bool immediate){    
         if(immediate) currentActivatedAbilities.Add(flag, null);
         else currentActivatedAbilities.Remove(flag, null);
-
-        if(flag == AbilityFlag.Attack && !immediate){
-            
-        }
     }
 
     void SetAbilities(){
@@ -58,13 +53,6 @@ public class PlayerController1 : MonoBehaviour
     }
 
     void InputKeyboard(){
-        if(Input.GetKeyDown(KeyCode.LeftControl)){
-            abilityController.Activate(AbilityFlag.Attack);
-        }
-
-        if(Input.GetKeyDown(KeyCode.Space) && !currentActivatedAbilities.Has(AbilityFlag.Dodge)){
-            abilityController.Activate(AbilityFlag.Dodge);
-        }
         //Test
         if(Input.GetKeyDown(KeyCode.LeftShift)){
             TakeDamage(10);

@@ -13,6 +13,13 @@ public class AbilityController : MonoBehaviour
     public List<Ability> abilities = new();
     private readonly Dictionary<AbilityFlag, Ability> actives = new Dictionary<AbilityFlag, Ability>();
 
+    private void Update()
+    {
+        foreach( var a in actives.ToList()){
+            a.Value.Update();
+        }
+    }
+
     private void FixedUpdate()
     {
         foreach( var a in actives.ToList()){
@@ -24,8 +31,7 @@ public class AbilityController : MonoBehaviour
         if (!actives.ContainsKey(flag))
         {
             flagg.Add(flag.ToString());
-            flags |= flag;
-            // flags.Add(flag, null);    
+            flags |= flag; 
             abilities.Add(ability);
             actives[flag] = ability;
         }

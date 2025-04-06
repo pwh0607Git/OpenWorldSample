@@ -121,6 +121,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\_Script\_Player\PlayerAttack.cs" />
     <Compile Include="Assets\_Script\_Player\Main\PlayerController1.cs" />
+    <Compile Include="Assets\_Script\Utility\AnimationUtility.cs" />
     <Compile Include="Assets\_Script\_Player\Logic\AttackArea.cs" />
     <Compile Include="Assets\_Script\System\UIIconFactory.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
