@@ -4468,7 +4468,7 @@ GameObject:
   m_Component:
   - component: {fileID: 543450652895583550}
   m_Layer: 0
-  m_Name: Palyer
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7072,10 +7072,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: febb7f544f75b0b478647ae5d6639f2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uIPresenter: {fileID: 0}
   controller: {fileID: 0}
   abilityController: {fileID: 0}
   animator: {fileID: 0}
-  initialAbilities: -1
   staticDatas: []
   currentActivatedAbilities: 0
   isGrounded: 0
@@ -7098,7 +7098,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 1.9
   m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -7326,7 +7326,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7410462538020996140
 Transform:
   m_ObjectHideFlags: 0

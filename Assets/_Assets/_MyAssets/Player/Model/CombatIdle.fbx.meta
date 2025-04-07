@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 533b2c9cf1e132f4ab304257074eb338
+guid: 50718e6e08a6cdc44a9733c40666969d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -17,7 +17,14 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
-    rigImportWarnings: 
+    rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
+      copied configuration does not match position in animation file:\n\t'mixamorig:LeftUpLeg'
+      : position error = 42.827694 mm\n\t'mixamorig:LeftLeg' : position error = 291.597961
+      mm\n\t'mixamorig:LeftFoot' : position error = 599.057068 mm\n\t'mixamorig:LeftToeBase'
+      : position error = 82.365509 mm\n\t'mixamorig:RightUpLeg' : position error
+      = 41.655880 mm\n\t'mixamorig:RightLeg' : position error = 291.603210 mm\n\t'mixamorig:RightFoot'
+      : position error = 599.288635 mm\n\t'mixamorig:RightToeBase' : position error
+      = 82.323036 mm\n"
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -33,25 +40,25 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: TakeDamage
+      name: CombatIdle
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 76
       wrapMode: 0
       orientationOffsetY: 0
-      level: 0
+      level: 0.7
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
-      loopBlendOrientation: 0
+      loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 0
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
       keepOriginalPositionY: 0
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
@@ -85,8 +92,8 @@ ModelImporter:
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
-    minBoneWeight: 0.001
-    optimizeBones: 1
+    minBoneWeight: 0.351
+    optimizeBones: 0
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -96,7 +103,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60

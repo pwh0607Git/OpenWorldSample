@@ -1,3 +1,5 @@
+using DG.Tweening;
+
 public class AbilityDamaged : Ability<PlayerState>
 {
     float abilityDuration;
@@ -5,18 +7,25 @@ public class AbilityDamaged : Ability<PlayerState>
         TakeDamage();
     }
 
-    public override void Deactivate() { }
-    
-    public override void FixedUpdate() { }
+    public override void Deactivate() { 
+        player.currentActivatedAbilities.Remove(AbilityFlag.Damaged);
+    }
 
     public AbilityDamaged(PlayerState data, PlayerController1 player) : base(data,player){
         float animationSpeed = player.animator.GetFloat("DAMAGEDSPEED");
-        abilityDuration = player.animator.GetAnimationClipLength("TakeDamage");
+        abilityDuration = player.animator.GetAnimationClipLength("TakeDamage") / animationSpeed;
     }
 
     public void TakeDamage(){
         //애니메이션 만 수행.
-        PlayAnimation();
+        if(player.currentActivatedAbilities.HasAny(AbilityFlag.Damaged)) return;
+
+        player.currentActivatedAbilities.Add(AbilityFlag.Damaged);
+
+        DG.Tweening.Sequence damageSeq = DOTween.Sequence(player.gameObject);
+        damageSeq.AppendCallback(() => PlayAnimation());
+        damageSeq.AppendInterval(abilityDuration);
+        damageSeq.OnComplete(()=>Deactivate());
     }
 
     private void PlayAnimation(){

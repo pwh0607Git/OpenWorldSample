@@ -36,8 +36,8 @@ public class PlayerController1 : MonoBehaviour
     }
 
     void SetAbilityFlag(AbilityFlag flag, bool immediate){    
-        if(immediate) currentActivatedAbilities.Add(flag, null);
-        else currentActivatedAbilities.Remove(flag, null);
+        if(immediate) currentActivatedAbilities.Add(flag, null);    
+        else currentActivatedAbilities.Remove(flag, null);          
     }
 
     void SetAbilities(){
