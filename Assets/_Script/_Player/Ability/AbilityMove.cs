@@ -15,7 +15,6 @@ public class AbilityMove : Ability<PlayerState>
     }
 
     public override void Update(){
-        if(player.currentActivatedAbilities != AbilityFlag.Move) return;
         InputKeyboard();
         Rotate();
         Move();

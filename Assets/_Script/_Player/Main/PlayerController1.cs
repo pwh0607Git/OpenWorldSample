@@ -8,11 +8,10 @@ public class PlayerController1 : MonoBehaviour
     [ReadOnly] public CharacterController controller;
     [ReadOnly] public AbilityController abilityController;
     [ReadOnly] public Animator animator;   
-    private AttackArea attackArea;
+    public AttackArea attackArea;
     private AnimationEventListener eventListener;
     [SerializeField] List<AbilityData> staticDatas;
 
-    [SerializeField] public AbilityFlag currentActivatedAbilities;
     [ReadOnly] public bool isGrounded;
 
     void Awake()
@@ -28,21 +27,16 @@ public class PlayerController1 : MonoBehaviour
 
     void Start()
     {
-        currentActivatedAbilities = AbilityFlag.Move;
         SetAbilities();
         // eventListener.OnPerformedAttack += SetAbilityFlag;
         // eventListener.OnPerformedDamaged += SetAbilityFlag;
         // eventListener.OnPerformedDodged += SetAbilityFlag;
     }
 
-    void SetAbilityFlag(AbilityFlag flag, bool immediate){    
-        if(immediate) currentActivatedAbilities.Add(flag, null);    
-        else currentActivatedAbilities.Remove(flag, null);          
-    }
-
     void SetAbilities(){
         abilityController.Add(AbilityFlag.Move, new AbilityMove(new PlayerState(), this), true);
-        abilityController.Add(AbilityFlag.Attack, new AbilityAttack(new PlayerState(), this, attackArea), true);
+        abilityController.Add(AbilityFlag.Attack, new AbilityAttack(new PlayerState(), this), true);
+        abilityController.Add(AbilityFlag.Attack, new AbilityComboAttack(new PlayerState(), this), true);
         abilityController.Add(AbilityFlag.Damaged, new AbilityDamaged(new PlayerState(), this), true);
         abilityController.Add(AbilityFlag.Dodge, new AbilityDodge(staticDatas.Find(d=> d.flag == AbilityFlag.Dodge) as AbilityDodgeData, this), true);
     }
@@ -59,7 +53,7 @@ public class PlayerController1 : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage){
+    public void TakeDamage(int damage, IStateEffect effect = null){
         abilityController.Activate(AbilityFlag.Damaged);            //Damaged의 경우에는 애니메이션 실행만 수행한다. => 애니메이션 이벤트를 통해 PlayerState를 변경.
     }
     

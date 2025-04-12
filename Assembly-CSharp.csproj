@@ -69,6 +69,7 @@
     <Compile Include="Assets\_Script\StreamingSC\MapStreamingManager.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\DroppedItem.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_Presenter\InventoryPresenter.cs" />
+    <Compile Include="Assets\_Script\_Player\Ability\AbilityComboAttack.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_BossLogic\Boss.cs" />
     <Compile Include="Assets\_Script\_Player\Ability\AbilityDodge.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />

@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-    공격 수행중 canCombo가가
-*/public class AbilityAttack : Ability<PlayerState>
+public class AbilityComboAttack : Ability<PlayerState>
 {
     private HashSet<GameObject> attackableMonsters = new();
+
     private float animationDuration;
-    public AbilityAttack(PlayerState data, PlayerController1 player) : base(data, player) { 
-        animationDuration = player.animator.GetAnimationClipLength("Slash1") / player.animator.GetFloat("SLASH1SPEED");
+    public AbilityComboAttack(PlayerState data, PlayerController1 player) : base(data, player) { 
+        animationDuration = player.animator.GetAnimationClipLength("Slash2") / player.animator.GetFloat("SLASH2SPEED");
     }
 
     public override void Activate()
@@ -45,11 +44,9 @@ using UnityEngine;
     }
 
     void UpdateAttackableMonsters(HashSet<GameObject> monsters){
-        attackableMonsters = monsters;
+
     }
 
     private void PlayAnimation(){
-        player.animator.CrossFadeInFixedTime("Slash1", 0.02f, 0, 0f);
-        player.animator.SetTrigger("ONCOMBOATTACK");
     }
 }

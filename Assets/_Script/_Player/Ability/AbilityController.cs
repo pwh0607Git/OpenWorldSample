@@ -9,22 +9,19 @@ public class AbilityController : MonoBehaviour
     public List<string> flagg = new();
 
     [Space(20), ReadOnly] public AbilityFlag flags = AbilityFlag.None;
-    [Space(20), ReadOnly] public AbilityFlag currentFlag = AbilityFlag.None;
     public List<Ability> abilities = new();
     private readonly Dictionary<AbilityFlag, Ability> actives = new Dictionary<AbilityFlag, Ability>();
 
     private void Update()
     {
-        foreach( var a in actives.ToList()){
+        foreach( var a in actives.ToList())
             a.Value.Update();
-        }
     }
 
     private void FixedUpdate()
     {
-        foreach( var a in actives.ToList()){
+        foreach( var a in actives.ToList())
             a.Value.FixedUpdate();
-        }
     }
 
     public void Add(AbilityFlag flag, Ability ability, bool immediate = false){
@@ -47,7 +44,9 @@ public class AbilityController : MonoBehaviour
         }
     }
 
-    public void Activate(AbilityFlag flag){
+    public void Activate(AbilityFlag flag, bool forceDeactivate = false){
+        if(forceDeactivate) DeactivateAll();
+        
         if(!actives.ContainsKey(flag)) return;
         actives[flag].Activate();
     }
@@ -55,6 +54,14 @@ public class AbilityController : MonoBehaviour
     public void Deactivate(AbilityFlag flag){
         if(!actives.ContainsKey(flag)) return;
         actives[flag].Deactivate();
+    }
+
+    public void DeactivateAll()
+    {
+        foreach( var a in actives )
+            a.Value.Deactivate();
+
+        actives.Clear();
     }
 
     public void UpdatePlayerState(PlayerState p_state){

@@ -5,45 +5,47 @@ public interface IStateEffect
 {
     void Apply(PlayerState state);
     void Remove(PlayerState state);
-    EffectData GetData();
+    EffectData Data{get; set;}
+}
+
+public interface IAdditiveEffect{
+    void Apply();
+    void Remove();
+    EffectData Data{get; set;}
 }
 
 public class HealEffect : IStateEffect
 {
-    public EffectData data;
+    private EffectData data;
     public HealEffect(EffectData data) => this.data = data;
     
     public void Apply(PlayerState state) => state.Heal((int)data.value);
     
     public void Remove(PlayerState state) { }   
-    public EffectData GetData(){
-        return data;
-    }
+    public EffectData Data {get => data; set => data = value;}
 }
 
 public class ManaRestoreEffect : IStateEffect
 {
-    public EffectData data;
+    private EffectData data;
     public ManaRestoreEffect(EffectData data) => this.data = data;
     
     public void Apply(PlayerState state) => state.RestoreMana((int)data.value);
     public void Remove(PlayerState state) { }
     
-    public EffectData GetData(){
-        return data;
-    }
+
+    public EffectData Data {get => data; set => data = value;}
 }
 
 public class DamageEffect : IStateEffect
 {
-    public EffectData data{get; private set;}
+    private EffectData data;
     public DamageEffect(EffectData data) => this.data = data;
     
     public void Apply(PlayerState state) => state.ApplyDamage((int)data.value);
     public void Remove(PlayerState state) { }
-    public EffectData GetData(){
-        return data;
-    }
+
+    public EffectData Data {get => data; set => data = value;}
 }
 
 public class AttackUpBuffEffect : IStateEffect
@@ -55,9 +57,26 @@ public class AttackUpBuffEffect : IStateEffect
     
     public void Apply(PlayerState state) => state.ApplyBonus(new State(0, 0, (int)data.value, 0, 0));
     public void Remove(PlayerState state) => state.RemoveBonus(new State(new State(0, 0, (int)data.value, 0, 0)));
-    public EffectData GetData(){
-        return data;
-    }
+
+    public EffectData Data {get => data; set => data = value;}
+}
+
+public class StunEffect : IAdditiveEffect{
+    private EffectData data;
+    public StunEffect(EffectData data) => this.data = data;
+    public void Apply(){}
+    public void Remove(){}
+
+    public EffectData Data {get => data; set => data = value;}
+}
+
+public class SlowEffect : IAdditiveEffect{
+    private EffectData data;
+    public StunEffect(EffectData data) => this.data = data;
+    public void Apply(){}
+    public void Remove(){}
+
+    public EffectData Data {get => data; set => data = value;}
 }
 
 public static class EffectFactory
@@ -81,9 +100,11 @@ public static class EffectFactory
         };
     }
 
-    public static IStateEffect CreateEffect(EffectType type, int value){
+    //Additive
+    public static IAdditiveEffect CreateEffect(EffectType type, int value, float duration){
         return type switch{
-            EffectType.Damage => new DamageEffect(new EffectData(value, 0, null)),
+            EffectType.Stun => new StunEffect(new EffectData(value, duration)),
+            EffectType.Slow => new SlowEffect(new EffectData(value, duration)),
             _ => null
         };
     }
@@ -91,7 +112,7 @@ public static class EffectFactory
 
 [Serializable]
 public enum EffectType{
-    Damage, 
+    Slow, Stun
 }
 
 public class EffectData{
