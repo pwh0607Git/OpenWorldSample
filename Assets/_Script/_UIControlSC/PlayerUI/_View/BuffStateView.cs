@@ -14,10 +14,10 @@ public class BuffStateView : MonoBehaviour
 
     public void OnBuff(IStateEffect effect)
     {
-        BuffIconTimer existingBuff = CheckExistingBuff(effect.GetData().icon);
+        BuffIconTimer existingBuff = CheckExistingBuff(effect.Data.icon);
         if (existingBuff != null)
         {
-            existingBuff.StartTimer(effect.GetData().duration);
+            existingBuff.StartTimer(effect.Data.duration);
             return;
         }
 

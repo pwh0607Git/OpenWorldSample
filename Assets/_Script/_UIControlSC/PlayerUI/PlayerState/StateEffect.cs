@@ -72,7 +72,7 @@ public class StunEffect : IAdditiveEffect{
 
 public class SlowEffect : IAdditiveEffect{
     private EffectData data;
-    public StunEffect(EffectData data) => this.data = data;
+    // public StunEffect(EffectData data) => this.data = data;
     public void Apply(){}
     public void Remove(){}
 
@@ -104,7 +104,7 @@ public static class EffectFactory
     public static IAdditiveEffect CreateEffect(EffectType type, int value, float duration){
         return type switch{
             EffectType.Stun => new StunEffect(new EffectData(value, duration)),
-            EffectType.Slow => new SlowEffect(new EffectData(value, duration)),
+            // EffectType.Slow => new SlowEffect(new EffectData(value, duration)),
             _ => null
         };
     }

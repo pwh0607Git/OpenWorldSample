@@ -20,8 +20,8 @@ public class BuffIconTimer : MonoBehaviour
 
     public void InitBuff(IStateEffect effect){
         this.effect = effect;
-        GetComponent<Image>().sprite = effect.GetData().icon;
-        StartTimer(effect.GetData().duration);
+        GetComponent<Image>().sprite = effect.Data.icon;
+        StartTimer(effect.Data.duration);
     }
 
     public void StartTimer(float duration)

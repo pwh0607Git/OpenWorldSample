@@ -3,17 +3,22 @@ using UnityEngine.Events;
 
 public class AnimationEventListener : MonoBehaviour
 {
+    PlayerController1 player;
     public UnityAction<AbilityFlag, bool> OnPerformedAttack;
     public UnityAction<AbilityFlag, bool> OnPerformedDamaged;
     public UnityAction<AbilityFlag, bool> OnPerformedDodged;
     public UnityAction OnPerformedRunning;
 
-    public void AttackStart(){
-        OnPerformedAttack?.Invoke(AbilityFlag.Attack, true);
-    }
+    public void SlashAttack(int index){
+        var monsters = player.attackArea.attackableMonsterList;
+        int damage = index == 0 ? 10 : 20;
+        foreach(var monster in monsters){
+            MonsterController monsterController = monster.GetComponent<MonsterController>();
+            
+            if(monsterController == null) continue;
 
-    public void AttackEnd(){
-        OnPerformedAttack?.Invoke(AbilityFlag.Attack, false);
+            monsterController.TakeDamage(damage);
+        }
     }
 
     public void DamagedStart(){

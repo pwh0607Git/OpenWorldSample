@@ -1,14 +1,18 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine;
 
 public class AbilityDamaged : Ability<PlayerState>
 {
     float abilityDuration;
+    private bool isPerforming = false;
     public override void Activate() {
+        isPerforming = true;
         TakeDamage();
     }
 
     public override void Deactivate() { 
-        player.currentActivatedAbilities.Remove(AbilityFlag.Damaged);
+        isPerforming = false;
     }
 
     public AbilityDamaged(PlayerState data, PlayerController1 player) : base(data,player){
@@ -17,18 +21,24 @@ public class AbilityDamaged : Ability<PlayerState>
     }
 
     public void TakeDamage(){
-        //애니메이션 만 수행.
-        if(player.currentActivatedAbilities.HasAny(AbilityFlag.Damaged)) return;
 
-        player.currentActivatedAbilities.Add(AbilityFlag.Damaged);
-
+        CoolTimeAsync().Forget();
         DG.Tweening.Sequence damageSeq = DOTween.Sequence(player.gameObject);
         damageSeq.AppendCallback(() => PlayAnimation());
-        damageSeq.AppendInterval(abilityDuration);
         damageSeq.OnComplete(()=>Deactivate());
     }
 
     private void PlayAnimation(){
         player.animator.CrossFadeInFixedTime("TakeDamage", 0.02f, 0, 0f);
+    }
+
+    async UniTaskVoid CoolTimeAsync(){
+        try{
+            isPerforming = true;
+            await UniTask.WaitForSeconds(abilityDuration);
+            isPerforming = false;
+        }catch(System.Exception e){
+            Debug.LogException(e);
+        }
     }
 }

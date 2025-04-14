@@ -41,7 +41,7 @@ public class PlayerStatePresenter : MonoBehaviour
     }
 
     public void ApplyEffect(IStateEffect effect){
-        if(effect.GetData().duration <= 0) model.ApplyEffect(effect);
+        if(effect.Data.duration <= 0) model.ApplyEffect(effect);
         else buffStateView.OnBuff(effect);
     }
 
