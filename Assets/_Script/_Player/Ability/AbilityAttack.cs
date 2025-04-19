@@ -6,9 +6,11 @@ using UnityEngine;
 */
 public class AbilityAttack : Ability<PlayerState>
 {
+    public override AbilityFlag Flag => AbilityFlag.Attack;
     private HashSet<GameObject> attackableMonsters = new();
     private float animationDuration;
     float elapsed = 0f;
+    int comboIndex = 0;
     private bool isPerforming = false;
     public AbilityAttack(PlayerState data, PlayerController1 player) : base(data, player) { 
         animationDuration = player.animator.GetAnimationClipLength("Slash1") / player.animator.GetFloat("SLASH1SPEED");
@@ -16,12 +18,15 @@ public class AbilityAttack : Ability<PlayerState>
 
     public override void Activate()
     {
-
+        player.abilityController.Activate(Flag, true);
+        comboIndex = 0;
     }
 
     public override void Deactivate()
     {
-
+        Debug.Log("콤보 어택 종료...");
+        comboIndex = 0;
+        // player.abilityController.Activate(AbilityFlag.None, true);
     }
     
 
@@ -35,10 +40,9 @@ public class AbilityAttack : Ability<PlayerState>
 
             if(elapsed >= animationDuration){
                 Deactivate();
-                
-                elapsed = 0f;   
-                isPerforming = false;
+
                 elapsed = 0f;
+                isPerforming = false;
             }
         }
     }
@@ -46,6 +50,8 @@ public class AbilityAttack : Ability<PlayerState>
     void PerformAttack(){
         if(isPerforming){    
             if(elapsed > animationDuration / 2){
+                if(comboIndex >= 1) return;
+                comboIndex++;
                 player.animator.SetTrigger("COMBOATTACK");
             }
             return;

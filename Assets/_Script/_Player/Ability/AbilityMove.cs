@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AbilityMove : Ability<PlayerState>
 {
+    public override AbilityFlag Flag => AbilityFlag.Move;
     float horz, vert;
  
     private Transform camTransform;

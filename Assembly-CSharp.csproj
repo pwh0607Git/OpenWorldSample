@@ -66,10 +66,8 @@
   <ItemGroup>
     <Compile Include="Assets\_Script\Utility\Vector3Extensions.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\BehaviorTree\MonsterControllerBT.cs" />
-    <Compile Include="Assets\_Script\StreamingSC\MapStreamingManager.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\DroppedItem.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_Presenter\InventoryPresenter.cs" />
-    <Compile Include="Assets\_Script\_Player\Ability\AbilityComboAttack.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_BossLogic\Boss.cs" />
     <Compile Include="Assets\_Script\_Player\Ability\AbilityDodge.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
@@ -90,9 +88,9 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\_Script\Singletones\BehaviourSingleton.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\PlayerState\StateEffect.cs" />
-    <Compile Include="Assets\_Script\StreamingSC\BossZoneManager.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterBlackBoard.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_View\EquipmentView.cs" />
+    <Compile Include="Assets\_Script\StreamingSystem\StreamingManager.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\MonsterController.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\PlayerRenderCameraController.cs" />
     <Compile Include="Assets\_Datas\Scripts\Item\ItemData.cs" />
@@ -107,15 +105,15 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\_Script\_Player\Ability\AbilityMove.cs" />
-    <Compile Include="Assets\_Script\StreamingSC\BossManager.cs" />
     <Compile Include="Assets\_Datas\Scripts\AbilityData\AbilityDodgeData.cs" />
     <Compile Include="Assets\_Datas\Scripts\Item\BuffConsumableData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
+    <Compile Include="Assets\_Script\StreamingSystem\BossManager.cs" />
+    <Compile Include="Assets\_Script\StreamingSystem\SectorMonsterSpawner.cs" />
     <Compile Include="Assets\_Script\_Player\Ability\AbilityJump.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\_Datas\Scripts\AbilityData\AbilityData.cs" />
-    <Compile Include="Assets\_Script\StreamingSC\StreamingManager.cs" />
     <Compile Include="Assets\_Datas\Scripts\Item\ConsumableData.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\BehaviorTree\MonsterWander.cs" />
     <Compile Include="Assets\_Script\EnvironmentSC\CameraConroller.cs" />
@@ -149,11 +147,11 @@
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_Presenter\PlayerDataPresenter.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_Presenter\ActionbarPresenter.cs" />
     <Compile Include="Assets\_Script\EnvironmentSC\ObjectPooling.cs" />
-    <Compile Include="Assets\_Script\StreamingSC\MonsterManager.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterAttack.cs" />
     <Compile Include="Assets\_Script\Item\Item\Item.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterDetection.cs" />
+    <Compile Include="Assets\_Script\StreamingSystem\MonsterManager.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\BossLogic\BossController.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterDown.cs" />
     <Compile Include="Assets\_Script\_Player\Main\PlayerController.cs" />
@@ -175,10 +173,10 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\MonsterStateUIController.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_View\UIBossState.cs" />
-    <Compile Include="Assets\_Script\StreamingSC\SectorMonsterSpawner.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\TEST_MonsterSpawner.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\BuffIconTimer.cs" />
+    <Compile Include="Assets\_Script\StreamingSystem\BossZoneManager.cs" />
     <Compile Include="Assets\TeKniKo_Free\Power_Ups\Scripts\ObjectBounce.cs" />
     <Compile Include="Assets\_Script\Utility\AbilityExtension.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\Popup\ItemInfoPopup.cs" />
@@ -194,6 +192,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_Presenter\EquipmentPresenter.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_Model\EquipmentModel.cs" />
+    <Compile Include="Assets\_Script\StreamingSystem\MapStreamingManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -1295,12 +1294,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.AI.Navigation.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.VisualScripting.State">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UniTask">
       <HintPath>Library\ScriptAssemblies\UniTask.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.State">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

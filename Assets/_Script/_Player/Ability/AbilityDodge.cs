@@ -3,21 +3,23 @@ using DG.Tweening;
 
 public class AbilityDodge : Ability<AbilityDodgeData>
 {
+    public override AbilityFlag Flag => AbilityFlag.Dodge;
     float abilityDuration;
-    private bool isPerforming = false;          //중복 체크.
+    private bool isPerforming = false;       
     public AbilityDodge(AbilityDodgeData data, PlayerController1 player) : base(data, player){ 
         float animationSpeed = player.animator.GetFloat("DODGESPEED");
         abilityDuration = player.animator.GetAnimationClipLength("Dodge") / animationSpeed;
-
     }
+
     public override void Activate()
     {
-        if(isPerforming) return;
-        PerformDodge();
+        player.abilityController.Activate(Flag, true);
+        isPerforming = false;
     }
 
     public override void Deactivate()
     {
+        player.abilityController.Activate(AbilityFlag.None, true);
         isPerforming = false;
     }
 
@@ -28,6 +30,8 @@ public class AbilityDodge : Ability<AbilityDodgeData>
     }
     
     void PerformDodge(){
+        if(isPerforming) return;
+
         Vector3 direction = player.transform.forward;
         Vector3 targetPosition = player.transform.position + direction * 1f;            // 1유닛 전진
         

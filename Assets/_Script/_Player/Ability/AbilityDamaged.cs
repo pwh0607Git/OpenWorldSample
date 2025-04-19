@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class AbilityDamaged : Ability<PlayerState>
 {
+    public override AbilityFlag Flag => AbilityFlag.Damaged;
     float abilityDuration;
     private bool isPerforming = false;
     public override void Activate() {
+        player.abilityController.Activate(Flag, true);
         isPerforming = true;
         TakeDamage();
     }

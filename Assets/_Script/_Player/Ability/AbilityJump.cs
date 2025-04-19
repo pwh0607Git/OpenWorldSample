@@ -1,6 +1,7 @@
 using UnityEngine;
 public class AbilityJump : Ability<AbilityJumpData>
 {
+    public override AbilityFlag Flag => AbilityFlag.Jump;
     private bool jumping = false;
     float elapsedTime = 0f;
     public AbilityJump(AbilityJumpData data, PlayerController1 player) : base(data, player) { }

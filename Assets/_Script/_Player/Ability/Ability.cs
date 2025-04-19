@@ -21,6 +21,7 @@ public abstract class Ability{
 
 public abstract class Ability<T> : Ability where T : class{
     public T data;
+    public abstract AbilityFlag Flag{get;}
     protected PlayerController1 player;
 
     public Ability(T data, PlayerController1 player, float cooldown = 0f){

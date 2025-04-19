@@ -36,7 +36,6 @@ public class PlayerController1 : MonoBehaviour
     void SetAbilities(){
         abilityController.Add(AbilityFlag.Move, new AbilityMove(new PlayerState(), this), true);
         abilityController.Add(AbilityFlag.Attack, new AbilityAttack(new PlayerState(), this), true);
-        abilityController.Add(AbilityFlag.Attack, new AbilityComboAttack(new PlayerState(), this), true);
         abilityController.Add(AbilityFlag.Damaged, new AbilityDamaged(new PlayerState(), this), true);
         abilityController.Add(AbilityFlag.Dodge, new AbilityDodge(staticDatas.Find(d=> d.flag == AbilityFlag.Dodge) as AbilityDodgeData, this), true);
     }
