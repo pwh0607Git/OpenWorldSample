@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
 
 public class CameraConroller : MonoBehaviour
 {
-    public Transform target;        
+    [ReadOnly] Transform target;        
     private Vector3 defaultPos = new Vector3(0, 1.8f, -5f);        
     public float rotationSpeed = 100f;          
 
@@ -20,6 +19,7 @@ public class CameraConroller : MonoBehaviour
     
     void Start()
     {
+        target = FindObjectOfType<PlayerController1>().transform;
         Cursor.lockState = CursorLockMode.Locked; 
         Cursor.visible = true;
     }

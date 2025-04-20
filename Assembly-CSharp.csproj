@@ -94,6 +94,7 @@
     <Compile Include="Assets\_Script\MonsterSC\_Logic\MonsterController.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\PlayerRenderCameraController.cs" />
     <Compile Include="Assets\_Datas\Scripts\Item\ItemData.cs" />
+    <Compile Include="Assets\_Script\_Player\Logic\PlayerUpperBodyIKController.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_BossLogic\ForestGolemController.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\Tester\ActionBarTester.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_View\PlayerStateView.cs" />
@@ -119,7 +120,6 @@
     <Compile Include="Assets\_Script\EnvironmentSC\CameraConroller.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\_Script\_Player\PlayerAttack.cs" />
-    <Compile Include="Assets\_Script\_Player\Main\PlayerController1.cs" />
     <Compile Include="Assets\_Script\Utility\AnimationUtility.cs" />
     <Compile Include="Assets\_Script\_Player\Logic\AttackArea.cs" />
     <Compile Include="Assets\_Script\System\UIIconFactory.cs" />
@@ -156,6 +156,7 @@
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterDown.cs" />
     <Compile Include="Assets\_Script\_Player\Main\PlayerController.cs" />
     <Compile Include="Assets\_Script\System\AbilityFactory.cs" />
+    <Compile Include="Assets\_Script\_Player\PlayerController1.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_Presenter\PlayerStatePresenter.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterWandor.cs" />

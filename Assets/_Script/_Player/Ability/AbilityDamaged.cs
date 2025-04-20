@@ -18,7 +18,7 @@ public class AbilityDamaged : Ability<PlayerState>
     }
 
     public AbilityDamaged(PlayerState data, PlayerController1 player) : base(data,player){
-        float animationSpeed = player.animator.GetFloat("DAMAGEDSPEED");
+        float animationSpeed = 1f;              //player.animator.GetFloat("DAMAGEDSPEED");
         abilityDuration = player.animator.GetAnimationClipLength("TakeDamage") / animationSpeed;
     }
 
