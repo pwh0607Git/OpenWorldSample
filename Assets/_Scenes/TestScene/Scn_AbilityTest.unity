@@ -2655,11 +2655,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!4 &1435629410 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7752800877021173019, guid: 057b329beea75964c993e17fc415b8d6, type: 3}
-  m_PrefabInstance: {fileID: 9133067108374290184}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1449104035
 GameObject:
   m_ObjectHideFlags: 0
@@ -5725,10 +5720,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Hero
       objectReference: {fileID: 0}
-    - target: {fileID: 7273552023731941693, guid: 057b329beea75964c993e17fc415b8d6, type: 3}
-      propertyPath: sightPoint
-      value: 
-      objectReference: {fileID: 1435629410}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

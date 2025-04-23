@@ -10,7 +10,6 @@ public class PlayerController1 : MonoBehaviour
     [ReadOnly] public Animator animator;   
     public AttackArea attackArea;
     private AnimationEventListener eventListener;
-    [SerializeField] List<AbilityData> staticDatas;
 
     [ReadOnly] public bool isGrounded;
 
@@ -25,19 +24,10 @@ public class PlayerController1 : MonoBehaviour
         attackArea = GetComponentInChildren<AttackArea>();
     }
 
-    void Start()
-    {
-        SetAbilities();
-        // eventListener.OnPerformedAttack += SetAbilityFlag;
-        // eventListener.OnPerformedDamaged += SetAbilityFlag;
-        // eventListener.OnPerformedDodged += SetAbilityFlag;
-    }
-
-    void SetAbilities(){
-        abilityController.Add(AbilityFlag.Move, new AbilityMove(new PlayerState(), this), true);
-        abilityController.Add(AbilityFlag.Attack, new AbilityAttack(new PlayerState(), this), true);
-        abilityController.Add(AbilityFlag.Damaged, new AbilityDamaged(new PlayerState(), this), true);
-        abilityController.Add(AbilityFlag.Dodge, new AbilityDodge(staticDatas.Find(d=> d.flag == AbilityFlag.Dodge) as AbilityDodgeData, this), true);
+    public void SetAbility(List<AbilityData> abilityDatas){
+        foreach(var data in abilityDatas){
+            abilityController.Add(data, true);
+        }
     }
 
     void Update()
@@ -46,7 +36,6 @@ public class PlayerController1 : MonoBehaviour
     }
 
     void InputKeyboard(){
-        //Test
         if(Input.GetKeyDown(KeyCode.LeftShift)){
             TakeDamage(10);
         }

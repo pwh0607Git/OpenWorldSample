@@ -13,13 +13,11 @@ public class AbilityDodge : Ability<AbilityDodgeData>
 
     public override void Activate()
     {
-        player.abilityController.Activate(Flag, true);
         isPerforming = false;
     }
 
     public override void Deactivate()
     {
-        player.abilityController.Activate(AbilityFlag.None, true);
         isPerforming = false;
     }
 
@@ -32,20 +30,21 @@ public class AbilityDodge : Ability<AbilityDodgeData>
     void PerformDodge(){
         if(isPerforming) return;
 
+        Debug.Log("회피 시작");
+        player.abilityController.Activate(Flag, true);
+
         Vector3 direction = player.transform.forward;
         Vector3 targetPosition = player.transform.position + direction * 1f;            // 1유닛 전진
         
         isPerforming = true;
 
-        PlayAnimation();
-
-        player.transform.DOJump(targetPosition, 0.5f, 1, abilityDuration).SetEase(Ease.Unset)
+        PlayAnimation("Dodge", 0.02f, 0, 0f);
+    
+        player.transform.DOJump(targetPosition, data.height, 1, abilityDuration).SetEase(Ease.Unset)
         .OnComplete(()=>{
+            Debug.Log("회피 종료");
+            player.abilityController.RestoreAbilities();
             isPerforming = false;
         });
-    }
-
-    private void PlayAnimation(){
-        player.animator.CrossFadeInFixedTime("Dodge", 0.02f, 0, 0f);
     }
 }

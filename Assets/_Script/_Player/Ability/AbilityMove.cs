@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AbilityMove : Ability<PlayerState>
+public class AbilityMove : Ability<AbilityMoveData>
 {
     public override AbilityFlag Flag => AbilityFlag.Move;
     float horz, vert;
@@ -10,7 +10,7 @@ public class AbilityMove : Ability<PlayerState>
 
     private RaycastHit hit;
     public float maxSlopeAngle = 45f;
-    public AbilityMove(PlayerState data, PlayerController1 player) : base(data, player)
+    public AbilityMove(AbilityMoveData data, PlayerController1 player) : base(data, player)
     {
         camTransform = Camera.main.transform; 
     }
@@ -19,7 +19,7 @@ public class AbilityMove : Ability<PlayerState>
         InputKeyboard();
         Rotate();
         Move();
-        PlayAnimation();
+        PlayMoveAnimation();
     }
 
     public override void Activate(){ }
@@ -79,7 +79,7 @@ public class AbilityMove : Ability<PlayerState>
         player.controller.Move(direction * 2f * Time.deltaTime);          // data.state.speed 
     }
 
-    private void PlayAnimation(){
+    private void PlayMoveAnimation(){
         float currentSpeed = Mathf.Clamp01(player.controller.velocity.magnitude);
         float speed = Mathf.Lerp(player.animator.GetFloat("MOVESPEED"), currentSpeed, Time.deltaTime * 5f);
         player.animator.SetFloat("MOVESPEED", speed);

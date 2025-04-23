@@ -1,18 +1,17 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
     공격 수행중 canCombo가가
 */
-public class AbilityAttack : Ability<PlayerState>
+public class AbilityAttack : Ability<AbilityAttackData>
 {
     public override AbilityFlag Flag => AbilityFlag.Attack;
-    private HashSet<GameObject> attackableMonsters = new();
     private float animationDuration;
     float elapsed = 0f;
     int comboIndex = 0;
     private bool isPerforming = false;
-    public AbilityAttack(PlayerState data, PlayerController1 player) : base(data, player) { 
+
+    public AbilityAttack(AbilityAttackData data, PlayerController1 player) : base(data, player) { 
         animationDuration = player.animator.GetAnimationClipLength("Slash1") / player.animator.GetFloat("SLASH1SPEED");
     }
 

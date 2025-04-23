@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-public class AbilityDamaged : Ability<PlayerState>
+public class AbilityDamaged : Ability<AbilityDamagedData>
 {
     public override AbilityFlag Flag => AbilityFlag.Damaged;
     float abilityDuration;
@@ -17,21 +17,17 @@ public class AbilityDamaged : Ability<PlayerState>
         isPerforming = false;
     }
 
-    public AbilityDamaged(PlayerState data, PlayerController1 player) : base(data,player){
-        float animationSpeed = 1f;              //player.animator.GetFloat("DAMAGEDSPEED");
-        abilityDuration = player.animator.GetAnimationClipLength("TakeDamage") / animationSpeed;
+    public AbilityDamaged(AbilityDamagedData data, PlayerController1 player) : base(data,player){
+        float animationSpeed = 1f;
+        abilityDuration = data.duration;
     }
 
     public void TakeDamage(){
 
         CoolTimeAsync().Forget();
         DG.Tweening.Sequence damageSeq = DOTween.Sequence(player.gameObject);
-        damageSeq.AppendCallback(() => PlayAnimation());
+        damageSeq.AppendCallback(() => PlayAnimation("TakeDamage", 0.02f, 0, 0f));
         damageSeq.OnComplete(()=>Deactivate());
-    }
-
-    private void PlayAnimation(){
-        player.animator.CrossFadeInFixedTime("TakeDamage", 0.02f, 0, 0f);
     }
 
     async UniTaskVoid CoolTimeAsync(){

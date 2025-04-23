@@ -10,6 +10,8 @@ public class PlayerUpperBodyIKController : MonoBehaviour
     [SerializeField] float bodyWeight, headWeight;
     [SerializeField] float eyePoint;
 
+    float maxLookAngle = 120f;
+
     // 카메라의 방향에 따라서...
     void Start()
     {
@@ -23,16 +25,42 @@ public class PlayerUpperBodyIKController : MonoBehaviour
     {
         if(animator == null || mainCam == null) return;
 
-
+        //Head
         if(layerIndex == 2){
-            //  float weight, float bodyWeight, float headWeight, float eyesWeight, float clampWeight
-            animator.SetLookAtWeight(1.0f, bodyWeight, headWeight);
+        //    LookPos();
+        } 
+    }
 
-            Vector3 lookDir = mainCam.transform.up;
-            Debug.Log($"{sightPoint.localPosition.y}");
-            lookDir.y = sightPoint.localPosition.y;              // Player의 눈높이로 설정하기.
+    Vector3 ClampDirection(Vector3 fromDir, Vector3 toDir, float maxAngle)
+    {
+        float angle = Vector3.Angle(fromDir, toDir);
+        if (angle <= maxAngle) return toDir;
 
-            animator.SetLookAtPosition(lookDir);
-        }
+        // 회전 제한
+        Quaternion limitedRot = Quaternion.RotateTowards(
+            Quaternion.LookRotation(fromDir),
+            Quaternion.LookRotation(toDir),
+            maxAngle
+        );
+        return limitedRot * Vector3.forward;
+    }
+
+    void LookPos(){
+        //  float weight, float bodyWeight, float headWeight, float eyesWeight, float clampWeight
+
+        Vector3 target = mainCam.transform.position + mainCam.transform.forward * 10f;
+        target.y = sightPoint.localPosition.y;              
+
+        //기본 트랜스 폼과 ik의 사이각을 제한.
+
+        //사이각 계산하기 => float angle = Vector3.Angle(vec1, vec2);
+        Vector3 lookDir = (target - transform.position).normalized;
+        Vector3 forwardDir = transform.forward;
+
+        Vector3 clampedDir = ClampDirection(forwardDir, lookDir, maxLookAngle * 0.5f);
+        Vector3 lookAtPos = transform.position + clampedDir * 10f;
+
+        animator.SetLookAtWeight(1.0f, bodyWeight, headWeight);
+        animator.SetLookAtPosition(lookAtPos);
     }
 }

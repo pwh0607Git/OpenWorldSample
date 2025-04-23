@@ -1,10 +1,10 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Abilities/Ability Dodge")]
-public abstract class AbilityDodgeData : AbilityData
+public class AbilityDodgeData : AbilityData
 {    
     public override AbilityFlag flag => AbilityFlag.Dodge;
-    public float duration;
     public float height;
-    public float coolDown;
+    
+    public override Ability CreateAbility(PlayerController1 player) => new AbilityDodge(this, player);
 }

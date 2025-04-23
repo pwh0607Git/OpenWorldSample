@@ -753,7 +753,7 @@ GameObject:
   - component: {fileID: 2146416129366187113}
   - component: {fileID: 7273552023731941693}
   m_Layer: 6
-  m_Name: Player_Hero
+  m_Name: Player_Hero_Main
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -811,7 +811,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flags: 0
-  abilityFlags: 0
 --- !u!114 &7283238125840015331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,7 +828,6 @@ MonoBehaviour:
   abilityController: {fileID: 0}
   animator: {fileID: 0}
   attackArea: {fileID: 0}
-  staticDatas: []
   isGrounded: 0
 --- !u!143 &2146416129366187113
 CharacterController:
@@ -864,11 +862,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3216303117724161724}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 111b899cb1261eb4b8d95cf20ae95664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sightPoint: {fileID: 7752800877021173019}
   bodyWeight: 0.4
   headWeight: 1
   eyePoint: 0

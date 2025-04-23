@@ -24,8 +24,12 @@ public abstract class Ability<T> : Ability where T : class{
     public abstract AbilityFlag Flag{get;}
     protected PlayerController1 player;
 
-    public Ability(T data, PlayerController1 player, float cooldown = 0f){
+    public Ability(T data, PlayerController1 player){
         this.data = data;
         this.player = player;
+    }
+
+    protected void PlayAnimation(string stateName, float fixedTransitionDuration, int layer, float fixedTimeOffset){
+        player.animator.CrossFadeInFixedTime(stateName, fixedTransitionDuration, layer, fixedTimeOffset);
     }
 }

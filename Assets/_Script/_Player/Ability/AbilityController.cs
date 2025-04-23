@@ -7,9 +7,10 @@ public class AbilityController : MonoBehaviour
 {
     [Space(20), ReadOnly] public AbilityFlag flags = AbilityFlag.None;
     public List<Ability> abilities = new();
-    public AbilityFlag abilityFlags = AbilityFlag.None; 
-    private readonly Dictionary<AbilityFlag, Ability> actives = new Dictionary<AbilityFlag, Ability>();
-
+    
+    private readonly Dictionary<AbilityFlag, Ability> originActives = new();
+    private readonly Dictionary<AbilityFlag, Ability> actives = new();
+    
     private void Update()
     {
         foreach( var a in actives.ToList())
@@ -22,13 +23,15 @@ public class AbilityController : MonoBehaviour
             a.Value.FixedUpdate();
     }
 
-    public void Add(AbilityFlag flag, Ability ability, bool immediate = false){
-        if (!actives.ContainsKey(flag))
+    public void Add(AbilityData abilityData, bool immediate = false){
+        if (!actives.ContainsKey(abilityData.flag))
         {
-            flags |= flag; 
+            flags.Add(abilityData.flag); 
+
+            var ability = abilityData.CreateAbility(GetComponent<PlayerController1>());
             abilities.Add(ability);
-            abilityFlags.Add(flag);
-            actives[flag] = ability;
+            originActives[abilityData.flag] = ability;
+            actives[abilityData.flag] = ability;
         }
     }
 
@@ -42,33 +45,37 @@ public class AbilityController : MonoBehaviour
     }
 
     public void Activate(AbilityFlag flag, bool forceDeactivate = false){
-        if(forceDeactivate) DeactivateAll();
+        if(forceDeactivate) DeactivateAll(flag);
         
         if(!actives.ContainsKey(flag)) return;
+
         actives[flag].Activate();
-        abilityFlags.Add(flag);
     }
 
     public void Deactivate(AbilityFlag flag){
         if(!actives.ContainsKey(flag)) return;
 
         actives[flag].Deactivate();
-        abilityFlags.Remove(flag);
     }
 
-    public void DeactivateAll()
+    public void DeactivateAll(AbilityFlag flag)
     {
-        foreach( var a in actives )
+        foreach( var a in actives ){
+            if(a.Key.Equals(flag)) continue;
             a.Value.Deactivate();
+        }
         actives.Clear();
-        abilityFlags = AbilityFlag.None;
     }
 
-    public bool IsActive(AbilityFlag flag)
-    {
-        return actives.ContainsKey(flag);
+    public void RestoreAbilities(){
+        actives.Clear();
+        foreach (var kvp in originActives)
+        {
+            actives[kvp.Key] = kvp.Value;
+        }
     }
-    
+
+
     public void UpdatePlayerState(PlayerState p_state){
         // 나중에...
     }
