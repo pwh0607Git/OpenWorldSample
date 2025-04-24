@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Abilities/Ability Move")]
+[CreateAssetMenu(menuName = "Abilities/Ability Jump")]
 public class AbilityJumpData : AbilityData
 {
     public override AbilityFlag flag => AbilityFlag.Jump;

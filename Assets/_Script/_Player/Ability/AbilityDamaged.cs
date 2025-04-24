@@ -18,7 +18,6 @@ public class AbilityDamaged : Ability<AbilityDamagedData>
     }
 
     public AbilityDamaged(AbilityDamagedData data, PlayerController1 player) : base(data,player){
-        float animationSpeed = 1f;
         abilityDuration = data.duration;
     }
 

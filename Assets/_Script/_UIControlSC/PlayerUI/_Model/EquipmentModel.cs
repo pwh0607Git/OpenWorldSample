@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-//장비 슬롯은 고정위치.
 public class EquipmentModel : MonoBehaviour
 {
     private Dictionary<EquipmentType, Item> equipedItems = new Dictionary<EquipmentType, Item>();
