@@ -9,9 +9,12 @@ public class PlayerController1 : MonoBehaviour
     [ReadOnly] public AbilityController abilityController;
     [ReadOnly] public Animator animator;   
     public AttackArea attackArea;
-    private AnimationEventListener eventListener;
+    private EventListener eventListener;
 
     [ReadOnly] public bool isGrounded;
+    
+    //Test Code
+    [SerializeField] List<AbilityData> datas;
 
     void Awake()
     {
@@ -22,6 +25,9 @@ public class PlayerController1 : MonoBehaviour
 
         uIPresenter = GetComponentInChildren<PlayerUIPresenter>();
         attackArea = GetComponentInChildren<AttackArea>();
+
+        //test
+        SetAbility(datas);
     }
 
     public void SetAbility(List<AbilityData> abilityDatas){

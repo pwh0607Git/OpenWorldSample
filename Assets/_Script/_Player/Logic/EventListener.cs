@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class AnimationEventListener : MonoBehaviour
+public class EventListener : MonoBehaviour
 {
     PlayerController1 player;
     public UnityAction<AbilityFlag, bool> OnPerformedAttack;

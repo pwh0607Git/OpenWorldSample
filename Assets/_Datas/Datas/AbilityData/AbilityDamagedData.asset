@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 7acbe9dad13ac1843895d84a6dd7b90e, type: 3}
   m_Name: AbilityDamagedData
-  m_EditorClassIdentifier: Assembly-CSharp::AbilityDamagedData
-  isolateFlags: 0
+  m_EditorClassIdentifier: 
+  isolateFlags: -1
   duration: 0.4

@@ -75,7 +75,6 @@ public class AbilityController : MonoBehaviour
         }
     }
 
-
     public void UpdatePlayerState(PlayerState p_state){
         // 나중에...
     }

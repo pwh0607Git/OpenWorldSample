@@ -7,8 +7,7 @@ public class AbilityDodge : Ability<AbilityDodgeData>
     float abilityDuration;
     private bool isPerforming = false;       
     public AbilityDodge(AbilityDodgeData data, PlayerController1 player) : base(data, player){ 
-        float animationSpeed = player.animator.GetFloat("DODGESPEED");
-        abilityDuration = player.animator.GetAnimationClipLength("Dodge") / animationSpeed;
+        abilityDuration = player.animator.GetAnimationClipLength("Dodge") / data.speed;
     }
 
     public override void Activate()

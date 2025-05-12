@@ -30,9 +30,7 @@ public class AbilityAttack : Ability<AbilityAttackData>
     
 
     public override void Update(){
-        if(Input.GetKeyDown(KeyCode.LeftControl)){
-            PerformAttack();
-        }
+        if(Input.GetMouseButtonDown(0)) PerformAttack();
 
         if(isPerforming){
             elapsed += Time.deltaTime;
