@@ -6,13 +6,14 @@ using UnityEngine;
 public class AbilityAttack : Ability<AbilityAttackData>
 {
     public override AbilityFlag Flag => AbilityFlag.Attack;
-    private float animationDuration;
+    private float slash1Duration, slash2Duration;
     float elapsed = 0f;
     int comboIndex = 0;
     private bool isPerforming = false;
 
     public AbilityAttack(AbilityAttackData data, PlayerController1 player) : base(data, player) { 
-        animationDuration = player.animator.GetAnimationClipLength("Slash1") / player.animator.GetFloat("SLASH1SPEED");
+        slash1Duration = player.animator.GetAnimationClipLength("Slash1") / player.animator.GetFloat("SLASH1SPEED");
+        slash2Duration = player.animator.GetAnimationClipLength("Slash2") / player.animator.GetFloat("SLASH2SPEED");
     }
 
     public override void Activate()
@@ -35,21 +36,29 @@ public class AbilityAttack : Ability<AbilityAttackData>
         if(isPerforming){
             elapsed += Time.deltaTime;
 
-            if(elapsed >= animationDuration){
-                Deactivate();
+            //1번 슬래시
+            if(comboIndex < 1){
 
-                elapsed = 0f;
-                isPerforming = false;
+            }
+            else{       //2번 슬래시
+                if(elapsed >= slash1Duration){
+                    Deactivate();
+
+                    elapsed = 0f;
+                    isPerforming = false;
+                }
             }
         }
     }
 
-    void PerformAttack(){
+    void PerformAttack(){                
+        if(comboIndex >= 1) return;
+
         if(isPerforming){    
-            if(elapsed > animationDuration / 2){
+            if(elapsed > slash1Duration / 2){
                 if(comboIndex >= 1) return;
                 comboIndex++;
-                player.animator.SetTrigger("COMBOATTACK");
+                PlayAnimation();
             }
             return;
         }   

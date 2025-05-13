@@ -81,7 +81,6 @@
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Logic\MonsterBlackBoard.cs" />
     <Compile Include="Assets\_Script\StreamingSystem\StreamingManager.cs" />
     <Compile Include="Assets\_Datas\Scripts\Item\ItemData.cs" />
-    <Compile Include="Assets\_Script\_Player\Logic\PlayerUpperBodyIKController.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_BossLogic\ForestGolemController.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\Tester\ActionBarTester.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
@@ -98,6 +97,7 @@
     <Compile Include="Assets\_Script\MonsterSC\_Logic\BehaviorTree\MonsterWander.cs" />
     <Compile Include="Assets\_Script\EnvironmentSC\CameraConroller.cs" />
     <Compile Include="Assets\_Script\_Player\PlayerAttack.cs" />
+    <Compile Include="Assets\_Script\_Player\Main\PlayerController1.cs" />
     <Compile Include="Assets\_Script\_Player\Logic\AttackArea.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\Temp\MonsterAI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
@@ -120,7 +120,6 @@
     <Compile Include="Assets\_Script\StreamingSystem\MonsterManager.cs" />
     <Compile Include="Assets\_Script\MonsterSC\_Logic\BossLogic\BossController.cs" />
     <Compile Include="Assets\_Script\_Player\AbilityData\AbilityAttackData.cs" />
-    <Compile Include="Assets\_Script\_Player\PlayerController1.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\_Presenter\PlayerStatePresenter.cs" />
     <Compile Include="Assets\_Script\System\ObjectSpawnInitController.cs" />
     <Compile Include="Assets\_Script\_UIControlSC\PlayerUI\Slot\ActionBarSlot.cs" />
